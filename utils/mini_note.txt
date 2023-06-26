@@ -110,7 +110,12 @@ Probably unused functions:
 
 If error message != bash no worries
 
-Ctrl -D Interpreta un prompt vacio como NULL en readline
+Ctrl -D Interprets an empty prompt as NULL in readline
+
+Cuando declaramos una variable de entorno, podemos pasarle como valor un conjunto de comandos
+	que estaran entre parentesis. Deberemos ejecutar los comandos y el output final guardarlo como
+	el valor de la variable Y NO PASARLO por STDOUT...
+	ej: (df -m | grep "/dev/" | grep -v "/boot" | awk '{disk_t += $2} END {printf ("%.1fGb\n"), disk_t/1024}')
 
 1st arg
 	Command
