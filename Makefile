@@ -6,7 +6,7 @@
 #    By: ffornes- <ffornes-@student.42barcel>       +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/06/26 15:00:09 by ffornes-          #+#    #+#              #
-#    Updated: 2023/06/26 16:18:11 by laugarci         ###   ########.fr        #
+#    Updated: 2023/06/26 16:33:45 by ffornes-         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -28,12 +28,12 @@ RM = 		rm -f
 INCLUDE =	-I include/ -I libft/include/
 LIBFT = -L libft/ -lft
 
-all:		$(NAME)
+all:		m_libft $(NAME)
 
 m_libft:
 			@make -C libft/
 
-$(NAME):	m_libft $(OBJ_DIR) $(OBJS)
+$(NAME):	$(OBJ_DIR) $(OBJS)
 			$(CC) $(OBJS) $(LIBFT) -o $@ -lreadline
 
 
