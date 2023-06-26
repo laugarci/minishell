@@ -6,7 +6,7 @@
 #    By: ffornes- <ffornes-@student.42barcel>       +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/02/24 19:51:17 by ffornes-          #+#    #+#              #
-#    Updated: 2023/05/18 10:52:20 by ffornes-         ###   ########.fr        #
+#    Updated: 2023/06/26 15:41:12 by ffornes-         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -61,23 +61,35 @@ OBJS_GNL = $(addprefix $(OBJS_GNL_DIR), $(OBJ_GNL_FILES))
 OBJS = $(OBJS_LIBFT) $(OBJS_PRINTF) $(OBJS_GNL)
 
 ###############################################################################
+#									DEPS									  #
+###############################################################################
+
+DEP_LIBFT_FILES = $(SRC_FILES:.c=.d)
+DEP_PRINTF_FILES = $(SRC_PRINTF_FILES:.c=.d)
+DEP_GNL_FILES = $(SRC_GNL_FILES:.c=.d)
+
+DEPS_LIBFT = $(addprefix $(OBJS_LIBFT_DIR), $(DEP_LIBFT_FILES))
+DEPS_PRINTF = $(addprefix $(OBJS_PRINTF_DIR), $(DEP_PRINTF_FILES))
+DEPS_GNL = $(addprefix $(OBJS_GNL_DIR), $(DEP_GNL_FILES))
+
+DEPS = $(DEPS_LIBFT) $(DEPS_PRINTF) $(DEPS_GNL)
+
+###############################################################################
 #									OTHER									  #
 ###############################################################################
 
 CC = gcc
-CFLAGS = -Wall -Wextra -Werror
+CFLAGS = -Wall -Wextra -Werror -MMD
 RM = rm -f
 AR = ar rc
 
-HDR_DIR = include/
-HDR_FILES = libft.h ft_printf.h get_next_line.h
-HDRS = $(addprefix $(HDR_DIR), $(HDR_FILES))
+INCLUDE = -I include/
 
 ###############################################################################
 #									RULES									  #
 ###############################################################################
 
-all: 		$(NAME) $(HDRS)
+all: 		$(NAME)
 
 $(NAME):	$(OBJS_LIBFT_DIR) $(OBJS_PRINTF_DIR) $(OBJS_GNL_DIR) $(OBJS)
 			$(AR) $@ $(OBJS)
@@ -91,21 +103,23 @@ $(OBJS_PRINTF_DIR):
 $(OBJS_GNL_DIR):
 						@mkdir $(OBJS_GNL_DIR)
 
-$(OBJS_LIBFT_DIR)%.o:	$(SRCS_LIBFT_DIR)%.c include/libft.h
-						$(CC) $(CFLAGS) -I $(INCLUDES) -c $< -o $@
+$(OBJS_LIBFT_DIR)%.o:	$(SRCS_LIBFT_DIR)%.c
+						$(CC) $(CFLAGS) $(INCLUDE) -c $< -o $@
 
-$(OBJS_PRINTF_DIR)%.o:	$(SRCS_PRINTF_DIR)%.c include/ft_printf.h
-						$(CC) $(CFLAGS) -I $(INCLUDES) -c $< -o $@
+$(OBJS_PRINTF_DIR)%.o:	$(SRCS_PRINTF_DIR)%.c
+						$(CC) $(CFLAGS) $(INCLUDE) -c $< -o $@
 
-$(OBJS_GNL_DIR)%.o:		$(SRCS_GNL_DIR)%.c include/get_next_line.h
-						$(CC) $(CFLAGS) -I $(INCLUDES) -c $< -o $@
+$(OBJS_GNL_DIR)%.o:		$(SRCS_GNL_DIR)%.c
+						$(CC) $(CFLAGS) $(INCLUDE) -c $< -o $@
 
 clean: 		
-			@$(RM) $(OBJS)
+			@$(RM) $(OBJS) $(DEPS)
 
 fclean: 	clean
 			@$(RM) $(NAME)
 
 re:			fclean all
+
+-include $(DEPS)
 
 .PHONY: all clean fclean re
