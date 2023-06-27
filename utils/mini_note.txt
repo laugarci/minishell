@@ -121,15 +121,15 @@ Cuando declaramos una variable de entorno, podemos pasarle como valor un conjunt
 	ej: $(df -m | grep "/dev/" | grep -v "/boot" | awk '{disk_t += $2} END {printf ("%.1fGb\n"), disk_t/1024}')
 
 1st arg
-	Command
-	<<(here_doc)
-	$? - Debe mostrar mensaje de error ya que no es un comando sin embargo en lugar de mostrar el comando
-		que da error, debe mostrar el valor que tiene $? en ese momento
+	Command 
+		// DONE <<(here_doc) // DONE
+	$[VARIABLE] Expandir variable de entorno en mensaje de error a no ser, que la este declarando
+	NOMBRE_DE_VARIABLE="VALOR_DE_VARIABLE" // Investigar si las variables de entorno deben usar export para hacer cosas
 
 2nd
 	Flag
 	Arg / File / if (argv[1][0] == '$') environment variable
-	<<(here_doc)
+	"DONE" Implementado la funcion get_delimiter que busca el delimitador donde este, sin embargo debemos tener en cuenta que si este es el segundo argumento,  no es ni un archivo, ni una flag, ni cosas raras... << (here_doc) if (mi primer argumento es "<< " con el espacio incluido, mi segundo argumento es el delimitador)
 	Nothing
 
 3rd +
@@ -150,3 +150,25 @@ Parse
 	""
 	''
 	$
+
+LAURA:
+		Recomanacions: Fes servir comandos sense flags, que rebin un argument ja sigui d'un pipe o d'un fd o
+			del here_doc;
+	Executar comandos
+		access
+		execve
+	Gestionar pipes y file descriptors
+		dup
+		dup2
+		pipe
+		fork
+		open
+		read
+		close
+	
+FERRAN:
+	Parseo jeje
+	Signals
+		Ctrl C
+		Ctrl D
+		Ctrl \

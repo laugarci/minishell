@@ -6,7 +6,7 @@
 /*   By: laugarci <laugarci@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/26 15:52:21 by laugarci          #+#    #+#             */
-/*   Updated: 2023/06/27 14:49:16 by ffornes-         ###   ########.fr       */
+/*   Updated: 2023/06/27 16:50:11 by ffornes-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,10 +29,14 @@ static void	exit_check(char *input)
 int	main(int argc, char *argv[], char *envp[])
 {
 	char	*input;
-
-	argv = NULL;	// REMEMBER ARGV IS NULL HERE PLSSSS
+	
 	if (argc > 1)
 		exit(1);
+
+	int	i = 0;
+	while (argv[i])
+		printf("%s\n", argv[i++]);
+
 	while (1)
 	{
 		input = readline("minishell > ");
