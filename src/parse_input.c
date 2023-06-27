@@ -6,7 +6,7 @@
 /*   By: ffornes- <ffornes-@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/27 12:29:42 by ffornes-          #+#    #+#             */
-/*   Updated: 2023/06/27 14:49:14 by ffornes-         ###   ########.fr       */
+/*   Updated: 2023/06/27 16:37:03 by ffornes-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,10 @@ void	parse_input(char *str, char *envp[])
 	if (input[0]) 
 	{
 		if (!ft_strncmp(input[0], "<<", 2))
+		{
 			printf("parse_heredoc(input)\n");
+			here_doc(input, envp);
+		}
 		else
 			printf("Treat as a command\n");
 		aux = get_path(input, envp);

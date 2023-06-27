@@ -6,14 +6,14 @@
 #    By: ffornes- <ffornes-@student.42barcel>       +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/06/26 15:00:09 by ffornes-          #+#    #+#              #
-#    Updated: 2023/06/27 14:26:52 by ffornes-         ###   ########.fr        #
+#    Updated: 2023/06/27 16:37:38 by ffornes-         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME = minishell
 
 SRC_DIR = src/
-SRC_FILES = minishell.c get_path.c put_error.c parse_input.c
+SRC_FILES = minishell.c get_path.c put_error.c parse_input.c here_doc.c
 
 OBJ_DIR = objs/
 OBJ_FILES = $(SRC_FILES:.c=.o)
