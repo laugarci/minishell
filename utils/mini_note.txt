@@ -123,6 +123,8 @@ Cuando declaramos una variable de entorno, podemos pasarle como valor un conjunt
 1st arg
 	Command
 	<<(here_doc)
+	$? - Debe mostrar mensaje de error ya que no es un comando sin embargo en lugar de mostrar el comando
+		que da error, debe mostrar el valor que tiene $? en ese momento
 
 2nd
 	Flag
