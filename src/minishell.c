@@ -6,7 +6,7 @@
 /*   By: laugarci <laugarci@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/26 15:52:21 by laugarci          #+#    #+#             */
-/*   Updated: 2023/06/27 14:37:42 by ffornes-         ###   ########.fr       */
+/*   Updated: 2023/06/27 14:49:16 by ffornes-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,6 +42,7 @@ int	main(int argc, char *argv[], char *envp[])
 			exit_check(input);
 			parse_input(input, envp);
 		}
+		free(input);
 	}
 	clear_history();
 	return (0);
