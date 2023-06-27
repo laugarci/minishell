@@ -6,18 +6,19 @@
 #    By: ffornes- <ffornes-@student.42barcel>       +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/06/26 15:00:09 by ffornes-          #+#    #+#              #
-#    Updated: 2023/06/26 16:33:45 by ffornes-         ###   ########.fr        #
+#    Updated: 2023/06/27 11:31:25 by ffornes-         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME = minishell
 
 SRC_DIR = src/
-SRC_FILES = minishell.c
+SRC_FILES = minishell.c get_path.c
 
 OBJ_DIR = objs/
 OBJ_FILES = $(SRC_FILES:.c=.o)
 OBJS = $(addprefix $(OBJ_DIR), $(OBJ_FILES))
+
 DEP_FILES = $(SRC_FILES:.c=.d)
 DEPS = $(addprefix $(OBJ_DIR), $(DEP_FILES))
 
