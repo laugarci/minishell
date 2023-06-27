@@ -6,7 +6,7 @@
 /*   By: laugarci <laugarci@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/26 15:52:21 by laugarci          #+#    #+#             */
-/*   Updated: 2023/06/27 12:09:56 by ffornes-         ###   ########.fr       */
+/*   Updated: 2023/06/27 13:14:46 by ffornes-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,17 +16,6 @@
 #include "libft.h"
 #include "minishell.h"
 
-static void	free_double(char **str)
-{
-	int	i;
-
-	i = 0;
-	while (str[i])
-		free(str[i++]);
-	free(str);
-}
-
-/* Error: Unable to read from envp variable... wtf */
 int	main(int argc, char *argv[], char *envp[])
 {
 	char	*input;
@@ -52,7 +41,7 @@ int	main(int argc, char *argv[], char *envp[])
 			printf("Path found: %s\n", aux);
 			free(aux);
 		}
-		free_double(tmp);
+		free_double((void **)tmp);
 		free(input);
 	}
 	return (0);
