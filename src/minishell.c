@@ -6,7 +6,7 @@
 /*   By: laugarci <laugarci@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/26 15:52:21 by laugarci          #+#    #+#             */
-/*   Updated: 2023/06/27 11:47:14 by ffornes-         ###   ########.fr       */
+/*   Updated: 2023/06/27 12:04:54 by ffornes-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,7 @@ int	main(int argc, char *argv[], char *envp[])
 	if (argc > 1)
 		exit(1);
 	argv = NULL;
-	envp = NULL;
+	// REMEMBER ARGV IS NULL HERE PLSSSS
 	while (1)
 	{
 		input = readline("minishell > ");
