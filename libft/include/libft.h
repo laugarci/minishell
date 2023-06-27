@@ -6,7 +6,7 @@
 /*   By: ffornes- <ffornes-@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/18 14:02:15 by ffornes-          #+#    #+#             */
-/*   Updated: 2023/05/05 18:07:04 by ffornes-         ###   ########.fr       */
+/*   Updated: 2023/06/27 12:52:39 by ffornes-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,5 +67,6 @@ void	*ft_memmove(void *dst, const void *src, size_t len);
 void	*ft_memset(void *b, int c, size_t len);
 
 void	*ft_delete(void *p);
+void	free_double(void **elem);
 int		ft_lstpos(t_list *lst, int *value);
 #endif
