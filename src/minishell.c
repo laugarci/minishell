@@ -6,7 +6,7 @@
 /*   By: laugarci <laugarci@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/26 15:52:21 by laugarci          #+#    #+#             */
-/*   Updated: 2023/06/27 14:24:07 by ffornes-         ###   ########.fr       */
+/*   Updated: 2023/06/27 14:37:42 by ffornes-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,7 @@ int	main(int argc, char *argv[], char *envp[])
 	while (1)
 	{
 		input = readline("minishell > ");
-		if (input[0] != '\0')
+		if (input[0] != '\0' && input)
 		{
 			add_history(input);
 			exit_check(input);
