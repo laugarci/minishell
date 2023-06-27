@@ -6,7 +6,7 @@
 /*   By: ffornes- <ffornes-@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/26 16:31:29 by ffornes-          #+#    #+#             */
-/*   Updated: 2023/06/27 11:46:44 by ffornes-         ###   ########.fr       */
+/*   Updated: 2023/06/27 12:23:53 by ffornes-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,9 +28,13 @@ static char	**join_path_cmd(char **path, char *cmd)
 		aux = path[i];
 		path[i] = ft_strjoin(path[i], "/");
 		free(aux);
+		if (!path[i])
+			return (NULL);
 		aux = path[i];
 		path[i] = ft_strjoin(path[i], cmd);
 		free(aux);
+		if (!path[i])
+			return (NULL);
 		i++;
 	}
 	return (path);
@@ -62,6 +66,21 @@ static char	*get_right_path(char **path)
 	return (out);
 }
 
+static char	*get_path_util(char *str)
+{
+	char	**path;
+	char	*out;
+
+	str = ft_strtrim(str, "PATH=");
+	path = ft_split(str, ':');
+	free(str);
+	if (!path)
+		return (NULL);
+	path = join_path_cmd(path, cmd[0]);
+	out = get_right_path(path);
+	return (out);
+}
+
 /* cmd is a command and it's arguments splitted by spaces since it's needed
  * by execve that the command and it's flags/arguments are in a char **
  * 
@@ -78,16 +97,16 @@ char	*get_path(char **cmd, char **envp)
 	int		i;
 	char	**path;
 	char	*aux;
+	char	*out;
 
 	if (cmd[0][0] == '/')
 		return (ft_strdup(cmd[0]));
 	i = 0;
 	while (envp[i])
 	{
-		aux = ft_strnstr(envp[i], "PATH", 4);
+		aux = ft_strnstr(envp[i++], "PATH", 4);
 		if (aux != NULL)
 			break ;
-		i++;
 	}
 	if (!aux)
 	{
@@ -95,13 +114,9 @@ char	*get_path(char **cmd, char **envp)
 		return (NULL);
 //		Error: Path not found
 	}
-	aux = ft_strtrim(aux, "PATH=");
-	path = ft_split(aux, ':');
-	free(aux);
-	path = join_path_cmd(path, cmd[0]);
-	aux = get_right_path(path);
-	if (!aux)
+	out = get_path_util(aux);
+	if (!out)
 		printf("Error: Path not found\n");
 //		Error: Path not found	
-	return (aux);
+	return (out);
 }
