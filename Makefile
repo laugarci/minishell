@@ -6,14 +6,14 @@
 #    By: ffornes- <ffornes-@student.42barcel>       +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/06/26 15:00:09 by ffornes-          #+#    #+#              #
-#    Updated: 2023/06/27 13:03:30 by ffornes-         ###   ########.fr        #
+#    Updated: 2023/06/27 14:26:52 by ffornes-         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME = minishell
 
 SRC_DIR = src/
-SRC_FILES = minishell.c get_path.c put_error.c
+SRC_FILES = minishell.c get_path.c put_error.c parse_input.c
 
 OBJ_DIR = objs/
 OBJ_FILES = $(SRC_FILES:.c=.o)
@@ -22,12 +22,12 @@ OBJS = $(addprefix $(OBJ_DIR), $(OBJ_FILES))
 DEP_FILES = $(SRC_FILES:.c=.d)
 DEPS = $(addprefix $(OBJ_DIR), $(DEP_FILES))
 
+LIBFT = libft/libft.a
 
 CC = 		gcc
 CFLAGS = 	-Wall -Wextra -Werror -MMD
 RM = 		rm -f
 INCLUDE =	-I include/ -I libft/include/
-LIBFT = -L libft/ -lft
 
 all:		m_libft $(NAME)
 
@@ -35,13 +35,13 @@ m_libft:
 			@make -C libft/
 
 $(NAME):	$(OBJ_DIR) $(OBJS)
-			$(CC) $(OBJS) $(LIBFT) -o $@ -lreadline
+			$(CC) $(OBJS) -L libft/ -lft -o $@ -lreadline
 
 
 $(OBJ_DIR):
 			@mkdir $@
 
-$(OBJ_DIR)%.o: $(SRC_DIR)%.c
+$(OBJ_DIR)%.o: $(SRC_DIR)%.c $(LIBFT)
 			$(CC) $(CFLAGS) $(INCLUDE) -c $< -o $@
 
 clean:
