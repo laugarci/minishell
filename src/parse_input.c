@@ -6,7 +6,7 @@
 /*   By: ffornes- <ffornes-@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/27 12:29:42 by ffornes-          #+#    #+#             */
-/*   Updated: 2023/06/27 14:43:35 by ffornes-         ###   ########.fr       */
+/*   Updated: 2023/06/27 14:49:14 by ffornes-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,6 @@ void	parse_input(char *str, char *envp[])
 	char	*aux;
 
 	input = ft_split(str, ' ');
-	free(str);
 	if (input[0]) 
 	{
 		if (!ft_strncmp(input[0], "<<", 2))
