@@ -6,13 +6,14 @@
 /*   By: ffornes- <ffornes-@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/26 16:31:29 by ffornes-          #+#    #+#             */
-/*   Updated: 2023/06/27 12:23:53 by ffornes-         ###   ########.fr       */
+/*   Updated: 2023/06/27 13:12:55 by ffornes-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libft.h"
 #include <stdlib.h>
 #include <unistd.h>
+#include "libft.h"
+#include "minishell.h"
 
 // Debugging - Must delete later
 #include <stdio.h>
@@ -40,7 +41,7 @@ static char	**join_path_cmd(char **path, char *cmd)
 	return (path);
 }
 
-static char	*get_right_path(char **path)
+static char	*get_right_path(char **path, char *cmd)
 {
 	int		i;
 	char	*out;
@@ -53,20 +54,15 @@ static char	*get_right_path(char **path)
 		{
 			out = ft_strdup(path[i]);
 			if (access(path[i], X_OK))
-				printf("Error: Path has been found but it's not executable\n");
-				// Error: Path has been found but it's not executable
+				put_error(cmd, 128); // Error: Path has been found but it's not executable
 			break ;
 		}
 		i++;
 	}
-	i = 0;
-	while (path[i])
-		free(path[i++]);
-	free(path);
 	return (out);
 }
 
-static char	*get_path_util(char *str)
+static char	*get_path_util(char *str, char *cmd)
 {
 	char	**path;
 	char	*out;
@@ -76,8 +72,9 @@ static char	*get_path_util(char *str)
 	free(str);
 	if (!path)
 		return (NULL);
-	path = join_path_cmd(path, cmd[0]);
-	out = get_right_path(path);
+	path = join_path_cmd(path, cmd);
+	out = get_right_path(path, cmd);
+	free_double((void **)path);
 	return (out);
 }
 
@@ -95,7 +92,6 @@ static char	*get_path_util(char *str)
 char	*get_path(char **cmd, char **envp)
 {
 	int		i;
-	char	**path;
 	char	*aux;
 	char	*out;
 
@@ -110,13 +106,11 @@ char	*get_path(char **cmd, char **envp)
 	}
 	if (!aux)
 	{
-		printf("Error: Path not found\n");
+		put_error(cmd[0], 127); // Error: command not found
 		return (NULL);
-//		Error: Path not found
 	}
-	out = get_path_util(aux);
+	out = get_path_util(aux, cmd[0]);
 	if (!out)
-		printf("Error: Path not found\n");
-//		Error: Path not found	
+		put_error(cmd[0], 127); // Error: command not found
 	return (out);
 }
