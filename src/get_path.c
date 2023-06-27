@@ -6,13 +6,16 @@
 /*   By: ffornes- <ffornes-@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/26 16:31:29 by ffornes-          #+#    #+#             */
-/*   Updated: 2023/06/27 11:28:58 by ffornes-         ###   ########.fr       */
+/*   Updated: 2023/06/27 11:46:44 by ffornes-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 #include <stdlib.h>
 #include <unistd.h>
+
+// Debugging - Must delete later
+#include <stdio.h>
 
 static char	**join_path_cmd(char **path, char *cmd)
 {
@@ -45,8 +48,9 @@ static char	*get_right_path(char **path)
 		if (!access(path[i], F_OK))
 		{
 			out = ft_strdup(path[i]);
-//			if (access(path[i], X_OK))
-//				Error: Path has been found but it's not executable
+			if (access(path[i], X_OK))
+				printf("Error: Path has been found but it's not executable\n");
+				// Error: Path has been found but it's not executable
 			break ;
 		}
 		i++;
@@ -80,18 +84,24 @@ char	*get_path(char **cmd, char **envp)
 	i = 0;
 	while (envp[i])
 	{
-		aux = ft_strnstr(envp[i++], "PATH", 4);
+		aux = ft_strnstr(envp[i], "PATH", 4);
 		if (aux != NULL)
 			break ;
+		i++;
 	}
-//	if (!aux)
+	if (!aux)
+	{
+		printf("Error: Path not found\n");
+		return (NULL);
 //		Error: Path not found
+	}
 	aux = ft_strtrim(aux, "PATH=");
 	path = ft_split(aux, ':');
 	free(aux);
 	path = join_path_cmd(path, cmd[0]);
 	aux = get_right_path(path);
-//	if (!aux)
+	if (!aux)
+		printf("Error: Path not found\n");
 //		Error: Path not found	
 	return (aux);
 }
