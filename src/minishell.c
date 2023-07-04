@@ -40,12 +40,13 @@ int	main(int argc, char *argv[], char *envp[])
 	while (1)
 	{
 		input = readline("minishell > ");
+		printf("%s\n", input);
 		if (input[0] != '\0' && input)
 		{
 			add_history(input);
 			exit_check(input);
 			parse_input(input, envp);
-			ft_exec_commands(argc, argv);
+			ft_exec_commands(input);
 		}
 		free(input);
 	}

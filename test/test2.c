@@ -43,10 +43,6 @@ void ejecutar_comando(char *comando, char *args[]) {
 }
 
 int main(int argc, char *argv[]) {
-    if (argc < 2) {
-        printf("Uso: %s <comando>\n", argv[0]);
-        return 1;
-    }
 
     char *comando = argv[1];
     char **args = malloc((argc - 1 + 1) * sizeof(char *));
