@@ -21,4 +21,6 @@ char	*here_doc(char **input, char *envp[]);
 
 void	put_error(char *str, int error_id);
 
+void	ft_exec_commands(char *input);
+
 #endif

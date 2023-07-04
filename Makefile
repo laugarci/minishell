@@ -13,7 +13,7 @@
 NAME = minishell
 
 SRC_DIR = src/
-SRC_FILES = minishell.c get_path.c put_error.c parse_input.c here_doc.c
+SRC_FILES = minishell.c get_path.c put_error.c parse_input.c here_doc.c exec_commands.c
 
 OBJ_DIR = objs/
 OBJ_FILES = $(SRC_FILES:.c=.o)
