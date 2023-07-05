@@ -5,12 +5,8 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: laugarci <laugarci@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/06/26 15:52:21 by laugarci          #+#    #+#             */
-<<<<<<< HEAD
-/*   Updated: 2023/07/05 12:50:27 by ffornes-         ###   ########.fr       */
-=======
-/*   Updated: 2023/06/29 09:41:37 by ffornes-         ###   ########.fr       */
->>>>>>> origin/parser
+/*   Created: 2023/07/05 14:01:37 by laugarci          #+#    #+#             */
+/*   Updated: 2023/07/05 14:01:41 by laugarci         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,14 +59,12 @@ int	main(int argc, char *argv[], char *envp[])
 
 	if (argc > 1)
 		exit(1);
-<<<<<<< HEAD
 	env = set_env(envp);
 	if (!env) // mem error
 		return (1);
 	prompt = ft_strjoin(argv[0], " > ");
 	if (!prompt)
 		return (1);
-=======
 	while (1)
 	{
 		input = readline(prompt);

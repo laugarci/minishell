@@ -6,7 +6,7 @@
 /*   By: ffornes- <ffornes-@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/26 16:31:29 by ffornes-          #+#    #+#             */
-/*   Updated: 2023/06/29 13:13:34 by ffornes-         ###   ########.fr       */
+/*   Updated: 2023/07/05 14:04:54 by laugarci         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -98,13 +98,13 @@ char	*get_path(char **cmd, char **envp)
 	if (cmd[0][0] == '/')
 	{
 		// Comprobar que el path existe y es ejecutable
-		if (acces(cmd[0], F_OK))
+		if (access(cmd[0], F_OK))
 		{
 			if (access(cmd[0], X_OK))
-				put_error(cmd, 128);
+				put_error(cmd[0], 128);
 		}
 		else
-			put_error(cmd, 127);
+			put_error(cmd[0], 127);
 		return (ft_strdup(cmd[0]));
 	}
 	i = 0;
