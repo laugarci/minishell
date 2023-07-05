@@ -1,0 +1,32 @@
+1st arg
+	Command
+	$[VARIABLE] treats it as a command
+	export
+	<< Here_doc || <<DELIMITER
+	> Redirection (changes nothing)
+	< Redirection (writes stdout to file)
+
+2nd
+	Command
+	Flag
+	Arg / File / $Variable if first char == '$'
+	Delimiter if 1st arg is "<< "
+	> Redirection
+	< Redirection
+	Nothing
+
+3rd
+	Command
+	Flag
+	Arg / File / $Variable if first char == '$'
+	> Redirection
+	< Redirection
+	Nothing
+
+Command
+-Flag
+$[Variable]		variable de entorno
+<< [DELIMITER]	here_doc
+> [File]		redirection
+< [File]		redirection
+Pipe
