@@ -6,7 +6,7 @@
 /*   By: laugarci <laugarci@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/26 15:52:21 by laugarci          #+#    #+#             */
-/*   Updated: 2023/07/04 15:30:06 by laugarci         ###   ########.fr       */
+/*   Updated: 2023/07/05 12:50:27 by ffornes-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,31 @@
 #include <stdlib.h>
 #include "libft.h"
 #include "minishell.h"
+
+static char	**set_env(char **src)
+{
+	int		i;
+	char	**dst;
+
+	i = 0;
+	while (src[i])
+		i++;
+	dst = malloc(sizeof(char **) * (i + 1));
+	if (!dst)
+		return (NULL);
+	i = 0;
+	while (src[i])
+	{
+		dst[i] = ft_strdup(src[i]);
+		if (!dst[i++])
+		{
+			free_double((void **)dst);
+			return (NULL);
+		}
+	}
+	dst[i] = NULL;
+	return (dst);
+}
 
 static void	exit_check(char *input)
 {
@@ -29,23 +54,26 @@ static void	exit_check(char *input)
 int	main(int argc, char *argv[], char *envp[])
 {
 	char	*input;
-	
+	char	*prompt;
+	char	**env;
+
 	if (argc > 1)
 		exit(1);
-
-	int	i = 0;
-	while (argv[i])
-		printf("%s\n", argv[i++]);
-
+	env = set_env(envp);
+	if (!env) // mem error
+		return (1);
+	prompt = ft_strjoin(argv[0], " > ");
+	if (!prompt)
+		return (1);
 	while (1)
 	{
-		input = readline("minishell > ");
+		input = readline(prompt);
 		if (input[0] != '\0' && input)
 		{
 			add_history(input);
 			exit_check(input);
 			parse_input(input, envp);
-			ft_exec_commands(input);
+			exec_commands(input, env);
 		}
 		free(input);
 	}
