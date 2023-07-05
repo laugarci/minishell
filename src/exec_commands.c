@@ -6,7 +6,7 @@
 /*   By: laugarci <laugarci@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/04 15:00:39 by laugarci          #+#    #+#             */
-/*   Updated: 2023/07/04 15:21:20 by laugarci         ###   ########.fr       */
+/*   Updated: 2023/07/05 10:49:51 by laugarci         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,10 +19,10 @@
 #include "libft.h"
 #include "minishell.h"
 
-char *ft_strncpy(char *destination, const char *source, size_t num)
+char	*ft_strncpy(char *destination, const char *source, size_t num)
 {
-	char *dest;
-	const char *src;
+	char		*dest;
+	const char	*src;
 
 	dest = destination;
 	src = source;
@@ -32,7 +32,7 @@ char *ft_strncpy(char *destination, const char *source, size_t num)
 		dest++;
 		src++;
 		num--;
-    }
+	}
 	while (num > 0)
 	{
 		*dest = '\0';
@@ -42,7 +42,7 @@ char *ft_strncpy(char *destination, const char *source, size_t num)
 	return (destination);
 }
 
-int	ft_exec_commands(char* input)
+int	ft_exec_commands(char *input)
 {
 	char	*space_pos;
 	char	*command;
@@ -50,7 +50,7 @@ int	ft_exec_commands(char* input)
 	char	**args;
 	int		status;
 	pid_t	pid;
-	
+
 	pid = fork();
 	if (pid == 0)
 	{
@@ -58,14 +58,14 @@ int	ft_exec_commands(char* input)
 		if (space_pos != NULL)
 		{
 			command = (char *)malloc(sizeof(char) * ((space_pos - input) + 1));
-			flags = (char *)malloc(sizeof(char) * (ft_strlen(space_pos + 1) + 1));
+			flags = (char *)malloc(sizeof(char) * (ft_strlen(space_pos) + 2));
 			if (!command || !flags)
 				return (1);
 			ft_strncpy(command, input, (space_pos - input));
 			ft_strncpy(flags, space_pos + 1, (ft_strlen(space_pos + 1)));
 			command[space_pos - input] = '\0';
 			flags[ft_strlen(space_pos + 1)] = '\0';
-			args = (char**)malloc(3 * sizeof(char*));
+			args = (char **)malloc(3 * sizeof(char *));
 			args[0] = command;
 			args[1] = flags;
 			args[2] = NULL;
@@ -76,7 +76,7 @@ int	ft_exec_commands(char* input)
 		}
 		else
 		{
-			args = (char**)malloc(sizeof(char *) * 2);
+			args = (char **)malloc(sizeof(char *) * 2);
 			args[0] = input;
 			args[1] = NULL;
 			execvp(input, args);
@@ -87,4 +87,3 @@ int	ft_exec_commands(char* input)
 		waitpid(pid, &status, 0);
 	return (0);
 }
-
