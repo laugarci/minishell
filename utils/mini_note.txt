@@ -151,6 +151,8 @@ Parse
 	''
 	$
 
+To declare env variables must use export first
+
 LAURA:
 		Recomanacions: Fes servir comandos sense flags, que rebin un argument ja sigui d'un pipe o d'un fd o
 			del here_doc;

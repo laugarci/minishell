@@ -6,7 +6,7 @@
 /*   By: laugarci <laugarci@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/26 15:52:21 by laugarci          #+#    #+#             */
-/*   Updated: 2023/06/27 16:50:11 by ffornes-         ###   ########.fr       */
+/*   Updated: 2023/06/29 09:41:37 by ffornes-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,9 +33,10 @@ int	main(int argc, char *argv[], char *envp[])
 	if (argc > 1)
 		exit(1);
 
-	int	i = 0;
-	while (argv[i])
-		printf("%s\n", argv[i++]);
+//	int	i = 0;
+	argv[0] = NULL;
+//	while (argv[i])
+//		printf("%s\n", argv[i++]);
 
 	while (1)
 	{

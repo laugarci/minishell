@@ -6,7 +6,7 @@
 /*   By: ffornes- <ffornes-@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/27 16:32:55 by ffornes-          #+#    #+#             */
-/*   Updated: 2023/06/27 16:53:11 by ffornes-         ###   ########.fr       */
+/*   Updated: 2023/06/29 09:39:00 by ffornes-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,7 +66,7 @@ char	*here_doc(char **input, char *envp[])
 	aux = ft_strdup("");
 	while (1)
 	{
-		ft_putstr_fd("heredoc> ", 0);
+		ft_putstr_fd("AAA> ", 0);
 		line = get_next_line(0);
 		if (!ft_strncmp(line, delimiter, (int)ft_strlen(delimiter)))
 			break ;
