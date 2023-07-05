@@ -6,7 +6,7 @@
 /*   By: laugarci <laugarci@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/04 15:00:39 by laugarci          #+#    #+#             */
-/*   Updated: 2023/07/05 12:50:24 by ffornes-         ###   ########.fr       */
+/*   Updated: 2023/07/05 14:19:57 by laugarci         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,8 +33,10 @@ int	exec_commands(char *input, char **env)
 	char	*flags;
 	char	**args;
 	int		status;
+	char **test;
 	pid_t	pid;
 
+	test = ft_split(input, ' ');
 	pid = fork();
 	if (pid == 0)
 	{
@@ -52,10 +54,10 @@ int	exec_commands(char *input, char **env)
 			args = (char **)malloc(3 * sizeof(char *));
 			if (!args)
 				return (1);
-			args[0] = get_path(&input, env);
+			args[0] = get_path(test, env);
 			args[1] = flags;
 			args[2] = NULL;
-			execve(command, args, env);
+			execve(args[0], args, env);
 			free(command);
 			free(flags);
 			free(args);
@@ -63,9 +65,9 @@ int	exec_commands(char *input, char **env)
 		else
 		{
 			args = (char **)malloc(sizeof(char *) * 2);
-			args[0] = get_path(&input, env);
+			args[0] = get_path(test, env);
 			args[1] = NULL;
-			execve(input, args, env);
+			execve(args[0], args, env);
 			free(args);
 		}
 	}
