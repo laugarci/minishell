@@ -6,7 +6,7 @@
 #    By: ffornes- <ffornes-@student.42barcel>       +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/06/26 15:00:09 by ffornes-          #+#    #+#              #
-#    Updated: 2023/06/27 16:37:38 by ffornes-         ###   ########.fr        #
+#    Updated: 2023/06/28 14:55:54 by ffornes-         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -41,7 +41,7 @@ $(NAME):	$(OBJ_DIR) $(OBJS)
 $(OBJ_DIR):
 			@mkdir $@
 
-$(OBJ_DIR)%.o: $(SRC_DIR)%.c $(LIBFT)
+$(OBJ_DIR)%.o: $(SRC_DIR)%.c $(LIBFT) Makefile
 			$(CC) $(CFLAGS) $(INCLUDE) -c $< -o $@
 
 clean:
