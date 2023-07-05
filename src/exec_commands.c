@@ -6,7 +6,7 @@
 /*   By: laugarci <laugarci@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/04 15:00:39 by laugarci          #+#    #+#             */
-/*   Updated: 2023/07/05 10:49:51 by laugarci         ###   ########.fr       */
+/*   Updated: 2023/07/05 12:50:24 by ffornes-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,30 +19,14 @@
 #include "libft.h"
 #include "minishell.h"
 
-char	*ft_strncpy(char *destination, const char *source, size_t num)
+/*
+static int	child_process()
 {
-	char		*dest;
-	const char	*src;
 
-	dest = destination;
-	src = source;
-	while (num > 0 && *src != '\0')
-	{
-		*dest = *src;
-		dest++;
-		src++;
-		num--;
-	}
-	while (num > 0)
-	{
-		*dest = '\0';
-		dest++;
-		num--;
-	}
-	return (destination);
 }
+*/
 
-int	ft_exec_commands(char *input)
+int	exec_commands(char *input, char **env)
 {
 	char	*space_pos;
 	char	*command;
@@ -58,18 +42,20 @@ int	ft_exec_commands(char *input)
 		if (space_pos != NULL)
 		{
 			command = (char *)malloc(sizeof(char) * ((space_pos - input) + 1));
-			flags = (char *)malloc(sizeof(char) * (ft_strlen(space_pos) + 2));
-			if (!command || !flags)
+			if (!command)
 				return (1);
-			ft_strncpy(command, input, (space_pos - input));
-			ft_strncpy(flags, space_pos + 1, (ft_strlen(space_pos + 1)));
-			command[space_pos - input] = '\0';
-			flags[ft_strlen(space_pos + 1)] = '\0';
+			flags = (char *)malloc(sizeof(char) * (ft_strlen(space_pos) + 2));
+			if (!flags)
+				return (1);
+			ft_strlcpy(command, input, (space_pos - input) + 1);
+			ft_strlcpy(flags, (space_pos + 1), (ft_strlen(space_pos + 1) + 1));
 			args = (char **)malloc(3 * sizeof(char *));
-			args[0] = command;
+			if (!args)
+				return (1);
+			args[0] = get_path(&input, env);
 			args[1] = flags;
 			args[2] = NULL;
-			execvp(command, args);
+			execve(command, args, env);
 			free(command);
 			free(flags);
 			free(args);
@@ -77,13 +63,13 @@ int	ft_exec_commands(char *input)
 		else
 		{
 			args = (char **)malloc(sizeof(char *) * 2);
-			args[0] = input;
+			args[0] = get_path(&input, env);
 			args[1] = NULL;
-			execvp(input, args);
+			execve(input, args, env);
 			free(args);
 		}
 	}
-	else if (pid > 0)
+	else
 		waitpid(pid, &status, 0);
 	return (0);
 }
