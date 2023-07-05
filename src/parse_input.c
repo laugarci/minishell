@@ -6,7 +6,7 @@
 /*   By: ffornes- <ffornes-@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/27 12:29:42 by ffornes-          #+#    #+#             */
-/*   Updated: 2023/06/27 16:37:03 by ffornes-         ###   ########.fr       */
+/*   Updated: 2023/07/05 18:23:12 by ffornes-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,16 +15,33 @@
 #include "libft.h"
 #include "minishell.h"
 
+static int	save_input(char **dst, char *src)
+{
+	char	*out;
+	int		i;
+
+	i = 0;
+	while (src[i] && src[i] != ' ')
+		i++;
+	dst = &out;
+	out = malloc(sizeof(char *) * (i + 1));
+	if (!out)
+		return (1);
+	out = ft_strlcpy(out, src, i + 1);
+	return (0);
+}
+
 /*	This function gets the input from readline and splits it by spaces, in order
  *	to get all the different arguments recieved.
- *	After splitting, it checks if the input has been saved correctly, this can fail
- *	when there is no more memory to allocate so split fails or when the line recieved
- *	is made of spaces exclusively. */
+ *	
+ *	*/
 void	parse_input(char *str, char *envp[])
 {
 	char	**input;
 	char	*aux;
 
+	
+	/*
 	input = ft_split(str, ' ');
 	if (input[0]) 
 	{
@@ -43,4 +60,5 @@ void	parse_input(char *str, char *envp[])
 		}
 	}
 	free_double((void **)input);
+	*/
 }
