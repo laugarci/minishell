@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   here_doc.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ffornes- <ffornes-@student.42barcel>       +#+  +:+       +#+        */
+/*   By: laugarci <laugarci@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/06/27 16:32:55 by ffornes-          #+#    #+#             */
-/*   Updated: 2023/07/04 15:31:51 by laugarci         ###   ########.fr       */
+/*   Created: 2023/07/05 13:04:31 by laugarci          #+#    #+#             */
+/*   Updated: 2023/07/05 13:04:34 by laugarci         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,7 +66,7 @@ char	*here_doc(char **input, char *envp[])
 	aux = ft_strdup("");
 	while (1)
 	{
-		ft_putstr_fd("heredoc> ", 0);
+		ft_putstr_fd("AAA> ", 0);
 		line = get_next_line(0);
 		if (!ft_strncmp(line, delimiter, (int)ft_strlen(delimiter)))
 			break ;
