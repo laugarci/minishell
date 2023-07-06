@@ -34,3 +34,12 @@ Nothing
 				else if it doesn't find it displays a \n
 
 Then >> Must separate arguments with pipes, and parse them individually.
+
+	ex: <Hola.txt cat -e random_file.txt | wc -l | echo $USER
+		Tokens:
+			( <Hola.txt cat -e random_file.txt ) 
+			( | ) 
+			( wc -l )
+			( | )
+			( echo $USER )
+		Once split in tokens, must split again in minitokens to parse "'({})'"
