@@ -6,7 +6,7 @@
 /*   By: laugarci <laugarci@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/05 14:01:37 by laugarci          #+#    #+#             */
-/*   Updated: 2023/07/06 15:16:28 by ffornes-         ###   ########.fr       */
+/*   Updated: 2023/07/06 16:27:47 by laugarci         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,7 +76,7 @@ int	main(int argc, char *argv[], char *envp[])
 			error_id = parse_input(input, envp);
 			if (error_id)
 				put_error("minishell", error_id);
-			//exec_commands(input, env);
+			cmp_commands(input, env);
 		}
 		free(input);
 	}
