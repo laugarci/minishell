@@ -6,7 +6,7 @@
 /*   By: laugarci <laugarci@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/04 15:00:39 by laugarci          #+#    #+#             */
-/*   Updated: 2023/07/05 14:19:57 by laugarci         ###   ########.fr       */
+/*   Updated: 2023/07/06 15:08:50 by laugarci         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,7 @@ int	exec_commands(char *input, char **env)
 	int		status;
 	char **test;
 	pid_t	pid;
-
+	
 	test = ft_split(input, ' ');
 	pid = fork();
 	if (pid == 0)
