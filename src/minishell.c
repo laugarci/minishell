@@ -6,7 +6,7 @@
 /*   By: laugarci <laugarci@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/05 14:01:37 by laugarci          #+#    #+#             */
-/*   Updated: 2023/07/05 14:01:41 by laugarci         ###   ########.fr       */
+/*   Updated: 2023/07/06 15:16:28 by ffornes-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,6 +56,7 @@ int	main(int argc, char *argv[], char *envp[])
 	char	*input;
 	char	*prompt;
 	char	**env;
+	int		error_id;
 
 	if (argc > 1)
 		exit(1);
@@ -72,8 +73,10 @@ int	main(int argc, char *argv[], char *envp[])
 		{
 			add_history(input);
 			exit_check(input);
-			parse_input(input, envp);
-			exec_commands(input, env);
+			error_id = parse_input(input, envp);
+			if (error_id)
+				put_error("minishell", error_id);
+			//exec_commands(input, env);
 		}
 		free(input);
 	}

@@ -1,26 +1,27 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   minishell.h                                        :+:      :+:    :+:   */
+/*   parser.h                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ffornes- <ffornes-@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/06/27 11:32:21 by ffornes-          #+#    #+#             */
-/*   Updated: 2023/07/06 13:05:41 by ffornes-         ###   ########.fr       */
+/*   Created: 2023/07/06 11:42:45 by ffornes-          #+#    #+#             */
+/*   Updated: 2023/07/06 11:46:36 by ffornes-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef MINISHELL_H
-# define MINISHELL_H
+#ifndef PARSER_H
+# define PARSER_H
 
-int		parse_input(char *str, char *envp[]);
+# define CMD	0
+# define PIPE	1
+# define EVAL	2
 
-char	*get_path(char **cmd, char **envp);
-
-char	*here_doc(char **input, char *envp[]);
-
-void	put_error(char *str, int error_id);
-
-int		exec_commands(char *input, char **env);
+typedef struct s_token
+{
+	char	*content;
+	int		type;
+	void	*next;
+}			t_token;
 
 #endif
