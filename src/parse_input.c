@@ -6,7 +6,7 @@
 /*   By: ffornes- <ffornes-@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/27 12:29:42 by ffornes-          #+#    #+#             */
-/*   Updated: 2023/07/06 13:05:43 by ffornes-         ###   ########.fr       */
+/*   Updated: 2023/07/06 16:07:24 by ffornes-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@
 #include "minishell.h"
 #include "parser.h"
 
-static size_t	token_amount(char *input)
+static size_t	get_input_amount(char *input)
 {
 	size_t	i;
 	size_t	j;
@@ -28,7 +28,14 @@ static size_t	token_amount(char *input)
 	while (input[i])
 	{
 		if (input[i] == '|')
+		{
+			if (input[i + 1] == '|')
+			{
+				input[i + 1] = '\0';
+				return (j);
+			}
 			j++;
+		}
 		if (input[i - 1] == '|')
 			j++;
 		i++;
@@ -36,7 +43,7 @@ static size_t	token_amount(char *input)
 	return (j);
 }
 
-static char	*save_token(char *str)
+static char	*save_input(char *str)
 {
 	int		i;
 	size_t	size;
@@ -58,7 +65,7 @@ static char	*save_token(char *str)
 	return (aux);
 }
 
-static int	get_tokens(char **dst, char *input, size_t token_count)
+static int	get_inputs(char **dst, char *input, size_t token_count)
 {
 	int	i;
 	int	j;
@@ -67,9 +74,9 @@ static int	get_tokens(char **dst, char *input, size_t token_count)
 	j = 0;
 	while (j < (int)token_count)
 	{
-		dst[j] = save_token(input);
+		dst[j] = save_input(input);
 		if (!dst[j])
-			return (1); // mem error in save_token
+			return (1); // mem error in save_input
 		if (*input == '|')
 			input++;
 		else
@@ -81,30 +88,63 @@ static int	get_tokens(char **dst, char *input, size_t token_count)
 	return (0);
 }
 
-int	parse_input(char *str, char *envp[])
+static int	check_invalid_chars(char *input)
 {
-	char	**tokens;
-	size_t	token_count;
+	int	i;
+	int	j;
+	int	k;
 
-	token_count = token_amount(str);
-	if (!token_count)
-		return (2); // No tokens found??
-	tokens = malloc(sizeof(char *) * (token_count + 1));
-	if (!tokens)
-		return (1); // mem error
-	if (get_tokens(tokens, str, token_count))
+	i = 0;
+	j = 0;
+	k = 0;
+	while (input[i])
 	{
-		free_double((void **)tokens);
-		return (1); // mem error in save_token
-	}
-	int	i = 0;
-	while (tokens[i])
-	{
-		printf("Token %d: %s\n", i, tokens[i]);
+		if (input[i] == '\'')
+			j++;
+		else if (input[i] == '\"')
+			k++;
+		else if (input[i] == '\\')
+			return (42);
+		else if (input[i] == ';')
+			return (43);
+		else if (input[i] == '>' && input[i + 1] == '<')
+			return (258);
 		i++;
 	}
-	free_double((void **)tokens);
+	if (j % 2 != 0 || k % 2 != 0)
+		return (44);
 	return (0);
+}
 
+int	parse_input(char *str, char *envp[])
+{
+	char	**inputs;
+	size_t	input_count;
+	int		error_id;
+
+	error_id = check_invalid_chars(str);
+	if (error_id)
+		return (error_id);
+	input_count = get_input_amount(str);
+	if (!input_count)
+		return (2); // No tokens found??
+	inputs = malloc(sizeof(char *) * (input_count + 1));
+	if (!inputs)
+		return (1); // mem error
+	if (get_inputs(inputs, str, input_count))
+	{
+		free_double((void **)inputs);
+		return (1); // mem error in save_token
+	}
+//	return (0);
+
+	int	i = 0;
+	while (inputs[i])
+	{
+		printf("Input %d: %s\n", i, inputs[i]);
+		i++;
+	}
+	free_double((void **)inputs);
+	return (0);
 	envp[0] = NULL;
 }
