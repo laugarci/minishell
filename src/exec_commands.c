@@ -6,7 +6,7 @@
 /*   By: laugarci <laugarci@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/04 15:00:39 by laugarci          #+#    #+#             */
-/*   Updated: 2023/07/06 17:43:43 by laugarci         ###   ########.fr       */
+/*   Updated: 2023/07/06 18:10:25 by laugarci         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,23 +19,16 @@
 #include "libft.h"
 #include "minishell.h"
 
-/*
-static int	child_process()
-{
-
-}
-*/
-
 int	exec_cd(char **input)
 {
-
 	if (access((input[1]), F_OK) != -1)
 	{
-		if (access(input[1], R_OK) == 0) //permisos de lectura
+		if (access(input[1], R_OK) == 0)
 		{
 			if (chdir(input[1]) == -1)
 			{
-				printf("minishell: cd: %s: No such file or directory\n", input[1]);
+				printf("minishell: cd: %s", input[1]);
+				printf(": No such file or directory\n");
 				return (1);
 			}
 		}
@@ -55,7 +48,7 @@ int	exec_cd(char **input)
 
 int	cmp_commands(char *input, char **env)
 {
-	char **commands;
+	char	**commands;
 
 	commands = ft_split(input, ' ');
 	if (ft_strncmp(input, "cd ", 3) == 0)
@@ -65,46 +58,54 @@ int	cmp_commands(char *input, char **env)
 	return (0);
 }
 
-int	exec_commands(char *input, char **env)
+int	exec_commands_wf(char *space_pos, char *input, char **env)
 {
-	char	*space_pos;
 	char	*command;
 	char	*flags;
 	char	**args;
+	char	**split_command;
+
+	split_command = ft_split(input, ' ');
+	command = (char *)malloc(sizeof(char) * ((space_pos - input) + 1));
+	if (!command)
+		return (1);
+	flags = (char *)malloc(sizeof(char) * (ft_strlen(space_pos) + 2));
+	if (!flags)
+		return (1);
+	ft_strlcpy(command, input, (space_pos - input) + 1);
+	ft_strlcpy(flags, (space_pos + 1), (ft_strlen(space_pos + 1) + 1));
+	args = (char **)malloc(sizeof(char *) * 3);
+	if (!args)
+		return (1);
+	args[0] = get_path(split_command, env);
+	args[1] = flags;
+	args[2] = NULL;
+	execve(args[0], args, env);
+	free(command);
+	free(flags);
+	free(args);
+	return (0);
+}
+
+int	exec_commands(char *input, char **env)
+{
+	char	*space_pos;
+	char	**args;
 	int		status;
-	char **test;
+	char	**split_command;
 	pid_t	pid;
-	
-	test = ft_split(input, ' ');
+
+	split_command = ft_split(input, ' ');
 	pid = fork();
 	if (pid == 0)
 	{
 		space_pos = ft_strchr(input, ' ');
 		if (space_pos != NULL)
-		{
-			command = (char *)malloc(sizeof(char) * ((space_pos - input) + 1));
-			if (!command)
-				return (1);
-			flags = (char *)malloc(sizeof(char) * (ft_strlen(space_pos) + 2));
-			if (!flags)
-				return (1);
-			ft_strlcpy(command, input, (space_pos - input) + 1);
-			ft_strlcpy(flags, (space_pos + 1), (ft_strlen(space_pos + 1) + 1));
-			args = (char **)malloc(3 * sizeof(char *));
-			if (!args)
-				return (1);
-			args[0] = get_path(test, env);
-			args[1] = flags;
-			args[2] = NULL;
-			execve(args[0], args, env);
-			free(command);
-			free(flags);
-			free(args);
-		}
+			exec_commands_wf(space_pos, input, env);
 		else
 		{
 			args = (char **)malloc(sizeof(char *) * 2);
-			args[0] = get_path(test, env);
+			args[0] = get_path(split_command, env);
 			args[1] = NULL;
 			execve(args[0], args, env);
 			free(args);
