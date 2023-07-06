@@ -1,0 +1,45 @@
+Command [-Flag] [Arg] [Nothing]
+$[Variable]		variable de entorno == $NOMBRE="VALOR" || $NOMBRE=VALOR || $NOMBRE=(comandos)
+<< [DELIMITER]	here_doc
+> [File]		redirection
+< [File]		redirection
+Pipe
+"" ''
+() {}
+builtins:
+	export
+Nothing
+
+1. Get line
+	ex: <Hola.txt cat -e random_file.txt | wc -l | echo $USER
+	1.1 Try to open the file "Hola.txt" - Look in pipex for more details
+		if "Hola.txt" does not exist: 
+			minishell: Hola.txt: No such file or directory
+			First command does not execute && flags && args are ignored
+	1.2 Locate first command
+	1.3 Locate flags
+	1.4 Try to open the file "random_file.txt"
+		if "random_file.txt" does not exist:
+			minishell: random_file.txt:  No such file or directory
+			First command does not execute.
+	1.5 Locate Pipe
+		Save stdin stdout fds with dup to not lose the reference
+		Use dup2 to redirect stdin stdout and proceed with the executions
+	1.6 Execute commands
+		First command, displays error if any file doesn't exist
+		wc -l reads from pipe and writes on pipe so no input/output can be seen
+		echo $USER 
+			looks for the variable in our env
+				if it finds it, displays the value of the variable with a \n
+				else if it doesn't find it displays a \n
+
+Then >> Must separate arguments with pipes, and parse them individually.
+
+	ex: <Hola.txt cat -e random_file.txt | wc -l | echo $USER
+		Tokens:
+			( <Hola.txt cat -e random_file.txt ) 
+			( | ) 
+			( wc -l )
+			( | )
+			( echo $USER )
+		Once split in tokens, must split again in minitokens to parse "'({})'"
