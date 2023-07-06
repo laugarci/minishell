@@ -6,7 +6,7 @@
 /*   By: laugarci <laugarci@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/04 15:00:39 by laugarci          #+#    #+#             */
-/*   Updated: 2023/07/06 15:08:50 by laugarci         ###   ########.fr       */
+/*   Updated: 2023/07/06 17:43:43 by laugarci         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,45 @@ static int	child_process()
 
 }
 */
+
+int	exec_cd(char **input)
+{
+
+	if (access((input[1]), F_OK) != -1)
+	{
+		if (access(input[1], R_OK) == 0) //permisos de lectura
+		{
+			if (chdir(input[1]) == -1)
+			{
+				printf("minishell: cd: %s: No such file or directory\n", input[1]);
+				return (1);
+			}
+		}
+		else
+		{
+			printf("minishell: cd: %s: Permission denied\n", input[1]);
+			return (1);
+		}
+	}
+	else
+	{
+		printf("minishell: cd: %s: No such file or directory\n", input[1]);
+		return (1);
+	}
+	return (0);
+}
+
+int	cmp_commands(char *input, char **env)
+{
+	char **commands;
+
+	commands = ft_split(input, ' ');
+	if (ft_strncmp(input, "cd ", 3) == 0)
+		exec_cd(commands);
+	else
+		exec_commands(input, env);
+	return (0);
+}
 
 int	exec_commands(char *input, char **env)
 {
