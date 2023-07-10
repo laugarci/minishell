@@ -6,7 +6,7 @@
 /*   By: laugarci <laugarci@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/04 15:00:39 by laugarci          #+#    #+#             */
-/*   Updated: 2023/07/06 18:10:25 by laugarci         ###   ########.fr       */
+/*   Updated: 2023/07/10 10:22:44 by laugarci         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,7 +49,9 @@ int	exec_cd(char **input)
 int	cmp_commands(char *input, char **env)
 {
 	char	**commands;
+	int		i;
 
+	i = 0;
 	commands = ft_split(input, ' ');
 	if (ft_strncmp(input, "cd ", 3) == 0)
 		exec_cd(commands);
