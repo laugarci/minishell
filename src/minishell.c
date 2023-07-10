@@ -6,7 +6,7 @@
 /*   By: laugarci <laugarci@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/05 14:01:37 by laugarci          #+#    #+#             */
-/*   Updated: 2023/07/06 16:27:47 by laugarci         ###   ########.fr       */
+/*   Updated: 2023/07/08 17:07:43 by laugarci         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,6 +50,7 @@ static void	exit_check(char *input)
 		exit(0);
 	}
 }
+
 
 int	main(int argc, char *argv[], char *envp[])
 {
