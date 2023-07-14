@@ -6,7 +6,7 @@
 /*   By: laugarci <laugarci@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/04 15:00:39 by laugarci          #+#    #+#             */
-/*   Updated: 2023/07/10 10:22:44 by laugarci         ###   ########.fr       */
+/*   Updated: 2023/07/14 10:23:19 by laugarci         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,6 +55,8 @@ int	cmp_commands(char *input, char **env)
 	commands = ft_split(input, ' ');
 	if (ft_strncmp(input, "cd ", 3) == 0)
 		exec_cd(commands);
+	else if (is_pipe(input) == 1)
+		printf("Tiene pipe\n");
 	else
 		exec_commands(input, env);
 	return (0);
