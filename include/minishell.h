@@ -6,7 +6,7 @@
 /*   By: ffornes- <ffornes-@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/27 11:32:21 by ffornes-          #+#    #+#             */
-/*   Updated: 2023/07/14 10:09:04 by laugarci         ###   ########.fr       */
+/*   Updated: 2023/07/17 17:10:50 by laugarci         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,15 +27,10 @@ int		cmp_commands(char *input, char **env);
 
 int		exec_cd(char **input);
 
-//testing
 int		is_pipe(char *entrada);
 
-size_t	mi_strspn(const char *str, const char *delimiters);
+int		count_pipes(char *input);
 
-char	*ft_strpbrk(const char *str, const char *delimiters);
-
-char	*ft_strtok(char *str, const char *delimiters, char **resto);
-
-void	ejecutar_comandos(char *entrada);
+void		exec_pipes(char *input, char **env);
 
 #endif
