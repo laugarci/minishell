@@ -6,7 +6,7 @@
 /*   By: laugarci <laugarci@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/14 09:52:31 by laugarci          #+#    #+#             */
-/*   Updated: 2023/07/18 14:04:51 by laugarci         ###   ########.fr       */
+/*   Updated: 2023/07/18 14:06:54 by laugarci         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,6 +84,7 @@ void exec_pipes(char *input, char **env)
 				dup2(fds[i][WRITE_END], STDOUT_FILENO);
 				close(fds[i][WRITE_END]);
 			}
+			//Tot aixo s'ha de canviar jeje
 			char *args[64];
 			int argIndex = 0;
 			char *token = strtok(command, " ");
