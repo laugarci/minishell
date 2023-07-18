@@ -6,7 +6,7 @@
 /*   By: laugarci <laugarci@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/14 09:52:31 by laugarci          #+#    #+#             */
-/*   Updated: 2023/07/18 14:06:54 by laugarci         ###   ########.fr       */
+/*   Updated: 2023/07/18 14:25:25 by laugarci         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,7 +64,7 @@ void exec_pipes(char *input, char **env)
 		i++;
 	}
 	i = 0;
-	command = strtok(input, "|");
+	command = strtok(input, "|"); //aqui
 	while (command != NULL)
 	{
 		pid = fork();
@@ -87,14 +87,14 @@ void exec_pipes(char *input, char **env)
 			//Tot aixo s'ha de canviar jeje
 			char *args[64];
 			int argIndex = 0;
-			char *token = strtok(command, " ");
+			char *token = strtok(command, " "); //crear una funcio que simuli strtok
 			while (token != NULL)
 			{
 				args[argIndex++] = token;
 				token = strtok(NULL, " ");
 			}
 			args[argIndex] = NULL;
-			execvp(args[0], args);
+			execvp(args[0], args); //executar amb execve
 			exit(0);
 		}
 		else
@@ -104,7 +104,7 @@ void exec_pipes(char *input, char **env)
 			if (i != num_pipes)
 				close(fds[i][WRITE_END]);
 		}
-		command = strtok(NULL, "|");
+		command = strtok(NULL, "|"); //aqui tambe
 		i++;
 	}
 	i = 0;
