@@ -6,7 +6,7 @@
 /*   By: laugarci <laugarci@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/14 09:52:31 by laugarci          #+#    #+#             */
-/*   Updated: 2023/07/18 14:25:25 by laugarci         ###   ########.fr       */
+/*   Updated: 2023/07/19 13:10:29 by laugarci         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,7 +54,6 @@ void exec_pipes(char *input, char **env)
 	int i;
 	pid_t pid;
 	char	*command;
-	env = NULL; //QUITAR
 	
 	num_pipes = count_pipes(input);
 	i = 0;
@@ -65,8 +64,12 @@ void exec_pipes(char *input, char **env)
 	}
 	i = 0;
 	command = strtok(input, "|"); //aqui
+	char **test = ft_split(input, '|');
+	printf("con strtok %s\n", command);
+	printf("con split %s\n", test[0]);
 	while (command != NULL)
 	{
+		printf("command en el primer bucle%s\n", command);
 		pid = fork();
 		if (pid == -1)
 			exit(-1);
@@ -87,15 +90,17 @@ void exec_pipes(char *input, char **env)
 			//Tot aixo s'ha de canviar jeje
 			char *args[64];
 			int argIndex = 0;
-			char *token = strtok(command, " "); //crear una funcio que simuli strtok
+			char *token = strtok(command, " ");
 			while (token != NULL)
 			{
-				args[argIndex++] = token;
+				args[argIndex] = malloc(sizeof(char) * ft_strlen(token) + 1); //protect malloc
+				ft_strlcpy(args[argIndex], token, ft_strlen(token) + 1);
+				argIndex++;
 				token = strtok(NULL, " ");
-			}
+            }
 			args[argIndex] = NULL;
-			execvp(args[0], args); //executar amb execve
-			exit(0);
+			execve(get_path(args, env), args, env);
+            exit(1);
 		}
 		else
 		{
@@ -104,7 +109,7 @@ void exec_pipes(char *input, char **env)
 			if (i != num_pipes)
 				close(fds[i][WRITE_END]);
 		}
-		command = strtok(NULL, "|"); //aqui tambe
+		command = strtok(NULL, "|");
 		i++;
 	}
 	i = 0;
