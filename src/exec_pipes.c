@@ -6,7 +6,7 @@
 /*   By: laugarci <laugarci@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/14 09:52:31 by laugarci          #+#    #+#             */
-/*   Updated: 2023/07/19 14:00:32 by laugarci         ###   ########.fr       */
+/*   Updated: 2023/07/19 16:44:44 by laugarci         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,6 +66,25 @@ void	exec_command_pipes(char *command, char **env)
 	execve(get_path(args, env), args, env);
 }
 
+char	*ft_strtok(char *str, char del)
+{
+	int i;
+	char *s2;
+
+	i = 0;
+	while(str[i] != del)
+		i++;
+	s2 = malloc(sizeof(char) * i + 1);
+	i = 0;
+	while(str[i] != del)
+	{
+		s2[i] = str[i];
+		i++;
+	}
+	s2[i] = '\0';
+	return (s2);
+}
+
 void	exec_pipes(char *input, char **env, int num_pipes)
 {
 	int		status;
@@ -81,7 +100,10 @@ void	exec_pipes(char *input, char **env, int num_pipes)
 		i++;
 	}
 	i = 0;
-	command = strtok(input, "|"); //cambiar
+	char *test = strtok(input, "|");
+	command = ft_strtok(input, '|'); //cambiar
+	printf("%s\n", command);
+	printf("%s\n", test);
 	while (command != NULL)
 	{
 		pid = fork();
