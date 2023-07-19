@@ -6,7 +6,7 @@
 /*   By: laugarci <laugarci@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/04 15:00:39 by laugarci          #+#    #+#             */
-/*   Updated: 2023/07/18 13:36:39 by laugarci         ###   ########.fr       */
+/*   Updated: 2023/07/19 13:56:44 by laugarci         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,13 +50,17 @@ int	cmp_commands(char *input, char **env)
 {
 	char	**commands;
 	int		i;
+	int		num_pipes;
 
 	i = 0;
 	commands = ft_split(input, ' ');
 	if (ft_strncmp(input, "cd ", 3) == 0)
 		exec_cd(commands);
 	else if (is_pipe(input) == 1)
-		exec_pipes(input, env);
+	{
+		num_pipes = count_pipes(input);
+		exec_pipes(input, env, num_pipes);
+	}
 	else
 		exec_commands(input, env);
 	return (0);
