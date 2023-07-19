@@ -6,7 +6,7 @@
 /*   By: laugarci <laugarci@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/14 09:52:31 by laugarci          #+#    #+#             */
-/*   Updated: 2023/07/19 13:10:29 by laugarci         ###   ########.fr       */
+/*   Updated: 2023/07/19 14:00:32 by laugarci         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,18 +22,18 @@
 #define READ_END 0
 #define WRITE_END 1
 
-int is_pipe(char *input)
+int	is_pipe(char *input)
 {
 	if (ft_strchr(input, '|') != NULL)
-        return (1);
+		return (1);
 	else
 		return (0);
 }
 
 int	count_pipes(char *input)
 {
-	int i;
-	int pipe;
+	int	i;
+	int	pipe;
 
 	pipe = 0;
 	i = 0;
@@ -46,16 +46,34 @@ int	count_pipes(char *input)
 	return (pipe);
 }
 
-void exec_pipes(char *input, char **env)
+void	exec_command_pipes(char *command, char **env)
 {
-	int num_pipes;
-	int fds[count_pipes(input)][2];
-	int status;
-	int i;
-	pid_t pid;
+	char	**args;
+	int		argindex;
+	char	*token;
+
+	args = malloc(sizeof(char *) * 3);
+	argindex = 0;
+	token = strtok(command, " "); //cambiar
+	while (token != NULL)
+	{
+		args[argindex] = malloc(sizeof(char) * ft_strlen(token) + 1); //protect malloc
+		ft_strlcpy(args[argindex], token, ft_strlen(token) + 1);
+		argindex++;
+		token = strtok(NULL, " ");
+	}
+	args[argindex] = NULL;
+	execve(get_path(args, env), args, env);
+}
+
+void	exec_pipes(char *input, char **env, int num_pipes)
+{
+	int		status;
+	int		i;
+	pid_t	pid;
 	char	*command;
-	
-	num_pipes = count_pipes(input);
+	int		fds[num_pipes][2]; //esto no se puede hacer
+
 	i = 0;
 	while (i < num_pipes)
 	{
@@ -63,13 +81,9 @@ void exec_pipes(char *input, char **env)
 		i++;
 	}
 	i = 0;
-	command = strtok(input, "|"); //aqui
-	char **test = ft_split(input, '|');
-	printf("con strtok %s\n", command);
-	printf("con split %s\n", test[0]);
+	command = strtok(input, "|"); //cambiar
 	while (command != NULL)
 	{
-		printf("command en el primer bucle%s\n", command);
 		pid = fork();
 		if (pid == -1)
 			exit(-1);
@@ -87,20 +101,8 @@ void exec_pipes(char *input, char **env)
 				dup2(fds[i][WRITE_END], STDOUT_FILENO);
 				close(fds[i][WRITE_END]);
 			}
-			//Tot aixo s'ha de canviar jeje
-			char *args[64];
-			int argIndex = 0;
-			char *token = strtok(command, " ");
-			while (token != NULL)
-			{
-				args[argIndex] = malloc(sizeof(char) * ft_strlen(token) + 1); //protect malloc
-				ft_strlcpy(args[argIndex], token, ft_strlen(token) + 1);
-				argIndex++;
-				token = strtok(NULL, " ");
-            }
-			args[argIndex] = NULL;
-			execve(get_path(args, env), args, env);
-            exit(1);
+			exec_command_pipes(command, env);
+			exit(1);
 		}
 		else
 		{
@@ -109,7 +111,7 @@ void exec_pipes(char *input, char **env)
 			if (i != num_pipes)
 				close(fds[i][WRITE_END]);
 		}
-		command = strtok(NULL, "|");
+		command = strtok(NULL, "|"); //cambiar
 		i++;
 	}
 	i = 0;
