@@ -49,10 +49,8 @@ int	exec_cd(char **input)
 int	cmp_commands(char *input, char **env)
 {
 	char	**commands;
-	int		i;
 	int		num_pipes;
 
-	i = 0;
 	commands = ft_split(input, ' ');
 	if (ft_strncmp(input, "cd ", 3) == 0)
 		exec_cd(commands);
