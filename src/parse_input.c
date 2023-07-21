@@ -67,10 +67,8 @@ static char	*save_input(char *str)
 
 static int	get_inputs(char **dst, char *input, size_t token_count)
 {
-	int	i;
 	int	j;
 
-	i = 0;
 	j = 0;
 	while (j < (int)token_count)
 	{
