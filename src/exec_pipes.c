@@ -45,62 +45,55 @@ int	count_pipes(char *input)
 	}
 	return (pipe);
 }
-
 char *ft_strtok(char *str, const char *del)
 {
-    static char *nextToken = NULL;
-    char *start;
-    int i = 0;
-    int j;
-
-    if (str != NULL)
-        nextToken = str;
-
-    if (nextToken == NULL || *nextToken == '\0')
-        return NULL;
-
-    while (nextToken[i] != '\0')
-    {
-        j = 0;
-        while (del[j] != '\0')
-        {
-            if (nextToken[i] == del[j])
-            {
-                i++;
-                break;
-            }
-            j++;
-        }
-        if (del[j] == '\0')
-            break;
-    }
-
-    if (nextToken[i] == '\0')
-        return NULL;
-
-    start = &nextToken[i];
-
-    while (nextToken[i] != '\0')
-    {
-        j = 0;
-        while (del[j] != '\0')
-        {
-            if (nextToken[i] == del[j])
-            {
-                nextToken[i] = '\0';
-                i++;
-                nextToken += i;
-                return start;
-            }
-            j++;
-        }
-        i++;
-    }
-
-    nextToken += i;
-    return start;
+	static char *nextToken;
+	char *start;
+	int i;
+	int j;
+	
+	i = 0;
+	if (str != NULL)
+		nextToken = str;
+	if (nextToken == NULL || *nextToken == '\0')
+		return (NULL);
+	while (nextToken[i] != '\0')
+	{
+		j = 0;
+		while (del[j] != '\0')
+		{
+			if (nextToken[i] == del[j])
+			{
+				i++;
+				break ;
+			}
+			j++;
+		}
+		if (del[j] == '\0')
+			break ;
+	}
+	if (nextToken[i] == '\0')
+		return (NULL);
+	start = &nextToken[i];
+	while (nextToken[i] != '\0')
+	{
+		j = 0;
+		while (del[j] != '\0')
+		{
+			if (nextToken[i] == del[j])
+			{
+				nextToken[i] = '\0';
+				i++;
+				nextToken += i;
+				return (start);
+			}
+			j++;
+		}
+		i++;
+	}
+	nextToken += i;
+	return (start);
 }
-
 
 void	exec_command_pipes(char *command, char **env)
 {
