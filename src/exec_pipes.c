@@ -46,6 +46,62 @@ int	count_pipes(char *input)
 	return (pipe);
 }
 
+char *ft_strtok(char *str, const char *del)
+{
+    static char *nextToken = NULL;
+    char *start;
+    int i = 0;
+    int j;
+
+    if (str != NULL)
+        nextToken = str;
+
+    if (nextToken == NULL || *nextToken == '\0')
+        return NULL;
+
+    while (nextToken[i] != '\0')
+    {
+        j = 0;
+        while (del[j] != '\0')
+        {
+            if (nextToken[i] == del[j])
+            {
+                i++;
+                break;
+            }
+            j++;
+        }
+        if (del[j] == '\0')
+            break;
+    }
+
+    if (nextToken[i] == '\0')
+        return NULL;
+
+    start = &nextToken[i];
+
+    while (nextToken[i] != '\0')
+    {
+        j = 0;
+        while (del[j] != '\0')
+        {
+            if (nextToken[i] == del[j])
+            {
+                nextToken[i] = '\0';
+                i++;
+                nextToken += i;
+                return start;
+            }
+            j++;
+        }
+        i++;
+    }
+
+    nextToken += i;
+    return start;
+}
+
+
 void	exec_command_pipes(char *command, char **env)
 {
 	char	**args;
@@ -54,35 +110,16 @@ void	exec_command_pipes(char *command, char **env)
 
 	args = malloc(sizeof(char *) * 3);
 	argindex = 0;
-	token = strtok(command, " "); //cambiar
+	token = ft_strtok(command, " "); //cambiar
 	while (token != NULL)
 	{
 		args[argindex] = malloc(sizeof(char) * ft_strlen(token) + 1); //protect malloc
 		ft_strlcpy(args[argindex], token, ft_strlen(token) + 1);
 		argindex++;
-		token = strtok(NULL, " ");
+		token = ft_strtok(NULL, " ");
 	}
 	args[argindex] = NULL;
 	execve(get_path(args, env), args, env);
-}
-
-char	*ft_strtok(char *str, char del)
-{
-	int i;
-	char *s2;
-
-	i = 0;
-	while(str[i] != del)
-		i++;
-	s2 = malloc(sizeof(char) * i + 1);
-	i = 0;
-	while(str[i] != del)
-	{
-		s2[i] = str[i];
-		i++;
-	}
-	s2[i] = '\0';
-	return (s2);
 }
 
 void	exec_pipes(char *input, char **env, int num_pipes)
@@ -100,10 +137,7 @@ void	exec_pipes(char *input, char **env, int num_pipes)
 		i++;
 	}
 	i = 0;
-	char *test = strtok(input, "|");
-	command = ft_strtok(input, '|'); //cambiar
-	printf("%s\n", command);
-	printf("%s\n", test);
+	command = ft_strtok(input, "|");
 	while (command != NULL)
 	{
 		pid = fork();
@@ -133,7 +167,7 @@ void	exec_pipes(char *input, char **env, int num_pipes)
 			if (i != num_pipes)
 				close(fds[i][WRITE_END]);
 		}
-		command = strtok(NULL, "|"); //cambiar
+		command = ft_strtok(NULL, "|"); //cambiar
 		i++;
 	}
 	i = 0;
