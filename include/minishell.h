@@ -6,7 +6,7 @@
 /*   By: ffornes- <ffornes-@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/27 11:32:21 by ffornes-          #+#    #+#             */
-/*   Updated: 2023/07/24 16:20:03 by ffornes-         ###   ########.fr       */
+/*   Updated: 2023/07/24 17:18:23 by ffornes-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,5 +36,7 @@ void		exec_pipes(char *input, char **env, int num_pipes);
 void		exec_command_pipes(char *command, char **env);
 
 char		*expand_evals(char *input, char *envp[]);
+
+char		*remove_quotes(char *str);
 
 #endif
