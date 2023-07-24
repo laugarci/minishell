@@ -6,7 +6,7 @@
 /*   By: ffornes- <ffornes-@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/27 12:29:42 by ffornes-          #+#    #+#             */
-/*   Updated: 2023/07/06 16:07:24 by ffornes-         ###   ########.fr       */
+/*   Updated: 2023/07/24 13:10:28 by ffornes-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -109,8 +109,10 @@ static int	check_invalid_chars(char *input)
 			return (258);
 		i++;
 	}
-	if (j % 2 != 0 || k % 2 != 0)
+	if (j % 2 != 0)		
 		return (44);
+	if (k % 2 != 0)
+		return (45);
 	return (0);
 }
 
