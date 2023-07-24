@@ -6,7 +6,7 @@
 /*   By: laugarci <laugarci@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/05 14:01:37 by laugarci          #+#    #+#             */
-/*   Updated: 2023/07/24 16:25:17 by ffornes-         ###   ########.fr       */
+/*   Updated: 2023/07/24 16:51:51 by ffornes-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,7 +63,7 @@ int	main(int argc, char *argv[], char *envp[])
 	env = set_env(envp);
 	if (!env) // mem error
 		return (1);
-	prompt = ft_strjoin(argv[0], " > ");
+	prompt = ft_strjoin((argv[0] + 2), " > ");
 	if (!prompt)
 		return (1);
 	while (1)
@@ -74,7 +74,6 @@ int	main(int argc, char *argv[], char *envp[])
 			exit_check(input);
 			add_history(input);
 			error_id = parse_input(&input, envp);
-			printf("Parsed input: %s\n", input);
 			if (error_id)
 				put_error("minishell", error_id);
 			else
@@ -83,5 +82,6 @@ int	main(int argc, char *argv[], char *envp[])
 		free(input);
 	}
 	clear_history();
+	free(prompt);
 	return (0);
 }
