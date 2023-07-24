@@ -6,7 +6,7 @@
 /*   By: laugarci <laugarci@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/14 09:52:31 by laugarci          #+#    #+#             */
-/*   Updated: 2023/07/24 12:18:32 by laugarci         ###   ########.fr       */
+/*   Updated: 2023/07/24 13:04:22 by laugarci         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@
 #define READ_END 0
 #define WRITE_END 1
 
-int	count_pipes(char *input)
+int	count_chars(char *input, char del)
 {
 	int	i;
 	int	pipe;
@@ -31,7 +31,7 @@ int	count_pipes(char *input)
 	i = 0;
 	while (input[i])
 	{
-		if (input[i] == '|')
+		if (input[i] == del)
 			pipe++;
 		i++;
 	}

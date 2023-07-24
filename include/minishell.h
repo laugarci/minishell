@@ -6,7 +6,7 @@
 /*   By: ffornes- <ffornes-@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/27 11:32:21 by ffornes-          #+#    #+#             */
-/*   Updated: 2023/07/24 11:43:01 by laugarci         ###   ########.fr       */
+/*   Updated: 2023/07/24 13:04:58 by laugarci         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,7 @@ int			exec_cd(char **input);
 
 int			is_pipe(char *entrada);
 
-int			count_pipes(char *input);
+int			count_chars(char *input, char del);
 
 void		exec_pipes(char *input, char **env, int num_pipes);
 
