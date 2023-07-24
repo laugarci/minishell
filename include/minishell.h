@@ -6,7 +6,7 @@
 /*   By: ffornes- <ffornes-@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/27 11:32:21 by ffornes-          #+#    #+#             */
-/*   Updated: 2023/07/24 16:54:58 by laugarci         ###   ########.fr       */
+/*   Updated: 2023/07/24 18:25:03 by laugarci         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,8 @@ char		*here_doc(char **input, char *envp[]);
 void		put_error(char *str, int error_id);
 
 int			exec_commands(char *input, char **env);
+
+int			exec_commands_wf(char *space_pos, char *input, char **env);
 
 int			cmp_commands(char *input, char **env);
 
