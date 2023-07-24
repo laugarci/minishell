@@ -6,7 +6,7 @@
 /*   By: laugarci <laugarci@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/05 14:01:37 by laugarci          #+#    #+#             */
-/*   Updated: 2023/07/24 13:02:11 by ffornes-         ###   ########.fr       */
+/*   Updated: 2023/07/24 16:06:25 by ffornes-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,9 +72,9 @@ int	main(int argc, char *argv[], char *envp[])
 		input = readline(prompt);
 		if (input[0] != '\0' && input)
 		{
-			add_history(input);
 			exit_check(input);
-			error_id = parse_input(input, envp);
+			add_history(input);
+			error_id = parse_input(&input, envp);
 			if (error_id)
 				put_error("minishell", error_id);
 			else

@@ -6,7 +6,7 @@
 /*   By: ffornes- <ffornes-@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/27 12:29:42 by ffornes-          #+#    #+#             */
-/*   Updated: 2023/07/24 13:10:28 by ffornes-         ###   ########.fr       */
+/*   Updated: 2023/07/24 16:06:03 by ffornes-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -116,35 +116,30 @@ static int	check_invalid_chars(char *input)
 	return (0);
 }
 
-int	parse_input(char *str, char *envp[])
+int	parse_input(char **str, char *envp[])
 {
 	char	**inputs;
 	size_t	input_count;
 	int		error_id;
 
-	error_id = check_invalid_chars(str);
+	error_id = check_invalid_chars(*str);
+	if (!error_id)
+		*str = expand_evals(*str, envp);
 	if (error_id)
 		return (error_id);
-	input_count = get_input_amount(str);
+	input_count = get_input_amount(*str);
 	if (!input_count)
 		return (2); // No tokens found??
 	inputs = malloc(sizeof(char *) * (input_count + 1));
 	if (!inputs)
 		return (1); // mem error
-	if (get_inputs(inputs, str, input_count))
+	if (get_inputs(inputs, *str, input_count))
 	{
 		free_double((void **)inputs);
 		return (1); // mem error in save_token
 	}
-//	return (0);
-
-	int	i = 0;
-	while (inputs[i])
-	{
-		printf("Input %d: %s\n", i, inputs[i]);
-		i++;
-	}
 	free_double((void **)inputs);
 	return (0);
+
 	envp[0] = NULL;
 }
