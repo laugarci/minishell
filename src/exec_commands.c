@@ -6,7 +6,7 @@
 /*   By: laugarci <laugarci@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/04 15:00:39 by laugarci          #+#    #+#             */
-/*   Updated: 2023/07/19 13:56:44 by laugarci         ###   ########.fr       */
+/*   Updated: 2023/07/24 11:35:33 by laugarci         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,6 +44,14 @@ int	exec_cd(char **input)
 		return (1);
 	}
 	return (0);
+}
+
+int	is_pipe(char *input)
+{
+	if (ft_strchr(input, '|') != NULL)
+		return (1);
+	else
+		return (0);
 }
 
 int	cmp_commands(char *input, char **env)

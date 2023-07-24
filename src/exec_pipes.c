@@ -6,7 +6,7 @@
 /*   By: laugarci <laugarci@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/14 09:52:31 by laugarci          #+#    #+#             */
-/*   Updated: 2023/07/19 16:44:44 by laugarci         ###   ########.fr       */
+/*   Updated: 2023/07/24 12:02:31 by laugarci         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,14 +21,6 @@
 
 #define READ_END 0
 #define WRITE_END 1
-
-int	is_pipe(char *input)
-{
-	if (ft_strchr(input, '|') != NULL)
-		return (1);
-	else
-		return (0);
-}
 
 int	count_pipes(char *input)
 {
@@ -45,24 +37,25 @@ int	count_pipes(char *input)
 	}
 	return (pipe);
 }
-char *ft_strtok(char *str, const char *del)
+
+char	*ft_strtok(char *str, const char *del)
 {
-	static char *nextToken;
-	char *start;
-	int i;
-	int j;
-	
+	static char	*token;
+	char		*start;
+	int			i;
+	int			j;
+
 	i = 0;
 	if (str != NULL)
-		nextToken = str;
-	if (nextToken == NULL || *nextToken == '\0')
+		token = str;
+	if (token == NULL || *token == '\0')
 		return (NULL);
-	while (nextToken[i] != '\0')
+	while (token[i] != '\0')
 	{
 		j = 0;
 		while (del[j] != '\0')
 		{
-			if (nextToken[i] == del[j])
+			if (token[i] == del[j])
 			{
 				i++;
 				break ;
@@ -72,26 +65,26 @@ char *ft_strtok(char *str, const char *del)
 		if (del[j] == '\0')
 			break ;
 	}
-	if (nextToken[i] == '\0')
+	if (token[i] == '\0')
 		return (NULL);
-	start = &nextToken[i];
-	while (nextToken[i] != '\0')
+	start = &token[i];
+	while (token[i] != '\0')
 	{
 		j = 0;
 		while (del[j] != '\0')
 		{
-			if (nextToken[i] == del[j])
+			if (token[i] == del[j])
 			{
-				nextToken[i] = '\0';
+				token[i] = '\0';
 				i++;
-				nextToken += i;
+				token += i;
 				return (start);
 			}
 			j++;
 		}
 		i++;
 	}
-	nextToken += i;
+	token += i;
 	return (start);
 }
 
@@ -103,10 +96,10 @@ void	exec_command_pipes(char *command, char **env)
 
 	args = malloc(sizeof(char *) * 3);
 	argindex = 0;
-	token = ft_strtok(command, " "); //cambiar
+	token = ft_strtok(command, " ");
 	while (token != NULL)
 	{
-		args[argindex] = malloc(sizeof(char) * ft_strlen(token) + 1); //protect malloc
+		args[argindex] = malloc(sizeof(char) * ft_strlen(token) + 1); //protect
 		ft_strlcpy(args[argindex], token, ft_strlen(token) + 1);
 		argindex++;
 		token = ft_strtok(NULL, " ");
@@ -121,11 +114,13 @@ void	exec_pipes(char *input, char **env, int num_pipes)
 	int		i;
 	pid_t	pid;
 	char	*command;
-	int		fds[num_pipes][2]; //esto no se puede hacer
+	int		**fds;
 
 	i = 0;
+	fds = malloc(sizeof(int *) * num_pipes);
 	while (i < num_pipes)
 	{
+		fds[i] = malloc(sizeof(int) * 2);
 		pipe(fds[i]);
 		i++;
 	}
@@ -160,7 +155,7 @@ void	exec_pipes(char *input, char **env, int num_pipes)
 			if (i != num_pipes)
 				close(fds[i][WRITE_END]);
 		}
-		command = ft_strtok(NULL, "|"); //cambiar
+		command = ft_strtok(NULL, "|");
 		i++;
 	}
 	i = 0;
