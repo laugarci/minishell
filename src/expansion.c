@@ -6,13 +6,14 @@
 /*   By: ffornes- <ffornes-@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/24 14:47:53 by ffornes-          #+#    #+#             */
-/*   Updated: 2023/07/24 16:14:02 by ffornes-         ###   ########.fr       */
+/*   Updated: 2023/07/24 16:42:32 by ffornes-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 #include "libft.h"
 #include <stdlib.h>
+#include <stdio.h>
 
 static char	*update_input(char *input, char *str)
 {
@@ -22,13 +23,10 @@ static char	*update_input(char *input, char *str)
 
 	i = 0;
 	while (input[i])
-	{
-		if (input[i] == '$' && (i == 0 || input[i - 1] == ' '))
+		if (input[i++] == '$' && (i - 1 == 0 || input[i - 2] == ' '))
 			break ;
-		i++;
-	}
 	tmp = input;
-	tmp[i] = '\0';
+	tmp[i - 1] = '\0';
 	if (!str)
 		str = "";
 	tmp = ft_strjoin(tmp, str);
@@ -71,6 +69,7 @@ static char	*find_eval(char *str, char *envp[])
 static char	*expand_input(char *input, char *envp[])
 {
 	char	*str;
+	char	*aux;
 	char	*out;
 	int		i;
 
@@ -78,18 +77,22 @@ static char	*expand_input(char *input, char *envp[])
 	if (!str)
 		return (NULL);
 	str++;
+	aux = ft_strdup(str);
+	if (!aux)
+		return (NULL);
 	i = 0;
-	while (str[i])
+	while (aux[i])
 	{
-		if (str[i] == ' ')
+		if (aux[i] == ' ')
 		{
-			str[i] = '\0';
+			aux[i] = '\0';
 			break ;
 		}
 		i++;
 	}
-	str = find_eval(str, envp);
+	str = find_eval(aux, envp);
 	out = update_input(input, str);
+	free(aux);
 	return (out);
 }
 
@@ -108,7 +111,7 @@ char	*expand_evals(char *input, char *envp[])
 			j++;
 		i++;
 	}
-	while (j)
+	while (j--)
 	{
 		aux = input;
 		out = expand_input(input, envp);
@@ -116,7 +119,6 @@ char	*expand_evals(char *input, char *envp[])
 		if (!input)
 			return (NULL);
 		free(aux);
-		j--;
 	}
 	return (out);
 }
