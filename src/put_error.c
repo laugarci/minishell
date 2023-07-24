@@ -6,7 +6,7 @@
 /*   By: ffornes- <ffornes-@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/27 13:01:51 by ffornes-          #+#    #+#             */
-/*   Updated: 2023/07/06 15:17:22 by ffornes-         ###   ########.fr       */
+/*   Updated: 2023/07/24 12:26:19 by ffornes-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@ void	put_error(char *str, int error_id)
 	else if (error_id == 127)
 		aux = ft_strjoin(str, ": No such file or directory\n");
 	else if (error_id == 128)
-		aux = ft_strjoin(str, ": unable to execute command\n");
+		aux = ft_strjoin(str, ": unable to execute command XD\n");
 	ft_putstr_fd(aux, 2);
 	free(aux);
 }
