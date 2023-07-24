@@ -6,7 +6,7 @@
 /*   By: laugarci <laugarci@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/14 09:52:31 by laugarci          #+#    #+#             */
-/*   Updated: 2023/07/24 13:04:22 by laugarci         ###   ########.fr       */
+/*   Updated: 2023/07/24 15:57:04 by laugarci         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,17 +25,17 @@
 int	count_chars(char *input, char del)
 {
 	int	i;
-	int	pipe;
+	int	c;
 
-	pipe = 0;
+	c = 0;
 	i = 0;
 	while (input[i])
 	{
 		if (input[i] == del)
-			pipe++;
+			c++;
 		i++;
 	}
-	return (pipe);
+	return (c);
 }
 
 char	*ft_strtok(char *str, const char *del)

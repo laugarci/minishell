@@ -6,7 +6,7 @@
 /*   By: ffornes- <ffornes-@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/27 11:32:21 by ffornes-          #+#    #+#             */
-/*   Updated: 2023/07/24 13:04:58 by laugarci         ###   ########.fr       */
+/*   Updated: 2023/07/24 16:54:58 by laugarci         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,5 +34,7 @@ int			count_chars(char *input, char del);
 void		exec_pipes(char *input, char **env, int num_pipes);
 
 void		exec_command_pipes(char *command, char **env);
+
+char		*ft_strtok(char *str, const char *del);
 
 #endif

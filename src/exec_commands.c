@@ -6,7 +6,7 @@
 /*   By: laugarci <laugarci@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/04 15:00:39 by laugarci          #+#    #+#             */
-/*   Updated: 2023/07/24 14:53:06 by laugarci         ###   ########.fr       */
+/*   Updated: 2023/07/24 18:10:59 by laugarci         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,27 +75,32 @@ int	cmp_commands(char *input, char **env)
 int	exec_commands_wf(char *space_pos, char *input, char **env)
 {
 	char	*command;
-	char	*flags;
+	char	**flags;
 	char	**args;
 	char	**split_command;
-	
-//	int i = count_chars(input, '-');
-//	int j = 1;
+	int		count_flags;
+	int		i;
+
+	count_flags = count_chars(input, '-');
 	split_command = ft_split(input, ' ');
 	command = (char *)malloc(sizeof(char) * ((space_pos - input) + 1));
 	if (!command)
 		return (1);
-	flags = (char *)malloc(sizeof(char) * (ft_strlen(space_pos) + 2));
+	flags = ft_split(space_pos + 1, ' ');
 	if (!flags)
 		return (1);
-	ft_strlcpy(command, input, (space_pos - input) + 1);
-	ft_strlcpy(flags, (space_pos + 1), (ft_strlen(space_pos + 1) + 1));
-	args = (char **)malloc(sizeof(char *) * 3);
+	args = (char **)malloc(sizeof(char *) * (count_flags + 2));
 	if (!args)
 		return (1);
+	ft_strlcpy(command, input, (space_pos - input) + 1);
 	args[0] = get_path(split_command, env);
-	args[1] = flags;
-	args[2] = NULL;
+	i = 0;
+	while (i < count_flags)
+	{
+		args[i + 1] = flags[i];
+		i++;
+	}
+	args[count_flags + 1] = NULL;
 	execve(args[0], args, env);
 	free(command);
 	free(flags);
