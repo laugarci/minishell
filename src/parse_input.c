@@ -6,7 +6,7 @@
 /*   By: ffornes- <ffornes-@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/27 12:29:42 by ffornes-          #+#    #+#             */
-/*   Updated: 2023/07/24 16:06:03 by ffornes-         ###   ########.fr       */
+/*   Updated: 2023/07/24 17:40:20 by ffornes-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -125,6 +125,7 @@ int	parse_input(char **str, char *envp[])
 	error_id = check_invalid_chars(*str);
 	if (!error_id)
 		*str = expand_evals(*str, envp);
+	printf("Removed quotes: %s\n", remove_quotes(*str));
 	if (error_id)
 		return (error_id);
 	input_count = get_input_amount(*str);
