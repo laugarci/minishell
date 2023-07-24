@@ -6,7 +6,7 @@
 /*   By: laugarci <laugarci@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/04 15:00:39 by laugarci          #+#    #+#             */
-/*   Updated: 2023/07/24 12:35:14 by laugarci         ###   ########.fr       */
+/*   Updated: 2023/07/24 14:53:06 by laugarci         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,7 +64,7 @@ int	cmp_commands(char *input, char **env)
 		exec_cd(commands);
 	else if (is_pipe(input) == 1)
 	{
-		num_pipes = count_pipes(input);
+		num_pipes = count_chars(input, '|');
 		exec_pipes(input, env, num_pipes);
 	}
 	else
@@ -78,7 +78,9 @@ int	exec_commands_wf(char *space_pos, char *input, char **env)
 	char	*flags;
 	char	**args;
 	char	**split_command;
-
+	
+//	int i = count_chars(input, '-');
+//	int j = 1;
 	split_command = ft_split(input, ' ');
 	command = (char *)malloc(sizeof(char) * ((space_pos - input) + 1));
 	if (!command)
@@ -115,7 +117,10 @@ int	exec_commands(char *input, char **env)
 	{
 		space_pos = ft_strchr(input, ' ');
 		if (space_pos != NULL)
+		{
 			exec_commands_wf(space_pos, input, env);
+			exit(0);
+		}
 		else
 		{
 			args = (char **)malloc(sizeof(char *) * 2);
