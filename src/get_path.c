@@ -6,7 +6,7 @@
 /*   By: ffornes- <ffornes-@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/26 16:31:29 by ffornes-          #+#    #+#             */
-/*   Updated: 2023/07/05 14:04:54 by laugarci         ###   ########.fr       */
+/*   Updated: 2023/07/24 12:30:57 by ffornes-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,8 +54,11 @@ static char	*get_right_path(char **path, char *cmd)
 		{
 			out = ft_strdup(path[i]);
 			if (access(path[i], X_OK))
+			{
 				put_error(cmd, 128); // Error: Path has been found but it's not executable
-			break ;
+				free(out);
+				return (NULL);
+			}
 		}
 		i++;
 	}
