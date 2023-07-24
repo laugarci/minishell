@@ -6,7 +6,7 @@
 /*   By: ffornes- <ffornes-@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/27 13:01:51 by ffornes-          #+#    #+#             */
-/*   Updated: 2023/07/24 12:26:19 by ffornes-         ###   ########.fr       */
+/*   Updated: 2023/07/24 13:11:13 by ffornes-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,10 +20,12 @@ void	put_error(char *str, int error_id)
 	aux = NULL;
 	if (error_id == 42)
 		aux = ft_strjoin(str, ": found forbidden character: `\\\'\n");
-	if (error_id == 43)
+	else if (error_id == 43)
 		aux = ft_strjoin(str, ": found forbidden character: `;\'\n");
-	if (error_id == 44)
-		aux = ft_strjoin(str, ": found unclosed quotes\n");
+	else if (error_id == 44)
+		aux = ft_strjoin(str, ": error near unexpected token `\'\'\n");
+	else if (error_id == 45)
+		aux = ft_strjoin(str, ": error near unexpected token `\"\'\n");
 	else if (error_id == 127)
 		aux = ft_strjoin(str, ": No such file or directory\n");
 	else if (error_id == 128)
