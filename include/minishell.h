@@ -6,14 +6,14 @@
 /*   By: ffornes- <ffornes-@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/27 11:32:21 by ffornes-          #+#    #+#             */
-/*   Updated: 2023/07/24 11:43:01 by laugarci         ###   ########.fr       */
+/*   Updated: 2023/07/24 16:05:12 by ffornes-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef MINISHELL_H
 # define MINISHELL_H
 
-int			parse_input(char *str, char *envp[]);
+int			parse_input(char **str, char *envp[]);
 
 char		*get_path(char **cmd, char **envp);
 
@@ -34,5 +34,7 @@ int			count_pipes(char *input);
 void		exec_pipes(char *input, char **env, int num_pipes);
 
 void		exec_command_pipes(char *command, char **env);
+
+char		*expand_evals(char *input, char *envp[]);
 
 #endif
