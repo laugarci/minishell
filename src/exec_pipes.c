@@ -6,7 +6,7 @@
 /*   By: laugarci <laugarci@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/14 09:52:31 by laugarci          #+#    #+#             */
-/*   Updated: 2023/07/25 11:42:20 by laugarci         ###   ########.fr       */
+/*   Updated: 2023/07/25 11:54:00 by laugarci         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,13 @@
 
 #define READ_END 0
 #define WRITE_END 1
+
+int	is_pipe(char *input)
+{
+	if (ft_strchr(input, '|') != NULL)
+		return (1);
+	return (0);
+}
 
 int	count_chars(char *input, char del)
 {
@@ -125,7 +132,6 @@ void	exec_pipes(char *input, char **env, int num_pipes)
 				dup2(fds[i][WRITE_END], STDOUT_FILENO);
 				close(fds[i][WRITE_END]);
 			}
-			//cmp_commands(command, env);
 			exec_commands(command, env);
 			exit(1);
 		}

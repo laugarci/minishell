@@ -6,7 +6,7 @@
 /*   By: laugarci <laugarci@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/06 16:13:14 by laugarci          #+#    #+#             */
-/*   Updated: 2023/07/06 16:13:16 by laugarci         ###   ########.fr       */
+/*   Updated: 2023/07/25 12:02:57 by laugarci         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,7 +86,7 @@ char	**ft_split(char const *s, char c)
 	if (!words || !s)
 		return (NULL);
 	while ((char)s[i])
-	{	
+	{
 		if ((char)s[i] == c)
 			i++;
 		else

@@ -6,7 +6,7 @@
 /*   By: laugarci <laugarci@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/04 15:00:39 by laugarci          #+#    #+#             */
-/*   Updated: 2023/07/25 11:47:53 by laugarci         ###   ########.fr       */
+/*   Updated: 2023/07/25 12:01:35 by laugarci         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,14 +51,6 @@ int	exec_cd(char **input)
 	return (0);
 }
 
-int	is_pipe(char *input)
-{
-	if (ft_strchr(input, '|') != NULL)
-		return (1);
-	else
-		return (0);
-}
-
 int	cmp_commands(char *input, char **env)
 {
 	char	**commands;
@@ -77,18 +69,15 @@ int	cmp_commands(char *input, char **env)
 	return (0);
 }
 
-int	exec_commands_wf(char *space_pos, char *input, char **env)
+int	exec_commands_wf(char *space_pos, char *input, char **env, char **split_com)
 {
 	char	*command;
+	int		i;
 	char	**flags;
 	char	**args;
-	char	**split_command;
 	int		count_flags;
-	int		i;
-	
-	i = 0;
+
 	count_flags = count_chars(input, '-');
-	split_command = ft_split(input, ' ');
 	command = (char *)malloc(sizeof(char) * ((space_pos - input) + 1));
 	if (!command)
 		return (1);
@@ -99,7 +88,7 @@ int	exec_commands_wf(char *space_pos, char *input, char **env)
 	if (!args)
 		return (1);
 	ft_strlcpy(command, input, (space_pos - input) + 1);
-	args[0] = get_path(split_command, env);
+	args[0] = get_path(split_com, env);
 	i = 0;
 	while (i < count_flags)
 	{
@@ -143,7 +132,6 @@ int	exec_commands_other(char *space_pos, char *input, char **env)
 	return (0);
 }
 
-
 int	exec_commands(char *input, char **env)
 {
 	char	*space_pos;
@@ -151,7 +139,7 @@ int	exec_commands(char *input, char **env)
 	int		status;
 	char	**split_command;
 	pid_t	pid;
-	
+
 	input = ft_strtrim(input, " ");
 	split_command = ft_split(input, ' ');
 	pid = fork();
@@ -159,10 +147,10 @@ int	exec_commands(char *input, char **env)
 	{
 		space_pos = ft_strchr(input, ' ');
 		if ((ft_strncmp(input, "cat", 3) == 0)
-				|| (ft_strncmp(input, "echo", 4) == 0))
+			|| (ft_strncmp(input, "echo", 4) == 0))
 			exec_commands_other(space_pos, input, env);
 		else if (space_pos != NULL)
-			exec_commands_wf(space_pos, input, env);
+			exec_commands_wf(space_pos, input, env, split_command);
 		else
 		{
 			args = (char **)malloc(sizeof(char *) * 2);
