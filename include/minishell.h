@@ -6,7 +6,7 @@
 /*   By: ffornes- <ffornes-@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/27 11:32:21 by ffornes-          #+#    #+#             */
-/*   Updated: 2023/07/25 11:48:06 by laugarci         ###   ########.fr       */
+/*   Updated: 2023/07/25 11:59:58 by laugarci         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ void		put_error(char *str, int error_id);
 
 int			exec_commands(char *input, char **env);
 
-int			exec_commands_wf(char *space_pos, char *input, char **env);
+int			exec_commands_wf(char *space_pos, char *input, char **env, char **split_com);
 
 int			exec_commands_other(char *space_pos, char *input, char **env);
 
