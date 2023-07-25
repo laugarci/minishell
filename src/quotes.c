@@ -6,15 +6,16 @@
 /*   By: ffornes- <ffornes-@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/24 17:09:41 by ffornes-          #+#    #+#             */
-/*   Updated: 2023/07/24 17:40:18 by ffornes-         ###   ########.fr       */
+/*   Updated: 2023/07/25 16:27:30 by ffornes-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 #include "libft.h"
 #include <stdlib.h>
+#include <stdio.h>
 
-static void	fill_output(char *out, char *str, int i, int j)
+static char	*fill_output(char *out, char *str, int i, int j)
 {
 	int	open;
 
@@ -27,7 +28,7 @@ static void	fill_output(char *out, char *str, int i, int j)
 		{
 			if ((open == 1 && str[i] != '\'') || (open == 2 && str[i] != '\"'))
 				out[j++] = str[i];
-			else 
+			else
 				open = 0;
 		}
 		else if (!open)
@@ -40,21 +41,18 @@ static void	fill_output(char *out, char *str, int i, int j)
 		i++;
 	}
 	out[j] = '\0';
+	return (out);
 }
 
 char	*remove_quotes(char *str)
 {
-	int		i;
-	int		j;
 	char	*out;
-	int		open;
 
-	i = 0;
-	j = 0;
-	open = 0;
+	if (!ft_strchr(str, '\'') && !ft_strchr(str, '\"'))
+		return (str);
 	out = malloc(sizeof(char) * ft_strlen(str) + 1);
 	if (!out)
-		return (str);
-	fill_output(out, str, i, j);
+		return (NULL);
+	out = fill_output(out, str, 0, 0);
 	return (out);
 }

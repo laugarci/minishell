@@ -6,7 +6,7 @@
 /*   By: ffornes- <ffornes-@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/24 14:47:53 by ffornes-          #+#    #+#             */
-/*   Updated: 2023/07/24 16:42:32 by ffornes-         ###   ########.fr       */
+/*   Updated: 2023/07/25 17:25:20 by ffornes-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,23 +15,17 @@
 #include <stdlib.h>
 #include <stdio.h>
 
-static char	*update_input(char *input, char *str)
+static char	*update_input_util(int i, char *tmp, char *str, char *input)
 {
-	int		i;
-	char	*tmp;
 	char	*aux;
 
-	i = 0;
-	while (input[i])
-		if (input[i++] == '$' && (i - 1 == 0 || input[i - 2] == ' '))
-			break ;
-	tmp = input;
-	tmp[i - 1] = '\0';
+	aux = tmp;
 	if (!str)
 		str = "";
 	tmp = ft_strjoin(tmp, str);
 	if (!tmp)
 		return (NULL);
+	free(aux);
 	aux = tmp;
 	while (input[i] != ' ' && input[i])
 		i++;
@@ -45,32 +39,27 @@ static char	*update_input(char *input, char *str)
 	return (tmp);
 }
 
-static char	*find_eval(char *str, char *envp[])
+static char	*update_input(char *input, char *str)
 {
 	int		i;
-	char	*out;
+	char	*tmp;
 
 	i = 0;
-	while (envp[i])
-	{
-		if (!ft_strncmp(envp[i], str, ft_strlen(str)))
+	while (input[i])
+		if (input[i++] == '$' && (i - 1 == 0 || input[i - 2] == ' '))
 			break ;
-		i++;
-	}
-	if (envp[i])
-	{
-		out = ft_strchr(envp[i], '=');
-		out++;
-		return (out);
-	}
-	return (NULL);
+	tmp = malloc(sizeof(char) * i);
+	if (!tmp)
+		return (NULL);
+	ft_strlcpy(tmp, input, i);
+	tmp = update_input_util(i, tmp, str, input);
+	return (tmp);
 }
 
 static char	*expand_input(char *input, char *envp[])
 {
 	char	*str;
 	char	*aux;
-	char	*out;
 	int		i;
 
 	str = ft_strchr(input, '$');
@@ -91,34 +80,34 @@ static char	*expand_input(char *input, char *envp[])
 		i++;
 	}
 	str = find_eval(aux, envp);
-	out = update_input(input, str);
 	free(aux);
-	return (out);
+	return (str);
 }
 
 char	*expand_evals(char *input, char *envp[])
 {
-	int		i;
-	int		j;
-	char	*out;
+	int		amount;
 	char	*aux;
+	char	*out;
 
-	i = 0;
-	j = 0;
-	while (input[i])
-	{
-		if (input[i] == '$' && (i == 0 || input[i - 1] == ' '))
-			j++;
-		i++;
-	}
-	while (j--)
+	out = ft_strdup("");
+	if (!out)
+		return (NULL);
+	amount = expansion_amount(input);
+	printf("Amount of expansions found: %d\n", amount);
+	if (!amount)
+		return (input);
+	while (amount--)
 	{
 		aux = input;
+		free(out);
 		out = expand_input(input, envp);
+		out = update_input(input, out);
 		input = ft_strdup(out);
 		if (!input)
 			return (NULL);
 		free(aux);
 	}
+	free(input);
 	return (out);
 }
