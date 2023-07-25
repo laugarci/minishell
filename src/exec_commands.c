@@ -6,7 +6,7 @@
 /*   By: laugarci <laugarci@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/04 15:00:39 by laugarci          #+#    #+#             */
-/*   Updated: 2023/07/24 18:38:35 by laugarci         ###   ########.fr       */
+/*   Updated: 2023/07/25 10:33:36 by laugarci         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,6 +71,30 @@ int	cmp_commands(char *input, char **env)
 		exec_commands(input, env);
 	return (0);
 }
+/*
+char	*ft_spaces(char *input)
+{
+	int i;
+	char *str;
+	int j;
+
+	j = 0;
+	i = 0;
+	if (input[0] == ' ')
+	{
+		while(input[i] == ' ')
+			i++;
+	}
+	else
+		return(input);
+	str = malloc(sizeof(char) * (ft_strlen(input) - i) + 1);
+	i = 0;
+	while(input[i] == ' ')
+		i++;
+	while(input[i])
+		str[j++] = input[i++];
+	return (str);
+}*/
 
 int	exec_commands_wf(char *space_pos, char *input, char **env)
 {
@@ -82,14 +106,12 @@ int	exec_commands_wf(char *space_pos, char *input, char **env)
 	int		i;
 	
 	i = 0;
-	char *test = ft_strtrim(input, " ");
 	count_flags = count_chars(input, '-');
 	split_command = ft_split(input, ' ');
 	command = (char *)malloc(sizeof(char) * ((space_pos - input) + 1));
 	if (!command)
 		return (1);
 	flags = ft_split(space_pos + 1, ' ');
-	printf("flags %s\n", flags[0]);
 	if (!flags)
 		return (1);
 	args = (char **)malloc(sizeof(char *) * (count_flags + 2));
@@ -101,7 +123,6 @@ int	exec_commands_wf(char *space_pos, char *input, char **env)
 	while (i < count_flags)
 	{
 		args[i + 1] = flags[i];
-		printf("args %s\n", args[i + 1]);
 		i++;
 	}
 	args[count_flags + 1] = NULL;
@@ -120,6 +141,7 @@ int	exec_commands(char *input, char **env)
 	char	**split_command;
 	pid_t	pid;
 
+	input = ft_strtrim(input, " ");
 	split_command = ft_split(input, ' ');
 	pid = fork();
 	if (pid == 0)
