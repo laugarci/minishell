@@ -43,3 +43,8 @@ Then >> Must separate arguments with pipes, and parse them individually.
 			( | )
 			( echo $USER )
 		Once split in tokens, must split again in minitokens to parse "'({})'"
+
+When creating an environment variable with value = "a b" and using touch with this eval
+as the argument, we must create two different files, one called 'a' and one called 'b'
+however right now we create a file called 'a b' which can't be removed by our minishell
+since we do not parse '\'. The command to remove the file is 'rm a\ b'
