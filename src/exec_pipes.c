@@ -6,7 +6,7 @@
 /*   By: laugarci <laugarci@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/14 09:52:31 by laugarci          #+#    #+#             */
-/*   Updated: 2023/07/24 18:28:59 by laugarci         ###   ########.fr       */
+/*   Updated: 2023/07/25 10:35:43 by laugarci         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,27 +88,6 @@ char	*ft_strtok(char *str, const char *del)
 	return (start);
 }
 
-void	exec_command_pipes(char *command, char **env)
-{
-	char	**args;
-	int		argindex;
-	char	*token;
-
-	printf("comando %s\n", command);
-	args = malloc(sizeof(char *) * 3);
-	argindex = 0;
-	token = ft_strtok(command, " ");
-	while (token != NULL)
-	{
-		args[argindex] = malloc(sizeof(char) * ft_strlen(token) + 1); //protect
-		ft_strlcpy(args[argindex], token, ft_strlen(token) + 1);
-		argindex++;
-		token = ft_strtok(NULL, " ");
-	}
-	args[argindex] = NULL;
-	execve(get_path(args, env), args, env);
-}
-
 void	exec_pipes(char *input, char **env, int num_pipes)
 {
 	int		status;
@@ -146,8 +125,7 @@ void	exec_pipes(char *input, char **env, int num_pipes)
 				dup2(fds[i][WRITE_END], STDOUT_FILENO);
 				close(fds[i][WRITE_END]);
 			}
-			exec_commands(command, env); //si no tiene flags si que ejecuta, si tiene flags no se ejecuta porque tiene un espacio de mas delante
-			//exec_command_pipes(command, env);
+			exec_commands(command, env);
 			exit(1);
 		}
 		else
