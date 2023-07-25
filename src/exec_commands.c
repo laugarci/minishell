@@ -6,7 +6,7 @@
 /*   By: laugarci <laugarci@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/04 15:00:39 by laugarci          #+#    #+#             */
-/*   Updated: 2023/07/25 12:01:35 by laugarci         ###   ########.fr       */
+/*   Updated: 2023/07/25 18:48:09 by laugarci         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,7 +57,7 @@ int	cmp_commands(char *input, char **env)
 	int		num_pipes;
 
 	commands = ft_split(input, ' ');
-	if (ft_strncmp(input, "cd", 2) == 0)
+	if (ft_strncmp(input, "cd ", 3) == 0 || ft_strncmp(input, "cd\0", 3) == 0)
 		exec_cd(commands);
 	else if (is_pipe(input) == 1)
 	{
@@ -66,69 +66,36 @@ int	cmp_commands(char *input, char **env)
 	}
 	else
 		exec_commands(input, env);
+	free_double((void **)commands);
 	return (0);
 }
 
 int	exec_commands_wf(char *space_pos, char *input, char **env, char **split_com)
 {
-	char	*command;
 	int		i;
 	char	**flags;
 	char	**args;
 	int		count_flags;
 
 	count_flags = count_chars(input, '-');
-	command = (char *)malloc(sizeof(char) * ((space_pos - input) + 1));
-	if (!command)
-		return (1);
-	flags = ft_split(space_pos + 1, ' ');
-	if (!flags)
-		return (1);
-	args = (char **)malloc(sizeof(char *) * (count_flags + 2));
+	flags = ft_split(space_pos, ' ');
+	args = (char **)malloc(sizeof(char *) * (count_flags + 3));
 	if (!args)
 		return (1);
-	ft_strlcpy(command, input, (space_pos - input) + 1);
 	args[0] = get_path(split_com, env);
 	i = 0;
-	while (i < count_flags)
+	while (i <= count_flags)
 	{
 		args[i + 1] = flags[i];
 		i++;
 	}
-	args[count_flags + 1] = NULL;
+	if (count_flags == 0)
+		args[2] = NULL;
+	else
+		args[count_flags + 1] = NULL;
 	execve(args[0], args, env);
-	free(command);
-	free(flags);
-	free(args);
-	return (0);
-}
-
-int	exec_commands_other(char *space_pos, char *input, char **env)
-{
-	char	*command;
-	char	*flags;
-	char	**args;
-	char	**split_command;
-
-	split_command = ft_split(input, ' ');
-	command = (char *)malloc(sizeof(char) * ((space_pos - input) + 1));
-	if (!command)
-		return (1);
-	flags = (char *)malloc(sizeof(char) * (ft_strlen(space_pos) + 2));
-	if (!flags)
-		return (1);
-	ft_strlcpy(command, input, (space_pos - input) + 1);
-	ft_strlcpy(flags, (space_pos + 1), (ft_strlen(space_pos + 1) + 1));
-	args = (char **)malloc(sizeof(char *) * 3);
-	if (!args)
-		return (1);
-	args[0] = get_path(split_command, env);
-	args[1] = flags;
-	args[2] = NULL;
-	execve(args[0], args, env);
-	free(command);
-	free(flags);
-	free(args);
+	free_double((void **)flags);
+	free_double((void **)args);
 	return (0);
 }
 
@@ -146,19 +113,19 @@ int	exec_commands(char *input, char **env)
 	if (pid == 0)
 	{
 		space_pos = ft_strchr(input, ' ');
-		if ((ft_strncmp(input, "cat", 3) == 0)
-			|| (ft_strncmp(input, "echo", 4) == 0))
-			exec_commands_other(space_pos, input, env);
-		else if (space_pos != NULL)
+		if (space_pos != NULL)
 			exec_commands_wf(space_pos, input, env, split_command);
 		else
 		{
 			args = (char **)malloc(sizeof(char *) * 2);
+			if (!args)
+				return (1);
 			args[0] = get_path(split_command, env);
 			args[1] = NULL;
 			execve(args[0], args, env);
-			free(args);
+			free_double((void **)args);
 		}
+		free((void **)split_command);
 		exit(0);
 	}
 	else
