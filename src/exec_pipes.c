@@ -6,7 +6,7 @@
 /*   By: laugarci <laugarci@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/14 09:52:31 by laugarci          #+#    #+#             */
-/*   Updated: 2023/07/25 10:35:43 by laugarci         ###   ########.fr       */
+/*   Updated: 2023/07/25 11:42:20 by laugarci         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -125,6 +125,7 @@ void	exec_pipes(char *input, char **env, int num_pipes)
 				dup2(fds[i][WRITE_END], STDOUT_FILENO);
 				close(fds[i][WRITE_END]);
 			}
+			//cmp_commands(command, env);
 			exec_commands(command, env);
 			exit(1);
 		}
