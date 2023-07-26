@@ -6,7 +6,7 @@
 /*   By: ffornes- <ffornes-@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/27 12:29:42 by ffornes-          #+#    #+#             */
-/*   Updated: 2023/07/25 17:05:54 by ffornes-         ###   ########.fr       */
+/*   Updated: 2023/07/26 15:32:48 by ffornes-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,31 +19,29 @@
 static int	check_invalid_chars(char *input)
 {
 	int	i;
-	int	j;
-	int	k;
+	int	state;
 
 	i = 0;
-	j = 0;
-	k = 0;
+	state = 0;
 	while (input[i])
 	{
 		if (input[i] == '\'')
-			j++;
+		{
+			if (!state)
+				state = 1;
+			else if (state == 1)
+				state = 0;
+		}
 		else if (input[i] == '\"')
-			k++;
-		else if (input[i] == '\\')
-			return (42);
-		else if (input[i] == ';')
-			return (43);
-		else if (input[i] == '>' && input[i + 1] == '<')
-			return (258);
+		{
+			if (!state)
+				state = 2;
+			else if (state == 2)
+				state = 0;
+		}
 		i++;
 	}
-	if (j % 2 != 0)		
-		return (44);
-	if (k % 2 != 0)
-		return (45);
-	return (0);
+	return (state);
 }
 
 int	parse_input(char **str, char *envp[])
@@ -54,11 +52,10 @@ int	parse_input(char **str, char *envp[])
 
 	out = *str;
 	error_id = check_invalid_chars(out);
-	if (error_id)
-	{
-		free(out);
-		return (error_id);
-	}
+	if (error_id == 1)
+		return (44);
+	else if (error_id == 2)
+		return (45);
 	out = expand_evals(out, envp);
 	tmp = remove_quotes(out);
 	*str = tmp;
