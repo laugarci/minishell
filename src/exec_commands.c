@@ -6,7 +6,7 @@
 /*   By: laugarci <laugarci@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/04 15:00:39 by laugarci          #+#    #+#             */
-/*   Updated: 2023/07/25 18:48:09 by laugarci         ###   ########.fr       */
+/*   Updated: 2023/07/26 12:59:52 by laugarci         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,7 +93,8 @@ int	exec_commands_wf(char *space_pos, char *input, char **env, char **split_com)
 		args[2] = NULL;
 	else
 		args[count_flags + 1] = NULL;
-	execve(args[0], args, env);
+	if ((execve(args[0], args, env)) == -1)
+		printf("zsh: command not found: %s\n", input); //hay que quitar las flags
 	free_double((void **)flags);
 	free_double((void **)args);
 	return (0);
@@ -122,10 +123,12 @@ int	exec_commands(char *input, char **env)
 				return (1);
 			args[0] = get_path(split_command, env);
 			args[1] = NULL;
-			execve(args[0], args, env);
+			if ((execve(args[0], args, env)) == -1)
+				printf("zsh: command not found: %s\n", input);
 			free_double((void **)args);
 		}
-		free((void **)split_command);
+		free_double((void **)split_command);
+		free(input);
 		exit(0);
 	}
 	else
