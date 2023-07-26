@@ -6,7 +6,7 @@
 /*   By: laugarci <laugarci@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/14 09:52:31 by laugarci          #+#    #+#             */
-/*   Updated: 2023/07/24 13:04:22 by laugarci         ###   ########.fr       */
+/*   Updated: 2023/07/25 12:16:14 by laugarci         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,20 +22,27 @@
 #define READ_END 0
 #define WRITE_END 1
 
+int	is_pipe(char *input)
+{
+	if (ft_strchr(input, '|') != NULL)
+		return (1);
+	return (0);
+}
+
 int	count_chars(char *input, char del)
 {
 	int	i;
-	int	pipe;
+	int	c;
 
-	pipe = 0;
+	c = 0;
 	i = 0;
 	while (input[i])
 	{
 		if (input[i] == del)
-			pipe++;
+			c++;
 		i++;
 	}
-	return (pipe);
+	return (c);
 }
 
 char	*ft_strtok(char *str, const char *del)
@@ -88,26 +95,6 @@ char	*ft_strtok(char *str, const char *del)
 	return (start);
 }
 
-void	exec_command_pipes(char *command, char **env)
-{
-	char	**args;
-	int		argindex;
-	char	*token;
-
-	args = malloc(sizeof(char *) * 3);
-	argindex = 0;
-	token = ft_strtok(command, " ");
-	while (token != NULL)
-	{
-		args[argindex] = malloc(sizeof(char) * ft_strlen(token) + 1); //protect
-		ft_strlcpy(args[argindex], token, ft_strlen(token) + 1);
-		argindex++;
-		token = ft_strtok(NULL, " ");
-	}
-	args[argindex] = NULL;
-	execve(get_path(args, env), args, env);
-}
-
 void	exec_pipes(char *input, char **env, int num_pipes)
 {
 	int		status;
@@ -145,7 +132,7 @@ void	exec_pipes(char *input, char **env, int num_pipes)
 				dup2(fds[i][WRITE_END], STDOUT_FILENO);
 				close(fds[i][WRITE_END]);
 			}
-			exec_command_pipes(command, env);
+			exec_commands(command, env);
 			exit(1);
 		}
 		else
