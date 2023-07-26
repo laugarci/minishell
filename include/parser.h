@@ -6,7 +6,7 @@
 /*   By: ffornes- <ffornes-@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/06 11:42:45 by ffornes-          #+#    #+#             */
-/*   Updated: 2023/07/24 12:56:18 by ffornes-         ###   ########.fr       */
+/*   Updated: 2023/07/26 15:23:17 by ffornes-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,7 @@ typedef struct s_token
 {
 	char	*content;
 	int		type;
+	int		quotes;
 	void	*next;
 }			t_token;
 
