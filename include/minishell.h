@@ -6,7 +6,7 @@
 /*   By: ffornes- <ffornes-@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/27 11:32:21 by ffornes-          #+#    #+#             */
-/*   Updated: 2023/07/25 16:21:23 by ffornes-         ###   ########.fr       */
+/*   Updated: 2023/07/26 13:16:37 by ffornes-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,10 @@ void		put_error(char *str, int error_id);
 
 int			exec_commands(char *input, char **env);
 
+int			exec_commands_wf(char *space_pos, char *input, char **env, char **split_com);
+
+int			exec_commands_other(char *space_pos, char *input, char **env);
+
 int			cmp_commands(char *input, char **env);
 
 int			exec_cd(char **input);
@@ -33,7 +37,7 @@ int			count_chars(char *input, char del);
 
 void		exec_pipes(char *input, char **env, int num_pipes);
 
-void		exec_command_pipes(char *command, char **env);
+char		*ft_strtok(char *str, const char *del);
 
 char		*expand_evals(char *input, char *envp[]);
 int			expansion_amount(char *input);
