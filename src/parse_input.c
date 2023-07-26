@@ -6,7 +6,7 @@
 /*   By: ffornes- <ffornes-@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/27 12:29:42 by ffornes-          #+#    #+#             */
-/*   Updated: 2023/07/26 15:32:48 by ffornes-         ###   ########.fr       */
+/*   Updated: 2023/07/26 15:38:31 by ffornes-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@
 #include "minishell.h"
 #include "parser.h"
 
-static int	check_invalid_chars(char *input)
+int	check_quote_state(char *input)
 {
 	int	i;
 	int	state;

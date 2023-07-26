@@ -6,7 +6,7 @@
 /*   By: ffornes- <ffornes-@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/24 17:09:41 by ffornes-          #+#    #+#             */
-/*   Updated: 2023/07/25 16:27:30 by ffornes-         ###   ########.fr       */
+/*   Updated: 2023/07/26 15:38:50 by ffornes-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,34 @@
 #include "libft.h"
 #include <stdlib.h>
 #include <stdio.h>
+
+int	check_quote_state(char *input)
+{
+	int	i;
+	int	state;
+
+	i = 0;
+	state = 0;
+	while (input[i])
+	{
+		if (input[i] == '\'')
+		{
+			if (!state)
+				state = 1;
+			else if (state == 1)
+				state = 0;
+		}
+		else if (input[i] == '\"')
+		{
+			if (!state)
+				state = 2;
+			else if (state == 2)
+				state = 0;
+		}
+		i++;
+	}
+	return (state);
+}
 
 static char	*fill_output(char *out, char *str, int i, int j)
 {
