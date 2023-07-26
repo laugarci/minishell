@@ -6,7 +6,7 @@
 /*   By: ffornes- <ffornes-@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/27 12:29:42 by ffornes-          #+#    #+#             */
-/*   Updated: 2023/07/26 15:38:31 by ffornes-         ###   ########.fr       */
+/*   Updated: 2023/07/26 15:41:40 by ffornes-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,34 +15,6 @@
 #include "libft.h"
 #include "minishell.h"
 #include "parser.h"
-
-int	check_quote_state(char *input)
-{
-	int	i;
-	int	state;
-
-	i = 0;
-	state = 0;
-	while (input[i])
-	{
-		if (input[i] == '\'')
-		{
-			if (!state)
-				state = 1;
-			else if (state == 1)
-				state = 0;
-		}
-		else if (input[i] == '\"')
-		{
-			if (!state)
-				state = 2;
-			else if (state == 2)
-				state = 0;
-		}
-		i++;
-	}
-	return (state);
-}
 
 int	parse_input(char **str, char *envp[])
 {
