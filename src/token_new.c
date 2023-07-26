@@ -1,27 +1,28 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_lstsize.c                                       :+:      :+:    :+:   */
+/*   token_new.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ffornes- <ffornes-@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/01/26 16:37:48 by ffornes-          #+#    #+#             */
-/*   Updated: 2023/07/26 17:26:10 by ffornes-         ###   ########.fr       */
+/*   Created: 2023/07/26 17:17:14 by ffornes-          #+#    #+#             */
+/*   Updated: 2023/07/26 17:17:48 by ffornes-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+#include "parser.h"
 #include "libft.h"
-#include "libft_defs.h"
+#include <stdlib.h>
 
-int	ft_lstsize(t_list *lst)
+t_token	*new_token(char	*string, int type, int quotes)
 {
-	size_t	size;
+	t_token	*token;
 
-	size = 0;
-	while (lst)
-	{
-		lst = lst->next;
-		size++;
-	}
-	return ((int)size);
+	token = malloc(sizeof(t_token) * 2);
+	if (!token)
+		return (NULL);
+	token->string = string;
+	token->type = type;
+	token->quotes = quotes;
+	return (token);
 }

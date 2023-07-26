@@ -1,27 +1,21 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_lstsize.c                                       :+:      :+:    :+:   */
+/*   double_charp_size.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ffornes- <ffornes-@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/01/26 16:37:48 by ffornes-          #+#    #+#             */
-/*   Updated: 2023/07/26 17:26:10 by ffornes-         ###   ########.fr       */
+/*   Created: 2023/07/26 17:32:38 by ffornes-          #+#    #+#             */
+/*   Updated: 2023/07/26 17:33:03 by ffornes-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libft.h"
-#include "libft_defs.h"
-
-int	ft_lstsize(t_list *lst)
+int	double_charp_size(char **var)
 {
-	size_t	size;
+	int	i;
 
-	size = 0;
-	while (lst)
-	{
-		lst = lst->next;
-		size++;
-	}
-	return ((int)size);
+	i = 0;
+	while (var[i])
+		i++;
+	return (i);
 }
