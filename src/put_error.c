@@ -6,7 +6,7 @@
 /*   By: ffornes- <ffornes-@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/27 13:01:51 by ffornes-          #+#    #+#             */
-/*   Updated: 2023/07/24 13:11:13 by ffornes-         ###   ########.fr       */
+/*   Updated: 2023/07/26 15:33:48 by ffornes-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,10 +18,6 @@ void	put_error(char *str, int error_id)
 	char	*aux;
 
 	aux = NULL;
-	if (error_id == 42)
-		aux = ft_strjoin(str, ": found forbidden character: `\\\'\n");
-	else if (error_id == 43)
-		aux = ft_strjoin(str, ": found forbidden character: `;\'\n");
 	else if (error_id == 44)
 		aux = ft_strjoin(str, ": error near unexpected token `\'\'\n");
 	else if (error_id == 45)
