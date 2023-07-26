@@ -6,7 +6,7 @@
 /*   By: ffornes- <ffornes-@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/27 12:29:42 by ffornes-          #+#    #+#             */
-/*   Updated: 2023/07/26 17:33:39 by ffornes-         ###   ########.fr       */
+/*   Updated: 2023/07/26 17:42:59 by ffornes-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,11 +40,11 @@ int	parse_input(char **str, char *envp[])
 	token = token_list->content;
 	while (1)
 	{
-		printf("Content: %s\n", token->string);
-		if (!token_list->next)
-			break ;
+		printf("Token: %s\n", token->string);
 		token_list = token_list->next;
 		token = token_list->content;
+		if (!token->string)
+			break ;
 	}
 	return (0);
 	// ENDTESTS
