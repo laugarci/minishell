@@ -6,7 +6,7 @@
 /*   By: ffornes- <ffornes-@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/27 12:29:42 by ffornes-          #+#    #+#             */
-/*   Updated: 2023/07/26 17:42:59 by ffornes-         ###   ########.fr       */
+/*   Updated: 2023/07/27 13:04:37 by ffornes-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,13 +34,28 @@ int	parse_input(char **str, char *envp[])
 		return (45);
 
 	token_list = save_tokens(out);
+	process_tokens(&token_list);
 
 	// TESTING
 	t_token		*token;
 	token = token_list->content;
 	while (1)
 	{
-		printf("Token: %s\n", token->string);
+		printf("Token = [String: %s]\t", token->string);
+		printf("[Type: ");
+		if (token->type == INFILE)
+			printf("INFILE]");
+		else if (token->type == HERE_DOC)
+			printf("HERE_DOC]");
+		else if (token->type == PIPE)
+			printf("PIPE]");
+		else if (token->type == O_APPEND)
+			printf("OUTFILE APPEND]");
+		else if (token->type == O_TRUNC)
+			printf("OUTFILE TRUNC]");
+		else
+			printf("-1]");
+		printf("\t[Quotes: %d]\n", token->quotes);
 		token_list = token_list->next;
 		token = token_list->content;
 		if (!token->string)

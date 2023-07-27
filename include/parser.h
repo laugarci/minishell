@@ -6,16 +6,18 @@
 /*   By: ffornes- <ffornes-@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/06 11:42:45 by ffornes-          #+#    #+#             */
-/*   Updated: 2023/07/26 17:33:58 by ffornes-         ###   ########.fr       */
+/*   Updated: 2023/07/27 12:48:09 by ffornes-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef PARSER_H
 # define PARSER_H
 
-# define CMD	0
-# define EVAL	1
-# define PIPE	2
+# define PIPE		0
+# define INFILE		1
+# define HERE_DOC	2
+# define O_APPEND	3
+# define O_TRUNC	4
 
 #include "libft_defs.h"
 
@@ -35,6 +37,7 @@ char		*remove_quotes(char *str);
 
 t_token		*new_token(char *string, int type, int quotes);
 t_list		*save_tokens(char *input);
+void		process_tokens(t_list **token_list);
 
 int			double_charp_size(char **var);
 
