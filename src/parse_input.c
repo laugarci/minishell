@@ -6,7 +6,7 @@
 /*   By: ffornes- <ffornes-@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/27 12:29:42 by ffornes-          #+#    #+#             */
-/*   Updated: 2023/07/06 16:07:24 by ffornes-         ###   ########.fr       */
+/*   Updated: 2023/07/27 09:50:54 by laugarci         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -136,12 +136,6 @@ int	parse_input(char *str, char *envp[])
 	}
 //	return (0);
 
-	int	i = 0;
-	while (inputs[i])
-	{
-		printf("Input %d: %s\n", i, inputs[i]);
-		i++;
-	}
 	free_double((void **)inputs);
 	return (0);
 	envp[0] = NULL;

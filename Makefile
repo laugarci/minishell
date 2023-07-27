@@ -6,7 +6,7 @@
 #    By: ffornes- <ffornes-@student.42barcel>       +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/06/26 15:00:09 by ffornes-          #+#    #+#              #
-#    Updated: 2023/07/14 10:22:51 by laugarci         ###   ########.fr        #
+#    Updated: 2023/07/26 17:54:15 by laugarci         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -49,6 +49,7 @@ clean:
 			@make -C libft/ clean
 
 fclean:	clean
+		rmdir $(OBJ_DIR)
 		$(RM) $(NAME)
 		@make -C libft/ fclean
 
