@@ -6,7 +6,7 @@
 /*   By: laugarci <laugarci@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/04 15:00:39 by laugarci          #+#    #+#             */
-/*   Updated: 2023/07/26 12:59:52 by laugarci         ###   ########.fr       */
+/*   Updated: 2023/07/27 11:14:35 by laugarci         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -128,7 +128,6 @@ int	exec_commands(char *input, char **env)
 			free_double((void **)args);
 		}
 		free_double((void **)split_command);
-		free(input);
 		exit(0);
 	}
 	else
