@@ -6,7 +6,7 @@
 /*   By: ffornes- <ffornes-@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/27 12:29:42 by ffornes-          #+#    #+#             */
-/*   Updated: 2023/07/27 13:04:37 by ffornes-         ###   ########.fr       */
+/*   Updated: 2023/07/27 14:55:08 by ffornes-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,10 +28,14 @@ int	parse_input(char **str, char *envp[])
 
 	out = *str;
 	error_id = check_quote_state(out);
+	if (!error_id)
+		error_id = clean_input(&out);
 	if (error_id == 1)
 		return (44);
 	else if (error_id == 2)
 		return (45);
+	else if (error_id)
+		return (error_id);
 
 	token_list = save_tokens(out);
 	process_tokens(&token_list);
