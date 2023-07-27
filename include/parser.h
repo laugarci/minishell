@@ -6,7 +6,7 @@
 /*   By: ffornes- <ffornes-@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/06 11:42:45 by ffornes-          #+#    #+#             */
-/*   Updated: 2023/07/27 12:48:09 by ffornes-         ###   ########.fr       */
+/*   Updated: 2023/07/27 17:03:06 by ffornes-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,8 @@ typedef struct s_token
 	int		type;
 	int		quotes;
 }			t_token;
+
+int			clean_input(char **input);
 
 char		*expand_evals(char *input, char *envp[]);
 int			expansion_amount(char *input);

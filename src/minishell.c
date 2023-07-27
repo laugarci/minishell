@@ -6,7 +6,7 @@
 /*   By: laugarci <laugarci@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/05 14:01:37 by laugarci          #+#    #+#             */
-/*   Updated: 2023/07/27 11:39:40 by ffornes-         ###   ########.fr       */
+/*   Updated: 2023/07/27 16:58:06 by ffornes-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,7 +64,7 @@ int	main(int argc, char *argv[], char *envp[])
 	env = set_env(envp);
 	if (!env) // mem error
 		return (1);
-	prompt = ft_strjoin((argv[0] + 2), " > ");
+	prompt = ft_strjoin((argv[0] + 2), "$ ");
 	if (!prompt)
 		return (1);
 	while (1)
