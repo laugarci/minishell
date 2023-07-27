@@ -6,7 +6,7 @@
 /*   By: ffornes- <ffornes-@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/27 14:53:30 by ffornes-          #+#    #+#             */
-/*   Updated: 2023/07/27 17:03:36 by ffornes-         ###   ########.fr       */
+/*   Updated: 2023/07/27 17:26:39 by ffornes-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,7 @@
 #include "minishell.h"
 #include "parser.h"
 #include <stdlib.h>
+#include <stdio.h>
 
 static int	open_state(int state, char c)
 {
@@ -53,6 +54,7 @@ static int	needs_space(char *str)
 static char	*rewrite_input(char *str, int i)
 {
 	char	*out;
+	char	*aux;
 
 	out = malloc(sizeof(char) * i);
 	if (!out)
@@ -61,13 +63,23 @@ static char	*rewrite_input(char *str, int i)
 		return (NULL);
 	}
 	ft_strlcpy(out, str, i);
-	free(str);
+	aux = out;
+	out = ft_strjoin(out, " | ");
+	free(aux);
+	if (!out)
+		return (NULL);
+	aux = out;
+	out = ft_strjoin(out, (str + i));
+	free(aux);
+	if (!out)
+		return (NULL);
 	return (out);
 }
 
 int	clean_input(char **input)
 {
 	int		i;
+	char	*aux;
 	char	*str;
 
 	str = *input;
@@ -80,7 +92,10 @@ int	clean_input(char **input)
 			return (46);
 		else if (i)
 		{
-			str = rewrite_input(str, i);
+			aux = str;
+			printf("Before: %s\n", str);
+			str = rewrite_input(str, i + 1);
+			printf("After: %s\n", str);
 			if (!str)
 				return (1); // mem error
 		}
