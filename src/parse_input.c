@@ -6,7 +6,7 @@
 /*   By: ffornes- <ffornes-@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/27 12:29:42 by ffornes-          #+#    #+#             */
-/*   Updated: 2023/07/27 14:55:08 by ffornes-         ###   ########.fr       */
+/*   Updated: 2023/07/27 17:16:04 by ffornes-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,8 +36,11 @@ int	parse_input(char **str, char *envp[])
 		return (45);
 	else if (error_id)
 		return (error_id);
+	printf("IN PARSER: %s\n", out);
 
 	token_list = save_tokens(out);
+	// Must handle redirections with it's file directly next to it without a space in between like:
+	// >HOLA.txt <<KELOKE ...
 	process_tokens(&token_list);
 
 	// TESTING
