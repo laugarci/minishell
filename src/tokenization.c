@@ -6,7 +6,7 @@
 /*   By: ffornes- <ffornes-@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/26 17:15:53 by ffornes-          #+#    #+#             */
-/*   Updated: 2023/07/27 17:26:42 by ffornes-         ###   ########.fr       */
+/*   Updated: 2023/07/31 15:44:53 by ffornes-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,7 @@
 #include "libft.h"
 #include "libft_bonus.h"
 #include <stdlib.h>
+#include <stdio.h>
 
 static int	get_token_type(char	*str)
 {
@@ -67,7 +68,7 @@ t_list	*save_tokens(char *input)
 	i = 0;
 	// Must not split by spaces exactly. Must check first if commas are open, and if they're
 	// then spaces don't count towards the split.
-	inputs = ft_split(input, ' ');
+	inputs = token_split(input);
 	if (!inputs)
 		return (NULL);
 	token_list = malloc(sizeof(t_list) * double_charp_size(inputs));

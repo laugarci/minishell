@@ -6,14 +6,21 @@
 #    By: ffornes- <ffornes-@student.42barcel>       +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/06/26 15:00:09 by ffornes-          #+#    #+#              #
-#    Updated: 2023/07/27 17:02:54 by ffornes-         ###   ########.fr        #
+#    Updated: 2023/07/31 17:18:05 by ffornes-         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME = minishell
 
 SRC_DIR = src/
-SRC_FILES = minishell.c get_path.c put_error.c parse_input.c here_doc.c exec_commands.c exec_pipes.c expansion.c expansion_utils.c quotes.c tokenization.c token_new.c double_charp_size.c clean_input.c
+SRC_FILES = minishell.c \
+			parse_input.c clean_input.c \
+			expansion.c expansion_utils.c \
+			quotes.c quote_utils.c \
+			tokenization.c token_new.c token_split.c \
+			get_path.c exec_commands.c exec_pipes.c here_doc.c \
+			double_charp_size.c \
+			put_error.c
 
 OBJ_DIR = objs/
 OBJ_FILES = $(SRC_FILES:.c=.o)
