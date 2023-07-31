@@ -6,7 +6,7 @@
 /*   By: ffornes- <ffornes-@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/27 12:29:42 by ffornes-          #+#    #+#             */
-/*   Updated: 2023/07/31 17:33:37 by ffornes-         ###   ########.fr       */
+/*   Updated: 2023/07/31 18:42:35 by ffornes-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,13 +29,13 @@ static void	print_tokens(t_list *lst)
 		if (token->type == INFILE)
 			printf("INFILE]");
 		else if (token->type == HERE_DOC)
-			printf("HERE_DOC]");
+			printf("H_DOC]");
 		else if (token->type == PIPE)
 			printf("PIPE]");
 		else if (token->type == O_APPEND)
-			printf("OUTFILE APPEND]");
+			printf("O_APPEND]");
 		else if (token->type == O_TRUNC)
-			printf("OUTFILE TRUNC]");
+			printf("O_TRUNC]");
 		else
 			printf("-1]");
 		printf("\t[Quotes: %d]\n", token->quotes);
