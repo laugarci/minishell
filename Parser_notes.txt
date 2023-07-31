@@ -1,3 +1,10 @@
+ToDo:
+	Fix Leaks.
+	Implement quote handling
+	Save last quotes in token->quotes
+	Implement expansion and handle it well with quote handling
+	Tokenize again after expanding
+
 Command [-Flag] [Arg] [Nothing]
 $[Variable]		variable de entorno == $NOMBRE="VALOR" || $NOMBRE=VALOR || $NOMBRE=(comandos)
 << [DELIMITER]	here_doc
