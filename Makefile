@@ -6,7 +6,7 @@
 #    By: ffornes- <ffornes-@student.42barcel>       +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/06/26 15:00:09 by ffornes-          #+#    #+#              #
-#    Updated: 2023/07/31 17:18:05 by ffornes-         ###   ########.fr        #
+#    Updated: 2023/07/31 17:46:04 by ffornes-         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -14,10 +14,10 @@ NAME = minishell
 
 SRC_DIR = src/
 SRC_FILES = minishell.c \
-			parse_input.c clean_input.c \
+			parse_input.c clean_input.c split_input.c \
 			expansion.c expansion_utils.c \
 			quotes.c quote_utils.c \
-			tokenization.c token_new.c token_split.c \
+			tokenization.c token_new.c \
 			get_path.c exec_commands.c exec_pipes.c here_doc.c \
 			double_charp_size.c \
 			put_error.c
@@ -57,7 +57,7 @@ clean:
 
 fclean:	clean
 		$(RM) $(NAME)
-		rmdir $(OBJ_DIR)
+		$(RM) -rf $(OBJ_DIR)
 		@make -C libft/ fclean
 
 re:	fclean all
