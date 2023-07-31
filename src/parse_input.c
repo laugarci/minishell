@@ -6,7 +6,7 @@
 /*   By: ffornes- <ffornes-@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/27 12:29:42 by ffornes-          #+#    #+#             */
-/*   Updated: 2023/07/31 14:15:16 by ffornes-         ###   ########.fr       */
+/*   Updated: 2023/07/31 17:33:37 by ffornes-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,35 +16,12 @@
 #include "minishell.h"
 #include "parser.h"
 
-// Must split all input by spaces and save each char* into a token forming a t_list type
-// 	in which we'll store all tokens with it's type, quote state... etc.
-
-int	parse_input(char **str, char *envp[])
+// DEBUGGING
+static void	print_tokens(t_list *lst)
 {
-	int		error_id;
-	char	*out;
-	char	*tmp;
-	t_list	*token_list;
-
-	out = *str;
-	error_id = check_quote_state(out);
-	if (!error_id)
-		error_id = clean_input(&out);
-	if (error_id == 1)
-		return (44);
-	else if (error_id == 2)
-		return (45);
-	else if (error_id)
-		return (error_id);
-
-	token_list = save_tokens(out);
-	// Must handle redirections with it's file directly next to it without a space in between like:
-	// >HOLA.txt <<KELOKE ...
-	process_tokens(&token_list);
-
-	// TESTING
 	t_token		*token;
-	token = token_list->content;
+
+	token = lst->content;
 	while (1)
 	{
 		printf("Token = [String: %s]\t", token->string);
@@ -62,16 +39,44 @@ int	parse_input(char **str, char *envp[])
 		else
 			printf("-1]");
 		printf("\t[Quotes: %d]\n", token->quotes);
-		token_list = token_list->next;
-		token = token_list->content;
+		lst = lst->next;
+		token = lst->content;
 		if (!token->string)
 			break ;
 	}
-	return (0);
-	// ENDTESTS
+}
 
+static int	check_error(int error_id)
+{
+	if (error_id == 1)
+		return (44);
+	else if (error_id == 2)
+		return (45);
+	return (error_id);
+}
+
+int	parse_input(char **str, char *envp[])
+{
+	int		error_id;
+	char	*out;
+	char	*tmp;
+	t_list	*token_list;
+
+	out = *str;
+	error_id = check_quote_state(out);
+	if (!error_id)
+		error_id = clean_input(&out);
+	if (error_id)
+		return (check_error(error_id));
+	token_list = save_tokens(out);
+	if (!token_list)
+		return (1); // Mem error
+	// Must handle redirections with it's file directly next to it without a space in between like:
+	// >HOLA.txt <<KELOKE ...
+	process_tokens(&token_list);
 	if (!token_list->content)
 		return (1);
+	print_tokens(token_list); // DEBUGGING
 	out = expand_evals(out, envp);
 	tmp = remove_quotes(out);
 	*str = tmp;

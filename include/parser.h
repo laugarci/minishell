@@ -6,7 +6,7 @@
 /*   By: ffornes- <ffornes-@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/06 11:42:45 by ffornes-          #+#    #+#             */
-/*   Updated: 2023/07/31 17:15:58 by ffornes-         ###   ########.fr       */
+/*   Updated: 2023/07/31 17:42:31 by ffornes-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,6 +29,7 @@ typedef struct s_token
 }			t_token;
 
 int			clean_input(char **input);
+char		**split_input(char *input);
 
 char		*expand_evals(char *input, char *envp[]);
 int			expansion_amount(char *input);
@@ -39,7 +40,6 @@ char		*remove_quotes(char *str);
 int			open_state(int state, char c);
 
 t_token		*new_token(char *string, int type, int quotes);
-char		**token_split(char *input);
 t_list		*save_tokens(char *input);
 void		process_tokens(t_list **token_list);
 
