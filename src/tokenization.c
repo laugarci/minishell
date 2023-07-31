@@ -6,7 +6,7 @@
 /*   By: ffornes- <ffornes-@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/26 17:15:53 by ffornes-          #+#    #+#             */
-/*   Updated: 2023/07/31 17:42:58 by ffornes-         ###   ########.fr       */
+/*   Updated: 2023/07/31 18:36:00 by ffornes-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,42 +21,66 @@ static int	get_token_type(char	*str)
 {
 	if (!ft_strncmp(str, "|\0", 2))
 		return (PIPE);
-	else if (!ft_strncmp(str, "<\0", 2))
+	else if ((!ft_strncmp(str, "<\0", 2)) 
+		|| (str[0] == '<' && str[1] && str[1] != '<'))
 		return (INFILE);
-	else if (!ft_strncmp(str, "<<\0", 3))
+	else if (!ft_strncmp(str, "<<\0", 3)
+		|| (str[0] == '<' && str[1] == '<' && str[2]))
 		return (HERE_DOC);
-	else if (!ft_strncmp(str, ">\0", 2))
+	else if (!ft_strncmp(str, ">\0", 2) 
+		|| (str[0] == '>' && str[1] && str[1] != '>'))
 		return (O_TRUNC);
-	else if (!ft_strncmp(str, ">>\0", 3))
+	else if (!ft_strncmp(str, ">>\0", 3)
+		|| (str[0] == '>' && str[1] == '>' && str[2]))
 		return (O_APPEND);
 	return (-1);
+}
+
+static void	clean_redirects(t_list **lst)
+{
+	t_list	*tmp_lst;
+	t_token	*token;
+	char	*str;
+	int		next;
+
+	tmp_lst = *lst;
+	token = tmp_lst->content;
+	next = 0;
+	while (token->string)
+	{
+		str = token->string;
+		if (token->type > 0)
+		{
+			if (!ft_strncmp(str, "<\0", 2) || !ft_strncmp(str, "<<\0", 3) 
+				|| !ft_strncmp(str, ">\0", 2) || !ft_strncmp(str, ">>\0", 3))
+				next = token->type;
+			else
+				next = 0;
+		}
+		tmp_lst = tmp_lst->next;
+		token = tmp_lst->content;
+		if (next)
+			token->type = next;
+	}
 }
 
 void	process_tokens(t_list **token_list)
 {
 	t_list	*tmp_lst;
 	t_token	*aux;
-	t_token	*tmp;
 
 	tmp_lst = *token_list;
 	aux = tmp_lst->content;
 	while (1)
 	{
 		if (aux->type < 0)
-		{
 			aux->type = get_token_type(aux->string);
-			if (aux->type > 0)
-			{
-				tmp_lst = tmp_lst->next;
-				tmp = tmp_lst->content;
-				tmp->type = aux->type;
-			}
-		}
 		tmp_lst = tmp_lst->next;
 		aux = tmp_lst->content;
 		if (!aux->string)
 			break ;
 	}
+	clean_redirects(token_list);
 }
 
 t_list	*save_tokens(char *input)
