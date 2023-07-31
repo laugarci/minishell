@@ -6,7 +6,7 @@
 /*   By: ffornes- <ffornes-@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/06 11:42:45 by ffornes-          #+#    #+#             */
-/*   Updated: 2023/07/31 17:42:31 by ffornes-         ###   ########.fr       */
+/*   Updated: 2023/07/31 19:01:26 by ffornes-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,8 @@ typedef struct s_token
 	int		type;
 	int		quotes;
 }			t_token;
+
+int			parse_input(char *str, char *envp[], t_list **token_list);
 
 int			clean_input(char **input);
 char		**split_input(char *input);

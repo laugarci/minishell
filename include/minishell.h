@@ -6,14 +6,12 @@
 /*   By: ffornes- <ffornes-@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/27 11:32:21 by ffornes-          #+#    #+#             */
-/*   Updated: 2023/07/26 15:40:52 by ffornes-         ###   ########.fr       */
+/*   Updated: 2023/07/31 18:59:50 by ffornes-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef MINISHELL_H
 # define MINISHELL_H
-
-int			parse_input(char **str, char *envp[]);
 
 char		*get_path(char **cmd, char **envp);
 

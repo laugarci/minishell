@@ -6,7 +6,7 @@
 /*   By: ffornes- <ffornes-@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/31 12:35:07 by ffornes-          #+#    #+#             */
-/*   Updated: 2023/07/31 17:41:55 by ffornes-         ###   ########.fr       */
+/*   Updated: 2023/07/31 18:49:59 by ffornes-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -105,6 +105,5 @@ char	**split_input(char *input)
 		}
 		i++;
 	}
-	printf("Amount of tokens: %d\n", j);
 	return (save_new_input(input, j));
 }
