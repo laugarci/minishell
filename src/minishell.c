@@ -6,7 +6,7 @@
 /*   By: laugarci <laugarci@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/05 14:01:37 by laugarci          #+#    #+#             */
-/*   Updated: 2023/07/27 16:58:06 by ffornes-         ###   ########.fr       */
+/*   Updated: 2023/07/31 19:06:08 by ffornes-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,39 @@
 #include <readline/history.h>
 #include <stdlib.h>
 #include "libft.h"
+#include "libft_bonus.h"
 #include "minishell.h"
+#include "parser.h"
+
+/// AJNKNAEKK DEBUGGGGGGGGGGGG
+static void	print_tokens(t_list *lst)
+{
+	t_token		*token;
+
+	token = lst->content;
+	while (1)
+	{
+		printf("Token = [String: %s]\t", token->string);
+		printf("[Type: ");
+		if (token->type == INFILE)
+			printf("INFILE]");
+		else if (token->type == HERE_DOC)
+			printf("H_DOC]");
+		else if (token->type == PIPE)
+			printf("PIPE]");
+		else if (token->type == O_APPEND)
+			printf("O_APPEND]");
+		else if (token->type == O_TRUNC)
+			printf("O_TRUNC]");
+		else
+			printf("-1]");
+		printf("\t[Quotes: %d]\n", token->quotes);
+		lst = lst->next;
+		token = lst->content;
+		if (!token->string)
+			break ;
+	}
+} // DEBUG DEBUG DEBUG DEBUG DELETE LATER   RR ER E REA EGAG 
 
 static char	**set_env(char **src)
 {
@@ -57,7 +89,7 @@ int	main(int argc, char *argv[], char *envp[])
 	char	*input;
 	char	*prompt;
 	char	**env;
-	int		error_id;
+	t_list	*list;
 
 	if (argc > 1)
 		exit(1);
@@ -74,11 +106,11 @@ int	main(int argc, char *argv[], char *envp[])
 		{
 			add_history(input);
 			exit_check(input);
-			error_id = parse_input(&input, envp);
-			if (error_id)
-				put_error("minishell", error_id);
-//			else
+			if (!parse_input(input, env, &list))
+			{
+				print_tokens(list);
 //				cmp_commands(input, env);
+			}
 		}
 		free(input);
 	}
