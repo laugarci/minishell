@@ -6,7 +6,7 @@
 /*   By: ffornes- <ffornes-@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/27 14:53:30 by ffornes-          #+#    #+#             */
-/*   Updated: 2023/07/27 17:26:39 by ffornes-         ###   ########.fr       */
+/*   Updated: 2023/07/31 12:38:59 by ffornes-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -98,6 +98,7 @@ int	clean_input(char **input)
 			printf("After: %s\n", str);
 			if (!str)
 				return (1); // mem error
+			*input = str;
 		}
 		i = needs_space(str);
 	}
