@@ -6,7 +6,7 @@
 /*   By: ffornes- <ffornes-@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/27 12:29:42 by ffornes-          #+#    #+#             */
-/*   Updated: 2023/07/31 19:06:02 by ffornes-         ###   ########.fr       */
+/*   Updated: 2023/08/01 16:51:26 by ffornes-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,16 +30,16 @@ static int	check_error(int error_id)
 int	parse_input(char *str, char *envp[], t_list **token_list)
 {
 	int		error_id;
-	char	*out;
+	char	*input;
 	t_list	*lst;
 
-	out = str;
-	error_id = check_quote_state(out);
+	input = str;
+	error_id = check_quote_state(input);
 	if (!error_id)
-		error_id = clean_input(&out);
+		error_id = clean_input(&input);
 	if (error_id)
 		return (check_error(error_id));
-	lst = save_tokens(out);
+	lst = save_tokens(input);
 	if (!lst)
 		return (1); // Mem error
 	// Must handle redirections with it's file directly next to it without a space in between like:
@@ -48,11 +48,10 @@ int	parse_input(char *str, char *envp[], t_list **token_list)
 	if (!lst->content)
 		return (1);
 	*token_list = lst;
-
 	return (0);
 
-	out = expand_evals(out, envp);
-//	tmp = remove_quotes(out);
+	input = expand_evals(input, envp);
+//	tmp = remove_quotes(input);
 //	*str = tmp;
 	return (0);
 }

@@ -6,7 +6,7 @@
 /*   By: laugarci <laugarci@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/05 14:01:37 by laugarci          #+#    #+#             */
-/*   Updated: 2023/07/31 19:06:08 by ffornes-         ###   ########.fr       */
+/*   Updated: 2023/08/01 17:52:18 by ffornes-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -111,8 +111,9 @@ int	main(int argc, char *argv[], char *envp[])
 				print_tokens(list);
 //				cmp_commands(input, env);
 			}
+			free(input); // Double free in case "hola|amigo|mio|solo|tu|encuentras|lenya"
+			free_token_list(list);
 		}
-		free(input);
 	}
 	clear_history();
 	free(prompt);
