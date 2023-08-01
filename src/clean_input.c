@@ -86,6 +86,7 @@ int	clean_input(char **input)
 			if (!str)
 				return (1); // mem error
 			*input = str;
+			free(aux);
 		}
 		i = needs_space(str);
 	}
