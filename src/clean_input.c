@@ -83,10 +83,10 @@ int	clean_input(char **input)
 		{
 			aux = str;
 			str = rewrite_input(str, i + 1);
+			free(aux);
 			if (!str)
 				return (1); // mem error
 			*input = str;
-			free(aux);
 		}
 		i = needs_space(str);
 	}
