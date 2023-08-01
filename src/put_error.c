@@ -6,7 +6,7 @@
 /*   By: ffornes- <ffornes-@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/27 13:01:51 by ffornes-          #+#    #+#             */
-/*   Updated: 2023/07/27 14:25:18 by ffornes-         ###   ########.fr       */
+/*   Updated: 2023/08/01 17:14:32 by ffornes-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,8 @@ void	put_error(char *str, int error_id)
 		aux = ft_strjoin(str, ": error near unexpected token `\"\'\n");
 	else if (error_id == 46)
 		aux = ft_strjoin(str, ": error near unexpected token `|'\n");
+	else if (error_id == 47)
+		aux = ft_strjoin(str, ": error near unexpected token `<'\n");
 	else if (error_id == 127)
 		aux = ft_strjoin(str, ": No such file or directory\n");
 	else if (error_id == 128)

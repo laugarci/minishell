@@ -6,7 +6,7 @@
 /*   By: ffornes- <ffornes-@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/26 17:15:53 by ffornes-          #+#    #+#             */
-/*   Updated: 2023/07/31 18:36:00 by ffornes-         ###   ########.fr       */
+/*   Updated: 2023/08/01 17:08:02 by ffornes-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,20 +19,27 @@
 
 static int	get_token_type(char	*str)
 {
-	if (!ft_strncmp(str, "|\0", 2))
-		return (PIPE);
-	else if ((!ft_strncmp(str, "<\0", 2)) 
-		|| (str[0] == '<' && str[1] && str[1] != '<'))
-		return (INFILE);
-	else if (!ft_strncmp(str, "<<\0", 3)
-		|| (str[0] == '<' && str[1] == '<' && str[2]))
-		return (HERE_DOC);
-	else if (!ft_strncmp(str, ">\0", 2) 
-		|| (str[0] == '>' && str[1] && str[1] != '>'))
-		return (O_TRUNC);
-	else if (!ft_strncmp(str, ">>\0", 3)
-		|| (str[0] == '>' && str[1] == '>' && str[2]))
-		return (O_APPEND);
+	if (ft_strchr(str, '|'))
+		if (!ft_strncmp(str, "|\0", 2))
+			return (PIPE);
+	if (ft_strchr(str, '<'))
+	{
+		if ((!ft_strncmp(str, "<\0", 2)) 
+			|| (str[0] == '<' && str[1] && str[1] != '<'))
+			return (INFILE);
+		else if (!ft_strncmp(str, "<<\0", 3)
+			|| (str[0] == '<' && str[1] == '<' && str[2]))
+			return (HERE_DOC);
+	}
+	else if (ft_strchr(str, '>'))
+	{
+		if (!ft_strncmp(str, ">\0", 2) 
+			|| (str[0] == '>' && str[1] && str[1] != '>'))
+			return (O_TRUNC);
+		else if (!ft_strncmp(str, ">>\0", 3)
+			|| (str[0] == '>' && str[1] == '>' && str[2]))
+			return (O_APPEND);
+	}
 	return (-1);
 }
 
