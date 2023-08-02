@@ -6,7 +6,7 @@
 /*   By: ffornes- <ffornes-@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/26 17:15:53 by ffornes-          #+#    #+#             */
-/*   Updated: 2023/08/02 14:38:01 by ffornes-         ###   ########.fr       */
+/*   Updated: 2023/08/02 16:18:40 by ffornes-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,6 +71,35 @@ static void	clean_redirects(t_list **lst)
 	}
 }
 
+/*
+static void	remove_duplicates(t_list **token_list)
+{
+	t_list	*tmp_lst;
+	t_list	*previous;
+	t_token	*token;
+
+	tmp_lst = *token_list;
+	previous = NULL;
+	token = tmp_lst->content;
+	while (tmp_lst)
+	{
+		if (token->type)
+		{
+			if (!ft_strncmp(str, "<\0", 2) || !ft_strncmp(str, "<<\0", 3) 
+				|| !ft_strncmp(str, ">\0", 2) || !ft_strncmp(str, ">>\0", 3))
+			{
+
+			}
+		}
+		else
+		{
+			previous = tmp_lst;
+			tmp_lst = tmp_lst->next;
+		}
+	}
+}
+*/
+
 void	process_tokens(t_list **token_list)
 {
 	t_list	*tmp_lst;
@@ -88,6 +117,7 @@ void	process_tokens(t_list **token_list)
 			break ;
 	}
 	clean_redirects(token_list);
+	//remove_duplicates(token_list);
 }
 
 t_list	*save_tokens(char *input)

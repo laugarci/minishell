@@ -6,7 +6,7 @@
 /*   By: ffornes- <ffornes-@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/27 12:29:42 by ffornes-          #+#    #+#             */
-/*   Updated: 2023/08/02 15:36:01 by ffornes-         ###   ########.fr       */
+/*   Updated: 2023/08/02 16:18:11 by ffornes-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,8 +47,8 @@ static int	basic_input_checks(char **input)
 	error = check_quote_state(*input);
 	if (!error)
 		if (ft_strchr(*input, '|') 
-		|| ft_strchr(*input, '<') 
-		|| ft_strchr(*input, '>'))
+			|| ft_strchr(*input, '<') 
+			|| ft_strchr(*input, '>'))
 			error = clean_input(input);
 	return (error);
 }
@@ -68,14 +68,14 @@ int	parse_input(char *str, char *envp[], t_list **token_list)
 	lst = save_tokens(str); // Leak here
 	if (!lst)
 		return (1);
-	// Must handle redirections with it's file directly next to it without a space in between like:
+	// Must handle redirections with it's file directly 
+	// 		next to it without a space in between like:
 	// >HOLA.txt <<KELOKE ...
 	process_tokens(&lst);
 	if (!lst->content)
 		return (1);
 	*token_list = lst;
-	return (0);
-	
+	return (0); // TEMP
 	input = expand_evals(input, envp);
 //	tmp = remove_quotes(input);
 //	*str = tmp;
