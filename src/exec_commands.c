@@ -93,7 +93,8 @@ int	exec_commands_wf(char *space_pos, char *input, char **env, char **split_com)
 		args[2] = NULL;
 	else
 		args[count_flags + 1] = NULL;
-	execve(args[0], args, env);
+	if ((execve(args[0], args, env)) == -1)
+		printf("zsh: command not found: %s\n", input); //hay que quitar las flags
 	free_double((void **)flags);
 	free_double((void **)args);
 	return (0);
@@ -122,9 +123,11 @@ int	exec_commands(char *input, char **env)
 				return (1);
 			args[0] = get_path(split_command, env);
 			args[1] = NULL;
-			execve(args[0], args, env);
+			if ((execve(args[0], args, env)) == -1)
+				printf("zsh: command not found: %s\n", input);
 			free_double((void **)args);
 		}
+		free_double((void **)split_command);
 		free_double((void **)split_command);
 		exit(0);
 	}
