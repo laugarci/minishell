@@ -6,7 +6,7 @@
 /*   By: ffornes- <ffornes-@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/27 12:29:42 by ffornes-          #+#    #+#             */
-/*   Updated: 2023/08/02 14:39:50 by ffornes-         ###   ########.fr       */
+/*   Updated: 2023/08/02 15:36:01 by ffornes-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,6 +40,19 @@ static int	is_empty(char *input)
 	return (1);
 }
 
+static int	basic_input_checks(char **input)
+{
+	int		error;
+
+	error = check_quote_state(*input);
+	if (!error)
+		if (ft_strchr(*input, '|') 
+		|| ft_strchr(*input, '<') 
+		|| ft_strchr(*input, '>'))
+			error = clean_input(input);
+	return (error);
+}
+
 // IN CASE OF ERROR SET PERROR HERE AND CALL ERROR MESSAGE FROM THIS FUNCTION
 int	parse_input(char *str, char *envp[], t_list **token_list)
 {
@@ -49,13 +62,10 @@ int	parse_input(char *str, char *envp[], t_list **token_list)
 
 	if (is_empty(str))
 		return (1);
-	input = str;
-	error_id = check_quote_state(input);
-	if (!error_id)
-		error_id = clean_input(&input);
+	error_id = basic_input_checks(&str);
 	if (error_id)
 		return (check_error(error_id));
-	lst = save_tokens(input); // Leak here
+	lst = save_tokens(str); // Leak here
 	if (!lst)
 		return (1);
 	// Must handle redirections with it's file directly next to it without a space in between like:
@@ -65,6 +75,7 @@ int	parse_input(char *str, char *envp[], t_list **token_list)
 		return (1);
 	*token_list = lst;
 	return (0);
+	
 	input = expand_evals(input, envp);
 //	tmp = remove_quotes(input);
 //	*str = tmp;
