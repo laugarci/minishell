@@ -55,6 +55,7 @@ clean:
 			@make -C libft/ clean
 
 fclean:	clean
+		rmdir $(OBJ_DIR)
 		$(RM) $(NAME)
 		$(RM) -rf $(OBJ_DIR)
 		@make -C libft/ fclean
