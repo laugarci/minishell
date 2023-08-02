@@ -6,7 +6,7 @@
 /*   By: laugarci <laugarci@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/05 14:01:37 by laugarci          #+#    #+#             */
-/*   Updated: 2023/08/02 13:14:46 by ffornes-         ###   ########.fr       */
+/*   Updated: 2023/08/02 14:40:24 by ffornes-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,6 @@
 #include "minishell.h"
 #include "parser.h"
 
-/*
 /// AJNKNAEKK DEBUGGGGGGGGGGGG
 static void	print_tokens(t_list *lst)
 {
@@ -49,7 +48,6 @@ static void	print_tokens(t_list *lst)
 			break ;
 	}
 } // DEBUG DEBUG DEBUG DEBUG DELETE LATER   RR ER E REA EGAG 
-*/
 
 static char	**set_env(char **src)
 {
@@ -107,23 +105,20 @@ int	main(int argc, char *argv[], char *envp[])
 		input = readline(prompt);
 		if (input[0] != '\0' && input)
 		{
-//			add_history(input);
+			add_history(input);
 			if (exit_check(input))
 				break ;
-			parse_input(input, env, &list);
-/*
 			if (!parse_input(input, env, &list))
 			{
 				print_tokens(list);
 //				cmp_commands(input, env);
-				free_token_list(list);
+				ft_lstclear(&list, (void *)free_token);
 			}
-*/
 		}
 		free(input);
 	}
 	free_double((void **)env);
 	free(prompt);
-//	clear_history();
+	clear_history();
 	return (0);
 }

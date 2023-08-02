@@ -6,7 +6,7 @@
 /*   By: ffornes- <ffornes-@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/31 12:35:07 by ffornes-          #+#    #+#             */
-/*   Updated: 2023/07/31 18:49:59 by ffornes-         ###   ########.fr       */
+/*   Updated: 2023/08/02 14:31:17 by ffornes-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,7 +63,7 @@ static char	**save_new_input(char *input, int amount)
 	char	**out;
 	int		i;
 
-	out = malloc(sizeof(char *) * amount + 1);
+	out = malloc(sizeof(char *) * (amount + 1));
 	if (!out)
 		return (NULL);
 	i = 0;
