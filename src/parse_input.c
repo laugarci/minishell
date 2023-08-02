@@ -6,7 +6,7 @@
 /*   By: ffornes- <ffornes-@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/27 12:29:42 by ffornes-          #+#    #+#             */
-/*   Updated: 2023/08/02 16:18:11 by ffornes-         ###   ########.fr       */
+/*   Updated: 2023/08/02 19:53:10 by ffornes-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,15 +16,6 @@
 #include "libft_bonus.h"
 #include "minishell.h"
 #include "parser.h"
-
-static int	check_error(int error_id)
-{
-	if (error_id == 1)
-		return (44);
-	else if (error_id == 2)
-		return (45);
-	return (error_id);
-}
 
 static int	is_empty(char *input)
 {
@@ -40,32 +31,19 @@ static int	is_empty(char *input)
 	return (1);
 }
 
-static int	basic_input_checks(char **input)
-{
-	int		error;
-
-	error = check_quote_state(*input);
-	if (!error)
-		if (ft_strchr(*input, '|') 
-			|| ft_strchr(*input, '<') 
-			|| ft_strchr(*input, '>'))
-			error = clean_input(input);
-	return (error);
-}
-
 // IN CASE OF ERROR SET PERROR HERE AND CALL ERROR MESSAGE FROM THIS FUNCTION
 int	parse_input(char *str, char *envp[], t_list **token_list)
 {
-	int		error_id;
 	char	*input;
 	t_list	*lst;
 
 	if (is_empty(str))
 		return (1);
-	error_id = basic_input_checks(&str);
-	if (error_id)
-		return (check_error(error_id));
-	lst = save_tokens(str); // Leak here
+	check_quote_state(str);
+	if (ft_strchr(str, '|') || ft_strchr(str, '<') || ft_strchr(str, '>'))
+		str = clean_input(str);
+	lst = save_tokens(str);
+	free(str);
 	if (!lst)
 		return (1);
 	// Must handle redirections with it's file directly 
