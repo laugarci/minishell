@@ -6,7 +6,7 @@
 /*   By: ffornes- <ffornes-@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/27 14:53:30 by ffornes-          #+#    #+#             */
-/*   Updated: 2023/08/02 15:45:16 by ffornes-         ###   ########.fr       */
+/*   Updated: 2023/08/02 19:27:46 by ffornes-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -114,7 +114,6 @@ int	clean_input(char **str)
 			tmp = rewrite_input(*str, i);
 			if (!tmp)
 				return (1); // mem error
-			free(aux);
 			*str = tmp;
 		}
 		i = needs_space(tmp);

@@ -6,7 +6,7 @@
 /*   By: laugarci <laugarci@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/05 14:01:37 by laugarci          #+#    #+#             */
-/*   Updated: 2023/08/02 15:16:00 by ffornes-         ###   ########.fr       */
+/*   Updated: 2023/08/02 19:14:13 by ffornes-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,7 +78,6 @@ static int	exit_check(char *input)
 {
 	if (!ft_strncmp(input, "exit\0", 5))
 	{
-		exit(0);
 		free(input);
 		return (1);
 	}
@@ -115,8 +114,7 @@ int	main(int argc, char *argv[], char *envp[])
 				ft_lstclear(&list, (void *)free_token);
 			}
 		}
-		if (input)
-			free(input);
+		free(input);
 	}
 	free_double((void **)env);
 	free(prompt);

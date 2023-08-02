@@ -6,7 +6,7 @@
 /*   By: ffornes- <ffornes-@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/26 17:15:53 by ffornes-          #+#    #+#             */
-/*   Updated: 2023/08/02 16:18:40 by ffornes-         ###   ########.fr       */
+/*   Updated: 2023/08/02 17:20:48 by ffornes-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -109,7 +109,7 @@ void	process_tokens(t_list **token_list)
 	aux = tmp_lst->content;
 	while (1)
 	{
-		if (aux->type < 0)
+		if (((t_token *)tmp_lst->content)->type < 0)
 			aux->type = get_token_type(aux->string);
 		tmp_lst = tmp_lst->next;
 		aux = tmp_lst->content;
