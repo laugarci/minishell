@@ -6,7 +6,7 @@
 /*   By: ffornes- <ffornes-@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/26 17:17:14 by ffornes-          #+#    #+#             */
-/*   Updated: 2023/07/31 18:30:03 by ffornes-         ###   ########.fr       */
+/*   Updated: 2023/08/02 14:19:44 by ffornes-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ t_token	*new_token(char	*string, int type, int quotes)
 {
 	t_token	*token;
 
-	token = malloc(sizeof(t_token) * 2);
+	token = malloc(sizeof(t_token));
 	if (!token)
 		return (NULL);
 	token->string = string;
