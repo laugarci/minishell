@@ -6,7 +6,7 @@
 /*   By: laugarci <laugarci@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/05 14:01:37 by laugarci          #+#    #+#             */
-/*   Updated: 2023/08/01 17:52:18 by ffornes-         ###   ########.fr       */
+/*   Updated: 2023/08/02 13:14:46 by ffornes-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,7 @@
 #include "minishell.h"
 #include "parser.h"
 
+/*
 /// AJNKNAEKK DEBUGGGGGGGGGGGG
 static void	print_tokens(t_list *lst)
 {
@@ -48,6 +49,7 @@ static void	print_tokens(t_list *lst)
 			break ;
 	}
 } // DEBUG DEBUG DEBUG DEBUG DELETE LATER   RR ER E REA EGAG 
+*/
 
 static char	**set_env(char **src)
 {
@@ -57,7 +59,7 @@ static char	**set_env(char **src)
 	i = 0;
 	while (src[i])
 		i++;
-	dst = malloc(sizeof(char **) * (i + 1));
+	dst = malloc(sizeof(char *) * (i + 1));
 	if (!dst)
 		return (NULL);
 	i = 0;
@@ -74,14 +76,15 @@ static char	**set_env(char **src)
 	return (dst);
 }
 
-static void	exit_check(char *input)
+static int	exit_check(char *input)
 {
 	if (!ft_strncmp(input, "exit\0", 5))
 	{
-		free(input);
-		clear_history();
 		exit(0);
+		free(input);
+		return (1);
 	}
+	return (0);
 }
 
 int	main(int argc, char *argv[], char *envp[])
@@ -104,18 +107,23 @@ int	main(int argc, char *argv[], char *envp[])
 		input = readline(prompt);
 		if (input[0] != '\0' && input)
 		{
-			add_history(input);
-			exit_check(input);
+//			add_history(input);
+			if (exit_check(input))
+				break ;
+			parse_input(input, env, &list);
+/*
 			if (!parse_input(input, env, &list))
 			{
 				print_tokens(list);
 //				cmp_commands(input, env);
+				free_token_list(list);
 			}
-			free(input); // Double free in case "hola|amigo|mio|solo|tu|encuentras|lenya"
-			free_token_list(list);
+*/
 		}
+		free(input);
 	}
-	clear_history();
+	free_double((void **)env);
 	free(prompt);
+//	clear_history();
 	return (0);
 }
