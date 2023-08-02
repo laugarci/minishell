@@ -6,7 +6,7 @@
 /*   By: laugarci <laugarci@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/05 14:01:37 by laugarci          #+#    #+#             */
-/*   Updated: 2023/08/02 14:40:24 by ffornes-         ###   ########.fr       */
+/*   Updated: 2023/08/02 15:16:00 by ffornes-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,14 +93,14 @@ int	main(int argc, char *argv[], char *envp[])
 	t_list	*list;
 
 	if (argc > 1)
-		exit(1);
+		return (1);
 	env = set_env(envp);
 	if (!env) // mem error
 		return (1);
 	prompt = ft_strjoin((argv[0] + 2), "$ ");
 	if (!prompt)
 		return (1);
-	while (1)
+	while (42)
 	{
 		input = readline(prompt);
 		if (input[0] != '\0' && input)
@@ -115,7 +115,8 @@ int	main(int argc, char *argv[], char *envp[])
 				ft_lstclear(&list, (void *)free_token);
 			}
 		}
-		free(input);
+		if (input)
+			free(input);
 	}
 	free_double((void **)env);
 	free(prompt);

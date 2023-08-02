@@ -6,7 +6,7 @@
 /*   By: ffornes- <ffornes-@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/27 14:53:30 by ffornes-          #+#    #+#             */
-/*   Updated: 2023/08/02 13:09:05 by ffornes-         ###   ########.fr       */
+/*   Updated: 2023/08/02 15:45:16 by ffornes-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -94,16 +94,14 @@ static char	*rewrite_input(char *str, int i)
 	return (out);
 }
 
-int	clean_input(char **input)
+int	clean_input(char **str)
 {
 	int		i;
+	char	*tmp;
 	char	*aux;
-	char	*str;
 
-	str = *input;
-	if (!ft_strchr(str, '|') && !ft_strchr(str, '<') && !ft_strchr(str, '>'))
-		return (0);
-	i = needs_space(str);
+	i = needs_space(*str);
+	tmp = ft_strdup("");
 	while (i)
 	{
 		if (i == -1) // Error management
@@ -112,14 +110,15 @@ int	clean_input(char **input)
 			return (47);
 		else
 		{
-			aux = str;
-			str = rewrite_input(str, i);
-			free(aux); // Generates double free issues XD!
-			if (!str)
+			aux = tmp;
+			tmp = rewrite_input(*str, i);
+			if (!tmp)
 				return (1); // mem error
-			*input = str;
+			free(aux);
+			*str = tmp;
 		}
-		i = needs_space(str);
+		i = needs_space(tmp);
 	}
+	free(tmp);
 	return (0);
 }
