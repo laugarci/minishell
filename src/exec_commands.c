@@ -6,7 +6,7 @@
 /*   By: laugarci <laugarci@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/04 15:00:39 by laugarci          #+#    #+#             */
-/*   Updated: 2023/08/02 19:08:36 by laugarci         ###   ########.fr       */
+/*   Updated: 2023/08/02 19:39:46 by laugarci         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,10 +68,6 @@ int	cmp_commands(char *input, char **env)
 		exec_commands(input, env);
 	free_double((void **)commands);
 	return (0);
-}
-
-int	cmp_commands_two(t_list *lst, char **env)
-{
 }
 
 int	exec_commands_wf(char *space_pos, char *input, char **env, char **split_com)
