@@ -6,7 +6,7 @@
 /*   By: laugarci <laugarci@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/05 14:01:37 by laugarci          #+#    #+#             */
-/*   Updated: 2023/08/02 19:42:41 by ffornes-         ###   ########.fr       */
+/*   Updated: 2023/08/04 09:57:06 by laugarci         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -111,10 +111,7 @@ int	main(int argc, char *argv[], char *envp[])
 			if (!parse_input(input, env, &list))
 			{
 				print_tokens(list);
-				//cmp_commands(input, env);
-				t_token	*tok;
-				tok = list->content;
-				printf("Path: %s\n", get_path(tok->string, env));
+				cmp_commands(list, env);
 				ft_lstclear(&list, (void *)free_token);
 			}
 		}
