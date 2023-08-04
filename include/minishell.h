@@ -13,7 +13,7 @@
 #ifndef MINISHELL_H
 # define MINISHELL_H
 
-char		*get_path(char **cmd, char **envp);
+char		*get_path(char *cmd, char **envp);
 
 char		*here_doc(char **input, char *envp[]);
 
