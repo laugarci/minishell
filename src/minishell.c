@@ -112,6 +112,9 @@ int	main(int argc, char *argv[], char *envp[])
 			{
 				print_tokens(list);
 				//cmp_commands(input, env);
+				t_token	*tok;
+				tok = list->content;
+				printf("Path: %s\n", get_path(tok->string, env));
 				ft_lstclear(&list, (void *)free_token);
 			}
 		}

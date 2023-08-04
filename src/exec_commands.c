@@ -82,7 +82,7 @@ int	exec_commands_wf(char *space_pos, char *input, char **env, char **split_com)
 	args = (char **)malloc(sizeof(char *) * (count_flags + 3));
 	if (!args)
 		return (1);
-	args[0] = get_path(split_com, env);
+//	args[0] = get_path(split_com, env);
 	i = 0;
 	while (i <= count_flags)
 	{
@@ -121,7 +121,7 @@ int	exec_commands(char *input, char **env)
 			args = (char **)malloc(sizeof(char *) * 2);
 			if (!args)
 				return (1);
-			args[0] = get_path(split_command, env);
+//			args[0] = get_path(split_command, env);
 			args[1] = NULL;
 			if ((execve(args[0], args, env)) == -1)
 				printf("zsh: command not found: %s\n", input);
