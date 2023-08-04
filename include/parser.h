@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parser.h                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ffornes- <ffornes-@student.42barcel>       +#+  +:+       +#+        */
+/*   By: laugarci <laugarci@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/07/06 11:42:45 by ffornes-          #+#    #+#             */
-/*   Updated: 2023/08/04 10:44:14 by laugarci         ###   ########.fr       */
+/*   Created: 2023/08/04 14:02:05 by laugarci          #+#    #+#             */
+/*   Updated: 2023/08/04 14:02:11 by laugarci         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@ typedef struct s_token
 
 int			parse_input(char *str, char *envp[], t_list **token_list);
 
-int			clean_input(char **input);
+char		*clean_input(char *input);
 char		**split_input(char *input);
 
 char		*expand_evals(char *input, char *envp[]);
