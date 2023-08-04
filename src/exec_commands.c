@@ -6,7 +6,7 @@
 /*   By: laugarci <laugarci@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/04 15:00:39 by laugarci          #+#    #+#             */
-/*   Updated: 2023/08/04 11:02:04 by laugarci         ###   ########.fr       */
+/*   Updated: 2023/08/04 13:57:10 by laugarci         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,13 +25,14 @@ int	exec_cd(t_list *lst)
 {
 	t_token *token;
 	t_list	*tmp;
-	int		i = 0;
+	int		i;
 
+	i = 0;
 	tmp = lst;
 	while (tmp)
 	{
-		i++;
 		tmp = tmp->next;
+		i++;
 	}
 	tmp = lst->next;
 	token = tmp->content;
@@ -68,28 +69,22 @@ int	exec_cd(t_list *lst)
 int	cmp_commands(t_list *lst, char **env)
 {
 	t_token *token;
-
-	token = lst->content;
-	env = NULL;
-	if (ft_strncmp(token->string, "cd ", 3) == 0 || ft_strncmp(token->string, "cd\0", 3) == 0)
-		exec_cd(lst);
-/*	char	**commands;
 	int		num_pipes;
 
-	commands = ft_split(input, ' ');
-	else if (is_pipe(input) == 1)
+	token = lst->content;
+	if (ft_strncmp(token->string, "cd ", 3) == 0 || ft_strncmp(token->string, "cd\0", 3) == 0)
+		exec_cd(lst);
+	else if (is_pipe(lst) == 1)
 	{
-		num_pipes = count_chars(input, '|');
-		exec_pipes(input, env, num_pipes);
+		num_pipes = count_chars(lst);
+	//	exec_pipes(lst, env, num_pipes);
 	}
 	else
-		exec_commands(input, env);
-	free_double((void **)commands);
-	*/
+		exec_commands(lst, env);
 	return (0);
 }
 
-int	exec_commands_wf(char *space_pos, char *input, char **env, char **split_com)
+/*int	exec_commands_wf(char *space_pos, char *input, char **env, char **split_com)
 {
 	int		i;
 	char	**flags;
@@ -117,10 +112,71 @@ int	exec_commands_wf(char *space_pos, char *input, char **env, char **split_com)
 	free_double((void **)flags);
 	free_double((void **)args);
 	return (0);
-}
-
-int	exec_commands(char *input, char **env)
+}*/
+/*
+int	exec_commands_wf(t_list *lst, char **env. int flags)
 {
+	t_token	*token;
+	t_token *tmp;
+	char **args;
+	int i;
+
+	token = list->content;
+	tmp = list->next;
+	args = (char **)malloc(sizeof(char *) * (flags + 2));
+	if (!args)
+		return (1);
+	args[0] = get_path(token->string, env);
+	i = 0;
+	while(i <= flags)
+	{
+		args[i + 1] =
+	}
+
+}*/
+
+int	exec_commands(t_list *lst, char **env)
+{
+	t_token *token;
+	t_list	*tmp;
+	pid_t	pid;
+	int		i;
+	char **args;
+	int status;
+	
+	tmp = lst;
+	i = 0;
+	while (tmp)
+	{
+		tmp = tmp->next;
+		i++;
+	}
+	token = lst->content;
+	pid = fork();
+	if (pid == 0)
+	{
+		if (i == 2)
+		{
+			printf("entra\n");
+			args = (char **)malloc(sizeof(char *) * 2);
+			if (!args)
+				return (1);
+			args[0] = get_path(token->string, env);
+			args[1] = NULL;
+			if ((execve(args[0], args, env)) == -1)
+					printf("zsh: command not found: %s\n", token->string);
+		}
+	//	else
+	//		exec_commands_wf(lst, env, (i - 1));
+		exit(0);
+	}
+	else
+		waitpid(pid, &status, 0);
+	return (0);
+}
+/*
+
+
 	char	*space_pos;
 	char	**args;
 	int		status;
@@ -133,10 +189,10 @@ int	exec_commands(char *input, char **env)
 	if (pid == 0)
 	{
 		space_pos = ft_strchr(input, ' ');
-		if (space_pos != NULL)
-			exec_commands_wf(space_pos, input, env, split_command);
-		else
-		{
+//		if (space_pos != NULL)
+//			exec_commands_wf(space_pos, input, env, split_command);
+//		else
+//		{
 			args = (char **)malloc(sizeof(char *) * 2);
 			if (!args)
 				return (1);
@@ -145,7 +201,7 @@ int	exec_commands(char *input, char **env)
 			if ((execve(args[0], args, env)) == -1)
 				printf("zsh: command not found: %s\n", input);
 			free_double((void **)args);
-		}
+//		}
 		free_double((void **)split_command);
 		free_double((void **)split_command);
 		exit(0);
@@ -153,4 +209,4 @@ int	exec_commands(char *input, char **env)
 	else
 		waitpid(pid, &status, 0);
 	return (0);
-}
+}*/

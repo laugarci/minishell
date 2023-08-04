@@ -6,7 +6,7 @@
 /*   By: laugarci <laugarci@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/14 09:52:31 by laugarci          #+#    #+#             */
-/*   Updated: 2023/07/25 12:16:14 by laugarci         ###   ########.fr       */
+/*   Updated: 2023/08/04 11:28:27 by laugarci         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,33 +18,46 @@
 #include <sys/wait.h>
 #include "minishell.h"
 #include "libft.h"
+#include "parser.h"
+#include "libft_bonus.h"
 
 #define READ_END 0
 #define WRITE_END 1
 
-int	is_pipe(char *input)
+int	is_pipe(t_list *lst)
 {
-	if (ft_strchr(input, '|') != NULL)
-		return (1);
+	t_token *aux;
+	t_list	*tmp;
+
+	tmp = lst;
+	while (tmp)
+	{
+		aux = tmp->content;
+		if (aux->type == PIPE)
+			return (1);
+		tmp = tmp->next;
+	}
 	return (0);
 }
 
-int	count_chars(char *input, char del)
+int	count_chars(t_list *lst)
 {
-	int	i;
 	int	c;
+	t_list *tmp;
+	t_token *aux;
 
 	c = 0;
-	i = 0;
-	while (input[i])
+	tmp = lst;
+	while (tmp)
 	{
-		if (input[i] == del)
+		aux = tmp->content;
+		if (aux->type == PIPE)
 			c++;
-		i++;
+		tmp = tmp->next;
 	}
 	return (c);
 }
-
+/*
 char	*ft_strtok(char *str, const char *del)
 {
 	static char	*token;
@@ -158,4 +171,4 @@ void	exec_pipes(char *input, char **env, int num_pipes)
 		wait(&status);
 		i++;
 	}
-}
+}*/
