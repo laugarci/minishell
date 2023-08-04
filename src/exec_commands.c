@@ -87,6 +87,8 @@ int	cmp_commands(t_list *lst, char **env)
 	free_double((void **)commands);
 	*/
 	return (0);
+	free_double((void **)env);
+	env = NULL;
 }
 
 int	exec_commands_wf(char *space_pos, char *input, char **env, char **split_com)
@@ -117,6 +119,8 @@ int	exec_commands_wf(char *space_pos, char *input, char **env, char **split_com)
 	free_double((void **)flags);
 	free_double((void **)args);
 	return (0);
+	free_double((void **)split_com);
+	split_com = NULL;
 }
 
 int	exec_commands(char *input, char **env)

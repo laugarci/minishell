@@ -36,14 +36,20 @@ int	parse_input(char *str, char *envp[], t_list **token_list)
 {
 	char	*input;
 	t_list	*lst;
+	int		flag;
 
 	if (is_empty(str))
 		return (1);
 	check_quote_state(str);
+	flag = 0;
 	if (ft_strchr(str, '|') || ft_strchr(str, '<') || ft_strchr(str, '>'))
+	{	
 		str = clean_input(str);
+		flag = 1;
+	}
 	lst = save_tokens(str);
-	free(str);
+	if (flag)
+		free(str);
 	if (!lst)
 		return (1);
 	// Must handle redirections with it's file directly 
