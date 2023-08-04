@@ -119,7 +119,7 @@ char	*get_path(char *cmd, char **envp)
 	}
 	if (!aux)
 	{
-		put_error(cmd[0], 127); // Error: command not found
+		put_error(cmd, 127); // Error: command not found
 		return (NULL);
 	}
 	out = get_path_util(aux, cmd);
