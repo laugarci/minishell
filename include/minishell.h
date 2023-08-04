@@ -6,12 +6,14 @@
 /*   By: ffornes- <ffornes-@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/27 11:32:21 by ffornes-          #+#    #+#             */
-/*   Updated: 2023/07/31 18:59:50 by ffornes-         ###   ########.fr       */
+/*   Updated: 2023/08/04 10:25:57 by laugarci         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef MINISHELL_H
 # define MINISHELL_H
+
+#include "libft_defs.h"
 
 char		*get_path(char **cmd, char **envp);
 
@@ -25,9 +27,11 @@ int			exec_commands_wf(char *space_pos, char *input, char **env, char **split_co
 
 int			exec_commands_other(char *space_pos, char *input, char **env);
 
-int			cmp_commands(char *input, char **env);
+//int			cmp_commands(char *input, char **env);
 
-int			exec_cd(char **input);
+int			cmp_commands(t_list *lst, char **env);
+
+int			exec_cd(t_list *lst);
 
 int			is_pipe(char *entrada);
 
