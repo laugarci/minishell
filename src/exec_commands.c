@@ -6,7 +6,7 @@
 /*   By: laugarci <laugarci@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/04 14:04:45 by laugarci          #+#    #+#             */
-/*   Updated: 2023/08/04 14:09:09 by laugarci         ###   ########.fr       */
+/*   Updated: 2023/08/04 14:37:02 by laugarci         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -136,7 +136,6 @@ int	exec_commands(t_list *lst, char **env)
 	{
 		if (i == 2)
 		{
-			printf("entra\n");
 			args = (char **)malloc(sizeof(char *) * 2);
 			if (!args)
 				return (1);
@@ -145,8 +144,8 @@ int	exec_commands(t_list *lst, char **env)
 			if ((execve(args[0], args, env)) == -1)
 					printf("zsh: command not found: %s\n", token->string);
 		}
-	//	else
-	//		exec_commands_wf(lst, env, (i - 1));
+		else
+			exec_commands_wf(lst, env, (i - 1));
 		exit(0);
 	}
 	else
