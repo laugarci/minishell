@@ -6,7 +6,11 @@
 /*   By: laugarci <laugarci@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/04 15:00:39 by laugarci          #+#    #+#             */
+<<<<<<< HEAD
 /*   Updated: 2023/08/04 13:57:10 by laugarci         ###   ########.fr       */
+=======
+/*   Updated: 2023/08/02 19:42:51 by ffornes-         ###   ########.fr       */
+>>>>>>> origin/realest_parser
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,7 +88,11 @@ int	cmp_commands(t_list *lst, char **env)
 	return (0);
 }
 
+<<<<<<< HEAD
 /*int	exec_commands_wf(char *space_pos, char *input, char **env, char **split_com)
+=======
+int	exec_commands_wf(char *space_pos, char *input, char **env, char **split_com)
+>>>>>>> origin/realest_parser
 {
 	int		i;
 	char	**flags;
