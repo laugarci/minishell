@@ -5,12 +5,8 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: laugarci <laugarci@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/07/04 15:00:39 by laugarci          #+#    #+#             */
-<<<<<<< HEAD
-/*   Updated: 2023/08/04 13:57:10 by laugarci         ###   ########.fr       */
-=======
-/*   Updated: 2023/08/02 19:42:51 by ffornes-         ###   ########.fr       */
->>>>>>> origin/realest_parser
+/*   Created: 2023/08/04 14:04:45 by laugarci          #+#    #+#             */
+/*   Updated: 2023/08/04 14:09:09 by laugarci         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,11 +84,7 @@ int	cmp_commands(t_list *lst, char **env)
 	return (0);
 }
 
-<<<<<<< HEAD
 /*int	exec_commands_wf(char *space_pos, char *input, char **env, char **split_com)
-=======
-int	exec_commands_wf(char *space_pos, char *input, char **env, char **split_com)
->>>>>>> origin/realest_parser
 {
 	int		i;
 	char	**flags;
@@ -120,27 +112,6 @@ int	exec_commands_wf(char *space_pos, char *input, char **env, char **split_com)
 	free_double((void **)flags);
 	free_double((void **)args);
 	return (0);
-}*/
-/*
-int	exec_commands_wf(t_list *lst, char **env. int flags)
-{
-	t_token	*token;
-	t_token *tmp;
-	char **args;
-	int i;
-
-	token = list->content;
-	tmp = list->next;
-	args = (char **)malloc(sizeof(char *) * (flags + 2));
-	if (!args)
-		return (1);
-	args[0] = get_path(token->string, env);
-	i = 0;
-	while(i <= flags)
-	{
-		args[i + 1] =
-	}
-
 }*/
 
 int	exec_commands(t_list *lst, char **env)
@@ -182,39 +153,3 @@ int	exec_commands(t_list *lst, char **env)
 		waitpid(pid, &status, 0);
 	return (0);
 }
-/*
-
-
-	char	*space_pos;
-	char	**args;
-	int		status;
-	char	**split_command;
-	pid_t	pid;
-
-	input = ft_strtrim(input, " ");
-	split_command = ft_split(input, ' ');
-	pid = fork();
-	if (pid == 0)
-	{
-		space_pos = ft_strchr(input, ' ');
-//		if (space_pos != NULL)
-//			exec_commands_wf(space_pos, input, env, split_command);
-//		else
-//		{
-			args = (char **)malloc(sizeof(char *) * 2);
-			if (!args)
-				return (1);
-			args[0] = get_path(split_command, env);
-			args[1] = NULL;
-			if ((execve(args[0], args, env)) == -1)
-				printf("zsh: command not found: %s\n", input);
-			free_double((void **)args);
-//		}
-		free_double((void **)split_command);
-		free_double((void **)split_command);
-		exit(0);
-	}
-	else
-		waitpid(pid, &status, 0);
-	return (0);
-}*/
