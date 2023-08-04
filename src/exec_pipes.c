@@ -6,7 +6,7 @@
 /*   By: laugarci <laugarci@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/14 09:52:31 by laugarci          #+#    #+#             */
-/*   Updated: 2023/08/04 11:28:27 by laugarci         ###   ########.fr       */
+/*   Updated: 2023/08/04 15:22:50 by laugarci         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -107,7 +107,28 @@ char	*ft_strtok(char *str, const char *del)
 	token += i;
 	return (start);
 }
+*/
 
+void	exec_pipes(t_list *lst, char **env, int num_pipes)
+{
+	int		status;
+	pid_t	pid;
+	int		**fds;
+	int		i;
+
+	i = 0;
+	fds = malloc(sizeof(int *) * num_pipes);
+	while (i < num_pipes)
+	{
+		fds[i] = malloc(sizeof(int) * 2);
+		pipe(fds[i]);
+		i++;
+	}
+	i = 0;
+
+}
+
+/*
 void	exec_pipes(char *input, char **env, int num_pipes)
 {
 	int		status;
