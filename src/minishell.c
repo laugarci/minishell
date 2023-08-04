@@ -78,7 +78,6 @@ static int	exit_check(char *input)
 {
 	if (!ft_strncmp(input, "exit\0", 5))
 	{
-		exit(0);
 		free(input);
 		return (1);
 	}
