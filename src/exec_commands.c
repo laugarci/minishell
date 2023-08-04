@@ -6,7 +6,7 @@
 /*   By: laugarci <laugarci@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/04 14:04:45 by laugarci          #+#    #+#             */
-/*   Updated: 2023/08/04 14:55:48 by laugarci         ###   ########.fr       */
+/*   Updated: 2023/08/04 15:20:28 by laugarci         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,7 +77,7 @@ int	cmp_commands(t_list *lst, char **env)
 	else if (is_pipe(lst) == 1)
 	{
 		num_pipes = count_chars(lst);
-	//	exec_pipes(lst, env, num_pipes);
+		exec_pipes(lst, env, num_pipes);
 	}
 	else
 		exec_commands(lst, env);
