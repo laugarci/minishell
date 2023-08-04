@@ -6,7 +6,7 @@
 /*   By: laugarci <laugarci@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/04 14:04:45 by laugarci          #+#    #+#             */
-/*   Updated: 2023/08/04 14:37:02 by laugarci         ###   ########.fr       */
+/*   Updated: 2023/08/04 14:55:48 by laugarci         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,35 +84,33 @@ int	cmp_commands(t_list *lst, char **env)
 	return (0);
 }
 
-/*int	exec_commands_wf(char *space_pos, char *input, char **env, char **split_com)
+int	exec_commands_wf(t_list *lst, char **env, int flags)
 {
-	int		i;
-	char	**flags;
-	char	**args;
-	int		count_flags;
+	char **args;
+	t_token	*token;
+	int	i;
+	t_list *tmp;
 
-	count_flags = count_chars(input, '-');
-	flags = ft_split(space_pos, ' ');
-	args = (char **)malloc(sizeof(char *) * (count_flags + 3));
+	tmp = lst->next;
+	token = lst->content;
+	args = (char **)malloc(sizeof(char *) * (flags + 2));
 	if (!args)
 		return (1);
-	args[0] = get_path(split_com, env);
+	args[0] = get_path(token->string, env);
 	i = 0;
-	while (i <= count_flags)
+	while (i < flags)
 	{
-		args[i + 1] = flags[i];
+		token = tmp->content;
+		args[i + 1] = token->string;
+		tmp = tmp->next;
 		i++;
 	}
-	if (count_flags == 0)
-		args[2] = NULL;
-	else
-		args[count_flags + 1] = NULL;
+	args[flags + 1] = NULL;
+	token = lst->content;
 	if ((execve(args[0], args, env)) == -1)
-		printf("zsh: command not found: %s\n", input); //hay que quitar las flags
-	free_double((void **)flags);
-	free_double((void **)args);
+			printf("zsh: command not found %s\n", token->string);
 	return (0);
-}*/
+}
 
 int	exec_commands(t_list *lst, char **env)
 {
