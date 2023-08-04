@@ -6,7 +6,7 @@
 /*   By: laugarci <laugarci@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/04 14:01:16 by laugarci          #+#    #+#             */
-/*   Updated: 2023/08/04 14:01:43 by laugarci         ###   ########.fr       */
+/*   Updated: 2023/08/04 14:13:26 by laugarci         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -115,7 +115,7 @@ int	main(int argc, char *argv[], char *envp[])
 				ft_lstclear(&list, (void *)free_token);
 			}
 		}
-		free(input);
+	//	free(input);
 	}
 	free_double((void **)env);
 	free(prompt);
