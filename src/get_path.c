@@ -92,23 +92,23 @@ static char	*get_path_util(char *str, char *cmd)
  * If it doesn't, it appends all possible Paths with the command, in order
  * to check with access if the directory exists and it's executable, and 
  * returns the correct path. */
-char	*get_path(char **cmd, char **envp)
+char	*get_path(char *cmd, char **envp)
 {
 	int		i;
 	char	*aux;
 	char	*out;
 
-	if (cmd[0][0] == '/')
+	if (!ft_strncmp(cmd, "./", 2) || !ft_strncmp(cmd, "../", 3 )
+		|| cmd[0] == '/')
 	{
-		// Comprobar que el path existe y es ejecutable
-		if (!access(cmd[0], F_OK))
+		if (!access(cmd, F_OK))
 		{
-			if (access(cmd[0], X_OK))
-				put_error(cmd[0], 128);
+			if (access(cmd, X_OK))
+				put_error(cmd, 128);
 		}
 		else
-			put_error(cmd[0], 127);
-		return (ft_strdup(cmd[0]));
+			put_error(cmd, 127);
+		return (cmd);
 	}
 	i = 0;
 	while (envp[i])
@@ -122,8 +122,8 @@ char	*get_path(char **cmd, char **envp)
 		put_error(cmd[0], 127); // Error: command not found
 		return (NULL);
 	}
-	out = get_path_util(aux, cmd[0]);
+	out = get_path_util(aux, cmd);
 	if (!out)
-		put_error(cmd[0], 127); // Error: command not found
+		put_error(cmd, 127); // Error: command not found
 	return (out);
 }
