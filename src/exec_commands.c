@@ -6,7 +6,7 @@
 /*   By: laugarci <laugarci@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/04 15:00:39 by laugarci          #+#    #+#             */
-/*   Updated: 2023/08/02 19:39:46 by laugarci         ###   ########.fr       */
+/*   Updated: 2023/08/04 11:02:04 by laugarci         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,47 +18,65 @@
 #include <sys/wait.h>
 #include "libft.h"
 #include "minishell.h"
+#include "libft_bonus.h"
+#include "parser.h"
 
-int	exec_cd(char **input)
+int	exec_cd(t_list *lst)
 {
-	if (input[1] == NULL)
+	t_token *token;
+	t_list	*tmp;
+	int		i = 0;
+
+	tmp = lst;
+	while (tmp)
+	{
+		i++;
+		tmp = tmp->next;
+	}
+	tmp = lst->next;
+	token = tmp->content;
+	if (i == 2)
 	{
 		if (chdir(getenv("HOME")) == 1)
 			return (1);
 	}
-	else if (access((input[1]), F_OK) != -1)
+	else if (access((token->string), F_OK) != -1)
 	{
-		if (access(input[1], R_OK) == 0)
+		if (access((token->string), R_OK) != -1)
 		{
-			if (chdir(input[1]) == -1)
+			if (chdir(token->string) == -1)
 			{
-				printf("minishell: cd: %s", input[1]);
+				printf("minishell: cd: %s", token->string);
 				printf(": No such file or directory\n");
 				return (1);
 			}
 		}
 		else
 		{
-			printf("minishell: cd: %s: Permission denied\n", input[1]);
-			return (1);
+			printf("minishell: cd: %s: Permission denied\n", token->string);
+			return(1);
 		}
 	}
 	else
 	{
-		printf("minishell: cd: %s: No such file or directory\n", input[1]);
+		printf("minishell: cd: %s\n: No such file or directory\n", token->string);
 		return (1);
 	}
 	return (0);
 }
 
-int	cmp_commands(char *input, char **env)
+int	cmp_commands(t_list *lst, char **env)
 {
-	char	**commands;
+	t_token *token;
+
+	token = lst->content;
+	env = NULL;
+	if (ft_strncmp(token->string, "cd ", 3) == 0 || ft_strncmp(token->string, "cd\0", 3) == 0)
+		exec_cd(lst);
+/*	char	**commands;
 	int		num_pipes;
 
 	commands = ft_split(input, ' ');
-	if (ft_strncmp(input, "cd ", 3) == 0 || ft_strncmp(input, "cd\0", 3) == 0)
-		exec_cd(commands);
 	else if (is_pipe(input) == 1)
 	{
 		num_pipes = count_chars(input, '|');
@@ -67,6 +85,7 @@ int	cmp_commands(char *input, char **env)
 	else
 		exec_commands(input, env);
 	free_double((void **)commands);
+	*/
 	return (0);
 }
 
