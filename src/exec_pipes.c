@@ -6,7 +6,7 @@
 /*   By: laugarci <laugarci@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/14 09:52:31 by laugarci          #+#    #+#             */
-/*   Updated: 2023/08/08 16:39:32 by laugarci         ###   ########.fr       */
+/*   Updated: 2023/08/08 17:43:31 by laugarci         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,28 +71,28 @@ char	*find_command(t_list *lst, int i, int num_pipes)
 	j = 0;
 	tmp = lst;
 	token = lst->content;
-	command = malloc(sizeof(char) * 10);
+	command = malloc(sizeof(char) * 50);
 	if (!command)
 			return (NULL);
 	if (i == 0)
 	{
 		while(token->type != PIPE)
 		{
+			if (aux > 0)
+				command[j++] = ' ';
 			x = 0;
 			while (token->string[x])
 			{
-				command[j] = token->string[x];
-				j++;
-				x++;
+				command[j++] = token->string[x++];
 			}
-			command[j] = ' ';
-			j++;
+			aux++;
 			tmp = tmp->next;
 			token = tmp->content;
 		}
 	}
 	else
 	{
+		aux = 0;
 		x = 0;
 		j = 0;
 		while (x <= i)
@@ -106,14 +106,14 @@ char	*find_command(t_list *lst, int i, int num_pipes)
 		while (token->type != PIPE && aux <= num_pipes)
 		{
 			x = 0;
+			if (aux > 0)
+				command[j++] = ' ';
 			while(token->string[x])
 			{
 				command[j] = token->string[x];
 				j++;
 				x++;
 			}
-			command[j] = ' ';
-			j++;
 			tmp = tmp->next;
 			token = tmp->content;
 			aux++;
@@ -134,7 +134,7 @@ void	exec_pipes(t_list *lst, char **env, int num_pipes)
 
 	i = 0;
 	fds = malloc(sizeof(int *) * num_pipes);
-	while (i < num_pipes)
+	while (i <= num_pipes)
 	{
 		fds[i] = malloc(sizeof(int) * 2);
 		pipe(fds[i]);
@@ -143,7 +143,7 @@ void	exec_pipes(t_list *lst, char **env, int num_pipes)
 	i = 0;
 	command = find_command(lst, i, num_pipes);
 	printf("command %d : %s\n", i, command);
-	while (i <= num_pipes)
+	while (i <= (num_pipes + 1))
 	{
 		pid = fork();
 		if (pid == -1)
