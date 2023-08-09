@@ -6,7 +6,7 @@
 /*   By: ffornes- <ffornes-@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/09 16:48:00 by ffornes-          #+#    #+#             */
-/*   Updated: 2023/08/09 16:49:58 by ffornes-         ###   ########.fr       */
+/*   Updated: 2023/08/09 18:08:32 by ffornes-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,11 +30,11 @@ static int	check_character(char *str, int i)
 			return (-2);
 		else if (str[i] == '>' && str[i + 1] == '>' && str[i + 2] == '>')
 			return (-2);
-		if (str[i] == '>' && str[i - 1] == '<')
+		if (i > 0 && str[i] == '>' && str[i - 1] == '<')
 			return (-2);
 		if (i > 0 && str[i - 1] != ' ' && str[i - 1] != str[i])
 			return (i);
-		if (i > 0 && str[i + 1] != ' ' && str[i + 1] != str[i])
+		if (str[i + 1] != ' ' && str[i + 1] != str[i])
 			return (i);
 	}
 	return (0);
