@@ -6,7 +6,7 @@
 /*   By: ffornes- <ffornes-@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/26 17:15:53 by ffornes-          #+#    #+#             */
-/*   Updated: 2023/08/09 14:49:18 by ffornes-         ###   ########.fr       */
+/*   Updated: 2023/08/09 19:20:20 by ffornes-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,12 +71,40 @@ static void	clean_redirects(t_list **lst)
 	}
 }
 
-/*
-static void	remove_duplicates(t_list **token_list)
+static t_list	*remove_duplicates(t_list *token_list)
 {
+	t_list	*aux;
+	t_list	*previous;
+	t_list	*tmp;
+	int		deleted;
 
+	deleted = 0;
+	if (((t_token *)(token_list->content))->type > 0)
+	{
+		tmp = token_list;
+		token_list = token_list->next;
+		ft_lstdelone(tmp, (void *)free_token);
+		deleted = 1;
+	}
+	aux = token_list;
+	previous = aux;
+	while (aux->next) // ToDo
+	{
+		tmp = aux;
+		aux = aux->next;
+		if (deleted && ((t_token *)(tmp->content))->type > 0)
+			deleted = 0;
+		else if (((t_token *)(tmp->content))->type > 0)
+		{
+			ft_lstdelone(tmp, (void *)free_token);
+			previous->next = aux;
+			deleted = 1;
+		}
+		else
+			previous = tmp;
+	}
+	return (token_list);
 }
-*/
 
 void	process_tokens(t_list **token_list)
 {
@@ -95,7 +123,7 @@ void	process_tokens(t_list **token_list)
 			break ;
 	}
 	clean_redirects(token_list);
-	//remove_duplicates(token_list);
+	*token_list = remove_duplicates(*token_list);
 }
 
 t_list	*save_tokens(char *input)
