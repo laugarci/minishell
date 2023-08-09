@@ -6,7 +6,7 @@
 /*   By: laugarci <laugarci@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/14 09:52:31 by laugarci          #+#    #+#             */
-/*   Updated: 2023/08/08 17:43:31 by laugarci         ###   ########.fr       */
+/*   Updated: 2023/08/09 13:02:19 by laugarci         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,7 +66,7 @@ char	*find_command(t_list *lst, int i, int num_pipes)
 	int j;
 	int x;
 	int aux;
-
+	
 	aux = 0;
 	j = 0;
 	tmp = lst;
@@ -74,52 +74,58 @@ char	*find_command(t_list *lst, int i, int num_pipes)
 	command = malloc(sizeof(char) * 50);
 	if (!command)
 			return (NULL);
-	if (i == 0)
-	{
-		while(token->type != PIPE)
+	printf("la i es %d\n", i);
+//	if (i == 0)
+//	{
+		while(token->type == -1 && tmp->next)
 		{
 			if (aux > 0)
 				command[j++] = ' ';
 			x = 0;
 			while (token->string[x])
-			{
 				command[j++] = token->string[x++];
-			}
 			aux++;
 			tmp = tmp->next;
 			token = tmp->content;
 		}
-	}
-	else
+//	}
+/*	else
 	{
 		aux = 0;
 		x = 0;
 		j = 0;
+		printf("i %d\n", i);
 		while (x <= i)
 		{
+
 			tmp = tmp->next;
 			token = tmp->content;
 			x++;
 		}
-		tmp = tmp->next;
-		token = tmp->content;
-		while (token->type != PIPE && aux <= num_pipes)
+		if (token->type == PIPE)
+		{
+			tmp = tmp->next;
+			token = tmp->content;
+		}
+		printf("token->string >> %s\n", token->string);
+		while (tmp->next && token->type != PIPE)
 		{
 			x = 0;
 			if (aux > 0)
 				command[j++] = ' ';
 			while(token->string[x])
-			{
-				command[j] = token->string[x];
-				j++;
-				x++;
-			}
+				command[j++] = token->string[x++];
+			printf("command >>  %s\n", command);
 			tmp = tmp->next;
 			token = tmp->content;
 			aux++;
 		}
-	}
+	}*/
+	num_pipes = 0; //quitar esto
 	command[j] = '\0';
+	printf("-------------------------------------\n");
+	printf("COMANDO FINAL >> %s\n", command);
+	printf("-------------------------------------\n");
 	return (command);
 }
 
@@ -142,8 +148,8 @@ void	exec_pipes(t_list *lst, char **env, int num_pipes)
 	}
 	i = 0;
 	command = find_command(lst, i, num_pipes);
-	printf("command %d : %s\n", i, command);
-	while (i <= (num_pipes + 1))
+//	printf("command %d: %s\n", i, command);
+	while (i <= num_pipes)
 	{
 		pid = fork();
 		if (pid == -1)
@@ -175,7 +181,7 @@ void	exec_pipes(t_list *lst, char **env, int num_pipes)
 		}
 		i++;
 		command = find_command(lst, i, num_pipes);
-		printf("command %d : %s\n", i, command);
+//		printf("command %d: %s\n", i, command);
 	}
 	i = 0;
 	while (i < num_pipes)
