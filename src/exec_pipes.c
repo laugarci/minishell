@@ -6,7 +6,7 @@
 /*   By: laugarci <laugarci@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/14 09:52:31 by laugarci          #+#    #+#             */
-/*   Updated: 2023/08/09 17:01:13 by laugarci         ###   ########.fr       */
+/*   Updated: 2023/08/09 18:13:52 by laugarci         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -180,7 +180,7 @@ void	exec_pipes(t_list *lst, char **env, int num_pipes)
 		command = find_command(lst, i, num_pipes);
 	}
 	i = 0;
-	while (i <= num_pipes)
+	while (i < num_pipes)
 	{
 		close(fds[i][READ_END]);
 		close(fds[i][WRITE_END]);
