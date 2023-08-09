@@ -6,7 +6,7 @@
 /*   By: ffornes- <ffornes-@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/31 12:35:07 by ffornes-          #+#    #+#             */
-/*   Updated: 2023/08/02 14:31:17 by ffornes-         ###   ########.fr       */
+/*   Updated: 2023/08/09 14:11:36 by ffornes-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,6 +81,18 @@ static char	**save_new_input(char *input, int amount)
 	return (out);
 }
 
+static char	**charp_to_charpp(char *input)
+{
+	char	**out;
+
+	out = malloc(sizeof(char *) * 2);
+	if (!out)
+		return (NULL);
+	out[0] = ft_strdup(input);
+	out[1] = NULL;
+	return (out);
+}
+
 char	**split_input(char *input)
 {
 	int		i;
@@ -105,5 +117,7 @@ char	**split_input(char *input)
 		}
 		i++;
 	}
+	if (j == 1)
+		return (charp_to_charpp(input));
 	return (save_new_input(input, j));
 }

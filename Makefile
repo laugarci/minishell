@@ -6,7 +6,7 @@
 #    By: ffornes- <ffornes-@student.42barcel>       +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/06/26 15:00:09 by ffornes-          #+#    #+#              #
-#    Updated: 2023/08/02 13:24:07 by ffornes-         ###   ########.fr        #
+#    Updated: 2023/08/09 16:50:20 by ffornes-         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -14,7 +14,7 @@ NAME = minishell
 
 SRC_DIR = src/
 SRC_FILES = minishell.c \
-			parse_input.c clean_input.c split_input.c \
+			parse_input.c clean_input.c clean_input_utils.c split_input.c \
 			expansion.c expansion_utils.c \
 			quotes.c quote_utils.c \
 			tokenization.c token_new.c token_utils.c \
