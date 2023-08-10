@@ -6,7 +6,7 @@
 /*   By: ffornes- <ffornes-@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/27 14:53:30 by ffornes-          #+#    #+#             */
-/*   Updated: 2023/08/10 13:47:04 by ffornes-         ###   ########.fr       */
+/*   Updated: 2023/08/10 17:53:13 by ffornes-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,13 +69,17 @@ static char	*rewrite_input(char *str, int i)
 
 static char	*first_pos_re(char *str)
 {
-	if (str[0] == '<' && str[1] != '<' && str[1] != '>' && str[1] != ' ')
+	if (str[0] == '<' && str[1] != '<' && str[1] != '>' 
+		&& str[1] != ' ' && str[1])
 		return (ft_strjoin("< ", (str + 1)));
-	else if (str[0] == '<' && str[1] == '<' && str[2] != '<' && str[2] != '>' && str[2] != ' ') 
+	else if (str[0] == '<' && str[1] == '<' && str[2] != '<' && str[2] != '>' 
+		&& str[2] != ' ' && str[2])
 		return (ft_strjoin("<< ", (str + 2)));
-	if (str[0] == '>' && str[1] != '<' && str[1] != '>' && str[1] != ' ')
+	if (str[0] == '>' && str[1] != '<' && str[1] != '>' && str[1] != ' ' 
+		&& str[1])
 		return (ft_strjoin("> ", (str + 1)));
-	else if (str[0] == '>' && str[1] == '>' && str[2] != '<' && str[2] != '>' && str[2] != ' ')
+	else if (str[0] == '>' && str[1] == '>' && str[2] != '<' && str[2] != '>' 
+		&& str[2] != ' ' && str[2])
 		return (ft_strjoin(">> ", (str + 2)));
 	return (NULL);
 }
