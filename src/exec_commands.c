@@ -5,8 +5,8 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: laugarci <laugarci@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/07/04 15:00:39 by laugarci          #+#    #+#             */
-/*   Updated: 2023/08/04 11:02:04 by laugarci         ###   ########.fr       */
+/*   Created: 2023/08/04 14:04:45 by laugarci          #+#    #+#             */
+/*   Updated: 2023/08/10 15:54:15 by ffornes-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,13 +25,14 @@ int	exec_cd(t_list *lst)
 {
 	t_token *token;
 	t_list	*tmp;
-	int		i = 0;
+	int		i;
 
+	i = 0;
 	tmp = lst;
 	while (tmp)
 	{
-		i++;
 		tmp = tmp->next;
+		i++;
 	}
 	tmp = lst->next;
 	token = tmp->content;
@@ -54,7 +55,7 @@ int	exec_cd(t_list *lst)
 		else
 		{
 			printf("minishell: cd: %s: Permission denied\n", token->string);
-			return(1);
+			return (1);
 		}
 	}
 	else
@@ -68,90 +69,85 @@ int	exec_cd(t_list *lst)
 int	cmp_commands(t_list *lst, char **env)
 {
 	t_token *token;
-
-	token = lst->content;
-	env = NULL;
-	if (ft_strncmp(token->string, "cd ", 3) == 0 || ft_strncmp(token->string, "cd\0", 3) == 0)
-		exec_cd(lst);
-/*	char	**commands;
 	int		num_pipes;
 
-	commands = ft_split(input, ' ');
-	else if (is_pipe(input) == 1)
+	token = lst->content;
+	if (ft_strncmp(token->string, "cd ", 3) == 0 || ft_strncmp(token->string, "cd\0", 3) == 0)
+		exec_cd(lst);
+	else if (is_pipe(lst) == 1)
 	{
-		num_pipes = count_chars(input, '|');
-		exec_pipes(input, env, num_pipes);
+		num_pipes = count_chars(lst);
+		exec_pipes(lst, env, num_pipes);
 	}
 	else
-		exec_commands(input, env);
-	free_double((void **)commands);
-	*/
+		exec_commands(lst, env);
 	return (0);
 	free_double((void **)env);
 	env = NULL;
 }
 
-int	exec_commands_wf(char *space_pos, char *input, char **env, char **split_com)
+int	exec_commands_wf(t_list *lst, char **env, int flags)
 {
-	int		i;
-	char	**flags;
-	char	**args;
-	int		count_flags;
+	char **args;
+	t_token	*token;
+	int	i;
+	t_list *tmp;
 
-	count_flags = count_chars(input, '-');
-	flags = ft_split(space_pos, ' ');
-	args = (char **)malloc(sizeof(char *) * (count_flags + 3));
+	tmp = lst->next;
+	token = lst->content;
+	args = (char **)malloc(sizeof(char *) * (flags + 2));
 	if (!args)
 		return (1);
 //	args[0] = get_path(split_com, env);
+	args[0] = get_path(token->string, env);
 	i = 0;
-	while (i <= count_flags)
+	while (i < flags)
 	{
-		args[i + 1] = flags[i];
+		token = tmp->content;
+		args[i + 1] = token->string;
+		tmp = tmp->next;
 		i++;
 	}
-	if (count_flags == 0)
-		args[2] = NULL;
-	else
-		args[count_flags + 1] = NULL;
+	args[flags + 1] = NULL;
+	token = lst->content;
 	if ((execve(args[0], args, env)) == -1)
-		printf("zsh: command not found: %s\n", input); //hay que quitar las flags
-	free_double((void **)flags);
-	free_double((void **)args);
+			printf("zsh: command not found %s\n", token->string);
 	return (0);
-	free_double((void **)split_com);
-	split_com = NULL;
 }
 
-int	exec_commands(char *input, char **env)
+int	exec_commands(t_list *lst, char **env)
 {
-	char	*space_pos;
-	char	**args;
-	int		status;
-	char	**split_command;
+	t_token *token;
+	t_list	*tmp;
 	pid_t	pid;
-
-	input = ft_strtrim(input, " ");
-	split_command = ft_split(input, ' ');
+	int		i;
+	char **args;
+	int status;
+	
+	tmp = lst;
+	i = 0;
+	while (tmp)
+	{
+		tmp = tmp->next;
+		i++;
+	}
+	token = lst->content;
 	pid = fork();
 	if (pid == 0)
 	{
-		space_pos = ft_strchr(input, ' ');
-		if (space_pos != NULL)
-			exec_commands_wf(space_pos, input, env, split_command);
-		else
+		if (i == 2)
 		{
 			args = (char **)malloc(sizeof(char *) * 2);
 			if (!args)
 				return (1);
 //			args[0] = get_path(split_command, env);
+			args[0] = get_path(token->string, env);
 			args[1] = NULL;
 			if ((execve(args[0], args, env)) == -1)
-				printf("zsh: command not found: %s\n", input);
-			free_double((void **)args);
+					printf("zsh: command not found: %s\n", token->string);
 		}
-		free_double((void **)split_command);
-		free_double((void **)split_command);
+		else
+			exec_commands_wf(lst, env, (i - 1));
 		exit(0);
 	}
 	else

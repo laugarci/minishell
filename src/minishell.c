@@ -5,8 +5,13 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: laugarci <laugarci@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
+<<<<<<< HEAD
 /*   Created: 2023/07/05 14:01:37 by laugarci          #+#    #+#             */
 /*   Updated: 2023/08/04 09:57:06 by laugarci         ###   ########.fr       */
+=======
+/*   Created: 2023/08/04 14:01:16 by laugarci          #+#    #+#             */
+/*   Updated: 2023/08/10 11:59:18 by laugarci         ###   ########.fr       */
+>>>>>>> new_exec
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -114,7 +119,8 @@ int	main(int argc, char *argv[], char *envp[])
 				ft_lstclear(&list, (void *)free_token);
 			}
 		}
-		free(input);
+		else
+			free(input);
 	}
 	free_double((void **)env);
 	free(prompt);
