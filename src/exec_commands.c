@@ -6,7 +6,7 @@
 /*   By: laugarci <laugarci@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/04 14:04:45 by laugarci          #+#    #+#             */
-/*   Updated: 2023/08/10 11:58:22 by laugarci         ###   ########.fr       */
+/*   Updated: 2023/08/10 15:37:20 by laugarci         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,7 +55,7 @@ int	exec_cd(t_list *lst)
 		else
 		{
 			printf("minishell: cd: %s: Permission denied\n", token->string);
-			return(1);
+			return (1);
 		}
 	}
 	else
