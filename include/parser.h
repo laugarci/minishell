@@ -5,8 +5,8 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: laugarci <laugarci@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/08/04 14:02:05 by laugarci          #+#    #+#             */
-/*   Updated: 2023/08/08 15:47:05 by laugarci         ###   ########.fr       */
+/*   Created: 2023/07/06 11:42:45 by ffornes-          #+#    #+#             */
+/*   Updated: 2023/08/10 15:47:41 by laugarci         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,6 +31,7 @@ typedef struct s_token
 int			parse_input(char *str, char *envp[], t_list **token_list);
 
 char		*clean_input(char *input);
+int			needs_space(char *str);
 char		**split_input(char *input);
 
 char		*expand_evals(char *input, char *envp[]);
@@ -44,6 +45,7 @@ int			open_state(int state, char c);
 t_token		*new_token(char *string, int type, int quotes);
 t_list		*save_tokens(char *input);
 void		process_tokens(t_list **token_list);
+t_list		*remove_duplicates(t_list *token_list);
 void		free_token(void *var);
 
 #endif
