@@ -6,7 +6,7 @@
 /*   By: ffornes- <ffornes-@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/09 16:48:00 by ffornes-          #+#    #+#             */
-/*   Updated: 2023/08/09 18:08:32 by ffornes-         ###   ########.fr       */
+/*   Updated: 2023/08/10 13:23:16 by ffornes-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,6 +46,8 @@ int	needs_space(char *str)
 	int	out;
 	int	open;
 
+	if (!str)
+		return (0);
 	i = 0;
 	out = 0;
 	open = 0;

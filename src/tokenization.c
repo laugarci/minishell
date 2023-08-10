@@ -6,7 +6,7 @@
 /*   By: ffornes- <ffornes-@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/26 17:15:53 by ffornes-          #+#    #+#             */
-/*   Updated: 2023/08/09 19:36:26 by ffornes-         ###   ########.fr       */
+/*   Updated: 2023/08/10 15:36:51 by ffornes-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,6 +43,8 @@ static int	get_token_type(char	*str)
 	return (-1);
 }
 
+// ToDo: Check if after taking the redirection chars the string is empty. If empty then:
+// 		syntax error near unexpected token `newline'
 static void	clean_redirects(t_list **lst)
 {
 	t_list	*tmp_lst;
