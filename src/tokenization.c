@@ -6,7 +6,7 @@
 /*   By: ffornes- <ffornes-@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/26 17:15:53 by ffornes-          #+#    #+#             */
-/*   Updated: 2023/08/10 15:40:18 by ffornes-         ###   ########.fr       */
+/*   Updated: 2023/08/10 18:15:06 by ffornes-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,7 +73,7 @@ static void	clean_redirects(t_list **lst)
 	}
 }
 
-void	process_tokens(t_list **token_list)
+void	process_tokens(t_list **token_list, char *envp[])
 {
 	t_list	*tmp_lst;
 	t_token	*aux;
@@ -84,6 +84,10 @@ void	process_tokens(t_list **token_list)
 	{
 		if (aux->type < 0)
 			aux->type = get_token_type(aux->string);
+		if (ft_strchr(aux->string, '\'') || ft_strchr(aux->string, '\"'))
+			aux->string = remove_quotes(aux->string); // Save last quote removed in token
+		if (aux->string[0] == '$') // Handle expansions && tokenize again later...
+			aux->string = expand_evals(aux->string, envp);
 		tmp_lst = tmp_lst->next;
 		aux = tmp_lst->content;
 		if (!aux->string)

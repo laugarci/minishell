@@ -6,7 +6,7 @@
 /*   By: laugarci <laugarci@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/06 11:42:45 by ffornes-          #+#    #+#             */
-/*   Updated: 2023/08/10 15:54:29 by ffornes-         ###   ########.fr       */
+/*   Updated: 2023/08/10 18:09:21 by ffornes-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,7 +44,7 @@ int			open_state(int state, char c);
 
 t_token		*new_token(char *string, int type, int quotes);
 t_list		*save_tokens(char *input);
-void		process_tokens(t_list **token_list);
+void		process_tokens(t_list **token_list, char *envp[]);
 t_list		*remove_duplicates(t_list *token_list);
 void		free_token(void *var);
 
