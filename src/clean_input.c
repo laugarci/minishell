@@ -6,7 +6,7 @@
 /*   By: ffornes- <ffornes-@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/27 14:53:30 by ffornes-          #+#    #+#             */
-/*   Updated: 2023/08/10 17:53:13 by ffornes-         ###   ########.fr       */
+/*   Updated: 2023/08/10 18:03:28 by ffornes-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,7 +89,7 @@ char	*clean_input(char *str)
 	int		i;
 	char	*tmp;
 	char	*aux;
-	
+
 	if (str[0] == '<' || str[0] == '>')
 		tmp = first_pos_re(str); // If this is null syntax error near unexpected token 
 	else
