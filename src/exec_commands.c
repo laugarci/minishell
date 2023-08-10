@@ -6,7 +6,7 @@
 /*   By: laugarci <laugarci@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/04 14:04:45 by laugarci          #+#    #+#             */
-/*   Updated: 2023/08/09 17:05:03 by laugarci         ###   ########.fr       */
+/*   Updated: 2023/08/10 11:58:22 by laugarci         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -107,7 +107,6 @@ int	exec_commands_wf(t_list *lst, char **env, int flags)
 	}
 	args[flags + 1] = NULL;
 	token = lst->content;
-	printf("EN EXEC >> args[1]%s, args[2]%s\n", args[1], args[2]);
 	if ((execve(args[0], args, env)) == -1)
 			printf("zsh: command not found %s\n", token->string);
 	return (0);
@@ -139,7 +138,6 @@ int	exec_commands(t_list *lst, char **env)
 			if (!args)
 				return (1);
 			args[0] = get_path(token->string, env);
-			printf("args[0] sin flags %s\n", args[0]);
 			args[1] = NULL;
 			if ((execve(args[0], args, env)) == -1)
 					printf("zsh: command not found: %s\n", token->string);
