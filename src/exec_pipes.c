@@ -6,7 +6,7 @@
 /*   By: laugarci <laugarci@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/14 09:52:31 by laugarci          #+#    #+#             */
-/*   Updated: 2023/08/10 12:01:22 by laugarci         ###   ########.fr       */
+/*   Updated: 2023/08/10 15:26:31 by laugarci         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@
 
 int	is_pipe(t_list *lst)
 {
-	t_token *aux;
+	t_token	*aux;
 	t_list	*tmp;
 
 	tmp = lst;
@@ -42,9 +42,9 @@ int	is_pipe(t_list *lst)
 
 int	count_chars(t_list *lst)
 {
-	int	c;
-	t_list *tmp;
-	t_token *aux;
+	int		c;
+	t_list	*tmp;
+	t_token	*aux;
 
 	c = 0;
 	tmp = lst;
@@ -108,14 +108,14 @@ char	*ft_strtok(char *str, const char *del)
 	return (start);
 }
 
-char *find_command(t_list *lst)
+char	*find_command(t_list *lst)
 {
-    size_t total_length;
+	size_t	total_length;
 	t_token	*token;
-    t_list *current;
-	int i;
-	char *result;
-	size_t offset;
+	t_list	*current;
+	int		i;
+	char	*result;
+	size_t	offset;
 
 	i = 0;
 	total_length = 0;
@@ -123,14 +123,14 @@ char *find_command(t_list *lst)
 	while (current->next)
 	{
 		token = current->content;
-        total_length += ft_strlen(token->string);
-        current = current->next;
+		total_length += ft_strlen(token->string);
+		current = current->next;
 		i++;
-    }
-    result = malloc(sizeof(char) * (total_length + i));
-    current = lst;
-    offset = 0;
-    while (current->next)
+	}
+	result = malloc(sizeof(char) * (total_length + i));
+	current = lst;
+	offset = 0;
+	while (current->next)
 	{
 		token = current->content;
 		if (offset > 0)
@@ -138,14 +138,13 @@ char *find_command(t_list *lst)
 			result[offset] = ' ';
 			offset++;
 		}
-        ft_strlcpy(result + offset, token->string, total_length + i);
-        offset += ft_strlen(token->string);
-        current = current->next;
-    }
-    result[total_length + i] = '\0';
-    return (result);
+		ft_strlcpy(result + offset, token->string, total_length + i);
+		offset += ft_strlen(token->string);
+		current = current->next;
+	}
+	result[total_length + i] = '\0';
+	return (result);
 }
-
 
 void	exec_pipes(t_list *lst, char **env, int num_pipes)
 {
@@ -187,7 +186,7 @@ void	exec_pipes(t_list *lst, char **env, int num_pipes)
 				dup2(fds[i][WRITE_END], STDOUT_FILENO);
 				close(fds[i][WRITE_END]);
 			}
-			parse_input(command, env, &aux);
+			aux = save_tokens(command);
 			exec_commands(aux, env);
 			exit(1);
 		}
