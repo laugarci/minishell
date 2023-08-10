@@ -6,7 +6,7 @@
 /*   By: laugarci <laugarci@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/05 14:01:37 by laugarci          #+#    #+#             */
-/*   Updated: 2023/08/10 15:55:21 by ffornes-         ###   ########.fr       */
+/*   Updated: 2023/08/10 18:23:48 by ffornes-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,7 +49,7 @@ static void	print_tokens(t_list *lst)
 	}
 } // DEBUG DEBUG DEBUG DEBUG DELETE LATER   RR ER E REA EGAG 
 
-static char	**set_env(char **src)
+static char	**set_env(char **src) // This must be a list in order to add evals without having to reallocate the whole fucking thing mate
 {
 	int		i;
 	char	**dst;
