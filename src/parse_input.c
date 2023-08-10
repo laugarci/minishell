@@ -6,7 +6,7 @@
 /*   By: ffornes- <ffornes-@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/27 12:29:42 by ffornes-          #+#    #+#             */
-/*   Updated: 2023/08/02 19:53:10 by ffornes-         ###   ########.fr       */
+/*   Updated: 2023/08/10 11:59:41 by laugarci         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,7 @@ int	parse_input(char *str, char *envp[], t_list **token_list)
 	if (ft_strchr(str, '|') || ft_strchr(str, '<') || ft_strchr(str, '>'))
 		str = clean_input(str);
 	lst = save_tokens(str);
-	free(str);
+//	free(str);
 	if (!lst)
 		return (1);
 	// Must handle redirections with it's file directly 

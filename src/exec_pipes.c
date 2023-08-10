@@ -6,7 +6,7 @@
 /*   By: laugarci <laugarci@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/14 09:52:31 by laugarci          #+#    #+#             */
-/*   Updated: 2023/08/10 09:44:39 by laugarci         ###   ########.fr       */
+/*   Updated: 2023/08/10 12:01:22 by laugarci         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,74 +58,94 @@ int	count_chars(t_list *lst)
 	return (c);
 }
 
-char	*find_command(t_list *lst, int i, int num_pipes)
+char	*ft_strtok(char *str, const char *del)
 {
-	t_token *token;
-	t_list *tmp;
-	char *command;
-	int j;
-	int x;
-	int aux;
-	
-	aux = 0;
-	j = 0;
-	tmp = lst;
-	token = lst->content;
-	command = malloc(sizeof(char) * 150);
-	if (!command)
-			return (NULL);
-	if (i == 0)
-	{
-		while(token->type == -1 && tmp->next)
-		{
-			if (aux > 0)
-				command[j++] = ' ';
-			x = 0;
-			while (token->string[x])
-				command[j++] = token->string[x++];
-			aux++;
-			tmp = tmp->next;
-			token = tmp->content;
-		}
-	}
-	else if (i == (num_pipes + 1))
+	static char	*token;
+	char		*start;
+	int			i;
+	int			j;
+
+	i = 0;
+	if (str != NULL)
+		token = str;
+	if (token == NULL || *token == '\0')
 		return (NULL);
-	else
+	while (token[i] != '\0')
 	{
-		aux = 0;
-		x = 0;
 		j = 0;
-		if (tmp->next)
+		while (del[j] != '\0')
 		{
-			while (aux != i)
+			if (token[i] == del[j])
 			{
-				if (token->type == PIPE)
-					aux++;
-				tmp = tmp->next;
-				token = tmp->content;
+				i++;
+				break ;
 			}
+			j++;
 		}
-		if (token->type == PIPE)
-		{
-			tmp = tmp->next;
-			token = tmp->content;
-		}
-		aux = 0;
-		while (token->type != PIPE && tmp->next)
-		{
-			x = 0;
-			if (aux > 0)
-				command[j++] = ' ';
-			while(token->string[x])
-				command[j++] = token->string[x++];
-			tmp = tmp->next;
-			token = tmp->content;
-			aux++;
-		}
+		if (del[j] == '\0')
+			break ;
 	}
-	command[j] = '\0';
-	return (command);
+	if (token[i] == '\0')
+		return (NULL);
+	start = &token[i];
+	while (token[i] != '\0')
+	{
+		j = 0;
+		while (del[j] != '\0')
+		{
+			if (token[i] == del[j])
+			{
+				token[i] = '\0';
+				i++;
+				token += i;
+				return (start);
+			}
+			j++;
+		}
+		i++;
+	}
+	token += i;
+	return (start);
 }
+
+char *find_command(t_list *lst)
+{
+    size_t total_length;
+	t_token	*token;
+    t_list *current;
+	int i;
+	char *result;
+	size_t offset;
+
+	i = 0;
+	total_length = 0;
+	current = lst;
+	while (current->next)
+	{
+		token = current->content;
+        total_length += ft_strlen(token->string);
+        current = current->next;
+		i++;
+    }
+    result = malloc(sizeof(char) * (total_length + i));
+    current = lst;
+    offset = 0;
+    while (current->next)
+	{
+		token = current->content;
+		if (offset > 0)
+		{
+			result[offset] = ' ';
+			offset++;
+		}
+        ft_strlcpy(result + offset, token->string, total_length + i);
+        offset += ft_strlen(token->string);
+        current = current->next;
+    }
+    result[total_length + i] = '\0';
+    return (result);
+}
+
 
 void	exec_pipes(t_list *lst, char **env, int num_pipes)
 {
@@ -135,17 +155,19 @@ void	exec_pipes(t_list *lst, char **env, int num_pipes)
 	char	*command;
 	int		**fds;
 	t_list	*aux;
+	char	*input;
 
 	i = 0;
 	fds = malloc(sizeof(int *) * num_pipes);
-	while (i <= num_pipes)
+	while (i < num_pipes)
 	{
 		fds[i] = malloc(sizeof(int) * 2);
 		pipe(fds[i]);
 		i++;
 	}
 	i = 0;
-	command = find_command(lst, i, num_pipes);
+	input = find_command(lst);
+	command = ft_strtok(input, "|");
 	while (command != NULL)
 	{
 		pid = fork();
@@ -176,8 +198,8 @@ void	exec_pipes(t_list *lst, char **env, int num_pipes)
 			if (i != num_pipes)
 				close(fds[i][WRITE_END]);
 		}
+		command = ft_strtok(NULL, "|");
 		i++;
-		command = find_command(lst, i, num_pipes);
 	}
 	i = 0;
 	while (i < num_pipes)
