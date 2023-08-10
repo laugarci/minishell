@@ -5,8 +5,8 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: laugarci <laugarci@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/08/04 14:04:45 by laugarci          #+#    #+#             */
-/*   Updated: 2023/08/10 15:37:20 by laugarci         ###   ########.fr       */
+/*   Created: 2023/07/04 15:00:39 by laugarci          #+#    #+#             */
+/*   Updated: 2023/08/10 15:47:23 by laugarci         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,6 +82,8 @@ int	cmp_commands(t_list *lst, char **env)
 	else
 		exec_commands(lst, env);
 	return (0);
+	free_double((void **)env);
+	env = NULL;
 }
 
 int	exec_commands_wf(t_list *lst, char **env, int flags)
@@ -110,6 +112,8 @@ int	exec_commands_wf(t_list *lst, char **env, int flags)
 	if ((execve(args[0], args, env)) == -1)
 			printf("zsh: command not found %s\n", token->string);
 	return (0);
+	free_double((void **)split_com);
+	split_com = NULL;
 }
 
 int	exec_commands(t_list *lst, char **env)

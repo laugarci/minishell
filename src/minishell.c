@@ -6,7 +6,7 @@
 /*   By: laugarci <laugarci@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/04 14:01:16 by laugarci          #+#    #+#             */
-/*   Updated: 2023/08/10 11:59:18 by laugarci         ###   ########.fr       */
+/*   Updated: 2023/08/10 15:46:25 by laugarci         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,7 +78,6 @@ static int	exit_check(char *input)
 {
 	if (!ft_strncmp(input, "exit\0", 5))
 	{
-		exit(0);
 		free(input);
 		return (1);
 	}
