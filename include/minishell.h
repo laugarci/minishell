@@ -6,7 +6,7 @@
 /*   By: ffornes- <ffornes-@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/27 11:32:21 by ffornes-          #+#    #+#             */
-/*   Updated: 2023/08/08 15:50:42 by laugarci         ###   ########.fr       */
+/*   Updated: 2023/08/14 16:59:38 by laugarci         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,10 +31,16 @@ int			cmp_commands(t_list *lst, char **env);
 
 int			exec_cd(t_list *lst);
 
-int			is_pipe(t_list *lst);
+int			is_type(t_list *lst, int type);
 
 int			count_chars(t_list *lst);
 
 void		exec_pipes(t_list *lst, char **env, int num_pipes);
+
+int			count_args(t_list *lst);
+
+char		*find_command(t_list *lst);
+
+int			exec_redirect(t_list *lst, int num_args, char **env);
 
 #endif

@@ -6,7 +6,7 @@
 /*   By: laugarci <laugarci@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/04 15:00:39 by laugarci          #+#    #+#             */
-/*   Updated: 2023/08/10 16:36:06 by laugarci         ###   ########.fr       */
+/*   Updated: 2023/08/14 17:08:03 by laugarci         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,15 +60,21 @@ int	cmp_commands(t_list *lst, char **env)
 {
 	t_token	*token;
 	int		num_pipes;
+	int		num_args;
 
 	token = lst->content;
 	if (ft_strncmp(token->string, "cd ", 3) == 0
 		|| ft_strncmp(token->string, "cd\0", 3) == 0)
 		exec_cd(lst);
-	else if (is_pipe(lst) == 1)
+	else if (is_type(lst, 0) == 1 || is_type(lst, 3) || is_type(lst, 4))
 	{
 		num_pipes = count_chars(lst);
 		exec_pipes(lst, env, num_pipes);
+	}
+	else if (is_type(lst, 3) == 1 || is_type(lst, 4) == 1)
+	{
+		num_args = count_args(lst);
+		//exec_redirect(lst, num_args,  env);
 	}
 	else
 		exec_commands(lst, env);
@@ -84,7 +90,7 @@ int	exec_commands_wf(t_list *lst, char **env, int flags)
 	int		i;
 	t_list	*tmp;
 
-	tmp = lst->next;
+	tmp = lst->next;	
 	token = lst->content;
 	args = (char **)malloc(sizeof(char *) * (flags + 2));
 	if (!args)

@@ -6,7 +6,7 @@
 /*   By: laugarci <laugarci@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/14 09:52:31 by laugarci          #+#    #+#             */
-/*   Updated: 2023/08/10 15:26:31 by laugarci         ###   ########.fr       */
+/*   Updated: 2023/08/14 18:03:13 by laugarci         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,11 +20,12 @@
 #include "libft.h"
 #include "parser.h"
 #include "libft_bonus.h"
+#include <fcntl.h>
 
 #define READ_END 0
 #define WRITE_END 1
 
-int	is_pipe(t_list *lst)
+int	is_type(t_list *lst, int type)
 {
 	t_token	*aux;
 	t_list	*tmp;
@@ -33,7 +34,7 @@ int	is_pipe(t_list *lst)
 	while (tmp)
 	{
 		aux = tmp->content;
-		if (aux->type == PIPE)
+		if (aux->type == type)
 			return (1);
 		tmp = tmp->next;
 	}
@@ -146,6 +147,27 @@ char	*find_command(t_list *lst)
 	return (result);
 }
 
+char	*find_output(t_list *lst)
+{
+	t_list *tmp;
+	t_token *token;
+	char *output;
+
+	tmp = lst;
+	token = tmp->content;
+	while(tmp->next)
+	{
+		if (token->type == 3)
+		{
+			output = malloc(sizeof(char) * ft_strlen(token->string) + 1);
+			ft_strlcpy(output, token->string, ft_strlen(token->string) + 1);
+		}
+		tmp = tmp->next;
+		token = tmp->content;
+	}
+	return (output);
+}
+
 void	exec_pipes(t_list *lst, char **env, int num_pipes)
 {
 	int		status;
@@ -169,6 +191,10 @@ void	exec_pipes(t_list *lst, char **env, int num_pipes)
 	command = ft_strtok(input, "|");
 	while (command != NULL)
 	{
+		if (is_type(lst, 3) == 1)
+		{
+			char *output = find_output(lst);
+		}
 		pid = fork();
 		if (pid == -1)
 			exit(-1);
