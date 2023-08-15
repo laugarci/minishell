@@ -6,7 +6,7 @@
 /*   By: laugarci <laugarci@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/14 09:52:31 by laugarci          #+#    #+#             */
-/*   Updated: 2023/08/14 18:03:13 by laugarci         ###   ########.fr       */
+/*   Updated: 2023/08/15 16:58:54 by laugarci         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -194,6 +194,9 @@ void	exec_pipes(t_list *lst, char **env, int num_pipes)
 		if (is_type(lst, 3) == 1)
 		{
 			char *output = find_output(lst);
+			int fd = open(output, O_WRONLY | O_CREAT | O_TRUNC, 0666);
+			close(fd);
+			printf("output %s\n", output);
 		}
 		pid = fork();
 		if (pid == -1)
