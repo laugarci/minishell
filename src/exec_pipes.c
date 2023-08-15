@@ -6,7 +6,7 @@
 /*   By: laugarci <laugarci@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/14 09:52:31 by laugarci          #+#    #+#             */
-/*   Updated: 2023/08/15 16:58:54 by laugarci         ###   ########.fr       */
+/*   Updated: 2023/08/15 18:19:00 by laugarci         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -191,13 +191,6 @@ void	exec_pipes(t_list *lst, char **env, int num_pipes)
 	command = ft_strtok(input, "|");
 	while (command != NULL)
 	{
-		if (is_type(lst, 3) == 1)
-		{
-			char *output = find_output(lst);
-			int fd = open(output, O_WRONLY | O_CREAT | O_TRUNC, 0666);
-			close(fd);
-			printf("output %s\n", output);
-		}
 		pid = fork();
 		if (pid == -1)
 			exit(-1);
@@ -215,6 +208,8 @@ void	exec_pipes(t_list *lst, char **env, int num_pipes)
 				dup2(fds[i][WRITE_END], STDOUT_FILENO);
 				close(fds[i][WRITE_END]);
 			}
+			if (is_type(lst, 3) == 1)
+				exec_redirect(lst);
 			aux = save_tokens(command);
 			exec_commands(aux, env);
 			exit(1);
