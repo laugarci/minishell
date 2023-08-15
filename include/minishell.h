@@ -6,7 +6,7 @@
 /*   By: ffornes- <ffornes-@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/27 11:32:21 by ffornes-          #+#    #+#             */
-/*   Updated: 2023/08/14 16:59:38 by laugarci         ###   ########.fr       */
+/*   Updated: 2023/08/15 18:17:50 by laugarci         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,6 +41,8 @@ int			count_args(t_list *lst);
 
 char		*find_command(t_list *lst);
 
-int			exec_redirect(t_list *lst, int num_args, char **env);
+char		*find_output(t_list *lst);
+
+int			exec_redirect(t_list *lst);
 
 #endif
