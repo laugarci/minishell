@@ -6,7 +6,7 @@
 /*   By: laugarci <laugarci@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/16 15:26:31 by laugarci          #+#    #+#             */
-/*   Updated: 2023/08/16 16:20:26 by laugarci         ###   ########.fr       */
+/*   Updated: 2023/08/16 17:52:36 by laugarci         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,6 +49,24 @@ int	count_chars(t_list *lst)
 	return (c);
 }
 
+int	total_input_len(t_list *lst)
+{
+	t_list	*current;
+	t_token	*token;
+	int		total_length;
+
+	current = lst;
+	total_length = 0;
+	while (current->next)
+	{
+		token = current->content;
+		total_length += ft_strlen(token->string);
+		current = current->next;
+	}
+	total_length = total_length + (count_list(lst));
+	return (total_length);
+}
+
 char	*ft_strtok(char *str, const char *del)
 {
 	static char	*token;
@@ -62,17 +80,16 @@ char	*ft_strtok(char *str, const char *del)
 		token = str;
 	if (token == NULL || *token == '\0')
 		return (NULL);
-	while (token[i] != '\0')
+	while (token[i])
 	{
 		j = 0;
-		while (del[j] != '\0')
+		while (del[++j])
 		{
 			if (token[i] == del[j])
 			{
 				i++;
 				break ;
 			}
-			j++;
 		}
 		if (del[j] == '\0')
 			break ;
@@ -80,10 +97,10 @@ char	*ft_strtok(char *str, const char *del)
 	if (token[i] == '\0')
 		return (NULL);
 	start = &token[i];
-	while (token[i] != '\0')
+	while (token[++i])
 	{
 		j = 0;
-		while (del[j] != '\0')
+		while (del[j])
 		{
 			if (token[i] == del[j])
 			{
@@ -95,7 +112,6 @@ char	*ft_strtok(char *str, const char *del)
 			}
 			j++;
 		}
-		i++;
 	}
 	token += i;
 	final = ft_strtrim(start, " ");
