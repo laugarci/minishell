@@ -6,7 +6,7 @@
 /*   By: laugarci <laugarci@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/14 17:50:31 by laugarci          #+#    #+#             */
-/*   Updated: 2023/08/14 17:54:29 by laugarci         ###   ########.fr       */
+/*   Updated: 2023/08/16 17:06:43 by laugarci         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -95,4 +95,5 @@ void	exec_pipes(t_list *lst, char **env, int num_pipes)
 		i++;
 	}
 }
+
 

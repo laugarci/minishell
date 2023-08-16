@@ -6,7 +6,7 @@
 /*   By: ffornes- <ffornes-@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/27 11:32:21 by ffornes-          #+#    #+#             */
-/*   Updated: 2023/08/15 18:17:50 by laugarci         ###   ########.fr       */
+/*   Updated: 2023/08/16 16:41:09 by laugarci         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,5 +44,7 @@ char		*find_command(t_list *lst);
 char		*find_output(t_list *lst);
 
 int			exec_redirect(t_list *lst);
+
+char		*ft_strtok(char *str, const char *del);
 
 #endif
