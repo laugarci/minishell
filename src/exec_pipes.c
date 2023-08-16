@@ -6,7 +6,7 @@
 /*   By: laugarci <laugarci@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/14 09:52:31 by laugarci          #+#    #+#             */
-/*   Updated: 2023/08/15 18:19:00 by laugarci         ###   ########.fr       */
+/*   Updated: 2023/08/16 14:49:20 by laugarci         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,6 +65,7 @@ char	*ft_strtok(char *str, const char *del)
 	char		*start;
 	int			i;
 	int			j;
+	char		*final;
 
 	i = 0;
 	if (str != NULL)
@@ -99,14 +100,16 @@ char	*ft_strtok(char *str, const char *del)
 				token[i] = '\0';
 				i++;
 				token += i;
-				return (start);
+				final = ft_strtrim(start, " ");
+				return (final);
 			}
 			j++;
 		}
 		i++;
 	}
 	token += i;
-	return (start);
+	final = ft_strtrim(start, " ");
+	return (final);
 }
 
 char	*find_command(t_list *lst)
@@ -202,14 +205,14 @@ void	exec_pipes(t_list *lst, char **env, int num_pipes)
 				dup2(fds[i - 1][READ_END], STDIN_FILENO);
 				close(fds[i - 1][READ_END]);
 			}
+			if (is_type(lst, 3) == 1)
+				exec_redirect(lst);
 			if (i != num_pipes)
 			{
 				close(fds[i][READ_END]);
 				dup2(fds[i][WRITE_END], STDOUT_FILENO);
 				close(fds[i][WRITE_END]);
 			}
-			if (is_type(lst, 3) == 1)
-				exec_redirect(lst);
 			aux = save_tokens(command);
 			exec_commands(aux, env);
 			exit(1);
