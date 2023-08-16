@@ -6,7 +6,7 @@
 /*   By: laugarci <laugarci@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/14 09:52:31 by laugarci          #+#    #+#             */
-/*   Updated: 2023/08/16 17:00:40 by laugarci         ###   ########.fr       */
+/*   Updated: 2023/08/16 17:50:48 by laugarci         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,28 +33,17 @@ char	*find_command(t_list *lst)
 	int		i;
 	char	*result;
 
-	i = 0;
-	total_length = 0;
-	current = lst;
-	while (current->next)
-	{
-		token = current->content;
-		total_length += ft_strlen(token->string);
-		current = current->next;
-		i++;
-	}
-	total_length = total_length + i;
-	result = malloc(sizeof(char) * (total_length));
+	total_length = total_input_len(lst);
+	result = malloc(sizeof(char) * total_length);
+	if (!result)
+		return (NULL);
 	current = lst;
 	i = 0;
 	while (current->next)
 	{
 		token = current->content;
 		if (i > 0)
-		{
-			result[i] = ' ';
-			i++;
-		}
+			result[i++] = ' ';
 		ft_strlcpy(result + i, token->string, total_length);
 		i += ft_strlen(token->string);
 		current = current->next;
@@ -65,13 +54,13 @@ char	*find_command(t_list *lst)
 
 char	*find_output(t_list *lst)
 {
-	t_list *tmp;
-	t_token *token;
-	char *output;
+	t_list	*tmp;
+	t_token	*token;
+	char	*output;
 
 	tmp = lst;
 	token = tmp->content;
-	while(tmp->next)
+	while (tmp->next)
 	{
 		if (token->type == 3)
 		{
@@ -84,7 +73,7 @@ char	*find_output(t_list *lst)
 	return (output);
 }
 
-void	close_pipes(int **fds, int	num_pipes)
+void	close_pipes(int **fds, int num_pipes)
 {
 	int	i;
 	int	status;
@@ -106,8 +95,8 @@ void	close_pipes(int **fds, int	num_pipes)
 
 int	**pipe_fds(int num_pipes)
 {
-	int i;
-	int **fds;
+	int	i;
+	int	**fds;
 
 	i = 0;
 	fds = malloc(sizeof(int *) * num_pipes);
