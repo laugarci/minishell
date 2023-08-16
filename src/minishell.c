@@ -6,7 +6,7 @@
 /*   By: laugarci <laugarci@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/04 14:01:16 by laugarci          #+#    #+#             */
-/*   Updated: 2023/08/14 12:05:20 by laugarci         ###   ########.fr       */
+/*   Updated: 2023/08/16 16:22:58 by laugarci         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@
 #include "parser.h"
 
 /// AJNKNAEKK DEBUGGGGGGGGGGGG
-static void	print_tokens(t_list *lst)
+/*static void	print_tokens(t_list *lst)
 {
 	t_token		*token;
 
@@ -48,6 +48,7 @@ static void	print_tokens(t_list *lst)
 			break ;
 	}
 } // DEBUG DEBUG DEBUG DEBUG DELETE LATER   RR ER E REA EGAG 
+*/
 
 static char	**set_env(char **src)
 {
@@ -109,7 +110,7 @@ int	main(int argc, char *argv[], char *envp[])
 				break ;
 			if (!parse_input(input, env, &list))
 			{
-				print_tokens(list);
+			//	print_tokens(list);
 				cmp_commands(list, env);
 				ft_lstclear(&list, (void *)free_token);
 			}

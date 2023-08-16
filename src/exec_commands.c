@@ -6,7 +6,7 @@
 /*   By: laugarci <laugarci@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/04 15:00:39 by laugarci          #+#    #+#             */
-/*   Updated: 2023/08/16 14:45:35 by laugarci         ###   ########.fr       */
+/*   Updated: 2023/08/16 16:41:37 by laugarci         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,19 +21,28 @@
 #include "libft_bonus.h"
 #include "parser.h"
 
+int	count_list(t_list *lst)
+{
+	int		i;
+	t_list	*tmp;
+
+	tmp = lst;
+	i = 0;
+	while (tmp)
+	{
+		tmp = tmp->next;
+		i++;
+	}
+	return (i);
+}
+
 int	exec_cd(t_list *lst)
 {
 	t_token	*token;
 	t_list	*tmp;
 	int		i;
 
-	i = 0;
-	tmp = lst;
-	while (tmp)
-	{
-		tmp = tmp->next;
-		i++;
-	}
+	i = count_list(lst);
 	tmp = lst->next;
 	token = tmp->content;
 	if (i == 2)
@@ -90,7 +99,7 @@ int	exec_commands_wf(t_list *lst, char **env, int flags)
 	int		i;
 	t_list	*tmp;
 
-	tmp = lst->next;	
+	tmp = lst->next;
 	token = lst->content;
 	args = (char **)malloc(sizeof(char *) * (flags + 2));
 	if (!args)
@@ -121,12 +130,7 @@ int	exec_commands(t_list *lst, char **env)
 	int		status;
 
 	tmp = lst;
-	i = 0;
-	while (tmp)
-	{
-		tmp = tmp->next;
-		i++;
-	}
+	i = count_list(lst);
 	token = lst->content;
 	pid = fork();
 	if (pid == 0)
