@@ -6,7 +6,7 @@
 /*   By: laugarci <laugarci@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/14 09:52:31 by laugarci          #+#    #+#             */
-/*   Updated: 2023/08/16 17:50:48 by laugarci         ###   ########.fr       */
+/*   Updated: 2023/08/17 10:34:08 by laugarci         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,54 +24,6 @@
 
 #define READ_END 0
 #define WRITE_END 1
-
-char	*find_command(t_list *lst)
-{
-	size_t	total_length;
-	t_token	*token;
-	t_list	*current;
-	int		i;
-	char	*result;
-
-	total_length = total_input_len(lst);
-	result = malloc(sizeof(char) * total_length);
-	if (!result)
-		return (NULL);
-	current = lst;
-	i = 0;
-	while (current->next)
-	{
-		token = current->content;
-		if (i > 0)
-			result[i++] = ' ';
-		ft_strlcpy(result + i, token->string, total_length);
-		i += ft_strlen(token->string);
-		current = current->next;
-	}
-	result[total_length] = '\0';
-	return (result);
-}
-
-char	*find_output(t_list *lst)
-{
-	t_list	*tmp;
-	t_token	*token;
-	char	*output;
-
-	tmp = lst;
-	token = tmp->content;
-	while (tmp->next)
-	{
-		if (token->type == 3)
-		{
-			output = malloc(sizeof(char) * ft_strlen(token->string) + 1);
-			ft_strlcpy(output, token->string, ft_strlen(token->string) + 1);
-		}
-		tmp = tmp->next;
-		token = tmp->content;
-	}
-	return (output);
-}
 
 void	close_pipes(int **fds, int num_pipes)
 {
@@ -105,22 +57,46 @@ int	**pipe_fds(int num_pipes)
 	while (i < num_pipes)
 	{
 		fds[i] = malloc(sizeof(int) * 2);
+		if (!fds[i])
+			return (NULL);
 		pipe(fds[i]);
 		i++;
 	}
 	return (fds);
 }
 
-void	exec_pipes(t_list *lst, char **env, int num_pipes)
+void	close_pipes_child(int **fds, int i, int num_pipes)
+{
+	if (i != 0)
+	{
+		close(fds[i - 1][WRITE_END]);
+		dup2(fds[i - 1][READ_END], STDIN_FILENO);
+		close(fds[i - 1][READ_END]);
+	}
+	if (i != num_pipes)
+	{
+		close(fds[i][READ_END]);
+		dup2(fds[i][WRITE_END], STDOUT_FILENO);
+		close(fds[i][WRITE_END]);
+	}
+}
+
+void	close_pipes_parent(int **fds, int i, int num_pipes)
+{
+	if (i != 0)
+		close(fds[i - 1][READ_END]);
+	if (i != num_pipes)
+		close(fds[i][WRITE_END]);
+}
+
+void	exec_pipes(char **env, int num_pipes, char *command)
 {
 	int		i;
 	pid_t	pid;
-	char	*command;
 	int		**fds;
 	t_list	*aux;
 
 	fds = pipe_fds(num_pipes);
-	command = find_command(lst);
 	command = ft_strtok(command, "|");
 	i = 0;
 	while (command != NULL)
@@ -130,31 +106,13 @@ void	exec_pipes(t_list *lst, char **env, int num_pipes)
 			exit(-1);
 		else if (pid == 0)
 		{
-			if (i != 0)
-			{
-				close(fds[i - 1][WRITE_END]);
-				dup2(fds[i - 1][READ_END], STDIN_FILENO);
-				close(fds[i - 1][READ_END]);
-			}
-			if (is_type(lst, 3) == 1)
-				exec_redirect(lst);
-			if (i != num_pipes)
-			{
-				close(fds[i][READ_END]);
-				dup2(fds[i][WRITE_END], STDOUT_FILENO);
-				close(fds[i][WRITE_END]);
-			}
+			close_pipes_child(fds, i, num_pipes);
 			aux = save_tokens(command);
 			exec_commands(aux, env);
 			exit(1);
 		}
 		else
-		{
-			if (i != 0)
-				close(fds[i - 1][READ_END]);
-			if (i != num_pipes)
-				close(fds[i][WRITE_END]);
-		}
+			close_pipes_parent(fds, i, num_pipes);
 		command = ft_strtok(NULL, "|");
 		i++;
 	}
