@@ -6,7 +6,7 @@
 /*   By: laugarci <laugarci@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/16 15:26:31 by laugarci          #+#    #+#             */
-/*   Updated: 2023/08/16 17:52:36 by laugarci         ###   ########.fr       */
+/*   Updated: 2023/08/17 09:56:49 by laugarci         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,6 +65,21 @@ int	total_input_len(t_list *lst)
 	}
 	total_length = total_length + (count_list(lst));
 	return (total_length);
+}
+
+int	count_list(t_list *lst)
+{
+	int		i;
+	t_list	*tmp;
+
+	tmp = lst;
+	i = 0;
+	while (tmp)
+	{
+		tmp = tmp->next;
+		i++;
+	}
+	return (i);
 }
 
 char	*ft_strtok(char *str, const char *del)
