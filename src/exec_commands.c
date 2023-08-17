@@ -6,7 +6,7 @@
 /*   By: laugarci <laugarci@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/04 15:00:39 by laugarci          #+#    #+#             */
-/*   Updated: 2023/08/16 16:41:37 by laugarci         ###   ########.fr       */
+/*   Updated: 2023/08/17 09:57:49 by laugarci         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,21 +20,6 @@
 #include "minishell.h"
 #include "libft_bonus.h"
 #include "parser.h"
-
-int	count_list(t_list *lst)
-{
-	int		i;
-	t_list	*tmp;
-
-	tmp = lst;
-	i = 0;
-	while (tmp)
-	{
-		tmp = tmp->next;
-		i++;
-	}
-	return (i);
-}
 
 int	exec_cd(t_list *lst)
 {
@@ -120,31 +105,34 @@ int	exec_commands_wf(t_list *lst, char **env, int flags)
 	return (0);
 }
 
+int	exec_commands_nf(t_list *lst, char **env)
+{
+	char	**args;
+	t_token	*token;
+
+	token = lst->content;
+	args = (char **)malloc(sizeof(char *) * 2);
+	if (!args)
+		return (1);
+	args[0] = get_path(token->string, env);
+	args[1] = NULL;
+	if ((execve(args[0], args, env)) == -1)
+		printf("zsh: command not found: %s\n", token->string);
+	return (0);
+}
+
 int	exec_commands(t_list *lst, char **env)
 {
-	t_token	*token;
-	t_list	*tmp;
 	pid_t	pid;
 	int		i;
-	char	**args;
 	int		status;
 
-	tmp = lst;
 	i = count_list(lst);
-	token = lst->content;
 	pid = fork();
 	if (pid == 0)
 	{
 		if (i == 2)
-		{
-			args = (char **)malloc(sizeof(char *) * 2);
-			if (!args)
-				return (1);
-			args[0] = get_path(token->string, env);
-			args[1] = NULL;
-			if ((execve(args[0], args, env)) == -1)
-				printf("zsh: command not found: %s\n", token->string);
-		}
+			exec_commands_nf(lst, env);
 		else
 			exec_commands_wf(lst, env, (i - 1));
 		exit(0);
