@@ -6,7 +6,7 @@
 /*   By: laugarci <laugarci@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/04 15:00:39 by laugarci          #+#    #+#             */
-/*   Updated: 2023/08/18 12:26:16 by laugarci         ###   ########.fr       */
+/*   Updated: 2023/08/18 14:54:41 by laugarci         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -128,7 +128,7 @@ int	exec_commands(t_list *lst, char **env)
 	pid_t	pid;
 	int		i;
 	int		status;
-
+	
 	i = count_list(lst);
 	pid = fork();
 	if (pid == 0)

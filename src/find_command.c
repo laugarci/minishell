@@ -6,7 +6,7 @@
 /*   By: laugarci <laugarci@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/17 10:09:20 by laugarci          #+#    #+#             */
-/*   Updated: 2023/08/17 10:23:40 by laugarci         ###   ########.fr       */
+/*   Updated: 2023/08/18 14:52:44 by laugarci         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,11 +33,16 @@ char	*find_command(t_list *lst)
 	while (current->next)
 	{
 		token = current->content;
-		if (i > 0)
-			result[i++] = ' ';
-		ft_strlcpy(result + i, token->string, total_length);
-		i += ft_strlen(token->string);
-		current = current->next;
+		if (token->type == -1)
+		{
+			if (i > 0)
+				result[i++] = ' ';
+			ft_strlcpy(result + i, token->string, total_length);
+			i += ft_strlen(token->string);
+			current = current->next;
+		}
+		else
+			break ;
 	}
 	result[total_length] = '\0';
 	return (result);

@@ -6,7 +6,7 @@
 /*   By: laugarci <laugarci@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/04 14:01:16 by laugarci          #+#    #+#             */
-/*   Updated: 2023/08/16 16:22:58 by laugarci         ###   ########.fr       */
+/*   Updated: 2023/08/18 14:54:18 by laugarci         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,8 +47,8 @@
 		if (!token->string)
 			break ;
 	}
-} // DEBUG DEBUG DEBUG DEBUG DELETE LATER   RR ER E REA EGAG 
-*/
+} // DEBUG DEBUG DEBUG DEBUG DELETE LATER   RR ER E REA EGAG */
+
 
 static char	**set_env(char **src)
 {
