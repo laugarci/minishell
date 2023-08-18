@@ -6,7 +6,7 @@
 /*   By: laugarci <laugarci@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/14 09:52:31 by laugarci          #+#    #+#             */
-/*   Updated: 2023/08/17 10:34:08 by laugarci         ###   ########.fr       */
+/*   Updated: 2023/08/18 12:37:51 by laugarci         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,7 +89,7 @@ void	close_pipes_parent(int **fds, int i, int num_pipes)
 		close(fds[i][WRITE_END]);
 }
 
-void	exec_pipes(char **env, int num_pipes, char *command)
+void	exec_pipes(char **env, int num_pipes, char *command, t_list *lst)
 {
 	int		i;
 	pid_t	pid;
@@ -99,6 +99,13 @@ void	exec_pipes(char **env, int num_pipes, char *command)
 	fds = pipe_fds(num_pipes);
 	command = ft_strtok(command, "|");
 	i = 0;
+	if (is_type(lst, 3) == 1)
+	{
+		char *output = find_output(lst);
+		int fd = open(output, O_WRONLY | O_CREAT | O_TRUNC, 0666);
+		dup2(fd, STDOUT_FILENO);
+		close(fd);
+	}
 	while (command != NULL)
 	{
 		pid = fork();
