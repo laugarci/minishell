@@ -6,7 +6,7 @@
 /*   By: laugarci <laugarci@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/17 10:09:20 by laugarci          #+#    #+#             */
-/*   Updated: 2023/08/18 14:52:44 by laugarci         ###   ########.fr       */
+/*   Updated: 2023/08/19 12:09:06 by laugarci         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,7 +58,7 @@ char	*find_output(t_list *lst)
 	token = tmp->content;
 	while (tmp->next)
 	{
-		if (token->type == 3)
+		if (token->type == 3 || token->type == 4)
 		{
 			output = malloc(sizeof(char) * ft_strlen(token->string) + 1);
 			if (!output)

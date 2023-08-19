@@ -6,7 +6,7 @@
 /*   By: laugarci <laugarci@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/14 09:52:31 by laugarci          #+#    #+#             */
-/*   Updated: 2023/08/18 14:50:42 by laugarci         ###   ########.fr       */
+/*   Updated: 2023/08/19 12:08:11 by laugarci         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -108,13 +108,8 @@ void	exec_pipes(char **env, int num_pipes, char *command, t_list *lst)
 		else if (pid == 0)
 		{
 			close_pipes_child(fds, i, num_pipes);
-			if (is_type(lst, 3) == 1)
-			{
-				char *output = find_output(lst);
-				int fd = open(output, O_WRONLY | O_CREAT | O_APPEND, 0666);
-				dup2(fd, STDOUT_FILENO);
-				close(fd);
-			}
+			if (is_type(lst, 3) == 1 || is_type(lst, 4) == 1)
+				exec_redirect(lst);
 			aux = save_tokens(command);
 			exec_commands(aux, env);
 			exit(1);
