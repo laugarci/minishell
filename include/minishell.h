@@ -6,7 +6,7 @@
 /*   By: ffornes- <ffornes-@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/27 11:32:21 by ffornes-          #+#    #+#             */
-/*   Updated: 2023/08/18 12:26:01 by laugarci         ###   ########.fr       */
+/*   Updated: 2023/08/19 13:41:11 by laugarci         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,8 +16,6 @@
 #include "libft_defs.h"
 
 char		*get_path(char *cmd, char **envp);
-
-char		*here_doc(char **input, char *envp[]);
 
 void		put_error(char *str, int error_id);
 
@@ -50,5 +48,7 @@ char		*ft_strtok(char *str, const char *del);
 int			count_list(t_list *lst);
 
 int			total_input_len(t_list *lst);
+
+int			here_doc(t_list *lst, char *command, char **env);
 
 #endif
