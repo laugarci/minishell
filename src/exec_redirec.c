@@ -6,7 +6,7 @@
 /*   By: laugarci <laugarci@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/14 12:07:29 by laugarci          #+#    #+#             */
-/*   Updated: 2023/08/19 12:10:03 by laugarci         ###   ########.fr       */
+/*   Updated: 2023/08/19 12:15:21 by laugarci         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,7 +44,6 @@ int exec_redirect(t_list *lst)
 	int		flags;
 
 	output = find_output(lst);
-	printf("%s\n", output);
 	flags = O_WRONLY | O_CREAT;
 	if (is_type(lst, 3) == 1)
 		flags = flags | O_APPEND;
