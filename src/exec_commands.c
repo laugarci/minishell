@@ -6,7 +6,7 @@
 /*   By: laugarci <laugarci@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/04 15:00:39 by laugarci          #+#    #+#             */
-/*   Updated: 2023/08/18 14:54:41 by laugarci         ###   ########.fr       */
+/*   Updated: 2023/08/19 12:04:21 by laugarci         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,24 +54,19 @@ int	cmp_commands(t_list *lst, char **env)
 {
 	t_token	*token;
 	int		num_pipes;
-	int		num_args;
 	char	*command;
 
 	token = lst->content;
 	if (ft_strncmp(token->string, "cd ", 3) == 0
 		|| ft_strncmp(token->string, "cd\0", 3) == 0)
 		exec_cd(lst);
-	else if (is_type(lst, 0) == 1 || is_type(lst, 3) || is_type(lst, 4))
+	else if (is_type(lst, 0) || is_type(lst, 3) || is_type(lst, 4))
 	{
 		command = find_command(lst);
 		num_pipes = count_chars(lst);
 		exec_pipes(env, num_pipes, command, lst);
 	}
-	else if (is_type(lst, 3) == 1 || is_type(lst, 4) == 1)
-	{
-		num_args = count_args(lst);
-		//exec_redirect(lst, num_args,  env);
-	}
+
 	else
 		exec_commands(lst, env);
 	return (0);
