@@ -6,7 +6,7 @@
 /*   By: ffornes- <ffornes-@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/27 11:32:21 by ffornes-          #+#    #+#             */
-/*   Updated: 2023/08/19 13:41:11 by laugarci         ###   ########.fr       */
+/*   Updated: 2023/08/19 16:04:55 by laugarci         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,6 +49,6 @@ int			count_list(t_list *lst);
 
 int			total_input_len(t_list *lst);
 
-int			here_doc(t_list *lst, char *command, char **env);
+int			here_doc(char *command);
 
 #endif

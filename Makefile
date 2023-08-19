@@ -6,7 +6,7 @@
 #    By: ffornes- <ffornes-@student.42barcel>       +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/06/26 15:00:09 by ffornes-          #+#    #+#              #
-#    Updated: 2023/08/17 10:11:38 by laugarci         ###   ########.fr        #
+#    Updated: 2023/08/19 16:06:48 by laugarci         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -18,7 +18,7 @@ SRC_FILES = minishell.c \
 			expansion.c expansion_utils.c \
 			quotes.c quote_utils.c \
 			tokenization.c token_new.c token_utils.c \
-			get_path.c exec_commands.c exec_pipes.c here_doc.c \
+			get_path.c exec_commands.c exec_pipes.c exec_here_doc.c \
 			put_error.c exec_redirec.c utils.c find_command.c
 
 OBJ_DIR = objs/
