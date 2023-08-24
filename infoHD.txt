@@ -1,0 +1,42 @@
+# **************************************************************************** #
+#                                                                              #
+#                                                         :::      ::::::::    #
+#    infoHD.txt                                         :+:      :+:    :+:    #
+#                                                     +:+ +:+         +:+      #
+#    By: laugarci <laugarci@student.42barcel>       +#+  +:+       +#+         #
+#                                                 +#+#+#+#+#+   +#+            #
+#    Created: 2023/08/24 16:53:07 by laugarci          #+#    #+#              #
+#    Updated: 2023/08/24 16:53:07 by laugarci         ###   ########.fr        #
+#                                                                              #
+# **************************************************************************** #
+
+La primera línea comienza con un comando opcional seguido del operador de redireccionamiento especial << y el identificador del delimitador.
+Se puede utilizar cualquier cadena como identificador delimitador, los más utilizados son EOF o END.
+Si el delimitador no está entre comillas, el shell sustituirá todas las variables, comandos y caracteres especiales antes de pasar las líneas del documento aquí al comando.
+Al agregar un signo menos al operador de redireccionamiento <<-, se ignorarán todos los caracteres de las pestañas principales. Esto le permite usar sangría al escribir documentos aquí en scripts de shell. No se permite el espacio en blanco principal, solo la pestaña.
+El bloque here-document puede contener cadenas, variables, comandos y cualquier otro tipo de entrada.
+La última línea termina con el identificador delimitador. No se permiten espacios en blanco delante del delimitador.
+
+>> EJEMPLO 1 <<
+- COMANDO:
+cat << EOF
+- ENTRADA:
+heredoc> The current working directory is: $PWD
+heredoc> You are logged in as: $(whoami)
+heredoc> EOF
+- SALIDA:
+The current working directory is: /Users/laugarci/Desktop/minishell
+You are logged in as: laugarci
+
+>> EJEMPLO 2 <<
+
+- COMANDO:
+cat <<- "EOF"
+- ENTRADA: 
+heredoc> The current working directory is: $PWD
+heredoc> You are logged in as: $(whoami)
+heredoc> EOF
+- SALIDA:
+The current working directory is: $PWD
+You are logged in as: $(whoami)
+
