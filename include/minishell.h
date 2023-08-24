@@ -6,14 +6,14 @@
 /*   By: ffornes- <ffornes-@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/27 11:32:21 by ffornes-          #+#    #+#             */
-/*   Updated: 2023/08/19 16:04:55 by laugarci         ###   ########.fr       */
+/*   Updated: 2023/08/24 17:48:42 by laugarci         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef MINISHELL_H
 # define MINISHELL_H
 
-#include "libft_defs.h"
+# include "libft_defs.h"
 
 char		*get_path(char *cmd, char **envp);
 
@@ -33,7 +33,7 @@ int			is_type(t_list *lst, int type);
 
 int			count_chars(t_list *lst);
 
-void		exec_pipes(char **env, int num_pipes, char *command,t_list *lst);
+void		exec_pipes(char **env, int num_pipes, char *command, t_list *lst);
 
 int			count_args(t_list *lst);
 
