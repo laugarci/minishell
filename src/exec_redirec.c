@@ -6,7 +6,7 @@
 /*   By: laugarci <laugarci@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/14 12:07:29 by laugarci          #+#    #+#             */
-/*   Updated: 2023/08/19 14:34:28 by laugarci         ###   ########.fr       */
+/*   Updated: 2023/08/24 17:51:04 by laugarci         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,7 @@ int	count_args(t_list *lst)
 	return (i);
 }
 
-int exec_redirect(t_list *lst)
+int	exec_redirect(t_list *lst)
 {
 	char	*output;
 	int		fd;
@@ -56,5 +56,4 @@ int exec_redirect(t_list *lst)
 		return (1);
 	close(fd);
 	return (0);
-}	
-
+}

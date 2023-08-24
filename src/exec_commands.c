@@ -6,7 +6,7 @@
 /*   By: laugarci <laugarci@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/04 15:00:39 by laugarci          #+#    #+#             */
-/*   Updated: 2023/08/21 13:12:30 by laugarci         ###   ########.fr       */
+/*   Updated: 2023/08/24 17:49:44 by laugarci         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,7 +55,7 @@ int	cmp_commands(t_list *lst, char **env)
 	t_token	*token;
 	int		num_pipes;
 	char	*command;
-	
+
 	token = lst->content;
 	command = find_command(lst);
 	if (ft_strncmp(token->string, "cd ", 3) == 0

@@ -6,7 +6,7 @@
 /*   By: laugarci <laugarci@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/14 09:52:31 by laugarci          #+#    #+#             */
-/*   Updated: 2023/08/21 13:52:56 by laugarci         ###   ########.fr       */
+/*   Updated: 2023/08/24 17:50:08 by laugarci         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,7 +90,7 @@ void	close_pipes_parent(int **fds, int i, int num_pipes)
 }
 
 void	exec_pipes_aux(int **fds, int i, int num_pipes, t_list *lst)
-{	
+{
 	if (i < num_pipes)
 		close_pipes_child(fds, i, num_pipes);
 	else

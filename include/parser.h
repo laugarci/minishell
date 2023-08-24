@@ -6,7 +6,7 @@
 /*   By: laugarci <laugarci@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/06 11:42:45 by ffornes-          #+#    #+#             */
-/*   Updated: 2023/08/10 15:47:41 by laugarci         ###   ########.fr       */
+/*   Updated: 2023/08/24 17:48:55 by laugarci         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@
 # define O_APPEND	3
 # define O_TRUNC	4
 
-#include "libft_defs.h"
+# include "libft_defs.h"
 
 typedef struct s_token
 {
