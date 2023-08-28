@@ -6,7 +6,7 @@
 /*   By: laugarci <laugarci@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/05 14:01:37 by laugarci          #+#    #+#             */
-/*   Updated: 2023/08/10 18:23:48 by ffornes-         ###   ########.fr       */
+/*   Updated: 2023/08/10 18:55:09 by ffornes-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -102,7 +102,9 @@ int	main(int argc, char *argv[], char *envp[])
 	while (42)
 	{
 		input = readline(prompt);
-		if (input[0] != '\0' && input)
+		if (!input)
+			break ;
+		if (input[0] != '\0')
 		{
 			add_history(input);
 			if (exit_check(input))
