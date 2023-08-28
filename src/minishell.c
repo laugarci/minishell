@@ -6,7 +6,7 @@
 /*   By: laugarci <laugarci@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/05 14:01:37 by laugarci          #+#    #+#             */
-/*   Updated: 2023/08/28 11:50:55 by ffornes-         ###   ########.fr       */
+/*   Updated: 2023/08/28 12:25:26 by ffornes-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,12 +84,36 @@ static int	exit_check(char *input)
 	return (0);
 }
 
-int	main(int argc, char *argv[], char *envp[])
+static int	main_loop(char *prompt, t_data *data)
 {
 	char	*input;
+	t_list	*list;
+
+	input = readline(prompt);
+	if (!input)
+		return (1);
+	if (input[0] != '\0')
+	{
+		add_history(input);
+		if (exit_check(input))
+			return (1);
+		if (!parse_input(input, data->envp, &list))
+		{
+			print_tokens(list);
+			cmp_commands(list, data->envp);
+			ft_lstclear(&list, (void *)free_token);
+		}
+		free(input);
+	}
+	else
+		free(input);
+	return (0);
+}
+
+int	main(int argc, char *argv[], char *envp[])
+{
 	char	*prompt;
 	t_data	data;
-	t_list	*list;
 
 	if (argc > 1)
 		return (1);
@@ -99,26 +123,8 @@ int	main(int argc, char *argv[], char *envp[])
 	if (!prompt)
 		return (1);
 	while (42)
-	{
-		input = readline(prompt);
-		if (!input)
+		if (main_loop(prompt, &data))
 			break ;
-		if (input[0] != '\0')
-		{
-			add_history(input);
-			if (exit_check(input))
-				break ;
-			if (!parse_input(input, data.envp, &list))
-			{
-				print_tokens(list);
-				cmp_commands(list, &data);
-				ft_lstclear(&list, (void *)free_token);
-			}
-			free(input);
-		}
-		else
-			free(input);
-	}
 	free_double((void **)data.envp);
 	free(prompt);
 	clear_history();
