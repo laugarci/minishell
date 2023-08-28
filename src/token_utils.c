@@ -6,7 +6,7 @@
 /*   By: ffornes- <ffornes-@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/01 15:33:06 by ffornes-          #+#    #+#             */
-/*   Updated: 2023/08/09 19:36:19 by ffornes-         ###   ########.fr       */
+/*   Updated: 2023/08/28 14:56:30 by ffornes-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,17 +40,10 @@ static t_list	*remove_first_token(t_list *token_list, int *deleted)
 	return (token_list);
 }
 
-t_list	*remove_duplicates(t_list *token_list)
+static void	remove_duplicates_loop(t_list *aux, t_list *previous, int deleted)
 {
-	t_list	*aux;
-	t_list	*previous;
 	t_list	*tmp;
-	int		deleted;
 
-	deleted = 0;
-	token_list = remove_first_token(token_list, &deleted);
-	aux = token_list;
-	previous = aux;
 	while (aux->next)
 	{
 		tmp = aux;
@@ -67,5 +60,18 @@ t_list	*remove_duplicates(t_list *token_list)
 			previous = tmp;
 		}
 	}
+}
+
+t_list	*remove_duplicates(t_list *token_list)
+{
+	t_list	*aux;
+	t_list	*previous;
+	int		deleted;
+
+	deleted = 0;
+	token_list = remove_first_token(token_list, &deleted);
+	aux = token_list;
+	previous = aux;
+	remove_duplicates_loop(aux, previous, deleted);
 	return (token_list);
 }
