@@ -6,7 +6,7 @@
 /*   By: ffornes- <ffornes-@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/10 18:22:49 by ffornes-          #+#    #+#             */
-/*   Updated: 2023/08/28 11:37:23 by ffornes-         ###   ########.fr       */
+/*   Updated: 2023/08/28 11:58:43 by ffornes-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,6 @@ static char	**realloc_envp(char *einval, t_data *data)
 		i++;
 	}
 	new_envp[i] = ft_strdup(einval);
-	printf("ADDED EINVAL: %s\n\n", new_envp[i]);
 	if (!new_envp[i++]) // Error: Not enough memory in strdup
 	{
 		free(new_envp);
