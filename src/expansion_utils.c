@@ -6,7 +6,7 @@
 /*   By: ffornes- <ffornes-@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/25 16:04:51 by ffornes-          #+#    #+#             */
-/*   Updated: 2023/07/25 16:18:39 by ffornes-         ###   ########.fr       */
+/*   Updated: 2023/08/29 15:35:33 by ffornes-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,13 +15,16 @@
 char	*find_eval(char *str, char *envp[])
 {
 	int		i;
+	int		j;
 	char	*out;
 
 	i = 0;
+	j = ft_strlen(str);
 	while (envp[i])
 	{
 		if (!ft_strncmp(envp[i], str, ft_strlen(str)))
-			break ;
+			if (envp[i][j] == '=')
+				break ;
 		i++;
 	}
 	if (envp[i])
@@ -42,8 +45,7 @@ int	expansion_amount(char *input)
 	j = 0;
 	while (input[i])
 	{
-		if (input[i] == '$' 
-			&& (i == 0 || input[i - 1] == ' ' || input[i - 1] == '\"'))
+		if (input[i] == '$' && ft_isalnum(input[i + 1]))
 			j++;
 		i++;
 	}
