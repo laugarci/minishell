@@ -6,7 +6,7 @@
 /*   By: ffornes- <ffornes-@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/26 17:15:53 by ffornes-          #+#    #+#             */
-/*   Updated: 2023/08/29 11:44:24 by ffornes-         ###   ########.fr       */
+/*   Updated: 2023/08/29 13:03:42 by ffornes-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,6 +73,7 @@ static void	clean_redirects(t_list **lst)
 	}
 }
 
+// ToDo: Now expansions of non-existing einvals are broken !
 static t_list	*expansion_token(t_list *list, t_token *token, char *envp[])
 {
 	t_list	*new_list;
@@ -90,8 +91,7 @@ static t_list	*expansion_token(t_list *list, t_token *token, char *envp[])
 	aux = list->next;
 	list->next = new_list;
 	ft_lstadd_back(&new_list, aux); 
-	// THIS for some reason doesn't attach the rest of the tokens which causes information to be lost
-	// however those tokens that are "lost" are freed later which means they're still there and reachable
+	// Tokens are "lost". This is because there's a token with values NULL -1 -1 in between new token and old token which results in the program not reading past it.
 	return (list);
 }
 
