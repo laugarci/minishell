@@ -6,7 +6,7 @@
 /*   By: ffornes- <ffornes-@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/24 14:47:53 by ffornes-          #+#    #+#             */
-/*   Updated: 2023/08/29 11:19:15 by ffornes-         ###   ########.fr       */
+/*   Updated: 2023/08/29 12:06:30 by ffornes-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,7 +93,7 @@ static char	*trunc_input(char *input, char *output)
 	i = 0;
 	while (ft_isalnum(input[i]))
 		i++;
-	if (input[i] && input[i] != ' ')
+	if (input[i] && input[i] != ' ') // This doesn't work yet lol
 	{
 		out = ft_strjoin(output, (input + i));
 		free(input);
