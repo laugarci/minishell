@@ -6,7 +6,7 @@
 /*   By: ffornes- <ffornes-@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/26 17:15:53 by ffornes-          #+#    #+#             */
-/*   Updated: 2023/08/29 09:33:07 by ffornes-         ###   ########.fr       */
+/*   Updated: 2023/08/29 10:14:59 by ffornes-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -106,7 +106,7 @@ void	process_tokens(t_list **token_list, char *envp[])
 			aux->type = get_token_type(aux->string);
 		if (ft_strchr(aux->string, '\'') || ft_strchr(aux->string, '\"'))
 			aux->string = remove_quotes(aux->string); // Save last quote removed in token
-		if (aux->string[0] == '$')
+		if (aux->string[0] == '$' && aux->string[1])
 			tmp_lst = expansion_token(tmp_lst, aux, envp);
 		tmp_lst = tmp_lst->next;
 		aux = tmp_lst->content;
