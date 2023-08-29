@@ -6,7 +6,7 @@
 /*   By: laugarci <laugarci@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/05 14:01:37 by laugarci          #+#    #+#             */
-/*   Updated: 2023/08/28 12:25:26 by ffornes-         ###   ########.fr       */
+/*   Updated: 2023/08/28 13:17:33 by ffornes-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@
 #include "minishell_defs.h"
 #include "parser.h"
 
-/// AJNKNAEKK DEBUGGGGGGGGGGGG
+// AJNKNAEKK DEBUGGGGGGGGGGGG
 static void	print_tokens(t_list *lst)
 {
 	t_token		*token;
@@ -48,7 +48,8 @@ static void	print_tokens(t_list *lst)
 		if (!token->string)
 			break ;
 	}
-} // DEBUG DEBUG DEBUG DEBUG DELETE LATER   RR ER E REA EGAG 
+}
+// DEBUG DEBUG DEBUG DEBUG DELETE LATER   RR ER E REA EGAG 
 
 static int	set_env(t_data *data, char *env[])
 {
@@ -103,10 +104,8 @@ static int	main_loop(char *prompt, t_data *data)
 			cmp_commands(list, data->envp);
 			ft_lstclear(&list, (void *)free_token);
 		}
-		free(input);
 	}
-	else
-		free(input);
+	free(input);
 	return (0);
 }
 
