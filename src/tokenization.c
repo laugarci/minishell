@@ -6,7 +6,7 @@
 /*   By: ffornes- <ffornes-@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/26 17:15:53 by ffornes-          #+#    #+#             */
-/*   Updated: 2023/08/29 11:19:11 by ffornes-         ###   ########.fr       */
+/*   Updated: 2023/08/29 11:44:24 by ffornes-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,8 +88,10 @@ static t_list	*expansion_token(t_list *list, t_token *token, char *envp[])
 	new_list = new_list->next;
 	free(aux);
 	aux = list->next;
-	ft_lstadd_back(&new_list, tmp);
 	list->next = new_list;
+	ft_lstadd_back(&new_list, aux); 
+	// THIS for some reason doesn't attach the rest of the tokens which causes information to be lost
+	// however those tokens that are "lost" are freed later which means they're still there and reachable
 	return (list);
 }
 
