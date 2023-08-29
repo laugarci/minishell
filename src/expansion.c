@@ -6,7 +6,7 @@
 /*   By: ffornes- <ffornes-@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/24 14:47:53 by ffornes-          #+#    #+#             */
-/*   Updated: 2023/08/29 14:15:56 by ffornes-         ###   ########.fr       */
+/*   Updated: 2023/08/29 16:08:01 by ffornes-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,17 +46,24 @@ static char	*update_input(char *input, char *str)
 	char	*tmp;
 
 	i = 0;
+	printf("ORIGINAL INPUT: %s\n", input);
 	while (input[i])
-		if (input[i++] == '$' && (i - 1 == 0 || input[i - 2] == ' '))
+		if (input[i++] == '$')
 			break ;
 	tmp = malloc(sizeof(char) * i);
 	if (!tmp)
 		return (NULL);
 	ft_strlcpy(tmp, input, i);
 	tmp = update_input_util(i, tmp, str, input);
+	printf("FINAL INPUT: %s\n", tmp);
 	return (tmp);
 }
 
+// This function locates the einval in the string recieved as input, trimming
+// 		the einval leaving only it's reference name.
+// 		Ex: ' nskj $USER a' becomes 'USER'
+// 	Then find_eval is called, which looks for the einval in the environment and
+// 		returns the content saved in the einval.
 static char	*expand_input(char *input, char *envp[])
 {
 	char	*str;
@@ -87,20 +94,20 @@ static char	*expand_input(char *input, char *envp[])
 
 static char	*trunc_input(char *input, char *output)
 {
-	char	*out;
+//	char	*out;
 	int		i;
 
 	i = 0;
 	while (ft_isalnum(input[i]))
 		i++;
-	if (input[i] && input[i] != ' ') // This doesn't work yet lol
+/*	if (input[i] && input[i] != ' ') // This doesn't work yet lol
 	{
 		out = ft_strjoin(output, (input + i));
 		free(input);
 		free(output);
 		return (out);
 	}
-	free(input);
+*/	free(input);
 	return (output);
 }
 
