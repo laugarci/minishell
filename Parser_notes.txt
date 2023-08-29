@@ -1,9 +1,12 @@
 ToDo:
 	Save last quotes in token->quotes
+
+	Expansions:
 	Program expansion of $? in order to show the error code
 	Unsaved expansions crash the program and must display a \n
-	Expansions in string: Must check that einval name is a valid name and expand
-		or NOT expand accordingly
+	When looking for the einval in our environment, the program doesn't look for
+		the exact name of the einval, which causes errors. Must look for einval
+		name + '\0'
 
 Command [-Flag] [Arg] [Nothing]
 $[Variable]		variable de entorno == $NOMBRE="VALOR" || $NOMBRE=VALOR || $NOMBRE=(comandos)
