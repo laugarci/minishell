@@ -6,7 +6,7 @@
 /*   By: ffornes- <ffornes-@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/26 17:15:53 by ffornes-          #+#    #+#             */
-/*   Updated: 2023/08/28 15:50:31 by ffornes-         ###   ########.fr       */
+/*   Updated: 2023/08/29 09:33:07 by ffornes-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,21 +73,41 @@ static void	clean_redirects(t_list **lst)
 	}
 }
 
+t_list	*expansion_token(t_list *list, t_token *token, char *envp[])
+{
+	t_list	*new_list;
+	t_list	*aux;
+	char	*string;
+
+	string = expand_evals(token->string, envp);
+	new_list = save_tokens(string);
+	free(list->content);
+	free(string);
+	list->content = new_list->content;
+	aux = new_list;
+	new_list = new_list->next;
+	free(aux);
+	ft_lstadd_back(&new_list, list->next);
+	list->next = new_list;
+	return (list);
+}
+
 void	process_tokens(t_list **token_list, char *envp[])
 {
 	t_list	*tmp_lst;
 	t_token	*aux;
 
+
 	tmp_lst = *token_list;
 	aux = tmp_lst->content;
-	while (1)
+	while (42)
 	{
 		if (aux->type < 0)
 			aux->type = get_token_type(aux->string);
 		if (ft_strchr(aux->string, '\'') || ft_strchr(aux->string, '\"'))
 			aux->string = remove_quotes(aux->string); // Save last quote removed in token
-		if (aux->string[0] == '$') // Handle expansions && tokenize again later...
-			aux->string = expand_evals(aux->string, envp); // REMEMBER TO TOKENIZE AGAIN THE EXPANDED EVALS
+		if (aux->string[0] == '$')
+			tmp_lst = expansion_token(tmp_lst, aux, envp);
 		tmp_lst = tmp_lst->next;
 		aux = tmp_lst->content;
 		if (!aux->string)
