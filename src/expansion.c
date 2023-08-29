@@ -6,7 +6,7 @@
 /*   By: ffornes- <ffornes-@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/24 14:47:53 by ffornes-          #+#    #+#             */
-/*   Updated: 2023/07/26 15:44:02 by ffornes-         ###   ########.fr       */
+/*   Updated: 2023/08/29 11:19:15 by ffornes-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,6 +85,25 @@ static char	*expand_input(char *input, char *envp[])
 	return (str);
 }
 
+static char	*trunc_input(char *input, char *output)
+{
+	char	*out;
+	int		i;
+
+	i = 0;
+	while (ft_isalnum(input[i]))
+		i++;
+	if (input[i] && input[i] != ' ')
+	{
+		out = ft_strjoin(output, (input + i));
+		free(input);
+		free(output);
+		return (out);
+	}
+	free(input);
+	return (output);
+}
+
 char	*expand_evals(char *input, char *envp[])
 {
 	int		amount;
@@ -95,7 +114,6 @@ char	*expand_evals(char *input, char *envp[])
 	if (!out)
 		return (NULL);
 	amount = expansion_amount(input);
-	printf("Amount of expansions found: %d\n", amount);
 	if (!amount)
 		return (input);
 	while (amount--)
@@ -109,6 +127,5 @@ char	*expand_evals(char *input, char *envp[])
 			return (NULL);
 		free(aux);
 	}
-	free(input);
-	return (out);
+	return (trunc_input(input, out));
 }

@@ -6,7 +6,7 @@
 /*   By: ffornes- <ffornes-@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/26 17:15:53 by ffornes-          #+#    #+#             */
-/*   Updated: 2023/08/29 10:14:59 by ffornes-         ###   ########.fr       */
+/*   Updated: 2023/08/29 11:19:11 by ffornes-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,7 +73,7 @@ static void	clean_redirects(t_list **lst)
 	}
 }
 
-t_list	*expansion_token(t_list *list, t_token *token, char *envp[])
+static t_list	*expansion_token(t_list *list, t_token *token, char *envp[])
 {
 	t_list	*new_list;
 	t_list	*aux;
@@ -87,7 +87,8 @@ t_list	*expansion_token(t_list *list, t_token *token, char *envp[])
 	aux = new_list;
 	new_list = new_list->next;
 	free(aux);
-	ft_lstadd_back(&new_list, list->next);
+	aux = list->next;
+	ft_lstadd_back(&new_list, tmp);
 	list->next = new_list;
 	return (list);
 }
