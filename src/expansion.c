@@ -6,7 +6,7 @@
 /*   By: ffornes- <ffornes-@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/24 14:47:53 by ffornes-          #+#    #+#             */
-/*   Updated: 2023/08/30 16:08:34 by ffornes-         ###   ########.fr       */
+/*   Updated: 2023/08/30 16:17:25 by ffornes-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@ static char	*update_input_util(int i, char *tmp, char *str, char *input)
 		return (NULL);
 	free(aux);
 	aux = tmp;
-	while (input[i] && input[i] != ' ' && input[i] != '$')
+	while (input[i] && ft_isalnum(input[i]) && input[i] != '_')
 		i++;
 	if (input[i])
 	{
@@ -48,7 +48,7 @@ static char	*update_input(char *input, char *str)
 	i = 0;
 	while (input[i])
 		if (input[i++] == '$')
-			if (ft_isalpha(input[i]))
+			if (ft_isalpha(input[i]) || input[i] == '_')
 				break ;
 	tmp = malloc(sizeof(char) * i);
 	if (!tmp)
