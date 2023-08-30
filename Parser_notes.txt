@@ -3,6 +3,7 @@ ToDo:
 
 	Expansions:
 	Program expansion of $? in order to show the error code
+	Expansions alfanum && '_' as valid
 	echo $USER$USER must display ffornes-ffornes- and it behaves as an unsaved einval.
 	echo $IASHJKJ$USER Fails to display $USER expansion and it behaves as an unsaved einval.
 	Must implement trunc input in src/expansion.c
@@ -55,8 +56,3 @@ Then >> Must separate arguments with pipes, and parse them individually.
 			( | )
 			( echo $USER )
 		Once split in tokens, must split again in minitokens to parse "'({})'"
-
-When creating an environment variable with value = "a b" and using touch with this eval
-as the argument, we must create two different files, one called 'a' and one called 'b'
-however right now we create a file called 'a b' which can't be removed by our minishell
-since we do not parse '\'. The command to remove the file is 'rm a\ b'
