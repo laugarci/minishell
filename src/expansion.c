@@ -6,7 +6,7 @@
 /*   By: ffornes- <ffornes-@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/24 14:47:53 by ffornes-          #+#    #+#             */
-/*   Updated: 2023/08/29 16:08:01 by ffornes-         ###   ########.fr       */
+/*   Updated: 2023/08/30 10:14:00 by ffornes-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@ static char	*update_input_util(int i, char *tmp, char *str, char *input)
 		return (NULL);
 	free(aux);
 	aux = tmp;
-	while (input[i] != ' ' && input[i])
+	while (input[i] && input[i] != ' ')
 		i++;
 	if (input[i])
 	{
@@ -46,16 +46,15 @@ static char	*update_input(char *input, char *str)
 	char	*tmp;
 
 	i = 0;
-	printf("ORIGINAL INPUT: %s\n", input);
 	while (input[i])
 		if (input[i++] == '$')
-			break ;
+			if (ft_isalpha(input[i]))
+				break ;
 	tmp = malloc(sizeof(char) * i);
 	if (!tmp)
 		return (NULL);
 	ft_strlcpy(tmp, input, i);
 	tmp = update_input_util(i, tmp, str, input);
-	printf("FINAL INPUT: %s\n", tmp);
 	return (tmp);
 }
 
@@ -74,6 +73,13 @@ static char	*expand_input(char *input, char *envp[])
 	if (!str)
 		return (NULL);
 	str++;
+	while (*str && *str == ' ')
+	{
+		str = ft_strchr(input, '$');
+		if (!str)
+			return (NULL);
+		str++;
+	}
 	aux = ft_strdup(str);
 	if (!aux)
 		return (NULL);
@@ -134,5 +140,6 @@ char	*expand_evals(char *input, char *envp[])
 			return (NULL);
 		free(aux);
 	}
+	return (input);
 	return (trunc_input(input, out));
 }

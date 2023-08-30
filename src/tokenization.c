@@ -6,7 +6,7 @@
 /*   By: ffornes- <ffornes-@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/26 17:15:53 by ffornes-          #+#    #+#             */
-/*   Updated: 2023/08/29 16:08:04 by ffornes-         ###   ########.fr       */
+/*   Updated: 2023/08/30 10:19:39 by ffornes-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,7 +73,6 @@ static void	clean_redirects(t_list **lst)
 	}
 }
 
-// ToDo: Now expansions of non-existing einvals are broken !
 static t_list	*expansion_token(t_list *list, t_token *token, char *envp[])
 {
 	t_list	*new_list;
@@ -81,6 +80,12 @@ static t_list	*expansion_token(t_list *list, t_token *token, char *envp[])
 	char	*string;
 
 	string = expand_evals(token->string, envp);
+	if (!ft_strchr(string,  ' '))
+	{
+		token->string = string;
+		list->content = token;
+		return (list);
+	}
 	new_list = save_tokens(string);
 	free(list->content);
 	free(string);
