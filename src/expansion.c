@@ -6,7 +6,7 @@
 /*   By: ffornes- <ffornes-@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/24 14:47:53 by ffornes-          #+#    #+#             */
-/*   Updated: 2023/08/30 10:14:00 by ffornes-         ###   ########.fr       */
+/*   Updated: 2023/08/30 11:26:30 by ffornes-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,7 +75,7 @@ static char	*expand_input(char *input, char *envp[])
 	str++;
 	while (*str && *str == ' ')
 	{
-		str = ft_strchr(input, '$');
+		str = ft_strchr(str, '$');
 		if (!str)
 			return (NULL);
 		str++;
@@ -96,25 +96,6 @@ static char	*expand_input(char *input, char *envp[])
 	str = find_eval(aux, envp);
 	free(aux);
 	return (str);
-}
-
-static char	*trunc_input(char *input, char *output)
-{
-//	char	*out;
-	int		i;
-
-	i = 0;
-	while (ft_isalnum(input[i]))
-		i++;
-/*	if (input[i] && input[i] != ' ') // This doesn't work yet lol
-	{
-		out = ft_strjoin(output, (input + i));
-		free(input);
-		free(output);
-		return (out);
-	}
-*/	free(input);
-	return (output);
 }
 
 char	*expand_evals(char *input, char *envp[])
@@ -141,5 +122,4 @@ char	*expand_evals(char *input, char *envp[])
 		free(aux);
 	}
 	return (input);
-	return (trunc_input(input, out));
 }

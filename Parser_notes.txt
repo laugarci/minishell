@@ -3,10 +3,11 @@ ToDo:
 
 	Expansions:
 	Program expansion of $? in order to show the error code
-	When expanding multiple einvals in a string, and we have an unsaved einval in between or a char '$'
-		program shits itself
-		ex: echo "HOLA $USER $ $USER"
+	echo $USER$USER must display ffornes-ffornes- and it behaves as an unsaved einval.
+	echo $IASHJKJ$USER Fails to display $USER expansion and it behaves as an unsaved einval.
 	Must implement trunc input in src/expansion.c
+	Must implement trunc expansions like:
+		ex: echo $USER.hola must display ffornes-.hola
 
 Command [-Flag] [Arg] [Nothing]
 $[Variable]		variable de entorno == $NOMBRE="VALOR" || $NOMBRE=VALOR || $NOMBRE=(comandos)
