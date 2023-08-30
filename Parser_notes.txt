@@ -3,10 +3,9 @@ ToDo:
 
 	Expansions:
 	Program expansion of $? in order to show the error code
-	Unsaved expansions crash the program and must display a \n
-	When looking for the einval in our environment, the program doesn't look for
-		the exact name of the einval, which causes errors. Must look for einval
-		name + '\0'
+	When expanding multiple einvals in a string, and we have an unsaved einval in between or a char '$'
+		program shits itself
+		ex: echo "HOLA $USER $ $USER"
 
 Command [-Flag] [Arg] [Nothing]
 $[Variable]		variable de entorno == $NOMBRE="VALOR" || $NOMBRE=VALOR || $NOMBRE=(comandos)
