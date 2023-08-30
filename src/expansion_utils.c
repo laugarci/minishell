@@ -6,11 +6,30 @@
 /*   By: ffornes- <ffornes-@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/25 16:04:51 by ffornes-          #+#    #+#             */
-/*   Updated: 2023/08/30 12:29:51 by ffornes-         ###   ########.fr       */
+/*   Updated: 2023/08/30 15:46:33 by ffornes-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
+#include <stdlib.h>
+
+static char	*true_eval(char *str)
+{
+	int		i;
+	char	*out;
+
+	i = 0;
+	while (str[i])
+		if (str[i++] == '$')
+			break ;
+	if (str[i - 1] != '$')
+		return (ft_strdup(str));
+	out = malloc(sizeof(char) * i);
+	if (!out)
+		return (NULL);
+	ft_strlcpy(out, str, i);
+	return (out);
+}
 
 char	*find_eval(char *str, char *envp[])
 {
@@ -19,6 +38,7 @@ char	*find_eval(char *str, char *envp[])
 	char	*out;
 
 	i = 0;
+	str = true_eval(str);
 	j = ft_strlen(str);
 	while (envp[i])
 	{
@@ -31,8 +51,10 @@ char	*find_eval(char *str, char *envp[])
 	{
 		out = ft_strchr(envp[i], '=');
 		out++;
+		free(str);
 		return (out);
 	}
+	free(str);
 	return (NULL);
 }
 
