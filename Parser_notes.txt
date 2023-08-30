@@ -1,15 +1,12 @@
 ToDo:
-	Save last quotes in token->quotes
-
+	
 	Expansions:
 	Program expansion of $? in order to show the error code
-	Expansions alfanum && '_' as valid
-	echo $USER$USER must display ffornes-ffornes- and it behaves as an unsaved einval.
-	echo $IASHJKJ$USER Fails to display $USER expansion and it behaves as an unsaved einval.
-	Must implement trunc input in src/expansion.c
-		ex: echo $USER.hola must display ffornes-.hola
-	Expansion of einvals doesnt work in cases like
+
+	Quotes:
+	In cases like the example, the char ' is trimmed when it shouldn't be.
 		ex: echo "hola amigo me llamo '$USER'"
+
 
 Command [-Flag] [Arg] [Nothing]
 $[Variable]		variable de entorno == $NOMBRE="VALOR" || $NOMBRE=VALOR || $NOMBRE=(comandos)
