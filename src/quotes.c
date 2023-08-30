@@ -6,11 +6,12 @@
 /*   By: ffornes- <ffornes-@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/24 17:09:41 by ffornes-          #+#    #+#             */
-/*   Updated: 2023/08/02 12:54:12 by ffornes-         ###   ########.fr       */
+/*   Updated: 2023/08/30 12:39:51 by ffornes-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+#include "parser.h"
 #include "libft.h"
 #include <stdlib.h>
 #include <stdio.h>
@@ -43,44 +44,54 @@ int	check_quote_state(char *input)
 	return (state);
 }
 
-static char	*fill_output(char *out, char *str, int i, int j)
+static int	close_state(char c)
 {
-	int	open;
+	if (c == '\'')
+		return (1);
+	else if (c == '\"')
+		return (2);
+	return (0);
+}
+
+static char	*fill_output(char *out, t_token *token, int i, int j)
+{
+	char	*str;
+	int		open;
 
 	open = 0;
+	str = token->string;
 	while (str[i])
 	{
 		if (str[i] != '\'' && str[i] != '\"')
 			out[j++] = str[i];
 		else if (open)
 		{
+			token->quotes = open;
 			if ((open == 1 && str[i] != '\'') || (open == 2 && str[i] != '\"'))
 				out[j++] = str[i];
 			else
 				open = 0;
 		}
 		else if (!open)
-		{
-			if (str[i] == '\'')
-				open = 1;
-			else if (!open && str[i] == '\"')
-				open = 2;
-		}
+			open = close_state(str[i]);
 		i++;
 	}
 	out[j] = '\0';
 	return (out);
 }
 
-char	*remove_quotes(char *str)
+t_token	*remove_quotes(t_token *token)
 {
+	char	*str;
 	char	*out;
 
+	str = token->string;
 	if (!ft_strchr(str, '\'') && !ft_strchr(str, '\"'))
-		return (str);
+		return (token);
 	out = malloc(sizeof(char) * ft_strlen(str) + 1);
 	if (!out)
 		return (NULL);
-	out = fill_output(out, str, 0, 0);
-	return (out);
+	out = fill_output(out, token, 0, 0);
+	token->string = out;
+	return (token);
 }
