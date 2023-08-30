@@ -6,7 +6,7 @@
 /*   By: ffornes- <ffornes-@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/24 14:47:53 by ffornes-          #+#    #+#             */
-/*   Updated: 2023/08/30 15:14:12 by ffornes-         ###   ########.fr       */
+/*   Updated: 2023/08/30 16:08:34 by ffornes-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,7 +69,6 @@ static char	*expand_input(char *input, char *envp[])
 	char	*aux;
 	int		i;
 
-	printf("INPUT RECIEVED IN EXPAND_INPUT: %s\n", input);
 	str = ft_strchr(input, '$');
 	if (!str)
 		return (NULL);
@@ -94,7 +93,6 @@ static char	*expand_input(char *input, char *envp[])
 		}
 		i++;
 	}
-	printf("AUX: %s\n", aux);
 	str = find_eval(aux, envp);
 	free(aux);
 	return (str);
@@ -116,13 +114,13 @@ char	*expand_evals(char *input, char *envp[])
 	{
 		aux = input;
 		free(out);
-		out = expand_input(input, envp);
-		printf("OUTPUT: %s\n", out);
-		out = update_input(input, out);
+		out = expand_input(input, envp); // Unprotected malloc
+		out = update_input(input, out); // Unprotected malloc
 		input = ft_strdup(out);
-		if (!input)
+		if (!input) // If out is allocated must free it before returning NULL
 			return (NULL);
 		free(aux);
 	}
+	free(out);
 	return (input);
 }
