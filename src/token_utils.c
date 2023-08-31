@@ -6,7 +6,7 @@
 /*   By: ffornes- <ffornes-@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/01 15:33:06 by ffornes-          #+#    #+#             */
-/*   Updated: 2023/08/28 14:56:30 by ffornes-         ###   ########.fr       */
+/*   Updated: 2023/08/31 15:33:02 by ffornes-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,12 +43,14 @@ static t_list	*remove_first_token(t_list *token_list, int *deleted)
 static void	remove_duplicates_loop(t_list *aux, t_list *previous, int deleted)
 {
 	t_list	*tmp;
+	t_token	*token;
 
 	while (aux->next)
 	{
 		tmp = aux;
 		aux = aux->next;
-		if (!deleted && ((t_token *)(tmp->content))->type > 0)
+		token = tmp->content;
+		if (!deleted && token->type > 0 && token->type < 5)
 		{
 			ft_lstdelone(tmp, (void *)free_token);
 			previous->next = aux;
