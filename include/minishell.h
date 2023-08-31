@@ -6,7 +6,7 @@
 /*   By: ffornes- <ffornes-@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/27 11:32:21 by ffornes-          #+#    #+#             */
-/*   Updated: 2023/08/28 10:48:29 by ffornes-         ###   ########.fr       */
+/*   Updated: 2023/08/31 11:59:42 by ffornes-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,6 +38,6 @@ int			count_chars(t_list *lst);
 
 void		exec_pipes(t_list *lst, char **env, int num_pipes);
 
-int			builtin_export(char *einval, t_data *data);
+int			builtin_export(char *eval, t_data *data);
 
 #endif

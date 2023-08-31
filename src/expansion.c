@@ -6,7 +6,7 @@
 /*   By: ffornes- <ffornes-@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/24 14:47:53 by ffornes-          #+#    #+#             */
-/*   Updated: 2023/08/30 16:17:25 by ffornes-         ###   ########.fr       */
+/*   Updated: 2023/08/31 11:57:50 by ffornes-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,11 +58,11 @@ static char	*update_input(char *input, char *str)
 	return (tmp);
 }
 
-// This function locates the einval in the string recieved as input, trimming
-// 		the einval leaving only it's reference name.
+// This function locates the environment value in the string recieved as input, trimming
+// 		the environment value leaving only it's reference name.
 // 		Ex: ' nskj $USER a' becomes 'USER'
-// 	Then find_eval is called, which looks for the einval in the environment and
-// 		returns the content saved in the einval.
+// 	Then find_eval is called, which looks for the environment value in the environment and
+// 		returns the content saved in the environment value.
 static char	*expand_input(char *input, char *envp[])
 {
 	char	*str;

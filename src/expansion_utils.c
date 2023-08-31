@@ -6,7 +6,7 @@
 /*   By: ffornes- <ffornes-@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/25 16:04:51 by ffornes-          #+#    #+#             */
-/*   Updated: 2023/08/30 16:11:20 by ffornes-         ###   ########.fr       */
+/*   Updated: 2023/08/31 11:59:26 by ffornes-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,9 +14,9 @@
 #include <stdlib.h>
 #include <stdio.h>
 
-// Trims the recieved input in order to return only the name of the einval 
+// Trims the recieved input in order to return only the name of the evironment value 
 // 		without any other stuff next to it.
-// Useful in cases where two einvals are next to each other or other stuff is.
+// Useful in cases where two evals are next to each other or other stuff is.
 // 		ex:	$USER$USER     $USER.hola
 static char	*true_eval(char *str)
 {
@@ -39,7 +39,7 @@ static char	*true_eval(char *str)
 	return (out);
 }
 
-// Finds in the environment recieved, the value of the einval 'str' and returns
+// Finds in the environment recieved, the value of the eval 'str' and returns
 // 		it.
 char	*find_eval(char *str, char *envp[])
 {
