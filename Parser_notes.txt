@@ -4,6 +4,12 @@ ToDo:
 	Program expansion of $? in order to show the error code
 	
 	Quotes:
+	When finding a token with a string that contains multiple quotes at the same level, must save the token
+		as [token->type = TOKEN_APPEND] which should be split into as much tokens as quotes at the same level
+		are there. The last token should be [token->type = TOKEND].
+		Once split should be treated as regular tokens, just to remove quotes and expand accordingly.
+		Then, we should stitch together all the token->strings into the first TOKEN_APPEND.
+
 	How?? Must handle things like echo '$USER'"$USER" however if I remove quotes, even tho I save them
 	since they're the same token I can't process the expansion as I should and the result is:
 		ffornes-ffornes- when it should be $USERffornes-
@@ -12,7 +18,8 @@ ToDo:
 											
 											*** SOLUTION ? ***
 	Maybe add a third value to quotes... QUOTES = 3 which would be undefined quotes... which mean different
-		quotes at the same level in the same token without any quotes outside of them.
+		quotes at the same level in the same token without any quotes outside of them. In this case, quotes
+		should be preserved and deleted later when expanding.
 
 Command [-Flag] [Arg] [Nothing]
 $[Variable]		variable de entorno == $NOMBRE="VALOR" || $NOMBRE=VALOR || $NOMBRE=(comandos)
