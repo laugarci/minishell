@@ -6,18 +6,20 @@
 /*   By: laugarci <laugarci@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/06 11:42:45 by ffornes-          #+#    #+#             */
-/*   Updated: 2023/08/31 12:17:48 by ffornes-         ###   ########.fr       */
+/*   Updated: 2023/08/31 15:37:22 by ffornes-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef PARSER_H
 # define PARSER_H
 
-# define PIPE		0
-# define INFILE		1
-# define HERE_DOC	2
-# define O_APPEND	3
-# define O_TRUNC	4
+# define PIPE			0
+# define INFILE			1
+# define HERE_DOC		2
+# define O_APPEND		3
+# define O_TRUNC		4
+# define TOKEN_APPEND	5
+# define TOKEND			6
 
 #include "libft_defs.h"
 
