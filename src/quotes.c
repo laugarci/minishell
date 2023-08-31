@@ -6,7 +6,7 @@
 /*   By: ffornes- <ffornes-@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/24 17:09:41 by ffornes-          #+#    #+#             */
-/*   Updated: 2023/08/31 11:39:00 by ffornes-         ###   ########.fr       */
+/*   Updated: 2023/08/31 11:40:31 by ffornes-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@
 #include <stdlib.h>
 #include <stdio.h>
 
-int	open_state(int state, char c)
+int	quote_state(int state, char c)
 {
 	if (!state && c == '\'')
 		return (1);
@@ -74,7 +74,7 @@ static char	*fill_output(char *out, t_token *token, int i, int j)
 				open = 0;
 		}
 		else if (!open)
-			open = open_state(open, str[i]);
+			open = quote_state(open, str[i]);
 		i++;
 	}
 	out[j] = '\0';

@@ -6,7 +6,7 @@
 /*   By: ffornes- <ffornes-@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/09 16:48:00 by ffornes-          #+#    #+#             */
-/*   Updated: 2023/08/10 17:53:11 by ffornes-         ###   ########.fr       */
+/*   Updated: 2023/08/31 11:40:46 by ffornes-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,7 +54,7 @@ int	needs_space(char *str)
 	open = 0;
 	while (str[i])
 	{
-		open = open_state(open, str[i]);
+		open = quote_state(open, str[i]);
 		if (!open)
 		{
 			if (str[i] == '|')
