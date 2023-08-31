@@ -6,7 +6,7 @@
 /*   By: ffornes- <ffornes-@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/26 17:15:53 by ffornes-          #+#    #+#             */
-/*   Updated: 2023/08/30 14:32:59 by ffornes-         ###   ########.fr       */
+/*   Updated: 2023/08/31 09:55:54 by ffornes-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,7 +80,7 @@ static t_list	*expansion_token(t_list *list, t_token *token, char *envp[])
 	char	*string;
 
 	string = expand_evals(token->string, envp);
-	if (!ft_strchr(string,  ' '))
+	if (!ft_strchr(string,  ' ') || token->quotes > 0)
 	{
 		token->string = string;
 		list->content = token;

@@ -6,7 +6,7 @@
 /*   By: ffornes- <ffornes-@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/31 12:35:07 by ffornes-          #+#    #+#             */
-/*   Updated: 2023/08/09 14:11:36 by ffornes-         ###   ########.fr       */
+/*   Updated: 2023/08/31 09:57:07 by ffornes-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -107,16 +107,18 @@ char	**split_input(char *input)
 	while (input[i])
 	{
 		open = open_state(open, input[i]);
-		if (!open && input[i] == ' ')
+		if (input[i++] == ' ' && !open)
 			counted = 0;
-		else
+		else if (!counted)
 		{
-			if (!counted)
-				j++;
+			j++;
 			counted = 1;
 		}
-		i++;
+		else if ((open == 1 && input[i] == '\'' && input[i - 1] == '\"')
+				|| (open == 2 && input[i] == '\"' && input[i - 1] == '\''))
+			j++;
 	}
+	printf("TOKENS FOUND: %d\n", j);
 	if (j == 1)
 		return (charp_to_charpp(input));
 	return (save_new_input(input, j));
