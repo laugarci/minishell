@@ -6,7 +6,7 @@
 /*   By: ffornes- <ffornes-@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/25 16:04:51 by ffornes-          #+#    #+#             */
-/*   Updated: 2023/08/31 11:59:26 by ffornes-         ###   ########.fr       */
+/*   Updated: 2023/08/31 12:17:27 by ffornes-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,7 @@ static char	*true_eval(char *str)
 
 // Finds in the environment recieved, the value of the eval 'str' and returns
 // 		it.
-char	*find_eval(char *str, char *envp[])
+int	find_eval(char *str, char *envp[], char **dst)
 {
 	int		i;
 	int		j;
@@ -49,6 +49,8 @@ char	*find_eval(char *str, char *envp[])
 
 	i = 0;
 	str = true_eval(str);
+	if (!str)
+		return (1);
 	j = ft_strlen(str);
 	while (envp[i])
 	{
@@ -60,12 +62,12 @@ char	*find_eval(char *str, char *envp[])
 	if (envp[i])
 	{
 		out = ft_strchr(envp[i], '=');
-		out++;
 		free(str);
-		return (out);
+		*dst = (out + 1);
+		return (0);
 	}
 	free(str);
-	return (NULL);
+	return (0);
 }
 
 // Returns the amount of expansions found in a string
