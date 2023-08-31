@@ -6,7 +6,7 @@
 /*   By: ffornes- <ffornes-@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/24 17:09:41 by ffornes-          #+#    #+#             */
-/*   Updated: 2023/08/30 12:42:56 by ffornes-         ###   ########.fr       */
+/*   Updated: 2023/08/31 11:39:00 by ffornes-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,42 +16,42 @@
 #include <stdlib.h>
 #include <stdio.h>
 
-int	check_quote_state(char *input)
+int	open_state(int state, char c)
 {
-	int	i;
-	int	state;
-
-	i = 0;
-	state = 0;
-	while (input[i])
-	{
-		if (input[i] == '\'')
-		{
-			if (!state)
-				state = 1;
-			else if (state == 1)
-				state = 0;
-		}
-		else if (input[i] == '\"')
-		{
-			if (!state)
-				state = 2;
-			else if (state == 2)
-				state = 0;
-		}
-		i++;
-	}
+	if (!state && c == '\'')
+		return (1);
+	else if (!state && c == '\"')
+		return (2);
+	else if ((state == 1 && c == '\'') || (state == 2 && c == '\"'))
+		return (0);
 	return (state);
 }
 
-static int	close_state(char c)
+/*
+static int	is_expansion_only(char *input, int quotes)
 {
-	if (c == '\'')
-		return (1);
-	else if (c == '\"')
-		return (2);
-	return (0);
+	int	i;
+
+	i = 0;
+	while (input[i] != '$')
+		i++;
+	i++;
+	if (!input[i] || (!ft_isalpha(input[i]) && input[i] != '_'))
+		return (0);
+	i++;
+	while (input[i])
+	{
+		if (quotes == 1 && input[i] == '\'')
+			break ;
+		else if (quotes == 2 && input[i] == '\"')
+			break ;
+		if (!ft_isalnum(input[i]) && input[i] != '_')
+			return (0);
+		i++;
+	}
+	return (1);
 }
+*/
 
 static char	*fill_output(char *out, t_token *token, int i, int j)
 {
@@ -60,6 +60,7 @@ static char	*fill_output(char *out, t_token *token, int i, int j)
 
 	open = 0;
 	str = token->string;
+	token->quotes = 0;
 	while (str[i])
 	{
 		if (str[i] != '\'' && str[i] != '\"')
@@ -73,7 +74,7 @@ static char	*fill_output(char *out, t_token *token, int i, int j)
 				open = 0;
 		}
 		else if (!open)
-			open = close_state(str[i]);
+			open = open_state(open, str[i]);
 		i++;
 	}
 	out[j] = '\0';
