@@ -2,11 +2,7 @@ ToDo:
 	
 	Expansions:
 	Program expansion of $? in order to show the error code
-
-	Quotes:
-	In cases like the example, the char ' is trimmed when it shouldn't be.
-		ex: echo "hola amigo me llamo '$USER'"
-
+	
 
 Command [-Flag] [Arg] [Nothing]
 $[Variable]		variable de entorno == $NOMBRE="VALOR" || $NOMBRE=VALOR || $NOMBRE=(comandos)
