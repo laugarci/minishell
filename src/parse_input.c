@@ -6,7 +6,7 @@
 /*   By: ffornes- <ffornes-@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/27 12:29:42 by ffornes-          #+#    #+#             */
-/*   Updated: 2023/08/29 13:59:06 by ffornes-         ###   ########.fr       */
+/*   Updated: 2023/08/31 10:50:53 by ffornes-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,6 @@ int	parse_input(char *str, char *envp[], t_list **token_list)
 
 	if (is_empty(str))
 		return (1);
-	check_quote_state(str);
 	flag = 0;
 	if (ft_strchr(str, '|') || ft_strchr(str, '<') || ft_strchr(str, '>'))
 	{
