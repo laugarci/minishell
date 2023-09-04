@@ -6,7 +6,7 @@
 /*   By: laugarci <laugarci@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/19 13:29:17 by laugarci          #+#    #+#             */
-/*   Updated: 2023/09/04 17:53:24 by laugarci         ###   ########.fr       */
+/*   Updated: 2023/09/04 18:05:04 by laugarci         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,8 @@
 #include "parser.h"
 #include <readline/readline.h>
 #include <readline/history.h>
+
+//segfault en casos en los que se inicia con << y no con comando/palabra
 
 int	here_doc(t_list *lst, char **env)
 {
