@@ -6,7 +6,7 @@
 /*   By: ffornes- <ffornes-@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/27 11:32:21 by ffornes-          #+#    #+#             */
-/*   Updated: 2023/08/24 17:48:42 by laugarci         ###   ########.fr       */
+/*   Updated: 2023/09/04 10:22:50 by laugarci         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,7 @@
 # define MINISHELL_H
 
 # include "libft_defs.h"
+# include "parser.h"
 
 char		*get_path(char *cmd, char **envp);
 
@@ -49,6 +50,6 @@ int			count_list(t_list *lst);
 
 int			total_input_len(t_list *lst);
 
-int			here_doc(char *command);
+int			here_doc(t_list *lst);
 
 #endif
