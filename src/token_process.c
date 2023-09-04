@@ -1,21 +1,18 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   tokenization.c                                     :+:      :+:    :+:   */
+/*   token_process.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ffornes- <ffornes-@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/07/26 17:15:53 by ffornes-          #+#    #+#             */
-/*   Updated: 2023/08/31 09:55:54 by ffornes-         ###   ########.fr       */
+/*   Created: 2023/09/04 11:34:52 by ffornes-          #+#    #+#             */
+/*   Updated: 2023/09/04 11:39:07 by ffornes-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
 #include "parser.h"
 #include "libft.h"
-#include "libft_bonus.h"
 #include <stdlib.h>
-#include <stdio.h>
 
 static int	get_token_type(char	*str)
 {
@@ -24,7 +21,7 @@ static int	get_token_type(char	*str)
 			return (PIPE);
 	if (ft_strchr(str, '<'))
 	{
-		if ((!ft_strncmp(str, "<\0", 2)) 
+		if ((!ft_strncmp(str, "<\0", 2))
 			|| (str[0] == '<' && str[1] && str[1] != '<'))
 			return (INFILE);
 		else if (!ft_strncmp(str, "<<\0", 3)
@@ -33,7 +30,7 @@ static int	get_token_type(char	*str)
 	}
 	else if (ft_strchr(str, '>'))
 	{
-		if (!ft_strncmp(str, ">\0", 2) 
+		if (!ft_strncmp(str, ">\0", 2)
 			|| (str[0] == '>' && str[1] && str[1] != '>'))
 			return (O_TRUNC);
 		else if (!ft_strncmp(str, ">>\0", 3)
@@ -60,7 +57,7 @@ static void	clean_redirects(t_list **lst)
 		str = token->string;
 		if (token->type > 0)
 		{
-			if (!ft_strncmp(str, "<\0", 2) || !ft_strncmp(str, "<<\0", 3) 
+			if (!ft_strncmp(str, "<\0", 2) || !ft_strncmp(str, "<<\0", 3)
 				|| !ft_strncmp(str, ">\0", 2) || !ft_strncmp(str, ">>\0", 3))
 				next = token->type;
 			else
@@ -126,33 +123,4 @@ void	process_tokens(t_list **token_list, char *envp[])
 	}
 	clean_redirects(token_list);
 	*token_list = remove_duplicates(*token_list);
-}
-
-t_list	*save_tokens(char *input)
-{
-	char	**inputs;
-	t_list	*token_list;
-	t_list	*aux;
-	int		i;
-
-	i = 0;
-	inputs = split_input(input);
-	if (!inputs)
-		return (NULL);
-	token_list = ft_lstnew(new_token(inputs[i], -1, -1));
-	if (!token_list)
-		return (NULL);
-	while (inputs[i++])
-	{
-		aux = ft_lstnew(new_token(inputs[i], -1, -1));
-		if (!aux)
-		{
-			ft_lstclear(&token_list, (void *)free_token);
-			free(inputs);
-			return (NULL);
-		}
-		ft_lstadd_back(&token_list, aux);
-	}
-	free(inputs);
-	return (token_list);
 }
