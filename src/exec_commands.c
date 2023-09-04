@@ -6,7 +6,7 @@
 /*   By: laugarci <laugarci@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/04 15:00:39 by laugarci          #+#    #+#             */
-/*   Updated: 2023/08/24 17:49:44 by laugarci         ###   ########.fr       */
+/*   Updated: 2023/09/04 10:23:11 by laugarci         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,7 +67,7 @@ int	cmp_commands(t_list *lst, char **env)
 		exec_pipes(env, num_pipes, command, lst);
 	}
 	else if (is_type(lst, 2) == 1)
-		here_doc(command);
+		here_doc(lst);
 	else
 		exec_commands(lst, env);
 	return (0);
