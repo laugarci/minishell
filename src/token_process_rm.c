@@ -1,30 +1,18 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   token_utils.c                                      :+:      :+:    :+:   */
+/*   token_process_rm.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ffornes- <ffornes-@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/01 15:33:06 by ffornes-          #+#    #+#             */
-/*   Updated: 2023/08/31 15:33:02 by ffornes-         ###   ########.fr       */
+/*   Updated: 2023/09/04 11:42:04 by ffornes-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft_bonus.h"
 #include "parser.h"
 #include <stdlib.h>
-
-void	free_token(void *var)
-{
-	t_token	*token;
-
-	token = (t_token *)var;
-	if (token)
-	{
-		free(token->string);
-		free(token);
-	}
-}
 
 static t_list	*remove_first_token(t_list *token_list, int *deleted)
 {
