@@ -6,7 +6,7 @@
 /*   By: laugarci <laugarci@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/05 14:01:37 by laugarci          #+#    #+#             */
-/*   Updated: 2023/08/29 13:58:04 by ffornes-         ###   ########.fr       */
+/*   Updated: 2023/09/04 19:05:19 by ffornes-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,8 +20,8 @@
 #include "minishell_defs.h"
 #include "parser.h"
 
-// AJNKNAEKK DEBUGGGGGGGGGGGG
-static void	print_tokens(t_list *lst)
+// AJNKNAEKK DEBUGGGGGGGGGGGG // INCLUDED IN PARSER.H
+void	print_tokens(t_list *lst)
 {
 	t_token		*token;
 
@@ -36,10 +36,14 @@ static void	print_tokens(t_list *lst)
 			printf("H_DOC]");
 		else if (token->type == PIPE)
 			printf("PIPE]");
-		else if (token->type == O_APPEND)
-			printf("O_APPEND]");
-		else if (token->type == O_TRUNC)
-			printf("O_TRUNC]");
+		else if (token->type == APPEND)
+			printf("APPEND]");
+		else if (token->type == TRUNC)
+			printf("TRUNC]");
+		else if (token->type == TOKEN_APPEND)
+			printf("TOKEN_APPEND]");
+		else if (token->type == TOKEND)
+			printf("TOKEND]");
 		else
 			printf("-1]");
 		printf("\t[Quotes: %d]\n", token->quotes);
@@ -100,7 +104,7 @@ static int	main_loop(char *prompt, t_data *data)
 			return (1);
 		if (!parse_input(input, data->envp, &list))
 		{
-			print_tokens(list);
+			//print_tokens(list);
 			cmp_commands(list, data->envp);
 			ft_lstclear(&list, (void *)free_token);
 		}
