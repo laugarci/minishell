@@ -6,7 +6,7 @@
 #    By: ffornes- <ffornes-@student.42barcel>       +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/06/26 15:00:09 by ffornes-          #+#    #+#              #
-#    Updated: 2023/09/04 11:46:17 by ffornes-         ###   ########.fr        #
+#    Updated: 2023/09/04 18:27:02 by ffornes-         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -18,7 +18,7 @@ SRC_FILES = minishell.c \
 			expansion.c expansion_utils.c \
 			quotes.c \
 			token_new.c token_free.c token_save.c \
-			token_process.c token_process_rm.c token_process_subtoken.c \
+			token_process.c token_process_rm.c token_process_subtoken.c token_join_subtoken.c \
 			get_path.c exec_commands.c exec_pipes.c here_doc.c \
 			builtin_export.c \
 			put_error.c
@@ -33,7 +33,7 @@ DEPS = $(addprefix $(OBJ_DIR), $(DEP_FILES))
 LIBFT = libft/libft.a
 
 CC = 		gcc
-CFLAGS = 	-Wall -Wextra -Werror -MMD
+CFLAGS = 	-Wall -Wextra -Werror -MMD #-fsanitize=address
 RM = 		rm -f
 INCLUDE =	-I include/ -I libft/include/
 
@@ -43,7 +43,7 @@ m_libft:
 			@make -C libft/
 
 $(NAME):	$(OBJ_DIR) $(OBJS)
-			$(CC) $(OBJS) -L libft/ -lft -o $@ -lreadline
+			$(CC) $(CFLAGS) $(OBJS) -L libft/ -lft -o $@ -lreadline
 
 
 $(OBJ_DIR):
