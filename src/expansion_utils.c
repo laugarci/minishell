@@ -6,33 +6,71 @@
 /*   By: ffornes- <ffornes-@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/25 16:04:51 by ffornes-          #+#    #+#             */
-/*   Updated: 2023/07/25 16:18:39 by ffornes-         ###   ########.fr       */
+/*   Updated: 2023/08/31 12:17:27 by ffornes-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
+#include <stdlib.h>
+#include <stdio.h>
 
-char	*find_eval(char *str, char *envp[])
+// Trims the recieved input in order to return only the name of the evironment value 
+// 		without any other stuff next to it.
+// Useful in cases where two evals are next to each other or other stuff is.
+// 		ex:	$USER$USER     $USER.hola
+static char	*true_eval(char *str)
 {
 	int		i;
 	char	*out;
 
 	i = 0;
+	while (str[i])
+	{
+		if (str[i] == '$' || (!ft_isalnum(str[i]) && str[i] != '_'))
+			break ;
+		i++;
+	}
+	if (!str[i])
+		return (ft_strdup(str));
+	out = malloc(sizeof(char) * (i + 1));
+	if (!out)
+		return (NULL);
+	ft_strlcpy(out, str, (i + 1));
+	return (out);
+}
+
+// Finds in the environment recieved, the value of the eval 'str' and returns
+// 		it.
+int	find_eval(char *str, char *envp[], char **dst)
+{
+	int		i;
+	int		j;
+	char	*out;
+
+	i = 0;
+	str = true_eval(str);
+	if (!str)
+		return (1);
+	j = ft_strlen(str);
 	while (envp[i])
 	{
 		if (!ft_strncmp(envp[i], str, ft_strlen(str)))
-			break ;
+			if (envp[i][j] == '=')
+				break ;
 		i++;
 	}
 	if (envp[i])
 	{
 		out = ft_strchr(envp[i], '=');
-		out++;
-		return (out);
+		free(str);
+		*dst = (out + 1);
+		return (0);
 	}
-	return (NULL);
+	free(str);
+	return (0);
 }
 
+// Returns the amount of expansions found in a string
 int	expansion_amount(char *input)
 {
 	int	i;
@@ -42,8 +80,7 @@ int	expansion_amount(char *input)
 	j = 0;
 	while (input[i])
 	{
-		if (input[i] == '$' 
-			&& (i == 0 || input[i - 1] == ' ' || input[i - 1] == '\"'))
+		if (input[i] == '$' && ft_isalnum(input[i + 1]))
 			j++;
 		i++;
 	}

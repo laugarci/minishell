@@ -6,7 +6,7 @@
 /*   By: laugarci <laugarci@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/19 13:29:17 by laugarci          #+#    #+#             */
-/*   Updated: 2023/09/04 12:58:21 by laugarci         ###   ########.fr       */
+/*   Updated: 2023/09/04 17:53:24 by laugarci         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@ int	here_doc(t_list *lst, char **env)
 	char	*input;
 	char	*command;
 	t_list	*tmp;
-	
+
 	aux = lst->content;
 	command = malloc(sizeof(char) * ft_strlen(aux->string + 1));
 	ft_strlcpy(command, aux->string, ft_strlen(aux->string) + 1);
@@ -44,5 +44,5 @@ int	here_doc(t_list *lst, char **env)
 	}
 	tmp = save_tokens(command);
 	exec_commands(tmp, env);
- 	return (0);
+	return (0);
 }

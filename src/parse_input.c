@@ -6,7 +6,7 @@
 /*   By: ffornes- <ffornes-@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/27 12:29:42 by ffornes-          #+#    #+#             */
-/*   Updated: 2023/08/10 15:45:57 by laugarci         ###   ########.fr       */
+/*   Updated: 2023/09/04 15:56:17 by laugarci         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,13 +34,11 @@ static int	is_empty(char *input)
 // IN CASE OF ERROR SET PERROR HERE AND CALL ERROR MESSAGE FROM THIS FUNCTION
 int	parse_input(char *str, char *envp[], t_list **token_list)
 {
-	char	*input;
 	t_list	*lst;
 	int		flag;
 
 	if (is_empty(str))
 		return (1);
-	check_quote_state(str);
 	flag = 0;
 	if (ft_strchr(str, '|') || ft_strchr(str, '<') || ft_strchr(str, '>'))
 	{
@@ -54,14 +52,10 @@ int	parse_input(char *str, char *envp[], t_list **token_list)
 		free(str);
 	if (!lst)
 		return (1);
-	process_tokens(&lst);
+	process_tokens(&lst, envp);
 	if (!lst->content)
 		return (1);
 	*token_list = lst;
-	return (0); // TEMP
-	
-	input = expand_evals(input, envp);
-//	tmp = remove_quotes(input);
-//	*str = tmp;
 	return (0);
+	envp = NULL;
 }
