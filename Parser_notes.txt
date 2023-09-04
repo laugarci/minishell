@@ -4,6 +4,7 @@ ToDo:
 	
 	Expansions:
 	Program expansion of $? in order to show the error code
+	Expansion of not saved environment variable is broken, AGAIN
 	
 	Quotes:
 	When finding a token with a string that contains multiple quotes at the same level, must save the token
