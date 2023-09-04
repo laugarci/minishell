@@ -6,7 +6,7 @@
 /*   By: ffornes- <ffornes-@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/04 11:45:48 by ffornes-          #+#    #+#             */
-/*   Updated: 2023/09/04 14:04:31 by ffornes-         ###   ########.fr       */
+/*   Updated: 2023/09/04 19:06:21 by ffornes-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@ static char	**set_strings(char *str, char **dst)
 		state = quote_state(state, str[i]);
 		if (!state && (str[i] == '\'' || str[i] == '\"'))
 		{
-			dst[j] = malloc(sizeof(char) * (i + 1));
+			dst[j] = ft_calloc(sizeof(char), (i + 2));
 			if (!dst[j])
 			{
 				free_double((void **)dst);
@@ -60,7 +60,7 @@ static t_list	*add_subtokens(t_list **list, char **strings)
 	token->string = strings[i];
 	token->type = type;
 	new_list = NULL;
-	while (strings[i++])
+	while (strings[++i])
 	{
 		if (!strings[i + 1])
 			type = 6;
@@ -78,7 +78,7 @@ static t_list	*generate_subtokens(t_list **list, int count)
 	char	**strings;
 
 	new_list = *list;
-	strings = malloc(sizeof(char *) * (count + 1));
+	strings = ft_calloc(sizeof(char *), (count + 1));
 	if (!strings)
 		printf("Putada\n"); // Error: Not enough memory
 	token = new_list->content;
@@ -86,7 +86,7 @@ static t_list	*generate_subtokens(t_list **list, int count)
 	if (!strings)
 		printf("Otra putada\n"); // Error: Not enough memory
 	aux = new_list->next;
-	new_list = add_subtokens(&new_list, strings); // TYPE IS NOT SAVED??? 
+	new_list = add_subtokens(&new_list, strings); 
 	free(strings);
 	ft_lstadd_back(&new_list, aux);
 	return (new_list);
