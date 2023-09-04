@@ -1,3 +1,5 @@
+vpath Makefile directiva
+
 ToDo:
 	
 	Expansions:
