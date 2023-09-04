@@ -6,7 +6,7 @@
 /*   By: ffornes- <ffornes-@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/24 14:47:53 by ffornes-          #+#    #+#             */
-/*   Updated: 2023/07/26 15:44:02 by ffornes-         ###   ########.fr       */
+/*   Updated: 2023/08/31 12:19:17 by ffornes-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@ static char	*update_input_util(int i, char *tmp, char *str, char *input)
 		return (NULL);
 	free(aux);
 	aux = tmp;
-	while (input[i] != ' ' && input[i])
+	while (input[i] && ft_isalnum(input[i]) && input[i] != '_')
 		i++;
 	if (input[i])
 	{
@@ -47,8 +47,9 @@ static char	*update_input(char *input, char *str)
 
 	i = 0;
 	while (input[i])
-		if (input[i++] == '$' && (i - 1 == 0 || input[i - 2] == ' '))
-			break ;
+		if (input[i++] == '$')
+			if (ft_isalpha(input[i]) || input[i] == '_')
+				break ;
 	tmp = malloc(sizeof(char) * i);
 	if (!tmp)
 		return (NULL);
@@ -57,16 +58,38 @@ static char	*update_input(char *input, char *str)
 	return (tmp);
 }
 
+static char	*expand_input_util(char *input)
+{
+	char	*str;
+
+	str = ft_strchr(input, '$');
+	if (!str)
+		return (NULL);
+	str++;
+	while (*str && *str == ' ')
+	{
+		str = ft_strchr(str, '$');
+		if (!str)
+			return (NULL);
+		str++;
+	}
+	return (str);
+}
+
+// This function locates the environment value in the string recieved as input, trimming
+// 		the environment value leaving only it's reference name.
+// 		Ex: ' nskj $USER a' becomes 'USER'
+// 	Then find_eval is called, which looks for the environment value in the environment and
+// 		returns the content saved in the environment value.
 static char	*expand_input(char *input, char *envp[])
 {
 	char	*str;
 	char	*aux;
 	int		i;
 
-	str = ft_strchr(input, '$');
+	str = expand_input_util(input);
 	if (!str)
 		return (NULL);
-	str++;
 	aux = ft_strdup(str);
 	if (!aux)
 		return (NULL);
@@ -80,7 +103,7 @@ static char	*expand_input(char *input, char *envp[])
 		}
 		i++;
 	}
-	str = find_eval(aux, envp);
+	find_eval(aux, envp, &str); // Returns error code
 	free(aux);
 	return (str);
 }
@@ -91,24 +114,23 @@ char	*expand_evals(char *input, char *envp[])
 	char	*aux;
 	char	*out;
 
+	amount = expansion_amount(input);
+	if (!amount)
+		return (input);
 	out = ft_strdup("");
 	if (!out)
 		return (NULL);
-	amount = expansion_amount(input);
-	printf("Amount of expansions found: %d\n", amount);
-	if (!amount)
-		return (input);
 	while (amount--)
 	{
 		aux = input;
 		free(out);
-		out = expand_input(input, envp);
-		out = update_input(input, out);
+		out = expand_input(input, envp); // Unprotected malloc
+		out = update_input(input, out); // Unprotected malloc
 		input = ft_strdup(out);
-		if (!input)
+		if (!input) // If out is allocated must free it before returning NULL
 			return (NULL);
 		free(aux);
 	}
-	free(input);
-	return (out);
+	free(out);
+	return (input);
 }

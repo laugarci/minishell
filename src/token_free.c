@@ -1,32 +1,26 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   exec_pwd.c                                         :+:      :+:    :+:   */
+/*   token_free.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: laugarci <laugarci@student.42barcel>       +#+  +:+       +#+        */
+/*   By: ffornes- <ffornes-@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/09/04 11:28:34 by laugarci          #+#    #+#             */
-/*   Updated: 2023/09/04 17:55:30 by laugarci         ###   ########.fr       */
+/*   Created: 2023/09/04 11:36:50 by ffornes-          #+#    #+#             */
+/*   Updated: 2023/09/04 11:37:36 by ffornes-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <stdio.h>
-#include <unistd.h>
-#include <stdlib.h>
-#include "libft.h"
-#include "minishell.h"
-#include "libft_bonus.h"
 #include "parser.h"
+#include <stdlib.h>
 
-int	exec_pwd(void)
+void	free_token(void *var)
 {
-	char	*cwd;
+	t_token	*token;
 
-	cwd = getcwd(NULL, 0);
-	if (cwd != NULL)
+	token = (t_token *)var;
+	if (token)
 	{
-		printf("%s\n", cwd);
-		free(cwd);
+		free(token->string);
+		free(token);
 	}
-	return (0);
 }
