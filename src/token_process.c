@@ -6,7 +6,7 @@
 /*   By: ffornes- <ffornes-@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/04 11:34:52 by ffornes-          #+#    #+#             */
-/*   Updated: 2023/09/05 14:05:11 by laugarci         ###   ########.fr       */
+/*   Updated: 2023/09/05 16:21:03 by ffornes-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,8 +40,8 @@ static int	get_token_type(char	*str)
 	return (-1);
 }
 
-// ToDo: Check if after taking the redirection chars the string is empty. If empty then:
-// 		syntax error near unexpected token `newline'
+// ToDo: Check if after taking the redirection chars the string is empty.
+// 		If empty then: syntax error near unexpected token `newline'
 static void	clean_redirects(t_list **lst)
 {
 	t_list	*tmp_lst;
@@ -136,11 +136,6 @@ void	process_tokens(t_list **token_list, char *envp[])
 		aux = tmp_lst->content;
 	}
 	*token_list = join_subtoken(token_list);
-
-
-//	print_tokens(*token_list); //DEBUGGG
-
-
 	clean_redirects(token_list);
 	*token_list = remove_duplicates(*token_list);
 }

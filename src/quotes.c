@@ -6,7 +6,7 @@
 /*   By: ffornes- <ffornes-@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/24 17:09:41 by ffornes-          #+#    #+#             */
-/*   Updated: 2023/09/04 17:48:51 by ffornes-         ###   ########.fr       */
+/*   Updated: 2023/09/05 16:19:46 by ffornes-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,8 @@ static char	*fill_output(char *out, t_token *token, int i, int j)
 		else if (open)
 		{
 			token->quotes = open;
-			if ((open == 1 && str[i] != '\'') || (open == 2 && str[i] != '\"'))
+			if ((open == 1 && str[i] != '\'')
+				|| (open == 2 && str[i] != '\"'))
 				out[j++] = str[i];
 			else
 				open = 0;

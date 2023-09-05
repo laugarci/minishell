@@ -6,7 +6,7 @@
 /*   By: ffornes- <ffornes-@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/31 12:35:07 by ffornes-          #+#    #+#             */
-/*   Updated: 2023/08/31 11:41:49 by ffornes-         ###   ########.fr       */
+/*   Updated: 2023/09/05 16:20:25 by ffornes-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,7 @@ static char	*get_string(char *input, int number, int i, int j)
 	while (input[++i])
 	{
 		open = quote_state(open, input[i]);
-		if (!open && input[i] == ' ') 
+		if (!open && input[i] == ' ')
 			counted = 0;
 		else
 		{
@@ -51,7 +51,7 @@ static char	*get_string(char *input, int number, int i, int j)
 				j++;
 			counted = 1;
 		}
-		if ((count != number && j) 
+		if ((count != number && j)
 			|| (count == number && !open && input[i] == ' ' && j))
 			break ;
 	}
