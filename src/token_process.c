@@ -6,7 +6,7 @@
 /*   By: ffornes- <ffornes-@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/04 11:34:52 by ffornes-          #+#    #+#             */
-/*   Updated: 2023/09/05 14:05:11 by laugarci         ###   ########.fr       */
+/*   Updated: 2023/09/05 15:09:05 by laugarci         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -138,7 +138,7 @@ void	process_tokens(t_list **token_list, char *envp[])
 	*token_list = join_subtoken(token_list);
 
 
-//	print_tokens(*token_list); //DEBUGGG
+	print_tokens(*token_list); //DEBUGGG
 
 
 	clean_redirects(token_list);
