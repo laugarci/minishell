@@ -6,7 +6,7 @@
 /*   By: ffornes- <ffornes-@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/24 14:47:53 by ffornes-          #+#    #+#             */
-/*   Updated: 2023/09/05 13:12:00 by ffornes-         ###   ########.fr       */
+/*   Updated: 2023/09/05 15:07:48 by ffornes-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,6 +66,8 @@ static char	*expand_input_util(char *input)
 	str = ft_strchr(input, '$');
 	if (!str)
 		return (NULL);
+	while (*(str + 1) == '$')
+		str++;
 	str++;
 	while (*str && *str == ' ')
 	{
