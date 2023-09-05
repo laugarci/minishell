@@ -6,7 +6,7 @@
 /*   By: laugarci <laugarci@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/05 14:01:37 by laugarci          #+#    #+#             */
-/*   Updated: 2023/09/04 19:05:19 by ffornes-         ###   ########.fr       */
+/*   Updated: 2023/09/05 14:04:25 by laugarci         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,7 +53,8 @@ void	print_tokens(t_list *lst)
 			break ;
 	}
 }
-// DEBUG DEBUG DEBUG DEBUG DELETE LATER   RR ER E REA EGAG 
+// DEBUG DEBUG DEBUG DEBUG DELETE LATER   RR ER E REA EGAG */
+
 
 static int	set_env(t_data *data, char *env[])
 {
