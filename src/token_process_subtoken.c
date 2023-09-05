@@ -6,7 +6,7 @@
 /*   By: ffornes- <ffornes-@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/04 11:45:48 by ffornes-          #+#    #+#             */
-/*   Updated: 2023/09/04 19:06:21 by ffornes-         ###   ########.fr       */
+/*   Updated: 2023/09/05 14:50:55 by ffornes-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,8 @@ static char	**set_strings(char *str, char **dst)
 	while (str[i])
 	{
 		state = quote_state(state, str[i]);
-		if (!state && (str[i] == '\'' || str[i] == '\"'))
+		if ((!state && (str[i] == '\'' || str[i] == '\"'))
+			|| (!state && (str[i + 1] == '\'' || str[i + 1] == '\"' || str[i + 1] == '\0')))
 		{
 			dst[j] = ft_calloc(sizeof(char), (i + 2));
 			if (!dst[j])
@@ -96,16 +97,25 @@ static int	same_level_quotes(char *string)
 {
 	int	state;
 	int	quotes;
+	int	count;
 	int	i;
 
 	if (!ft_strchr(string, '\'') && !ft_strchr(string, '\"'))
 		return (0);
 	i = 0;
 	quotes = 0;
+	count = 0;
 	state = 0;
 	while (string[i])
 	{
 		state = quote_state(state, string[i]);
+		if (!state && !count && string[i] != '\'' && string[i] != '\"')
+		{
+			quotes++;
+			count = 1;
+		}
+		else if (state)
+			count = 0;
 		if (state == 1 && string[i] == '\'')
 			quotes++;
 		else if (state == 2 && string[i] == '\"')
