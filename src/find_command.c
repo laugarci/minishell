@@ -6,7 +6,7 @@
 /*   By: laugarci <laugarci@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/17 10:09:20 by laugarci          #+#    #+#             */
-/*   Updated: 2023/08/24 17:51:42 by laugarci         ###   ########.fr       */
+/*   Updated: 2023/09/05 15:22:17 by ffornes-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ char	*find_command(t_list *lst)
 	char	*result;
 
 	total_length = total_input_len(lst);
-	result = malloc(sizeof(char) * (total_length));
+	result = malloc(sizeof(char) * (total_length + 1));
 	if (!result)
 		return (NULL);
 	current = lst;
