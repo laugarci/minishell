@@ -6,7 +6,7 @@
 /*   By: laugarci <laugarci@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/05 13:04:31 by laugarci          #+#    #+#             */
-/*   Updated: 2023/07/05 13:04:34 by laugarci         ###   ########.fr       */
+/*   Updated: 2023/08/19 16:06:28 by laugarci         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 #include "libft.h"
 #include "get_next_line.h"
 
-static char	*get_delimiter(char **input)
+/*static char	*get_delimiter(char **input)
 {
 	char	*out;
 	char	*aux;
@@ -82,4 +82,4 @@ char	*here_doc(char **input, char *envp[])
 	if (envp)
 		return (NULL);
 	return (NULL);
-}
+}*/

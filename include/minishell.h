@@ -6,19 +6,19 @@
 /*   By: ffornes- <ffornes-@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/27 11:32:21 by ffornes-          #+#    #+#             */
-/*   Updated: 2023/08/31 11:59:42 by ffornes-         ###   ########.fr       */
+/*   Updated: 2023/09/04 15:58:42 by laugarci         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef MINISHELL_H
 # define MINISHELL_H
 
+# include "libft_defs.h"
+# include "parser.h"
 #include "libft_defs.h"
 #include "minishell_defs.h"
 
 char		*get_path(char *cmd, char **envp);
-
-char		*here_doc(char **input, char *envp[]);
 
 void		put_error(char *str, int error_id);
 
@@ -32,11 +32,31 @@ int			cmp_commands(t_list *lst, char **env);
 
 int			exec_cd(t_list *lst);
 
-int			is_pipe(t_list *lst);
+int			is_type(t_list *lst, int type);
 
 int			count_chars(t_list *lst);
 
-void		exec_pipes(t_list *lst, char **env, int num_pipes);
+void		exec_pipes(char **env, int num_pipes, char *command, t_list *lst);
+
+int			count_args(t_list *lst);
+
+char		*find_command(t_list *lst);
+
+char		*find_output(t_list *lst);
+
+int			exec_redirect(t_list *lst);
+
+char		*ft_strtok(char *str, const char *del);
+
+int			count_list(t_list *lst);
+
+int			total_input_len(t_list *lst);
+
+int			here_doc(t_list *lst, char **env);
+
+int			exec_pwd();
+
+int			exec_echo(t_list *lst);
 
 int			builtin_export(char *eval, t_data *data);
 

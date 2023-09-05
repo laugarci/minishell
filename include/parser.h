@@ -6,7 +6,7 @@
 /*   By: laugarci <laugarci@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/06 11:42:45 by ffornes-          #+#    #+#             */
-/*   Updated: 2023/09/04 18:38:55 by ffornes-         ###   ########.fr       */
+/*   Updated: 2023/09/05 14:03:11 by laugarci         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@
 # define TOKEN_APPEND	5
 # define TOKEND			6
 
-#include "libft_defs.h"
+# include "libft_defs.h"
 
 typedef struct s_token
 {
