@@ -6,7 +6,7 @@
 /*   By: ffornes- <ffornes-@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/24 14:47:53 by ffornes-          #+#    #+#             */
-/*   Updated: 2023/08/31 12:19:17 by ffornes-         ###   ########.fr       */
+/*   Updated: 2023/09/05 13:12:00 by ffornes-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,8 @@ static char	*update_input_util(int i, char *tmp, char *str, char *input)
 		return (NULL);
 	free(aux);
 	aux = tmp;
-	while (input[i] && ft_isalnum(input[i]) && input[i] != '_')
+	while (input[i] && ((!i && (ft_isalpha(input[i]) || input[i] == '_'))
+			|| (ft_isalnum(input[i]) || input[i] == '_')))
 		i++;
 	if (input[i])
 	{
@@ -76,10 +77,12 @@ static char	*expand_input_util(char *input)
 	return (str);
 }
 
-// This function locates the environment value in the string recieved as input, trimming
-// 		the environment value leaving only it's reference name.
+// This function locates the environment value in the string 
+// 	recieved as input, trimming the environment value leaving 
+// 	only it's reference name.
 // 		Ex: ' nskj $USER a' becomes 'USER'
-// 	Then find_eval is called, which looks for the environment value in the environment and
+// Then find_eval is called, which looks for the environment 
+// 	value in the environment and
 // 		returns the content saved in the environment value.
 static char	*expand_input(char *input, char *envp[])
 {

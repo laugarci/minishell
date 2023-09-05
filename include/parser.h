@@ -6,7 +6,7 @@
 /*   By: laugarci <laugarci@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/06 11:42:45 by ffornes-          #+#    #+#             */
-/*   Updated: 2023/09/04 15:58:08 by laugarci         ###   ########.fr       */
+/*   Updated: 2023/09/05 14:03:11 by laugarci         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,8 +16,8 @@
 # define PIPE			0
 # define INFILE			1
 # define HERE_DOC		2
-# define O_APPEND		3
-# define O_TRUNC		4
+# define APPEND			3
+# define TRUNC			4
 # define TOKEN_APPEND	5
 # define TOKEND			6
 
@@ -48,8 +48,11 @@ t_token		*new_token(char *string, int type, int quotes);
 t_list		*save_tokens(char *input);
 void		process_tokens(t_list **token_list, char *envp[]);
 t_list		*process_subtokens(t_list **token_list);
+t_list		*join_subtoken(t_list **token_list);
 t_list		*remove_duplicates(t_list *token_list);
 
 void		free_token(void *var);
+
+void	print_tokens(t_list *lst);
 
 #endif

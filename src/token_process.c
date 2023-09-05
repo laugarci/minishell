@@ -6,7 +6,7 @@
 /*   By: ffornes- <ffornes-@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/04 11:34:52 by ffornes-          #+#    #+#             */
-/*   Updated: 2023/09/04 14:04:33 by ffornes-         ###   ########.fr       */
+/*   Updated: 2023/09/05 14:05:11 by laugarci         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,10 +32,10 @@ static int	get_token_type(char	*str)
 	{
 		if (!ft_strncmp(str, ">\0", 2)
 			|| (str[0] == '>' && str[1] && str[1] != '>'))
-			return (O_TRUNC);
+			return (TRUNC);
 		else if (!ft_strncmp(str, ">>\0", 3)
 			|| (str[0] == '>' && str[1] == '>' && str[2]))
-			return (O_APPEND);
+			return (APPEND);
 	}
 	return (-1);
 }
@@ -77,7 +77,7 @@ static t_list	*expansion_token(t_list *list, t_token *token, char *envp[])
 	char	*string;
 
 	string = expand_evals(token->string, envp);
-	if (!ft_strchr(string,  ' ') || token->quotes > 0)
+	if (!ft_strchr(string, ' ') || token->quotes > 0)
 	{
 		token->string = string;
 		list->content = token;
@@ -135,6 +135,12 @@ void	process_tokens(t_list **token_list, char *envp[])
 		tmp_lst = tmp_lst->next;
 		aux = tmp_lst->content;
 	}
+	*token_list = join_subtoken(token_list);
+
+
+//	print_tokens(*token_list); //DEBUGGG
+
+
 	clean_redirects(token_list);
 	*token_list = remove_duplicates(*token_list);
 }

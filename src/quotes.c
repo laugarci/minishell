@@ -6,7 +6,7 @@
 /*   By: ffornes- <ffornes-@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/24 17:09:41 by ffornes-          #+#    #+#             */
-/*   Updated: 2023/08/31 11:40:31 by ffornes-         ###   ########.fr       */
+/*   Updated: 2023/09/04 17:48:51 by ffornes-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,32 +26,6 @@ int	quote_state(int state, char c)
 		return (0);
 	return (state);
 }
-
-/*
-static int	is_expansion_only(char *input, int quotes)
-{
-	int	i;
-
-	i = 0;
-	while (input[i] != '$')
-		i++;
-	i++;
-	if (!input[i] || (!ft_isalpha(input[i]) && input[i] != '_'))
-		return (0);
-	i++;
-	while (input[i])
-	{
-		if (quotes == 1 && input[i] == '\'')
-			break ;
-		else if (quotes == 2 && input[i] == '\"')
-			break ;
-		if (!ft_isalnum(input[i]) && input[i] != '_')
-			return (0);
-		i++;
-	}
-	return (1);
-}
-*/
 
 static char	*fill_output(char *out, t_token *token, int i, int j)
 {
@@ -85,14 +59,17 @@ t_token	*remove_quotes(t_token *token)
 {
 	char	*str;
 	char	*out;
+	char	*aux;
 
 	str = token->string;
 	if (!ft_strchr(str, '\'') && !ft_strchr(str, '\"'))
 		return (token);
-	out = malloc(sizeof(char) * ft_strlen(str) + 1);
+	out = ft_calloc(sizeof(char), ft_strlen(str) + 1);
 	if (!out)
 		return (NULL);
 	out = fill_output(out, token, 0, 0);
+	aux = token->string;
 	token->string = out;
+	free(aux);
 	return (token);
 }
