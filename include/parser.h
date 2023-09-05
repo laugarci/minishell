@@ -6,7 +6,7 @@
 /*   By: laugarci <laugarci@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/06 11:42:45 by ffornes-          #+#    #+#             */
-/*   Updated: 2023/09/05 14:03:11 by laugarci         ###   ########.fr       */
+/*   Updated: 2023/09/05 16:24:07 by ffornes-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,15 +44,14 @@ t_token		*remove_quotes(t_token *token);
 int			quote_state(int state, char c);
 
 t_token		*new_token(char *string, int type, int quotes);
-
 t_list		*save_tokens(char *input);
 void		process_tokens(t_list **token_list, char *envp[]);
 t_list		*process_subtokens(t_list **token_list);
+int			count_subtokens(char *string);
 t_list		*join_subtoken(t_list **token_list);
 t_list		*remove_duplicates(t_list *token_list);
-
 void		free_token(void *var);
 
-void	print_tokens(t_list *lst);
+void		print_tokens(t_list *lst); // DEBUG
 
 #endif

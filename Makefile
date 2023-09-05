@@ -6,7 +6,7 @@
 #    By: ffornes- <ffornes-@student.42barcel>       +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/06/26 15:00:09 by ffornes-          #+#    #+#              #
-#    Updated: 2023/09/05 14:03:44 by laugarci         ###   ########.fr        #
+#    Updated: 2023/09/05 16:32:35 by ffornes-         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -20,7 +20,8 @@ SRC_FILES = minishell.c \
 			put_error.c exec_redirec.c utils.c find_command.c exec_pwd.c exec_echo.c \
 			quotes.c \
 			token_new.c token_free.c token_save.c \
-			token_process.c token_process_rm.c token_process_subtoken.c token_join_subtoken.c \
+			token_process.c token_process_rm.c \
+			subtoken_process.c subtoken_count.c subtoken_join.c \
 			builtin_export.c \
 
 OBJ_DIR = objs/
@@ -33,7 +34,7 @@ DEPS = $(addprefix $(OBJ_DIR), $(DEP_FILES))
 LIBFT = libft/libft.a
 
 CC = 		gcc
-CFLAGS = 	-Wall -Wextra -Werror -MMD #-fsanitize=address
+CFLAGS = 	-Wall -Wextra -Werror -MMD -fsanitize=address
 RM = 		rm -f
 INCLUDE =	-I include/ -I libft/include/
 
