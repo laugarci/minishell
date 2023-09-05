@@ -6,7 +6,7 @@
 /*   By: laugarci <laugarci@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/04 11:30:35 by laugarci          #+#    #+#             */
-/*   Updated: 2023/09/04 17:54:08 by laugarci         ###   ########.fr       */
+/*   Updated: 2023/09/05 14:27:07 by laugarci         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,28 +21,24 @@
 int	exec_echo(t_list *lst)
 {
 	t_token	*token;
-	char	*var_name;
-	char	*env_var;
+	t_list	*aux;
 	int		i;
 
+	aux = lst;
 	i = count_list(lst);
 	if (i == 2)
 		printf("\n");
 	else
 	{
-		lst = lst->next;
-		token = lst->content;
-		if (ft_strncmp(token->string, "$", 1) == 0)
+		i = 1;
+		while(i < (count_list(lst) - 1))
 		{
-			var_name = token->string + 1;
-			env_var = getenv(var_name);
-			if (env_var != NULL)
-				printf("%s\n", env_var);
-			else
-				printf("\n");
+			aux = aux->next;
+			token = aux->content;
+			printf("%s ", token->string);
+			i++;
 		}
-		else
-			printf("%s\n", token->string);
+		printf("\n");
 	}
 	return (0);
 }

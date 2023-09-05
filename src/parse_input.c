@@ -6,7 +6,7 @@
 /*   By: ffornes- <ffornes-@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/27 12:29:42 by ffornes-          #+#    #+#             */
-/*   Updated: 2023/09/04 15:56:17 by laugarci         ###   ########.fr       */
+/*   Updated: 2023/09/05 14:02:14 by laugarci         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,5 +57,4 @@ int	parse_input(char *str, char *envp[], t_list **token_list)
 		return (1);
 	*token_list = lst;
 	return (0);
-	envp = NULL;
 }
