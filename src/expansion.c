@@ -6,7 +6,7 @@
 /*   By: ffornes- <ffornes-@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/24 14:47:53 by ffornes-          #+#    #+#             */
-/*   Updated: 2023/09/05 13:08:11 by ffornes-         ###   ########.fr       */
+/*   Updated: 2023/09/05 13:12:00 by ffornes-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -107,7 +107,6 @@ static char	*expand_input(char *input, char *envp[])
 		i++;
 	}
 	find_eval(aux, envp, &str); // Returns error code
-	printf("EVAL: %s\n", str);
 	free(aux);
 	return (str);
 }

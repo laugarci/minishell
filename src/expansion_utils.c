@@ -6,7 +6,7 @@
 /*   By: ffornes- <ffornes-@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/25 16:04:51 by ffornes-          #+#    #+#             */
-/*   Updated: 2023/09/05 13:09:26 by ffornes-         ###   ########.fr       */
+/*   Updated: 2023/09/05 13:58:51 by ffornes-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,10 +63,10 @@ int	find_eval(char *str, char *envp[], char **dst)
 	if (envp[i])
 	{
 		out = ft_strchr(envp[i], '=');
-		free(str);
 		*dst = (out + 1);
-		return (0);
 	}
+	else
+		*dst = NULL;
 	free(str);
 	return (0);
 }
