@@ -6,7 +6,7 @@
 /*   By: ffornes- <ffornes-@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/25 16:04:51 by ffornes-          #+#    #+#             */
-/*   Updated: 2023/08/31 12:17:27 by ffornes-         ###   ########.fr       */
+/*   Updated: 2023/09/05 13:09:26 by ffornes-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,8 +14,8 @@
 #include <stdlib.h>
 #include <stdio.h>
 
-// Trims the recieved input in order to return only the name of the evironment value 
-// 		without any other stuff next to it.
+// Trims the recieved input in order to return only the name of the evironment 
+// 	value without any other stuff next to it.
 // Useful in cases where two evals are next to each other or other stuff is.
 // 		ex:	$USER$USER     $USER.hola
 static char	*true_eval(char *str)
@@ -26,7 +26,8 @@ static char	*true_eval(char *str)
 	i = 0;
 	while (str[i])
 	{
-		if (str[i] == '$' || (!ft_isalnum(str[i]) && str[i] != '_'))
+		if (((!i && !ft_isalpha(str[i]))
+				|| !ft_isalnum(str[i])) && str[i] != '_')
 			break ;
 		i++;
 	}
@@ -80,7 +81,8 @@ int	expansion_amount(char *input)
 	j = 0;
 	while (input[i])
 	{
-		if (input[i] == '$' && ft_isalnum(input[i + 1]))
+		if (input[i] == '$' && (ft_isalpha(input[i + 1])
+				|| input[i + 1] == '_'))
 			j++;
 		i++;
 	}
