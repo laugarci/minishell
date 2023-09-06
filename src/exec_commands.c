@@ -6,7 +6,7 @@
 /*   By: laugarci <laugarci@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/04 14:04:45 by laugarci          #+#    #+#             */
-/*   Updated: 2023/09/04 17:11:31 by laugarci         ###   ########.fr       */
+/*   Updated: 2023/09/06 17:50:27 by laugarci         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,10 +67,10 @@ int	cmp_commands(t_list *lst, char **env)
 		exec_pipes(env, num_pipes, command, lst);
 	}
 	else if (is_type(lst, 2) == 1)
-		here_doc(lst, env);
-	else if (ft_strncmp(token->string, "echo", 4) == 0)
+			here_doc(lst, env);
+	else if (ft_strncmp(token->string, "echo ", 5) == 0)
 		exec_echo(lst);
-	else if (ft_strncmp(token->string, "pwd", 3) == 0)
+	else if (ft_strncmp(token->string, "pwd ", 4) == 0)
 		exec_pwd();
 	else
 		exec_commands(lst, env);
@@ -101,7 +101,7 @@ int	exec_commands_wf(t_list *lst, char **env, int flags)
 	args[flags + 1] = NULL;
 	token = lst->content;
 	if ((execve(args[0], args, env)) == -1)
-		printf("zsh: command not found %s\n", token->string);
+		return(-1); //szh: command not found
 	return (0);
 }
 

@@ -6,7 +6,7 @@
 /*   By: laugarci <laugarci@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/19 13:29:17 by laugarci          #+#    #+#             */
-/*   Updated: 2023/09/05 15:32:04 by laugarci         ###   ########.fr       */
+/*   Updated: 2023/09/06 16:21:00 by laugarci         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,8 +20,26 @@
 #include <readline/readline.h>
 #include <readline/history.h>
 
-//segfault en casos en los que se inicia con << y no con comando/palabra OK
-//mirar el caracter delimitador si es ls<<hola por ejemplo
+//falta solucionar que si hay una redireccion > se haga tambien
+
+
+char	*find_del(t_list *lst)
+{
+	char *del;
+	t_token *token;
+
+	token = lst->content;
+	while(token->type != HERE_DOC)
+	{
+		lst = lst->next;
+		token = lst->content;
+	}
+	del = malloc(sizeof(char) * ft_strlen(token->string) + 1);
+	if (!del)
+		return (NULL);
+	ft_strlcpy(del, token->string, ft_strlen(token->string) + 1);
+	return (del);
+}
 
 int	here_doc(t_list *lst, char **env)
 {
@@ -31,20 +49,20 @@ int	here_doc(t_list *lst, char **env)
 	char	*command;
 	t_list	*tmp;
 
-		aux = lst->content;
-		del = malloc(sizeof(char) * ft_strlen(aux->string) + 1);
-		ft_strlcpy(del, aux->string, ft_strlen(aux->string) + 1);
-		while (42)
-		{
-				input = readline("heredoc> ");
-	//		input = expand_evals(input, env);
-			if (ft_strncmp(input, del, ft_strlen(del) + 1) == 0)
+	del = find_del(lst);
+	while (42)
+	{	
+		input = readline("heredoc> ");
+		input = expand_evals(input, env);
+		if (ft_strncmp(input, del, ft_strlen(del) + 1) == 0)
 			break ;
-		}
+	}
 	if (count_list(lst) > 2)
 	{
 		aux = lst->content;
 		command = malloc(sizeof(char) * ft_strlen(aux->string) + 1);
+		if (!command)
+			return (-1);
 		ft_strlcpy(command, aux->string, ft_strlen(aux->string) + 1);
 		tmp = save_tokens(command);
 		exec_commands(tmp, env);
