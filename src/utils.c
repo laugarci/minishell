@@ -6,7 +6,7 @@
 /*   By: laugarci <laugarci@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/16 15:26:31 by laugarci          #+#    #+#             */
-/*   Updated: 2023/08/17 09:56:49 by laugarci         ###   ########.fr       */
+/*   Updated: 2023/09/07 14:27:44 by laugarci         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,7 @@ int	is_type(t_list *lst, int type)
 	return (0);
 }
 
-int	count_chars(t_list *lst)
+int	count_types(t_list *lst, int type)
 {
 	int		c;
 	t_list	*tmp;
@@ -42,7 +42,7 @@ int	count_chars(t_list *lst)
 	while (tmp)
 	{
 		aux = tmp->content;
-		if (aux->type == PIPE)
+		if (aux->type == type)
 			c++;
 		tmp = tmp->next;
 	}

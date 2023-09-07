@@ -6,7 +6,7 @@
 /*   By: laugarci <laugarci@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/14 09:52:31 by laugarci          #+#    #+#             */
-/*   Updated: 2023/08/24 17:50:08 by laugarci         ###   ########.fr       */
+/*   Updated: 2023/09/07 14:04:11 by laugarci         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,6 +91,7 @@ void	close_pipes_parent(int **fds, int i, int num_pipes)
 
 void	exec_pipes_aux(int **fds, int i, int num_pipes, t_list *lst)
 {
+	print_tokens(lst);
 	if (i < num_pipes)
 		close_pipes_child(fds, i, num_pipes);
 	else
@@ -108,11 +109,13 @@ void	exec_pipes(char **env, int num_pipes, char *command, t_list *lst)
 	int		**fds;
 	t_list	*aux;
 
-	fds = pipe_fds(num_pipes);
+	if (num_pipes)
+		fds = pipe_fds(num_pipes);
 	command = ft_strtok(command, "|");
 	i = 0;
 	while (command != NULL)
 	{
+		printf("%s\n", command);
 		pid = fork();
 		if (pid == -1)
 			exit(-1);
