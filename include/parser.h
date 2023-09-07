@@ -6,7 +6,7 @@
 /*   By: laugarci <laugarci@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/06 11:42:45 by ffornes-          #+#    #+#             */
-/*   Updated: 2023/09/05 16:24:07 by ffornes-         ###   ########.fr       */
+/*   Updated: 2023/09/07 12:27:25 by ffornes-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,7 @@ char		*clean_input(char *input);
 int			needs_space(char *str);
 char		**split_input(char *input);
 
-char		*expand_evals(char *input, char *envp[]);
+char		*expand_evals(t_token *token, char *input, char *envp[]);
 int			expansion_amount(char *input);
 int			find_eval(char *str, char *envp[], char **dst);
 

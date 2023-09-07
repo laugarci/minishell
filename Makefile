@@ -6,7 +6,7 @@
 #    By: ffornes- <ffornes-@student.42barcel>       +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/06/26 15:00:09 by ffornes-          #+#    #+#              #
-#    Updated: 2023/09/05 16:32:35 by ffornes-         ###   ########.fr        #
+#    Updated: 2023/09/07 12:29:16 by ffornes-         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -34,7 +34,7 @@ DEPS = $(addprefix $(OBJ_DIR), $(DEP_FILES))
 LIBFT = libft/libft.a
 
 CC = 		gcc
-CFLAGS = 	-Wall -Wextra -Werror -MMD -fsanitize=address
+CFLAGS = 	-Wall -Wextra -Werror -MMD #-fsanitize=address
 RM = 		rm -f
 INCLUDE =	-I include/ -I libft/include/
 
