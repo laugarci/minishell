@@ -6,7 +6,7 @@
 /*   By: ffornes- <ffornes-@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/24 14:47:53 by ffornes-          #+#    #+#             */
-/*   Updated: 2023/09/05 15:07:48 by ffornes-         ###   ########.fr       */
+/*   Updated: 2023/09/07 12:28:07 by ffornes-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -113,12 +113,14 @@ static char	*expand_input(char *input, char *envp[])
 	return (str);
 }
 
-char	*expand_evals(char *input, char *envp[])
+char	*expand_evals(t_token *token, char *input, char *envp[])
 {
 	int		amount;
 	char	*aux;
 	char	*out;
 
+	if (!ft_strncmp(token->string, "$\0", 2) && token->type == TOKEN_APPEND)
+		return (ft_strdup(""));
 	amount = expansion_amount(input);
 	if (!amount)
 		return (input);
