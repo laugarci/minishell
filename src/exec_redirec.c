@@ -6,7 +6,7 @@
 /*   By: laugarci <laugarci@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/14 12:07:29 by laugarci          #+#    #+#             */
-/*   Updated: 2023/09/07 16:11:17 by laugarci         ###   ########.fr       */
+/*   Updated: 2023/09/07 17:15:12 by laugarci         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,7 +85,7 @@ int	exec_redirect(t_list *lst)
 	else if (is_type(lst, 4) == 1)
 		flags = flags | O_TRUNC;
 	fd = open(output, flags, 0666);
-	if (fd == -1)
+	if (fd < 0)
 		return (1);
 	if (dup2(fd, STDOUT_FILENO) == -1)
 		return (1);
