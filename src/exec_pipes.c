@@ -6,7 +6,7 @@
 /*   By: laugarci <laugarci@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/14 09:52:31 by laugarci          #+#    #+#             */
-/*   Updated: 2023/09/07 16:09:36 by laugarci         ###   ########.fr       */
+/*   Updated: 2023/09/07 17:14:38 by laugarci         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -131,6 +131,7 @@ void	exec_pipes(char **env, int num_pipes, char *command, t_list *lst)
 	i = 0;
 	while (command != NULL)
 	{
+		dup2(STDOUT_FILENO, 1); // UNCONDOMMED
 		pid = fork();
 		if (pid == -1)
 			exit(-1);
@@ -139,6 +140,7 @@ void	exec_pipes(char **env, int num_pipes, char *command, t_list *lst)
 //			print_tokens(lst);
 			exec_pipes_aux(fds, i, num_pipes, lst);
 			aux = save_tokens(command);
+			print_tokens(aux);
 			exec_commands(aux, env);
 			exit(1);
 		}
@@ -146,8 +148,6 @@ void	exec_pipes(char **env, int num_pipes, char *command, t_list *lst)
 			close_pipes_parent(fds, i, num_pipes);
 		command = ft_strtok(NULL, "|");
 		lst = move_to_pipe(lst); // FAKJFJAK
-		t_token *token = lst->content;
-		printf("aqui >> %s\n", token->string);
 		i++;
 	}
 	close_pipes(fds, num_pipes);
