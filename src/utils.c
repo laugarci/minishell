@@ -6,7 +6,7 @@
 /*   By: laugarci <laugarci@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/16 15:26:31 by laugarci          #+#    #+#             */
-/*   Updated: 2023/09/07 14:27:44 by laugarci         ###   ########.fr       */
+/*   Updated: 2023/09/07 16:27:45 by laugarci         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,8 @@
 #include "libft.h"
 #include "parser.h"
 #include "libft_bonus.h"
+
+#include <stdio.h>
 
 int	is_type(t_list *lst, int type)
 {
@@ -42,6 +44,9 @@ int	count_types(t_list *lst, int type)
 	while (tmp)
 	{
 		aux = tmp->content;
+		if (type != PIPE)
+			if (aux->type == PIPE)
+				break ;
 		if (aux->type == type)
 			c++;
 		tmp = tmp->next;

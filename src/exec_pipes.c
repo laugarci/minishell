@@ -6,7 +6,7 @@
 /*   By: laugarci <laugarci@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/14 09:52:31 by laugarci          #+#    #+#             */
-/*   Updated: 2023/09/07 14:04:11 by laugarci         ###   ########.fr       */
+/*   Updated: 2023/09/07 16:09:36 by laugarci         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,15 +91,31 @@ void	close_pipes_parent(int **fds, int i, int num_pipes)
 
 void	exec_pipes_aux(int **fds, int i, int num_pipes, t_list *lst)
 {
-	print_tokens(lst);
+	if (is_type(lst, 3) == 1 || is_type(lst, 4) == 1)
+		exec_redirect(lst);
 	if (i < num_pipes)
 		close_pipes_child(fds, i, num_pipes);
 	else
-	{
 		close_pipes_child(fds, i, num_pipes);
-		if (is_type(lst, 3) == 1 || is_type(lst, 4) == 1)
-			exec_redirect(lst);
+}
+
+static t_list	*move_to_pipe(t_list *lst)
+{
+	t_token	*token;
+	t_list	*aux;
+
+	aux = lst;
+	token = lst->content;
+	while (token->type != PIPE)
+	{
+		if (!lst->next)
+			break ;
+		lst = lst->next;
+		token = lst->content;
 	}
+	if (token->type == PIPE)
+		return (lst->next);
+	return (aux);
 }
 
 void	exec_pipes(char **env, int num_pipes, char *command, t_list *lst)
@@ -115,12 +131,12 @@ void	exec_pipes(char **env, int num_pipes, char *command, t_list *lst)
 	i = 0;
 	while (command != NULL)
 	{
-		printf("%s\n", command);
 		pid = fork();
 		if (pid == -1)
 			exit(-1);
 		else if (pid == 0)
-		{
+		{	
+//			print_tokens(lst);
 			exec_pipes_aux(fds, i, num_pipes, lst);
 			aux = save_tokens(command);
 			exec_commands(aux, env);
@@ -129,6 +145,9 @@ void	exec_pipes(char **env, int num_pipes, char *command, t_list *lst)
 		else
 			close_pipes_parent(fds, i, num_pipes);
 		command = ft_strtok(NULL, "|");
+		lst = move_to_pipe(lst); // FAKJFJAK
+		t_token *token = lst->content;
+		printf("aqui >> %s\n", token->string);
 		i++;
 	}
 	close_pipes(fds, num_pipes);
