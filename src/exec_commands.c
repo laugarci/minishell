@@ -6,7 +6,7 @@
 /*   By: laugarci <laugarci@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/04 14:04:45 by laugarci          #+#    #+#             */
-/*   Updated: 2023/09/06 17:50:27 by laugarci         ###   ########.fr       */
+/*   Updated: 2023/09/07 14:27:03 by laugarci         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,7 @@ int	exec_cd(t_list *lst)
 				return (1); // Error "No such file or directory"
 		}
 		else
-			return (1); // Error "Permission denied"
+			return (1); // Error: "Permission denied"
 	}
 	else
 		return (1); // Error no such file or directory
@@ -61,9 +61,9 @@ int	cmp_commands(t_list *lst, char **env)
 	if (ft_strncmp(token->string, "cd ", 3) == 0
 		|| ft_strncmp(token->string, "cd\0", 3) == 0)
 		exec_cd(lst);
-	else if (is_type(lst, 0) == 1 || is_type(lst, 3) || is_type(lst, 4))
+	else if (is_type(lst, 0) || is_type(lst, 3) || is_type(lst, 4))
 	{
-		num_pipes = count_chars(lst);
+		num_pipes = count_types(lst, PIPE);
 		exec_pipes(env, num_pipes, command, lst);
 	}
 	else if (is_type(lst, 2) == 1)
@@ -101,7 +101,7 @@ int	exec_commands_wf(t_list *lst, char **env, int flags)
 	args[flags + 1] = NULL;
 	token = lst->content;
 	if ((execve(args[0], args, env)) == -1)
-		return(-1); //szh: command not found
+		return(-1); // Error: szh: command not found
 	return (0);
 }
 
@@ -129,6 +129,8 @@ int	exec_commands(t_list *lst, char **env)
 
 	i = count_list(lst);
 	pid = fork();
+	if (pid == -1)
+		return (-1); // Error: fail pid
 	if (pid == 0)
 	{
 		if (i == 2)

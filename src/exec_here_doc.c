@@ -6,7 +6,7 @@
 /*   By: laugarci <laugarci@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/19 13:29:17 by laugarci          #+#    #+#             */
-/*   Updated: 2023/09/06 16:21:00 by laugarci         ###   ########.fr       */
+/*   Updated: 2023/09/07 12:57:39 by laugarci         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,24 +48,34 @@ int	here_doc(t_list *lst, char **env)
 	char	*input;
 	char	*command;
 	t_list	*tmp;
+	char	*text;
 
+	text = NULL;
 	del = find_del(lst);
 	while (42)
 	{	
 		input = readline("heredoc> ");
-		input = expand_evals(input, env);
 		if (ft_strncmp(input, del, ft_strlen(del) + 1) == 0)
 			break ;
+		text = ft_strjoin(text, input);
+		text = ft_strjoin(text, "\n");
+		input = expand_evals(input, env);
 	}
 	if (count_list(lst) > 2)
-	{
+	{	
 		aux = lst->content;
+		if (ft_strncmp(aux->string, "cat", 3) == 0)
+			printf("%s", text);
+		else
+		{
 		command = malloc(sizeof(char) * ft_strlen(aux->string) + 1);
 		if (!command)
 			return (-1);
 		ft_strlcpy(command, aux->string, ft_strlen(aux->string) + 1);
 		tmp = save_tokens(command);
+		write(1, text, ft_strlen(text));
 		exec_commands(tmp, env);
+		}
 	}
 	return (0);
 }
