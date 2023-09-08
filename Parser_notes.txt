@@ -4,14 +4,11 @@ ToDo:
 	
 	Expansions:
 	Program expansion of $? in order to show the error code
-	If finds a single char $ but it's token is TOKEN_APPEND,
-		must expand $ as if it was an unset variable so print
-		\n yay.
-	! and * are expandable and must behave as if
 
 	Errors:
 	Implement error handling, exit status and error messages
-	
+	Implement syntax errors for unclosed quotes
+
 	Signals:
 	Implement Ctrl C, Ctrl D, Ctrl \
 	
