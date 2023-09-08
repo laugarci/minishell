@@ -6,7 +6,7 @@
 /*   By: ffornes- <ffornes-@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/27 14:53:30 by ffornes-          #+#    #+#             */
-/*   Updated: 2023/09/08 19:38:24 by ffornes-         ###   ########.fr       */
+/*   Updated: 2023/09/08 19:41:11 by ffornes-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,9 +79,7 @@ static char	*rewrite_input(char *str, int i)
 		return (NULL);
 	ft_strlcpy(out, str, i + 1);
 	aux = out;
-	printf("OLD INPUT: %s\tSTR: %s\n", out, str);
 	out = allocate_new_input(out, str, i);
-	printf("NEW INPUT: %s\n", out);
 	free(aux);
 	if (!out)
 		return (NULL);
@@ -111,7 +109,6 @@ char	*clean_input(char *str)
 
 	tmp = first_pos_re(str); // If this is null syntax error near unexpected token 
 	i = needs_space(tmp);
-	printf("NEEDS SPACE IN POS: %d\n", i);
 	while (i)
 	{
 		if (i < 0) // Error management
@@ -124,9 +121,7 @@ char	*clean_input(char *str)
 				return (NULL); // mem error
 			free(aux);
 		}
-		printf("REWRITTEN INPUT: %s\n", tmp);
 		i = needs_space(tmp);
-		printf("NEEDS SPACE IN POS: %d\n", i);
 	}
 	return (tmp);
 }
