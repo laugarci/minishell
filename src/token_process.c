@@ -6,7 +6,7 @@
 /*   By: ffornes- <ffornes-@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/04 11:34:52 by ffornes-          #+#    #+#             */
-/*   Updated: 2023/09/08 19:54:19 by ffornes-         ###   ########.fr       */
+/*   Updated: 2023/09/08 19:55:37 by ffornes-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -117,7 +117,7 @@ static t_list	*set_type(t_list **token_list)
 	return (*token_list);
 }
 
-static int	syntax_error_check(t_list *lst)
+static int	syntax_error_check(t_list *lst) // ToDo: Check for unclosed quotes
 {
 	t_token *token;
 	int		type;
