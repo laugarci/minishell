@@ -1,11 +1,8 @@
-Token = [String: ls]	[Type: -1]	[Quotes: -1]
 Makefile
 Note.txt
 Parser_notes.txt
 README.md
 a
-b
-c
 include
 infoHD.txt
 libft
