@@ -6,7 +6,7 @@
 /*   By: ffornes- <ffornes-@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/09 16:48:00 by ffornes-          #+#    #+#             */
-/*   Updated: 2023/08/31 11:40:46 by ffornes-         ###   ########.fr       */
+/*   Updated: 2023/09/08 19:36:59 by ffornes-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,29 +15,19 @@
 
 static int	check_pipes(char *str, int i)
 {
-	if ((i > 0 && str[i - 1] == '|') || str[i + 1] == '|')
-		return (-1);
-	if (i > 0 && str[i - 1] != ' ')
+	if (i && str[i - 1] != ' ')
 		return (i);
-	else if (str[i + 1] != ' ')
-		return (i);
+	else if (str[i + 1] && str[i + 1] != ' ')
+		return (i + 1);
 	return (0);
 }
 
 static int	check_redirections(char *str, int i)
 {
-	if (str[i] == '<' && str[i + 1] == '<' && str[i + 2] == '<')
-		return (-2);
-	else if (str[i] == '>' && str[i + 1] == '>' && str[i + 2] == '>')
-		return (-2);
-	if (i > 0 && str[i] == '>' && str[i - 1] == '<')
-		return (-2);
 	if (i > 0 && str[i - 1] != ' ' && str[i - 1] != str[i])
 		return (i);
 	if (str[i + 1] != ' ' && str[i + 1] != str[i] && str[i + 1])
-		return (i);
-	else if (str[i + 1] != ' ' && str[i + 1] != str[i] && !str[i + 1])
-		return (-2);
+		return (i + 1);
 	return (0);
 }
 
@@ -58,7 +48,7 @@ int	needs_space(char *str)
 		if (!open)
 		{
 			if (str[i] == '|')
-				out = check_pipes(str, i);
+				out += check_pipes(str, i);
 			else if (str[i] == '<' | str[i] == '>')
 				out = check_redirections(str, i);
 		}
