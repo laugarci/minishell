@@ -6,7 +6,7 @@
 /*   By: laugarci <laugarci@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/14 09:52:31 by laugarci          #+#    #+#             */
-/*   Updated: 2023/09/07 17:14:38 by laugarci         ###   ########.fr       */
+/*   Updated: 2023/09/08 15:03:28 by laugarci         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,10 +91,8 @@ void	close_pipes_parent(int **fds, int i, int num_pipes)
 
 void	exec_pipes_aux(int **fds, int i, int num_pipes, t_list *lst)
 {
-	if (is_type(lst, 3) == 1 || is_type(lst, 4) == 1)
+	if (is_type(lst, 3) || is_type(lst, 4) == 1)
 		exec_redirect(lst);
-	if (i < num_pipes)
-		close_pipes_child(fds, i, num_pipes);
 	else
 		close_pipes_child(fds, i, num_pipes);
 }
@@ -118,35 +116,35 @@ static t_list	*move_to_pipe(t_list *lst)
 	return (aux);
 }
 
+
 void	exec_pipes(char **env, int num_pipes, char *command, t_list *lst)
 {
 	int		i;
 	pid_t	pid;
 	int		**fds;
 	t_list	*aux;
+	char	**cmd;
 
 	if (num_pipes)
 		fds = pipe_fds(num_pipes);
-	command = ft_strtok(command, "|");
+	cmd = ft_split(command, '|');
 	i = 0;
-	while (command != NULL)
+	while(cmd[i])
 	{
-		dup2(STDOUT_FILENO, 1); // UNCONDOMMED
+		cmd[i] = ft_strtrim(cmd[i], " ");
+//		dup2(STDOUT_FILENO, 1); // UNCONDOMMED
 		pid = fork();
 		if (pid == -1)
 			exit(-1);
 		else if (pid == 0)
 		{	
-//			print_tokens(lst);
 			exec_pipes_aux(fds, i, num_pipes, lst);
-			aux = save_tokens(command);
-			print_tokens(aux);
+			aux = save_tokens(cmd[i]);
 			exec_commands(aux, env);
 			exit(1);
 		}
 		else
 			close_pipes_parent(fds, i, num_pipes);
-		command = ft_strtok(NULL, "|");
 		lst = move_to_pipe(lst); // FAKJFJAK
 		i++;
 	}

@@ -6,7 +6,7 @@
 /*   By: laugarci <laugarci@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/16 15:26:31 by laugarci          #+#    #+#             */
-/*   Updated: 2023/09/07 16:27:45 by laugarci         ###   ########.fr       */
+/*   Updated: 2023/09/08 14:00:08 by laugarci         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -99,7 +99,10 @@ char	*ft_strtok(char *str, const char *del)
 	if (str != NULL)
 		token = str;
 	if (token == NULL || *token == '\0')
+	{
+		printf("entra\n");
 		return (NULL);
+	}
 	while (token[i])
 	{
 		j = 0;

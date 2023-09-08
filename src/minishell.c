@@ -6,7 +6,7 @@
 /*   By: laugarci <laugarci@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/05 14:01:37 by laugarci          #+#    #+#             */
-/*   Updated: 2023/09/05 14:32:33 by ffornes-         ###   ########.fr       */
+/*   Updated: 2023/09/08 14:57:53 by laugarci         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -105,7 +105,7 @@ static int	main_loop(char *prompt, t_data *data)
 			return (1);
 		if (!parse_input(input, data->envp, &list))
 		{
-			//print_tokens(list);
+		//	print_tokens(list);
 			cmp_commands(list, data->envp);
 			ft_lstclear(&list, (void *)free_token);
 		}

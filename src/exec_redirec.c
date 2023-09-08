@@ -6,7 +6,7 @@
 /*   By: laugarci <laugarci@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/14 12:07:29 by laugarci          #+#    #+#             */
-/*   Updated: 2023/09/07 17:15:12 by laugarci         ###   ########.fr       */
+/*   Updated: 2023/09/08 14:35:26 by laugarci         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,6 @@
 #include <sys/stat.h>
 #include <sys/wait.h>
 #include <fcntl.h>
-
 static void	open_fds(t_list *lst, int count)
 {
 	int	fd;
@@ -29,7 +28,7 @@ static void	open_fds(t_list *lst, int count)
 	int	i;
 
 	i = 0;
-	while (i < count)
+	while (i <= count)
 	{
 		token = lst->content;
 		if (token->type == 3)
@@ -71,14 +70,11 @@ int	exec_redirect(t_list *lst)
 	int		flags;
 	int		redirect;
 
-//	print_tokens(lst);
 	redirect = count_types(lst, 3);
 	redirect += count_types(lst, 4);
-	printf("Amount of redirects: %d\n", redirect);
 	if (redirect > 1)
 		open_fds(lst, redirect);
 	output = find_output(lst);
-	printf("Output: %s\n", output);
 	flags = O_WRONLY | O_CREAT;
 	if (is_type(lst, 3) == 1)
 		flags = flags | O_APPEND;
