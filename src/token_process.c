@@ -6,13 +6,14 @@
 /*   By: ffornes- <ffornes-@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/04 11:34:52 by ffornes-          #+#    #+#             */
-/*   Updated: 2023/09/07 12:27:32 by ffornes-         ###   ########.fr       */
+/*   Updated: 2023/09/08 19:54:19 by ffornes-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "parser.h"
 #include "libft.h"
 #include <stdlib.h>
+#include <stdio.h>
 
 static int	get_token_type(char	*str)
 {
@@ -116,12 +117,49 @@ static t_list	*set_type(t_list **token_list)
 	return (*token_list);
 }
 
+static int	syntax_error_check(t_list *lst)
+{
+	t_token *token;
+	int		type;
+	char	*error_message;
+
+	token = lst->content;
+	error_message = "minishell: syntax error near unexpected token `";
+	if (token->type == PIPE)
+	{
+		printf("%s%s\'\n", error_message, token->string);
+		return (1);
+	}
+	while (42)
+	{
+		type = token->type;
+		lst = lst->next;
+		token = lst->content;
+		if (!token->string || (type == 4 && !token->type))
+		{
+			if (type >= 0 && type < 5)
+				printf("%snewline\'\n", error_message);
+			else if (type == 0)
+				printf("%s|\'\n", error_message); 
+			return (1);
+		}
+		else if (type > 0 && type < 5 && token->type >= 0 && token->type < 5)
+		{
+			printf("%s%s\'\n", error_message, token->string);
+			return (1);
+		}
+	}
+	return (0);
+}
+
 void	process_tokens(t_list **token_list, char *envp[])
 {
 	t_list	*tmp_lst;
 	t_token	*aux;
 
 	tmp_lst = set_type(token_list);
+	if (syntax_error_check(tmp_lst))
+		return ;
 	tmp_lst = process_subtokens(&tmp_lst);
 	aux = tmp_lst->content;
 	while (aux->string)
