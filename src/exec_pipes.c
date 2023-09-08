@@ -6,7 +6,7 @@
 /*   By: laugarci <laugarci@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/14 09:52:31 by laugarci          #+#    #+#             */
-/*   Updated: 2023/09/08 15:03:28 by laugarci         ###   ########.fr       */
+/*   Updated: 2023/09/08 18:10:55 by laugarci         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -139,7 +139,8 @@ void	exec_pipes(char **env, int num_pipes, char *command, t_list *lst)
 		else if (pid == 0)
 		{	
 			exec_pipes_aux(fds, i, num_pipes, lst);
-			aux = save_tokens(cmd[i]);
+//			aux = save_tokens(cmd[i]);
+			aux = process_list(lst, i);
 			exec_commands(aux, env);
 			exit(1);
 		}

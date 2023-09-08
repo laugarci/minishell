@@ -6,7 +6,7 @@
 /*   By: ffornes- <ffornes-@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/27 11:32:21 by ffornes-          #+#    #+#             */
-/*   Updated: 2023/09/07 17:15:05 by laugarci         ###   ########.fr       */
+/*   Updated: 2023/09/08 18:13:56 by laugarci         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,5 +59,7 @@ int			exec_pwd();
 int			exec_echo(t_list *lst);
 
 int			builtin_export(char *eval, t_data *data);
+
+t_list		*process_list(t_list *lst, int i);
 
 #endif

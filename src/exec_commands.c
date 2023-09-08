@@ -6,7 +6,7 @@
 /*   By: laugarci <laugarci@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/04 14:04:45 by laugarci          #+#    #+#             */
-/*   Updated: 2023/09/08 14:59:16 by laugarci         ###   ########.fr       */
+/*   Updated: 2023/09/08 18:11:31 by laugarci         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -121,12 +121,38 @@ int	exec_commands_nf(t_list *lst, char **env)
 	return (0);
 }
 
+char	*cpy_list(t_list *lst)
+{
+	t_token *token;
+	char	*cmd;
+
+	token = lst->content;
+	while(lst)
+	{
+		if (token->type != -1)
+			break;
+		cmd = ft_strjoin(cmd, token->string);
+		lst = lst->next;
+		token = lst->content;
+	}
+	printf("cmd %s\n", cmd);
+	return (cmd);
+}
+
 int	exec_commands(t_list *lst, char **env)
 {
 	pid_t	pid;
 	int		i;
 	int		status;
-	
+	char	*aux;
+	t_list	*new;
+	env = NULL; //QUITAR ESTO
+
+	aux = cpy_list(lst);
+	new = save_tokens(aux);
+	printf("----NEW TOKENS---\n");
+	print_tokens(new);
+	printf("------------------\n");
 	i = count_list(lst);
 	pid = fork();
 	if (pid == -1)
@@ -134,9 +160,15 @@ int	exec_commands(t_list *lst, char **env)
 	if (pid == 0)
 	{
 		if (i == 2)
-			exec_commands_nf(lst, env);
+		{
+		//	exec_commands_nf(lst, env);
+			printf("");
+			}
 		else
-			exec_commands_wf(lst, env, (i - 1));
+		{
+			printf("");
+		//	exec_commands_wf(lst, env, (i - 1));
+		}
 		exit(0);
 	}
 	else
