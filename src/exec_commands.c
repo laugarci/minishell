@@ -6,7 +6,7 @@
 /*   By: laugarci <laugarci@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/04 14:04:45 by laugarci          #+#    #+#             */
-/*   Updated: 2023/09/08 18:11:31 by laugarci         ###   ########.fr       */
+/*   Updated: 2023/09/12 18:12:44 by laugarci         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -126,6 +126,7 @@ char	*cpy_list(t_list *lst)
 	t_token *token;
 	char	*cmd;
 
+	cmd = NULL;
 	token = lst->content;
 	while(lst)
 	{
@@ -135,7 +136,6 @@ char	*cpy_list(t_list *lst)
 		lst = lst->next;
 		token = lst->content;
 	}
-	printf("cmd %s\n", cmd);
 	return (cmd);
 }
 
@@ -145,14 +145,13 @@ int	exec_commands(t_list *lst, char **env)
 	int		i;
 	int		status;
 	char	*aux;
-	t_list	*new;
-	env = NULL; //QUITAR ESTO
+//	t_list	*new;
 
-	aux = cpy_list(lst);
-	new = save_tokens(aux);
-	printf("----NEW TOKENS---\n");
-	print_tokens(new);
-	printf("------------------\n");
+	if (is_type(lst, 3) || is_type(lst, 4))
+	{
+		aux = cpy_list(lst);
+		lst = save_tokens(aux);
+	}
 	i = count_list(lst);
 	pid = fork();
 	if (pid == -1)
@@ -160,15 +159,9 @@ int	exec_commands(t_list *lst, char **env)
 	if (pid == 0)
 	{
 		if (i == 2)
-		{
-		//	exec_commands_nf(lst, env);
-			printf("");
-			}
+			exec_commands_nf(lst, env);
 		else
-		{
-			printf("");
-		//	exec_commands_wf(lst, env, (i - 1));
-		}
+			exec_commands_wf(lst, env, (i - 1));
 		exit(0);
 	}
 	else

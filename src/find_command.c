@@ -6,7 +6,7 @@
 /*   By: laugarci <laugarci@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/17 10:09:20 by laugarci          #+#    #+#             */
-/*   Updated: 2023/09/08 15:02:20 by laugarci         ###   ########.fr       */
+/*   Updated: 2023/09/12 18:28:40 by laugarci         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,8 +33,8 @@ char	*find_command(t_list *lst)
 	while (current->next)
 	{
 		token = current->content;
-		if ((token->type == 3 || token->type == 4))
-			break ;
+	//	if ((token->type == 3 || token->type == 4))
+	//		break ;
 		if (i > 0)
 			result[i++] = ' ';
 		ft_strlcpy(result + i, token->string, total_length);

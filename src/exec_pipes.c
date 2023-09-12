@@ -6,7 +6,7 @@
 /*   By: laugarci <laugarci@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/14 09:52:31 by laugarci          #+#    #+#             */
-/*   Updated: 2023/09/08 18:10:55 by laugarci         ###   ########.fr       */
+/*   Updated: 2023/09/12 18:49:21 by laugarci         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,7 +91,8 @@ void	close_pipes_parent(int **fds, int i, int num_pipes)
 
 void	exec_pipes_aux(int **fds, int i, int num_pipes, t_list *lst)
 {
-	if (is_type(lst, 3) || is_type(lst, 4) == 1)
+	printf("%d\n", i);
+	if (is_type(lst, 3) ||	is_type(lst, 4) == 1)
 		exec_redirect(lst);
 	else
 		close_pipes_child(fds, i, num_pipes);
@@ -116,6 +117,19 @@ static t_list	*move_to_pipe(t_list *lst)
 	return (aux);
 }
 
+int		ft_have_char(char *str, char c)
+{
+	int i;
+
+	i = 0;
+	while(str[i])
+	{
+		if (str[i] == c)
+			return (1);
+		i++;
+	}
+	return (0);
+}
 
 void	exec_pipes(char **env, int num_pipes, char *command, t_list *lst)
 {
@@ -139,13 +153,17 @@ void	exec_pipes(char **env, int num_pipes, char *command, t_list *lst)
 		else if (pid == 0)
 		{	
 			exec_pipes_aux(fds, i, num_pipes, lst);
-//			aux = save_tokens(cmd[i]);
-			aux = process_list(lst, i);
+			printf("cmd[i] >> %s\n", cmd[i]);
+			aux = save_tokens(cmd[i]);
+	//		aux = process_list(lst, i);
 			exec_commands(aux, env);
 			exit(1);
 		}
 		else
+		{
+			printf("cmd[i] %s\n", cmd[i]);
 			close_pipes_parent(fds, i, num_pipes);
+		}
 		lst = move_to_pipe(lst); // FAKJFJAK
 		i++;
 	}
