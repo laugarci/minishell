@@ -6,7 +6,7 @@
 /*   By: ffornes- <ffornes-@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/04 11:45:48 by ffornes-          #+#    #+#             */
-/*   Updated: 2023/09/05 16:35:30 by ffornes-         ###   ########.fr       */
+/*   Updated: 2023/09/13 20:37:14 by ffornes-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,13 @@
 #include <stdlib.h>
 #include <stdio.h>
 
-static void	set_strings(char *str, char **dst)
+static int	free_double_and_return(char **src, int error)
+{
+	free_double((void **)src);
+	return (error);
+}
+
+static int	set_strings(char *str, char **dst)
 {
 	int	state;
 	int	i;
@@ -34,13 +40,14 @@ static void	set_strings(char *str, char **dst)
 		{
 			dst[j] = ft_calloc(sizeof(char), (i + 2));
 			if (!dst[j])
-				free_double((void **)dst);
+				return (free_double_and_return(dst, 12));
 			ft_strlcpy(dst[j++], str, (i + 2));
 			str = str + i + 1;
 			i = -1;
 		}
 		i++;
 	}
+	return (0);
 }
 
 static t_list	*add_subtokens(t_list **list, char **strings)
@@ -68,7 +75,7 @@ static t_list	*add_subtokens(t_list **list, char **strings)
 	return (*list);
 }
 
-static t_list	*generate_subtokens(t_list **list, int count)
+static int	generate_subtokens(t_list **list, int count)
 {
 	t_list	*new_list;
 	t_list	*aux;
@@ -78,23 +85,24 @@ static t_list	*generate_subtokens(t_list **list, int count)
 	new_list = *list;
 	strings = ft_calloc(sizeof(char *), (count + 1));
 	if (!strings)
-		printf("Putada\n"); // Error: Not enough memory
+		return (12);
 	token = new_list->content;
-	set_strings(token->string, strings); // STRINGS ARE SUCCESSFULLY SAVED
-	if (!strings)
-		printf("Otra putada\n"); // Error: Not enough memory
+	if (set_strings(token->string, strings))
+		return (12);
 	aux = new_list->next;
 	new_list = add_subtokens(&new_list, strings);
 	free(strings);
 	ft_lstadd_back(&new_list, aux);
-	return (new_list);
+	*list = new_list;
+	return (0);
 }
 
-t_list	*process_subtokens(t_list **token_list)
+int	process_subtokens(t_list **token_list)
 {
 	t_list	*aux;
 	t_token	*token;
 	int		subtoken_count;
+	int		error;
 
 	aux = *token_list;
 	while (42)
@@ -104,12 +112,14 @@ t_list	*process_subtokens(t_list **token_list)
 		{
 			subtoken_count = count_subtokens(token->string);
 			if (subtoken_count)
-				aux = generate_subtokens(&aux, subtoken_count);
+				error = generate_subtokens(&aux, subtoken_count);
+			if (error)
+				return (error);
 		}
 		aux = aux->next;
 		token = aux->content;
 		if (!token->string)
 			break ;
 	}
-	return (*token_list);
+	return (0);
 }
