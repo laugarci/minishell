@@ -6,7 +6,7 @@
 /*   By: ffornes- <ffornes-@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/27 11:32:21 by ffornes-          #+#    #+#             */
-/*   Updated: 2023/09/08 18:13:56 by laugarci         ###   ########.fr       */
+/*   Updated: 2023/09/13 18:25:02 by laugarci         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,7 @@ int			is_type(t_list *lst, int type);
 
 int			count_types(t_list *lst, int type);
 
-void		exec_pipes(char **env, int num_pipes, char *command, t_list *lst);
+void		exec_pipes(char **env, int num_pipes, t_list *lst);
 
 int			count_args(t_list *lst);
 
@@ -45,8 +45,6 @@ char		*find_command(t_list *lst);
 char		*find_output(t_list *lst);
 
 int			exec_redirect(t_list *lst);
-
-char		*ft_strtok(char *str, const char *del);
 
 int			count_list(t_list *lst);
 

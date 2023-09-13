@@ -6,7 +6,7 @@
 /*   By: laugarci <laugarci@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/17 10:09:20 by laugarci          #+#    #+#             */
-/*   Updated: 2023/09/12 18:28:40 by laugarci         ###   ########.fr       */
+/*   Updated: 2023/09/13 18:34:22 by laugarci         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,8 @@
 #include "libft.h"
 #include "parser.h"
 #include "libft_bonus.h"
+
+#include <stdio.h>
 
 char	*find_command(t_list *lst)
 {
@@ -33,13 +35,14 @@ char	*find_command(t_list *lst)
 	while (current->next)
 	{
 		token = current->content;
-	//	if ((token->type == 3 || token->type == 4))
-	//		break ;
+		if ((token->type == 3 || token->type == 4))
+			break ;
 		if (i > 0)
 			result[i++] = ' ';
 		ft_strlcpy(result + i, token->string, total_length);
 		i += ft_strlen(token->string);
-		current = current->next;
+		if (current->next)
+			current = current->next;
 	}
 	result[total_length] = '\0';
 	return (result);
@@ -53,6 +56,7 @@ char	*find_output(t_list *lst)
 
 	tmp = lst;
 	token = tmp->content;
+	output = NULL;
 	while (tmp->next)
 	{
 		if (token->type == 3 || token->type == 4)
@@ -61,6 +65,7 @@ char	*find_output(t_list *lst)
 			if (!output)
 				return (NULL);
 			ft_strlcpy(output, token->string, ft_strlen(token->string) + 1);
+			break ;
 		}
 		tmp = tmp->next;
 		token = tmp->content;

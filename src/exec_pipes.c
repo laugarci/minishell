@@ -6,7 +6,7 @@
 /*   By: laugarci <laugarci@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/14 09:52:31 by laugarci          #+#    #+#             */
-/*   Updated: 2023/09/12 18:49:21 by laugarci         ###   ########.fr       */
+/*   Updated: 2023/09/13 18:41:45 by laugarci         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,8 +91,7 @@ void	close_pipes_parent(int **fds, int i, int num_pipes)
 
 void	exec_pipes_aux(int **fds, int i, int num_pipes, t_list *lst)
 {
-	printf("%d\n", i);
-	if (is_type(lst, 3) ||	is_type(lst, 4) == 1)
+	if (is_type(lst, 3) ||	is_type(lst, 4))
 		exec_redirect(lst);
 	else
 		close_pipes_child(fds, i, num_pipes);
@@ -117,54 +116,29 @@ static t_list	*move_to_pipe(t_list *lst)
 	return (aux);
 }
 
-int		ft_have_char(char *str, char c)
-{
-	int i;
-
-	i = 0;
-	while(str[i])
-	{
-		if (str[i] == c)
-			return (1);
-		i++;
-	}
-	return (0);
-}
-
-void	exec_pipes(char **env, int num_pipes, char *command, t_list *lst)
+void	exec_pipes(char **env, int num_pipes, t_list *lst)
 {
 	int		i;
 	pid_t	pid;
 	int		**fds;
-	t_list	*aux;
-	char	**cmd;
-
+	
 	if (num_pipes)
 		fds = pipe_fds(num_pipes);
-	cmd = ft_split(command, '|');
 	i = 0;
-	while(cmd[i])
+	while(i < (num_pipes + 1))
 	{
-		cmd[i] = ft_strtrim(cmd[i], " ");
-//		dup2(STDOUT_FILENO, 1); // UNCONDOMMED
 		pid = fork();
 		if (pid == -1)
 			exit(-1);
 		else if (pid == 0)
 		{	
 			exec_pipes_aux(fds, i, num_pipes, lst);
-			printf("cmd[i] >> %s\n", cmd[i]);
-			aux = save_tokens(cmd[i]);
-	//		aux = process_list(lst, i);
-			exec_commands(aux, env);
+			exec_commands(lst, env); 
 			exit(1);
 		}
 		else
-		{
-			printf("cmd[i] %s\n", cmd[i]);
 			close_pipes_parent(fds, i, num_pipes);
-		}
-		lst = move_to_pipe(lst); // FAKJFJAK
+		lst = move_to_pipe(lst);
 		i++;
 	}
 	close_pipes(fds, num_pipes);
