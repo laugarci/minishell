@@ -6,11 +6,12 @@
 /*   By: laugarci <laugarci@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/05 14:01:37 by laugarci          #+#    #+#             */
-/*   Updated: 2023/09/05 16:19:28 by ffornes-         ###   ########.fr       */
+/*   Updated: 2023/09/13 20:58:05 by ffornes-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <stdio.h>
+#include <sys/errno.h>
 #include <readline/readline.h>
 #include <readline/history.h>
 #include <stdlib.h>
@@ -47,6 +48,8 @@ void	print_tokens(t_list *lst)
 		else
 			printf("-1]");
 		printf("\t[Quotes: %d]\n", token->quotes);
+		if (!lst->next)
+			break ;
 		lst = lst->next;
 		token = lst->content;
 		if (!token->string)
@@ -64,7 +67,7 @@ static int	set_env(t_data *data, char *env[])
 		i++;
 	data->envp = malloc(sizeof(char *) * (i + 1));
 	if (!data->envp)
-		return (1);
+		return (12);
 	i = 0;
 	while (env[i])
 	{
@@ -72,7 +75,7 @@ static int	set_env(t_data *data, char *env[])
 		if (!data->envp[i++])
 		{
 			free_double((void **)data->envp);
-			return (1);
+			return (12);
 		}
 	}
 	data->envp[i] = NULL;
@@ -89,7 +92,7 @@ static int	exit_check(char *input)
 	return (0);
 }
 
-static int	main_loop(char *prompt, t_data *data)
+static int	main_loop(char *prompt, t_data *data, int *exit_status)
 {
 	char	*input;
 	t_list	*list;
@@ -102,12 +105,14 @@ static int	main_loop(char *prompt, t_data *data)
 		add_history(input);
 		if (exit_check(input))
 			return (1);
-		if (!parse_input(input, data->envp, &list))
+		*exit_status = parse_input(input, data->envp, &list, exit_status);
+		if (*exit_status == 0)
 		{
 			//print_tokens(list);
-			cmp_commands(list, data->envp);
+			//cmp_commands(list, data->envp);
 			ft_lstclear(&list, (void *)free_token);
 		}
+		printf("EXIT STATUS: %d\n", *exit_status);
 	}
 	free(input);
 	return (0);
@@ -116,17 +121,19 @@ static int	main_loop(char *prompt, t_data *data)
 int	main(int argc, char *argv[], char *envp[])
 {
 	char	*prompt;
+	int		exit_status;
 	t_data	data;
 
+	exit_status = 0;
 	if (argc > 1)
 		return (1);
-	if (set_env(&data, envp)) // Error: Not enough memory
-		return (1);
+	if (set_env(&data, envp))
+		return (12);
 	prompt = ft_strjoin((argv[0] + 2), "$ ");
 	if (!prompt)
-		return (1);
+		return (12);
 	while (42)
-		if (main_loop(prompt, &data))
+		if (main_loop(prompt, &data, &exit_status))
 			break ;
 	free_double((void **)data.envp);
 	free(prompt);
