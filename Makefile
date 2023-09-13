@@ -6,7 +6,7 @@
 #    By: ffornes- <ffornes-@student.42barcel>       +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/06/26 15:00:09 by ffornes-          #+#    #+#              #
-#    Updated: 2023/09/07 12:29:16 by ffornes-         ###   ########.fr        #
+#    Updated: 2023/09/13 16:56:49 by ffornes-         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -23,6 +23,7 @@ SRC_FILES = minishell.c \
 			token_process.c token_process_rm.c \
 			subtoken_process.c subtoken_count.c subtoken_join.c \
 			builtin_export.c \
+			syntax_error.c
 
 OBJ_DIR = objs/
 OBJ_FILES = $(SRC_FILES:.c=.o)
