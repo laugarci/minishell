@@ -6,7 +6,7 @@
 /*   By: ffornes- <ffornes-@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/27 12:29:42 by ffornes-          #+#    #+#             */
-/*   Updated: 2023/09/13 18:54:29 by ffornes-         ###   ########.fr       */
+/*   Updated: 2023/09/13 19:58:28 by ffornes-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,12 @@
 #include "libft_bonus.h"
 #include "minishell.h"
 #include "parser.h"
+
+static int	free_list_and_return(t_list *lst, int exit_status)
+{
+	ft_lstclear(&lst, (void *)free_token);
+	return (exit_status);
+}
 
 static int	is_empty(char *input)
 {
@@ -31,10 +37,11 @@ static int	is_empty(char *input)
 	return (1);
 }
 
-int	parse_input(char *str, char *envp[], t_list **token_list)
+int	parse_input(char *str, char *envp[], t_list **token_list, int *exit_status)
 {
 	t_list	*lst;
 	int		flag;
+	int		error;
 
 	if (is_empty(str))
 		return (1);
@@ -50,10 +57,10 @@ int	parse_input(char *str, char *envp[], t_list **token_list)
 	if (flag)
 		free(str);
 	if (!lst)
-		return (1);
-	process_tokens(&lst, envp);
-	if (!lst->content)
-		return (1);
+		return (12);
+	error = process_tokens(&lst, envp, exit_status);
+	if (error)
+		return (free_list_and_return(lst, error));
 	*token_list = lst;
 	return (0);
 }
