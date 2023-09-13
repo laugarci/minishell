@@ -6,7 +6,7 @@
 /*   By: ffornes- <ffornes-@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/31 12:35:07 by ffornes-          #+#    #+#             */
-/*   Updated: 2023/09/05 16:20:25 by ffornes-         ###   ########.fr       */
+/*   Updated: 2023/09/13 19:46:35 by ffornes-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,7 +70,7 @@ static char	**save_new_input(char *input, int amount)
 	while (i < amount)
 	{
 		out[i] = get_string(input, (i + 1), -1, 0);
-		if (!out)
+		if (!out[i])
 		{
 			free_double((void **)out);
 			return (NULL);
@@ -89,6 +89,11 @@ static char	**charp_to_charpp(char *input)
 	if (!out)
 		return (NULL);
 	out[0] = ft_strdup(input);
+	if (!out[0])
+	{
+		free(out);
+		return (NULL);
+	}
 	out[1] = NULL;
 	return (out);
 }
