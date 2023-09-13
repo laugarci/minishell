@@ -6,7 +6,7 @@
 /*   By: ffornes- <ffornes-@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/13 16:56:30 by ffornes-          #+#    #+#             */
-/*   Updated: 2023/09/13 17:50:18 by ffornes-         ###   ########.fr       */
+/*   Updated: 2023/09/13 20:18:36 by ffornes-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ static int	syntax_error(char *error_message)
 	print_error("syntax error near unexpected token `");
 	ft_putstr_fd(error_message, 2);
 	ft_putstr_fd("\'\n", 2);
-	return (1);
+	return (258);
 }
 
 static int	check_tokens(t_token *token, int type)
@@ -60,23 +60,21 @@ int	syntax_error_check(t_list *lst)
 	int		error;
 	int		state;
 
+	print_tokens(lst);
 	token = lst->content;
 	if (token->type == PIPE)
 		return (syntax_error(token->string));
 	state = 0;
-	while (42)
+	error = 0;
+	while (token->string && !error)
 	{
+		if (ft_strchr(token->string, '\'') || ft_strchr(token->string, '\"'))
+			error = check_quotes(token->string);
 		type = token->type;
 		lst = lst->next;
 		token = lst->content;
-		error = check_tokens(token, type);
-		if (!token->string)
-			break ;
-		if (!error && (ft_strchr(token->string, '\'')
-				|| ft_strchr(token->string, '\"')))
-			error = check_quotes(token->string);
-		if (error)
-			return (error);
-	}
-	return (0);
+		if (!error)
+			error = check_tokens(token, type);
+		}
+	return (error);
 }
