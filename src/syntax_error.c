@@ -6,7 +6,7 @@
 /*   By: ffornes- <ffornes-@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/13 16:56:30 by ffornes-          #+#    #+#             */
-/*   Updated: 2023/09/13 20:18:36 by ffornes-         ###   ########.fr       */
+/*   Updated: 2023/09/13 20:25:21 by ffornes-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,7 +60,6 @@ int	syntax_error_check(t_list *lst)
 	int		error;
 	int		state;
 
-	print_tokens(lst);
 	token = lst->content;
 	if (token->type == PIPE)
 		return (syntax_error(token->string));
