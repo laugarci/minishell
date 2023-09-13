@@ -6,7 +6,7 @@
 /*   By: ffornes- <ffornes-@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/04 11:34:52 by ffornes-          #+#    #+#             */
-/*   Updated: 2023/09/13 21:06:20 by ffornes-         ###   ########.fr       */
+/*   Updated: 2023/09/13 21:10:01 by ffornes-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,7 +93,7 @@ int	process_tokens(t_list **token_list, char *envp[], int *exit_status)
 		aux = tmp_lst->content;
 	}
 
-	*token_list = join_subtoken(token_list);
+	*token_list = join_subtoken(token_list); // Left here
 	clean_redirects(token_list);
 	*token_list = remove_duplicates(*token_list);
 	print_tokens(*token_list);
