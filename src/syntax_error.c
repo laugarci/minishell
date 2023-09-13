@@ -6,20 +6,20 @@
 /*   By: ffornes- <ffornes-@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/13 16:56:30 by ffornes-          #+#    #+#             */
-/*   Updated: 2023/09/13 17:13:46 by ffornes-         ###   ########.fr       */
+/*   Updated: 2023/09/13 17:50:18 by ffornes-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "parser.h"
+#include "minishell.h"
 #include "libft.h"
 #include <stdio.h>
 
-static int	print_error(char *error_message)
+static int	syntax_error(char *error_message)
 {
-	char	*base;
-
-	base = "minishell: syntax error near unexpected token `";
-	printf("%s%s\'\n", base, error_message);
+	print_error("syntax error near unexpected token `");
+	ft_putstr_fd(error_message, 2);
+	ft_putstr_fd("\'\n", 2);
 	return (1);
 }
 
@@ -28,12 +28,12 @@ static int	check_tokens(t_token *token, int type)
 	if (!token->string || (type == 4 && !token->type))
 	{
 		if (type >= 0 && type < 5)
-			return (print_error("newline"));
+			return (syntax_error("newline"));
 		else if (type == 0)
-			return (print_error("|"));
+			return (syntax_error("|"));
 	}
 	else if (type > 0 && type < 5 && token->type >= 0 && token->type < 5)
-		return (print_error(token->string));
+		return (syntax_error(token->string));
 	return (0);
 }
 
@@ -47,9 +47,9 @@ static int	check_quotes(char *str)
 	while (str[i])
 		state = quote_state(state, str[i++]);
 	if (state == 1)
-		return (print_error("\'"));
+		return (syntax_error("\'"));
 	else if (state == 2)
-		return (print_error("\""));
+		return (syntax_error("\""));
 	return (0);
 }
 
@@ -62,7 +62,7 @@ int	syntax_error_check(t_list *lst)
 
 	token = lst->content;
 	if (token->type == PIPE)
-		return (print_error(token->string));
+		return (syntax_error(token->string));
 	state = 0;
 	while (42)
 	{
