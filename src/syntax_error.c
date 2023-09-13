@@ -6,7 +6,7 @@
 /*   By: ffornes- <ffornes-@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/13 16:56:30 by ffornes-          #+#    #+#             */
-/*   Updated: 2023/09/13 20:25:21 by ffornes-         ###   ########.fr       */
+/*   Updated: 2023/09/13 21:08:29 by ffornes-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,6 +74,6 @@ int	syntax_error_check(t_list *lst)
 		token = lst->content;
 		if (!error)
 			error = check_tokens(token, type);
-		}
+	}
 	return (error);
 }
