@@ -6,7 +6,7 @@
 /*   By: ffornes- <ffornes-@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/04 11:34:52 by ffornes-          #+#    #+#             */
-/*   Updated: 2023/09/08 19:55:37 by ffornes-         ###   ########.fr       */
+/*   Updated: 2023/09/13 17:05:17 by ffornes-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -115,41 +115,6 @@ static t_list	*set_type(t_list **token_list)
 		aux = tmp_lst->content;
 	}
 	return (*token_list);
-}
-
-static int	syntax_error_check(t_list *lst) // ToDo: Check for unclosed quotes
-{
-	t_token *token;
-	int		type;
-	char	*error_message;
-
-	token = lst->content;
-	error_message = "minishell: syntax error near unexpected token `";
-	if (token->type == PIPE)
-	{
-		printf("%s%s\'\n", error_message, token->string);
-		return (1);
-	}
-	while (42)
-	{
-		type = token->type;
-		lst = lst->next;
-		token = lst->content;
-		if (!token->string || (type == 4 && !token->type))
-		{
-			if (type >= 0 && type < 5)
-				printf("%snewline\'\n", error_message);
-			else if (type == 0)
-				printf("%s|\'\n", error_message); 
-			return (1);
-		}
-		else if (type > 0 && type < 5 && token->type >= 0 && token->type < 5)
-		{
-			printf("%s%s\'\n", error_message, token->string);
-			return (1);
-		}
-	}
-	return (0);
 }
 
 void	process_tokens(t_list **token_list, char *envp[])
