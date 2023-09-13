@@ -6,7 +6,7 @@
 /*   By: ffornes- <ffornes-@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/04 11:45:48 by ffornes-          #+#    #+#             */
-/*   Updated: 2023/09/13 20:37:14 by ffornes-         ###   ########.fr       */
+/*   Updated: 2023/09/13 20:48:55 by ffornes-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -102,7 +102,6 @@ int	process_subtokens(t_list **token_list)
 	t_list	*aux;
 	t_token	*token;
 	int		subtoken_count;
-	int		error;
 
 	aux = *token_list;
 	while (42)
@@ -112,9 +111,8 @@ int	process_subtokens(t_list **token_list)
 		{
 			subtoken_count = count_subtokens(token->string);
 			if (subtoken_count)
-				error = generate_subtokens(&aux, subtoken_count);
-			if (error)
-				return (error);
+				if (generate_subtokens(&aux, subtoken_count))
+					return (12);
 		}
 		aux = aux->next;
 		token = aux->content;
