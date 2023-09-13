@@ -6,7 +6,7 @@
 /*   By: ffornes- <ffornes-@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/27 11:32:21 by ffornes-          #+#    #+#             */
-/*   Updated: 2023/09/05 16:17:11 by ffornes-         ###   ########.fr       */
+/*   Updated: 2023/09/13 17:42:11 by ffornes-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,5 +57,7 @@ int			exec_pwd(void);
 int			exec_echo(t_list *lst);
 
 int			builtin_export(char *eval, t_data *data);
+
+void		print_error(char *error_message);
 
 #endif
