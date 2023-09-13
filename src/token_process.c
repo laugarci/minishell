@@ -6,7 +6,7 @@
 /*   By: ffornes- <ffornes-@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/04 11:34:52 by ffornes-          #+#    #+#             */
-/*   Updated: 2023/09/13 17:05:17 by ffornes-         ###   ########.fr       */
+/*   Updated: 2023/09/13 20:03:31 by ffornes-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -117,14 +117,14 @@ static t_list	*set_type(t_list **token_list)
 	return (*token_list);
 }
 
-void	process_tokens(t_list **token_list, char *envp[])
+int	process_tokens(t_list **token_list, char *envp[], int *exit_status)
 {
 	t_list	*tmp_lst;
 	t_token	*aux;
 
 	tmp_lst = set_type(token_list);
 	if (syntax_error_check(tmp_lst))
-		return ;
+		return (258);
 	tmp_lst = process_subtokens(&tmp_lst);
 	aux = tmp_lst->content;
 	while (aux->string)
@@ -141,4 +141,6 @@ void	process_tokens(t_list **token_list, char *envp[])
 	*token_list = join_subtoken(token_list);
 	clean_redirects(token_list);
 	*token_list = remove_duplicates(*token_list);
+	return (0);
+	*exit_status = 0; // DBEUGEUBAEJFAK
 }
