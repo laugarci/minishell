@@ -6,7 +6,7 @@
 /*   By: ffornes- <ffornes-@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/24 17:09:41 by ffornes-          #+#    #+#             */
-/*   Updated: 2023/09/05 16:19:46 by ffornes-         ###   ########.fr       */
+/*   Updated: 2023/09/13 20:53:16 by ffornes-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,21 +56,26 @@ static char	*fill_output(char *out, t_token *token, int i, int j)
 	return (out);
 }
 
-t_token	*remove_quotes(t_token *token)
+int	remove_quotes(t_token **tkn)
 {
 	char	*str;
 	char	*out;
 	char	*aux;
+	t_token	*token;
 
+	token = *tkn;
 	str = token->string;
 	if (!ft_strchr(str, '\'') && !ft_strchr(str, '\"'))
-		return (token);
+	{
+		token->quotes = 0;
+		return (0);
+	}
 	out = ft_calloc(sizeof(char), ft_strlen(str) + 1);
 	if (!out)
-		return (NULL);
+		return (12);
 	out = fill_output(out, token, 0, 0);
 	aux = token->string;
 	token->string = out;
 	free(aux);
-	return (token);
+	return (0);
 }
