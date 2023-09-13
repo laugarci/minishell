@@ -6,7 +6,7 @@
 /*   By: ffornes- <ffornes-@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/08 15:24:42 by ffornes-          #+#    #+#             */
-/*   Updated: 2023/09/08 18:14:27 by laugarci         ###   ########.fr       */
+/*   Updated: 2023/09/13 18:42:21 by laugarci         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,7 @@
 #include "minishell.h"
 
 #include <unistd.h>
+#include <stdio.h>
 
 t_list	*process_list(t_list *lst, int process_id)
 {
@@ -28,7 +29,7 @@ t_list	*process_list(t_list *lst, int process_id)
 	count = 0;
 	while (count < process_id)
 	{
-		if (token->type ==  PIPE)
+		if (token->type == PIPE)
 			count++;
 		aux = aux->next;
 		token = aux->content;

@@ -6,7 +6,7 @@
 /*   By: laugarci <laugarci@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/16 15:26:31 by laugarci          #+#    #+#             */
-/*   Updated: 2023/09/08 14:00:08 by laugarci         ###   ########.fr       */
+/*   Updated: 2023/09/13 17:47:35 by laugarci         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,58 +85,4 @@ int	count_list(t_list *lst)
 		i++;
 	}
 	return (i);
-}
-
-char	*ft_strtok(char *str, const char *del)
-{
-	static char	*token;
-	char		*start;
-	int			i;
-	int			j;
-	char		*final;
-
-	i = 0;
-	if (str != NULL)
-		token = str;
-	if (token == NULL || *token == '\0')
-	{
-		printf("entra\n");
-		return (NULL);
-	}
-	while (token[i])
-	{
-		j = 0;
-		while (del[++j])
-		{
-			if (token[i] == del[j])
-			{
-				i++;
-				break ;
-			}
-		}
-		if (del[j] == '\0')
-			break ;
-	}
-	if (token[i] == '\0')
-		return (NULL);
-	start = &token[i];
-	while (token[++i])
-	{
-		j = 0;
-		while (del[j])
-		{
-			if (token[i] == del[j])
-			{
-				token[i] = '\0';
-				i++;
-				token += i;
-				final = ft_strtrim(start, " ");
-				return (final);
-			}
-			j++;
-		}
-	}
-	token += i;
-	final = ft_strtrim(start, " ");
-	return (final);
 }

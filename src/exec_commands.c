@@ -6,7 +6,7 @@
 /*   By: laugarci <laugarci@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/04 14:04:45 by laugarci          #+#    #+#             */
-/*   Updated: 2023/09/12 18:12:44 by laugarci         ###   ########.fr       */
+/*   Updated: 2023/09/13 18:25:32 by laugarci         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,17 +54,15 @@ int	cmp_commands(t_list *lst, char **env)
 {
 	t_token	*token;
 	int		num_pipes;
-	char	*command;
 
 	token = lst->content;
-	command = find_command(lst);
 	if (ft_strncmp(token->string, "cd ", 3) == 0
 		|| ft_strncmp(token->string, "cd\0", 3) == 0)
 		exec_cd(lst);
 	else if (is_type(lst, 0) || is_type(lst, 3) || is_type(lst, 4))
 	{
 		num_pipes = count_types(lst, PIPE);
-		exec_pipes(env, num_pipes, command, lst);
+		exec_pipes(env, num_pipes, lst);
 	}
 	else if (is_type(lst, 2) == 1)
 			here_doc(lst, env);
@@ -144,14 +142,12 @@ int	exec_commands(t_list *lst, char **env)
 	pid_t	pid;
 	int		i;
 	int		status;
-	char	*aux;
-//	t_list	*new;
+	char	*cmd;
+	char	**split_cmd;
 
-	if (is_type(lst, 3) || is_type(lst, 4))
-	{
-		aux = cpy_list(lst);
-		lst = save_tokens(aux);
-	}
+	cmd = find_command(lst);
+	split_cmd = ft_split(cmd, '|');
+	lst = save_tokens(split_cmd[0]);
 	i = count_list(lst);
 	pid = fork();
 	if (pid == -1)
