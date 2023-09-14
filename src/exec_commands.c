@@ -6,7 +6,7 @@
 /*   By: laugarci <laugarci@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/04 14:04:45 by laugarci          #+#    #+#             */
-/*   Updated: 2023/09/13 18:25:32 by laugarci         ###   ########.fr       */
+/*   Updated: 2023/09/14 15:12:33 by laugarci         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,7 +87,7 @@ int	exec_commands_wf(t_list *lst, char **env, int flags)
 	args = (char **)malloc(sizeof(char *) * (flags + 2));
 	if (!args)
 		return (1);
-	args[0] = get_path(token->string, env);
+	args[0] = get_path(ft_strtrim(token->string, " "), env);
 	i = 0;
 	while (i < flags)
 	{
@@ -112,7 +112,7 @@ int	exec_commands_nf(t_list *lst, char **env)
 	args = (char **)malloc(sizeof(char *) * 2);
 	if (!args)
 		return (1);
-	args[0] = get_path(token->string, env);
+	args[0] = get_path(ft_strtrim(token->string, " "), env);
 	args[1] = NULL;
 	if ((execve(args[0], args, env)) == -1)
 		printf("zsh: command not found: %s\n", token->string);
@@ -129,7 +129,7 @@ char	*cpy_list(t_list *lst)
 	while(lst)
 	{
 		if (token->type != -1)
-			break;
+			break ;
 		cmd = ft_strjoin(cmd, token->string);
 		lst = lst->next;
 		token = lst->content;
