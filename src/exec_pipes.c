@@ -6,7 +6,7 @@
 /*   By: laugarci <laugarci@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/14 09:52:31 by laugarci          #+#    #+#             */
-/*   Updated: 2023/09/13 18:41:45 by laugarci         ###   ########.fr       */
+/*   Updated: 2023/09/14 17:49:25 by laugarci         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,7 +65,7 @@ int	**pipe_fds(int num_pipes)
 	return (fds);
 }
 
-void	close_pipes_child(int **fds, int i, int num_pipes)
+void	close_pipes_child(int **fds, int i, int num_pipes, t_list *lst)
 {
 	if (i != 0)
 	{
@@ -76,7 +76,8 @@ void	close_pipes_child(int **fds, int i, int num_pipes)
 	if (i != num_pipes)
 	{
 		close(fds[i][READ_END]);
-		dup2(fds[i][WRITE_END], STDOUT_FILENO);
+		if (check_redirect(lst) == 0)
+			dup2(fds[i][WRITE_END], STDOUT_FILENO);
 		close(fds[i][WRITE_END]);
 	}
 }
@@ -89,12 +90,39 @@ void	close_pipes_parent(int **fds, int i, int num_pipes)
 		close(fds[i][WRITE_END]);
 }
 
+int	check_redirect(t_list *lst)
+{
+	t_list *aux;
+	t_token *token;
+	int i;
+
+	i = 0;
+	token = lst->content;
+	aux = lst;
+	while(aux)
+	{
+		if (!aux->next)
+			break ;
+		if (token->type == 3 || token->type == 4)
+			i++;
+		if (token->type == PIPE)
+			break ;
+		aux = aux->next;
+		token = aux->content;
+	}
+	if (i > 0)
+		return (1);
+	return (0);
+}
+
 void	exec_pipes_aux(int **fds, int i, int num_pipes, t_list *lst)
 {
-	if (is_type(lst, 3) ||	is_type(lst, 4))
-		exec_redirect(lst);
-	else
-		close_pipes_child(fds, i, num_pipes);
+	if (is_type(lst, 3) || is_type(lst, 4))
+	{
+		if (check_redirect(lst))		
+				exec_redirect(lst);
+	}
+	close_pipes_child(fds, i, num_pipes, lst);
 }
 
 static t_list	*move_to_pipe(t_list *lst)
@@ -133,7 +161,7 @@ void	exec_pipes(char **env, int num_pipes, t_list *lst)
 		else if (pid == 0)
 		{	
 			exec_pipes_aux(fds, i, num_pipes, lst);
-			exec_commands(lst, env); 
+			exec_commands(lst, env);
 			exit(1);
 		}
 		else

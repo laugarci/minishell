@@ -6,7 +6,7 @@
 /*   By: laugarci <laugarci@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/17 10:09:20 by laugarci          #+#    #+#             */
-/*   Updated: 2023/09/13 18:34:22 by laugarci         ###   ########.fr       */
+/*   Updated: 2023/09/14 12:06:38 by laugarci         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,7 +57,7 @@ char	*find_output(t_list *lst)
 	tmp = lst;
 	token = tmp->content;
 	output = NULL;
-	while (tmp->next)
+	while (tmp)
 	{
 		if (token->type == 3 || token->type == 4)
 		{
