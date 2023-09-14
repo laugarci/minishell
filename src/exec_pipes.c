@@ -6,7 +6,7 @@
 /*   By: laugarci <laugarci@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/14 09:52:31 by laugarci          #+#    #+#             */
-/*   Updated: 2023/09/14 17:49:25 by laugarci         ###   ########.fr       */
+/*   Updated: 2023/09/14 21:33:40 by laugarci         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,6 +67,11 @@ int	**pipe_fds(int num_pipes)
 
 void	close_pipes_child(int **fds, int i, int num_pipes, t_list *lst)
 {
+	if (is_type(lst, 3) || is_type(lst, 4))
+	{
+		if (check_redirect(lst))
+			exec_redirect(lst);
+	}
 	if (i != 0)
 	{
 		close(fds[i - 1][WRITE_END]);
@@ -90,77 +95,23 @@ void	close_pipes_parent(int **fds, int i, int num_pipes)
 		close(fds[i][WRITE_END]);
 }
 
-int	check_redirect(t_list *lst)
-{
-	t_list *aux;
-	t_token *token;
-	int i;
-
-	i = 0;
-	token = lst->content;
-	aux = lst;
-	while(aux)
-	{
-		if (!aux->next)
-			break ;
-		if (token->type == 3 || token->type == 4)
-			i++;
-		if (token->type == PIPE)
-			break ;
-		aux = aux->next;
-		token = aux->content;
-	}
-	if (i > 0)
-		return (1);
-	return (0);
-}
-
-void	exec_pipes_aux(int **fds, int i, int num_pipes, t_list *lst)
-{
-	if (is_type(lst, 3) || is_type(lst, 4))
-	{
-		if (check_redirect(lst))		
-				exec_redirect(lst);
-	}
-	close_pipes_child(fds, i, num_pipes, lst);
-}
-
-static t_list	*move_to_pipe(t_list *lst)
-{
-	t_token	*token;
-	t_list	*aux;
-
-	aux = lst;
-	token = lst->content;
-	while (token->type != PIPE)
-	{
-		if (!lst->next)
-			break ;
-		lst = lst->next;
-		token = lst->content;
-	}
-	if (token->type == PIPE)
-		return (lst->next);
-	return (aux);
-}
-
 void	exec_pipes(char **env, int num_pipes, t_list *lst)
 {
 	int		i;
 	pid_t	pid;
 	int		**fds;
-	
+
 	if (num_pipes)
 		fds = pipe_fds(num_pipes);
 	i = 0;
-	while(i < (num_pipes + 1))
+	while (i < (num_pipes + 1))
 	{
 		pid = fork();
 		if (pid == -1)
 			exit(-1);
 		else if (pid == 0)
-		{	
-			exec_pipes_aux(fds, i, num_pipes, lst);
+		{
+			close_pipes_child(fds, i, num_pipes, lst);
 			exec_commands(lst, env);
 			exit(1);
 		}

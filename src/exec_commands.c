@@ -6,7 +6,7 @@
 /*   By: laugarci <laugarci@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/04 14:04:45 by laugarci          #+#    #+#             */
-/*   Updated: 2023/09/14 19:04:51 by laugarci         ###   ########.fr       */
+/*   Updated: 2023/09/14 21:44:07 by laugarci         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,43 +21,13 @@
 #include "libft_bonus.h"
 #include "parser.h"
 
-int	exec_cd(t_list *lst)
-{
-	t_token	*token;
-	t_list	*tmp;
-	int		i;
-
-	i = count_list(lst);
-	tmp = lst->next;
-	token = tmp->content;
-	if (i == 2)
-	{
-		if (chdir(getenv("HOME")) == 1)
-			return (1);
-	}
-	else if (access((token->string), F_OK) != -1)
-	{
-		if (access((token->string), R_OK) != -1)
-		{
-			if (chdir(token->string) == -1)
-				return (1); // Error "No such file or directory"
-		}
-		else
-			return (1); // Error: "Permission denied"
-	}
-	else
-		return (1); // Error no such file or directory
-	return (0);
-}
-
 int	cmp_commands(t_list *lst, char **env)
 {
 	t_token	*token;
 	int		num_pipes;
 
 	token = lst->content;
-	if (ft_strncmp(token->string, "cd ", 3) == 0
-		|| ft_strncmp(token->string, "cd\0", 3) == 0)
+	if (ft_strncmp(token->string, "cd", 3) == 0)
 		exec_cd(lst);
 	else if (is_type(lst, 0) || is_type(lst, 3) || is_type(lst, 4))
 	{
@@ -65,7 +35,7 @@ int	cmp_commands(t_list *lst, char **env)
 		exec_pipes(env, num_pipes, lst);
 	}
 	else if (is_type(lst, 2) == 1)
-			here_doc(lst, env);
+		here_doc(lst, env);
 	else if (ft_strncmp(token->string, "echo", 4) == 0)
 		exec_echo(lst);
 	else if (ft_strncmp(token->string, "pwd", 3) == 0)
@@ -105,7 +75,7 @@ int	exec_commands_wf(t_list *lst, char **env, int flags)
 	args[flags + 1] = NULL;
 	token = lst->content;
 	if ((execve(args[0], args, env)) == -1)
-		return(-1); // Error: szh: command not found
+		return (-1); // Error: szh: command not found
 	return (0);
 }
 
@@ -123,24 +93,6 @@ int	exec_commands_nf(t_list *lst, char **env)
 	if ((execve(args[0], args, env)) == -1)
 		printf("zsh: command not found: %s\n", token->string);
 	return (0);
-}
-
-char	*cpy_list(t_list *lst)
-{
-	t_token *token;
-	char	*cmd;
-
-	cmd = NULL;
-	token = lst->content;
-	while(lst)
-	{
-		if (token->type != -1)
-			break ;
-		cmd = ft_strjoin(cmd, token->string);
-		lst = lst->next;
-		token = lst->content;
-	}
-	return (cmd);
 }
 
 int	exec_commands(t_list *lst, char **env)
