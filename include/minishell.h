@@ -6,7 +6,7 @@
 /*   By: ffornes- <ffornes-@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/27 11:32:21 by ffornes-          #+#    #+#             */
-/*   Updated: 2023/09/14 18:44:23 by laugarci         ###   ########.fr       */
+/*   Updated: 2023/09/14 21:44:34 by laugarci         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,5 +60,7 @@ void		print_error(char *error_message);
 t_list		*process_list(t_list *lst, int i);
 
 int			check_redirect(t_list *lst);
+
+t_list		*move_to_pipe(t_list *lst);
 
 #endif
