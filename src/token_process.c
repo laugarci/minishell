@@ -6,7 +6,7 @@
 /*   By: ffornes- <ffornes-@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/04 11:34:52 by ffornes-          #+#    #+#             */
-/*   Updated: 2023/09/14 18:42:50 by laugarci         ###   ########.fr       */
+/*   Updated: 2023/09/14 18:49:53 by laugarci         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -98,6 +98,5 @@ int	process_tokens(t_list **token_list, char *envp[], int *exit_status)
 		return (12);
 	clean_redirects(token_list);
 	*token_list = remove_duplicates(*token_list);
-	print_tokens(*token_list); // DEBUG
 	return (0);
 }

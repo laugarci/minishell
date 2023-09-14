@@ -6,7 +6,7 @@
 /*   By: laugarci <laugarci@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/04 14:04:45 by laugarci          #+#    #+#             */
-/*   Updated: 2023/09/14 18:40:32 by laugarci         ###   ########.fr       */
+/*   Updated: 2023/09/14 19:04:51 by laugarci         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,11 +66,11 @@ int	cmp_commands(t_list *lst, char **env)
 	}
 	else if (is_type(lst, 2) == 1)
 			here_doc(lst, env);
-	else if (ft_strncmp(token->string, "echo ", 5) == 0)
+	else if (ft_strncmp(token->string, "echo", 4) == 0)
 		exec_echo(lst);
-	else if (ft_strncmp(token->string, "pwd ", 4) == 0)
+	else if (ft_strncmp(token->string, "pwd", 3) == 0)
 		exec_pwd();
-	else if (ft_strncmp(token->string, "export ", 7) == 0)
+	else if (ft_strncmp(token->string, "export", 6) == 0)
 	{
 		lst = lst->next;
 		token = lst->content;
