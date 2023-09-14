@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   token_join_subtoken.c                              :+:      :+:    :+:   */
+/*   subtoken_join.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ffornes- <ffornes-@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/04 16:17:45 by ffornes-          #+#    #+#             */
-/*   Updated: 2023/09/05 14:34:35 by ffornes-         ###   ########.fr       */
+/*   Updated: 2023/09/14 11:33:35 by ffornes-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,13 +24,13 @@ static char	*join_input(t_list *lst)
 	token = lst->content;
 	out = ft_strdup("");
 	if (!out)
-		printf("LEL\n"); // Error: Not enough memory
+		return (NULL);
 	while (token->type > 4)
 	{
 		aux = out;
 		out = ft_strjoin(out, token->string);
 		if (!out)
-			printf("LEL\n"); // Error: Not enough memory
+			return (NULL);
 		free(aux);
 		if (token->type == TOKEND)
 			return (out);
@@ -94,7 +94,7 @@ t_list	*remove_append(t_list *list)
 	return (list);
 }
 
-t_list	*join_subtoken(t_list **token_list)
+int	join_subtoken(t_list **token_list)
 {
 	t_list	*list;
 	t_token	*token;
@@ -108,9 +108,11 @@ t_list	*join_subtoken(t_list **token_list)
 		else
 		{
 			token = get_subtoken(list);
+			if (!token->string)
+				return (12);
 			list = remove_append(list);
 		}
 		token = list->content;
 	}
-	return (*token_list);
+	return (0);
 }

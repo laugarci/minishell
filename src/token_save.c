@@ -6,7 +6,7 @@
 /*   By: ffornes- <ffornes-@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/26 17:15:53 by ffornes-          #+#    #+#             */
-/*   Updated: 2023/09/04 11:40:50 by ffornes-         ###   ########.fr       */
+/*   Updated: 2023/09/13 19:47:13 by ffornes-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,15 @@
 #include "libft.h"
 #include "libft_bonus.h"
 #include <stdlib.h>
+
+static void	*free_all(t_list *token_list, char **inputs, int i)
+{
+	ft_lstclear(&token_list, (void *)free_token);
+	while (inputs[i])
+		free(inputs[i++]);
+	free(inputs);
+	return (NULL);
+}
 
 t_list	*save_tokens(char *input)
 {
@@ -28,16 +37,15 @@ t_list	*save_tokens(char *input)
 		return (NULL);
 	token_list = ft_lstnew(new_token(inputs[i], -1, -1));
 	if (!token_list)
+	{
+		free_double((void **)inputs);
 		return (NULL);
+	}
 	while (inputs[i++])
 	{
 		aux = ft_lstnew(new_token(inputs[i], -1, -1));
 		if (!aux)
-		{
-			ft_lstclear(&token_list, (void *)free_token);
-			free(inputs);
-			return (NULL);
-		}
+			return (free_all(token_list, inputs, i));
 		ft_lstadd_back(&token_list, aux);
 	}
 	free(inputs);

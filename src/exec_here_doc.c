@@ -6,7 +6,7 @@
 /*   By: laugarci <laugarci@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/19 13:29:17 by laugarci          #+#    #+#             */
-/*   Updated: 2023/09/13 15:09:02 by laugarci         ###   ########.fr       */
+/*   Updated: 2023/09/14 18:46:13 by laugarci         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,7 +59,7 @@ int	here_doc(t_list *lst, char **env)
 			break ;
 		text = ft_strjoin(text, input);
 		text = ft_strjoin(text, "\n");
-		input = expand_evals(input, env);
+	//	input = expand_evals(input, env);
 	}
 	if (count_list(lst) > 2)
 	{	

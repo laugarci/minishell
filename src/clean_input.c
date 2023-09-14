@@ -6,7 +6,7 @@
 /*   By: ffornes- <ffornes-@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/27 14:53:30 by ffornes-          #+#    #+#             */
-/*   Updated: 2023/08/10 18:03:28 by ffornes-         ###   ########.fr       */
+/*   Updated: 2023/09/13 21:07:40 by ffornes-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,26 +19,17 @@
 static char	*allocate_new_input(char *out, char *str, int i)
 {
 	char	*aux;
+	char	*remains;
 
 	aux = out;
-	if (str[i] == '|')
-		aux = ft_strjoin(aux, " | ");
-	else if (str[i] == '<' && str[i + 1] != '<' && str[i - 1] != '<')
-		aux = ft_strjoin(aux, " < ");
-	else if (str[i] == '<' && (str[i + 1] == '<' || str[i - 1] == '<'))
-	{
-		if (aux[i - 1] == '<')
-			aux[i - 1] = '\0';
-		aux = ft_strjoin(aux, " << ");
-	}
-	else if (str[i] == '>' && str[i + 1] != '>' && str[i - 1] != '>')
-		aux = ft_strjoin(aux, " > ");
-	else if (str[i] == '>' && (str[i + 1] == '>' || str[i - 1] == '>'))
-	{
-		if (aux[i - 1] == '>')
-			aux[i - 1] = '\0';
-		aux = ft_strjoin(aux, " >> ");
-	}
+	remains = str + i;
+	remains = ft_strjoin(" ", remains);
+	if (!remains)
+		return (NULL);
+	aux = ft_strjoin(aux, remains);
+	free(remains);
+	if (!aux)
+		return (NULL);
 	return (aux);
 }
 
@@ -56,32 +47,22 @@ static char	*rewrite_input(char *str, int i)
 	free(aux);
 	if (!out)
 		return (NULL);
-	aux = out;
-	if (str[i + 1] != '<' && str[i + 1] != '>')
-		out = ft_strjoin(out, (str + i + 1));
-	else
-		out = ft_strjoin(out, (str + i + 2));
-	free(aux);
-	if (!out)
-		return (NULL);
 	return (out);
 }
 
 static char	*first_pos_re(char *str)
 {
-	if (str[0] == '<' && str[1] != '<' && str[1] != '>' 
-		&& str[1] != ' ' && str[1])
+	if (str[0] == '<' && str[1] != '<' && str[1] != ' ' && str[1])
 		return (ft_strjoin("< ", (str + 1)));
-	else if (str[0] == '<' && str[1] == '<' && str[2] != '<' && str[2] != '>' 
+	else if (str[0] == '<' && str[1] == '<' && str[2] != '<'
 		&& str[2] != ' ' && str[2])
 		return (ft_strjoin("<< ", (str + 2)));
-	if (str[0] == '>' && str[1] != '<' && str[1] != '>' && str[1] != ' ' 
-		&& str[1])
+	if (str[0] == '>' && str[1] != '>' && str[1] != ' ' && str[1])
 		return (ft_strjoin("> ", (str + 1)));
-	else if (str[0] == '>' && str[1] == '>' && str[2] != '<' && str[2] != '>' 
+	else if (str[0] == '>' && str[1] == '>' && str[2] != '>'
 		&& str[2] != ' ' && str[2])
 		return (ft_strjoin(">> ", (str + 2)));
-	return (NULL);
+	return (ft_strdup(str));
 }
 
 char	*clean_input(char *str)
@@ -90,23 +71,23 @@ char	*clean_input(char *str)
 	char	*tmp;
 	char	*aux;
 
-	if (str[0] == '<' || str[0] == '>')
-		tmp = first_pos_re(str); // If this is null syntax error near unexpected token 
-	else
-		tmp = ft_strdup(str);
+	tmp = first_pos_re(str);
+	if (!tmp)
+	{
+		print_error("Cannot allocate memory\n");
+		return (NULL);
+	}
 	i = needs_space(tmp);
 	while (i)
 	{
-		if (i < 0) // Error management
-			return (NULL);
-		else
+		aux = tmp;
+		tmp = rewrite_input(tmp, i);
+		if (!tmp)
 		{
-			aux = tmp;
-			tmp = rewrite_input(tmp, i);
-			if (!tmp)
-				return (NULL); // mem error
-			free(aux);
+			print_error("Cannot allocate memory\n");
+			return (NULL);
 		}
+		free(aux);
 		i = needs_space(tmp);
 	}
 	return (tmp);

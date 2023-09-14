@@ -6,7 +6,7 @@
 /*   By: ffornes- <ffornes-@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/25 16:04:51 by ffornes-          #+#    #+#             */
-/*   Updated: 2023/09/05 13:58:51 by ffornes-         ###   ########.fr       */
+/*   Updated: 2023/09/14 15:50:53 by ffornes-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,13 @@ static char	*true_eval(char *str)
 	char	*out;
 
 	i = 0;
+	if (!ft_strncmp(str, "$?\0", 3))
+	{
+		out = ft_strdup("?");
+		if (!out)
+			return (NULL);
+		return (out);
+	}
 	while (str[i])
 	{
 		if (((!i && !ft_isalpha(str[i]))
@@ -81,7 +88,9 @@ int	expansion_amount(char *input)
 	j = 0;
 	while (input[i])
 	{
-		if (input[i] == '$' && (ft_isalpha(input[i + 1])
+		if (input[i] == '$' && input[i + 1] == '?')
+			j++;
+		else if (input[i] == '$' && (ft_isalpha(input[i + 1])
 				|| input[i + 1] == '_'))
 			j++;
 		i++;
