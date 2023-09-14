@@ -6,7 +6,7 @@
 /*   By: laugarci <laugarci@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/17 10:09:20 by laugarci          #+#    #+#             */
-/*   Updated: 2023/09/14 12:06:38 by laugarci         ###   ########.fr       */
+/*   Updated: 2023/09/14 18:32:26 by laugarci         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,7 +65,10 @@ char	*find_output(t_list *lst)
 			if (!output)
 				return (NULL);
 			ft_strlcpy(output, token->string, ft_strlen(token->string) + 1);
-			break ;
+			tmp = tmp->next;
+			token = tmp->content;
+			if (token->type != 3 && token->type != 4)
+				break ;
 		}
 		tmp = tmp->next;
 		token = tmp->content;

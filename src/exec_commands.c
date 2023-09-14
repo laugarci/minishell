@@ -6,7 +6,7 @@
 /*   By: laugarci <laugarci@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/04 14:04:45 by laugarci          #+#    #+#             */
-/*   Updated: 2023/09/14 15:12:33 by laugarci         ###   ########.fr       */
+/*   Updated: 2023/09/14 18:40:32 by laugarci         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,6 +70,12 @@ int	cmp_commands(t_list *lst, char **env)
 		exec_echo(lst);
 	else if (ft_strncmp(token->string, "pwd ", 4) == 0)
 		exec_pwd();
+	else if (ft_strncmp(token->string, "export ", 7) == 0)
+	{
+		lst = lst->next;
+		token = lst->content;
+		builtin_export(token->string, env);
+	}
 	else
 		exec_commands(lst, env);
 	return (0);
