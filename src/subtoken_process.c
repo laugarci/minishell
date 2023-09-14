@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   token_process_subtoken.c                           :+:      :+:    :+:   */
+/*   subtoken_process.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ffornes- <ffornes-@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/04 11:45:48 by ffornes-          #+#    #+#             */
-/*   Updated: 2023/09/05 15:06:11 by ffornes-         ###   ########.fr       */
+/*   Updated: 2023/09/13 20:48:55 by ffornes-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,13 @@
 #include <stdlib.h>
 #include <stdio.h>
 
-static char	**set_strings(char *str, char **dst)
+static int	free_double_and_return(char **src, int error)
+{
+	free_double((void **)src);
+	return (error);
+}
+
+static int	set_strings(char *str, char **dst)
 {
 	int	state;
 	int	i;
@@ -29,21 +35,19 @@ static char	**set_strings(char *str, char **dst)
 	{
 		state = quote_state(state, str[i]);
 		if ((!state && (str[i] == '\'' || str[i] == '\"'))
-			|| (!state && (str[i + 1] == '\'' || str[i + 1] == '\"' || str[i + 1] == '\0')))
+			|| (!state && (str[i + 1] == '\''
+					|| str[i + 1] == '\"' || str[i + 1] == '\0')))
 		{
 			dst[j] = ft_calloc(sizeof(char), (i + 2));
 			if (!dst[j])
-			{
-				free_double((void **)dst);
-				return (NULL);
-			}
+				return (free_double_and_return(dst, 12));
 			ft_strlcpy(dst[j++], str, (i + 2));
 			str = str + i + 1;
 			i = -1;
 		}
 		i++;
 	}
-	return (dst);
+	return (0);
 }
 
 static t_list	*add_subtokens(t_list **list, char **strings)
@@ -71,7 +75,7 @@ static t_list	*add_subtokens(t_list **list, char **strings)
 	return (*list);
 }
 
-static t_list	*generate_subtokens(t_list **list, int count)
+static int	generate_subtokens(t_list **list, int count)
 {
 	t_list	*new_list;
 	t_list	*aux;
@@ -81,53 +85,19 @@ static t_list	*generate_subtokens(t_list **list, int count)
 	new_list = *list;
 	strings = ft_calloc(sizeof(char *), (count + 1));
 	if (!strings)
-		printf("Putada\n"); // Error: Not enough memory
+		return (12);
 	token = new_list->content;
-	strings = set_strings(token->string, strings); // STRINGS ARE SUCCESSFULLY SAVED
-	if (!strings)
-		printf("Otra putada\n"); // Error: Not enough memory
+	if (set_strings(token->string, strings))
+		return (12);
 	aux = new_list->next;
-	new_list = add_subtokens(&new_list, strings); 
+	new_list = add_subtokens(&new_list, strings);
 	free(strings);
 	ft_lstadd_back(&new_list, aux);
-	return (new_list);
-}
-
-static int	same_level_quotes(char *string)
-{
-	int	state;
-	int	quotes;
-	int	count;
-	int	i;
-
-	if (!ft_strchr(string, '\'') && !ft_strchr(string, '\"'))
-		return (0);
-	i = 0;
-	quotes = 0;
-	count = 0;
-	state = 0;
-	while (string[i])
-	{
-		state = quote_state(state, string[i]);
-		if (!state && !count && string[i] != '\'' && string[i] != '\"')
-		{
-			quotes++;
-			count = 1;
-		}
-		else if (state)
-			count = 0;
-		if (state == 1 && string[i] == '\'')
-			quotes++;
-		else if (state == 2 && string[i] == '\"')
-			quotes++;
-		i++;
-	}
-	if (quotes > 1)
-		return (quotes);
+	*list = new_list;
 	return (0);
 }
 
-t_list	*process_subtokens(t_list **token_list)
+int	process_subtokens(t_list **token_list)
 {
 	t_list	*aux;
 	t_token	*token;
@@ -139,14 +109,15 @@ t_list	*process_subtokens(t_list **token_list)
 		token = aux->content;
 		if (token->type < 0)
 		{
-			subtoken_count = same_level_quotes(token->string);
+			subtoken_count = count_subtokens(token->string);
 			if (subtoken_count)
-				aux = generate_subtokens(&aux, subtoken_count);
+				if (generate_subtokens(&aux, subtoken_count))
+					return (12);
 		}
 		aux = aux->next;
 		token = aux->content;
 		if (!token->string)
 			break ;
 	}
-	return (*token_list);
+	return (0);
 }

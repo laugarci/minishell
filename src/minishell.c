@@ -6,18 +6,18 @@
 /*   By: laugarci <laugarci@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/05 14:01:37 by laugarci          #+#    #+#             */
-/*   Updated: 2023/09/08 14:57:53 by laugarci         ###   ########.fr       */
+/*   Updated: 2023/09/14 18:43:34 by laugarci         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <stdio.h>
+#include <sys/errno.h>
 #include <readline/readline.h>
 #include <readline/history.h>
 #include <stdlib.h>
 #include "libft.h"
 #include "libft_bonus.h"
 #include "minishell.h"
-#include "minishell_defs.h"
 #include "parser.h"
 
 // AJNKNAEKK DEBUGGGGGGGGGGGG // INCLUDED IN PARSER.H
@@ -47,6 +47,8 @@ void	print_tokens(t_list *lst)
 		else
 			printf("-1]");
 		printf("\t[Quotes: %d]\n", token->quotes);
+		if (!lst->next)
+			break ;
 		lst = lst->next;
 		token = lst->content;
 		if (!token->string)
@@ -55,42 +57,43 @@ void	print_tokens(t_list *lst)
 }
 // DEBUG DEBUG DEBUG DEBUG DELETE LATER   RR ER E REA EGAG */
 
-
-static int	set_env(t_data *data, char *env[])
+static char	**set_env(char *env[])
 {
 	int		i;
+	char	**dst;
 
 	i = 0;
 	while (env[i])
 		i++;
-	data->envp = malloc(sizeof(char *) * (i + 1));
-	if (!data->envp)
-		return (1);
+	dst = malloc(sizeof(char *) * (i + 1));
+	if (!dst)
+		return (NULL);
 	i = 0;
 	while (env[i])
 	{
-		data->envp[i] = ft_strdup(env[i]);
-		if (!data->envp[i++])
+		dst[i] = ft_strdup(env[i]);
+		if (!dst[i++])
 		{
-			free_double((void **)data->envp);
-			return (1);
+			free_double((void **)dst);
+			return (NULL);
 		}
 	}
-	data->envp[i] = NULL;
-	return (0);
+	dst[i] = NULL;
+	return (dst);
 }
 
-static int	exit_check(char *input)
+static int	exit_check(char *input) // Make builtin
 {
 	if (!ft_strncmp(input, "exit\0", 5))
 	{
 		free(input);
+		printf("exit\n");
 		return (1);
 	}
 	return (0);
 }
 
-static int	main_loop(char *prompt, t_data *data)
+static int	main_loop(char *prompt, char **envp, int *exit_status)
 {
 	char	*input;
 	t_list	*list;
@@ -103,12 +106,14 @@ static int	main_loop(char *prompt, t_data *data)
 		add_history(input);
 		if (exit_check(input))
 			return (1);
-		if (!parse_input(input, data->envp, &list))
+		*exit_status = parse_input(input, envp, &list, exit_status);
+		if (*exit_status == 0)
 		{
-		//	print_tokens(list);
-			cmp_commands(list, data->envp);
+			//print_tokens(list);
+			cmp_commands(list, envp);
 			ft_lstclear(&list, (void *)free_token);
 		}
+		printf("EXIT STATUS: %d\n", *exit_status);
 	}
 	free(input);
 	return (0);
@@ -117,19 +122,22 @@ static int	main_loop(char *prompt, t_data *data)
 int	main(int argc, char *argv[], char *envp[])
 {
 	char	*prompt;
-	t_data	data;
+	int		exit_status;
+	char	**my_env;
 
+	exit_status = 0;
 	if (argc > 1)
 		return (1);
-	if (set_env(&data, envp)) // Error: Not enough memory
-		return (1);
+	my_env = set_env(envp);
+	if (!my_env)
+		return (12);
 	prompt = ft_strjoin((argv[0] + 2), "$ ");
 	if (!prompt)
-		return (1);
+		return (12);
 	while (42)
-		if (main_loop(prompt, &data))
+		if (main_loop(prompt, my_env, &exit_status))
 			break ;
-	free_double((void **)data.envp);
+	free_double((void **)my_env);
 	free(prompt);
 	clear_history();
 	return (0);

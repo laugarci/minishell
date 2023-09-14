@@ -6,7 +6,7 @@
 #    By: ffornes- <ffornes-@student.42barcel>       +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/06/26 15:00:09 by ffornes-          #+#    #+#              #
-#    Updated: 2023/09/08 18:13:38 by laugarci         ###   ########.fr        #
+#    Updated: 2023/09/14 18:46:40 by laugarci         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -19,9 +19,11 @@ SRC_FILES = minishell.c \
 			get_path.c exec_commands.c exec_pipes.c exec_here_doc.c \
 			put_error.c exec_redirec.c utils.c find_command.c exec_pwd.c exec_echo.c \
 			quotes.c \
-			token_new.c token_free.c token_save.c \
-			token_process.c token_process_rm.c token_process_subtoken.c token_join_subtoken.c \
-			builtin_export.c process_list.c
+			token_new.c token_free.c token_save.c token_type.c \
+			token_process.c token_process_rm.c \
+			subtoken_process.c subtoken_count.c subtoken_join.c \
+			builtin_export.c \
+			errors.c syntax_error.c process_list.c \
 
 OBJ_DIR = objs/
 OBJ_FILES = $(SRC_FILES:.c=.o)
