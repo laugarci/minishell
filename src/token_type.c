@@ -6,11 +6,12 @@
 /*   By: ffornes- <ffornes-@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/13 21:04:04 by ffornes-          #+#    #+#             */
-/*   Updated: 2023/09/13 21:04:40 by ffornes-         ###   ########.fr       */
+/*   Updated: 2023/09/14 11:32:22 by ffornes-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "parser.h"
+#include "libft.h"
 
 static int	get_token_type(char	*str)
 {
