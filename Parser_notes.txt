@@ -1,13 +1,12 @@
 vpath Makefile directiva
 
 ToDo:
-	
-	Expansions:
-	Program expansion of $? in order to show the error code
 
 	Errors:
 	Implement error handling, exit status and error messages
-	Implement syntax errors for unclosed quotes
+
+	Redirects:
+	Fix >>> >>>> and <<< <<<< because rn they don't fail correctly
 
 	Signals:
 	Implement Ctrl C, Ctrl D, Ctrl \
