@@ -6,7 +6,7 @@
 /*   By: ffornes- <ffornes-@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/04 11:34:52 by ffornes-          #+#    #+#             */
-/*   Updated: 2023/09/13 21:10:01 by ffornes-         ###   ########.fr       */
+/*   Updated: 2023/09/14 17:23:35 by ffornes-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,13 +43,15 @@ static void	clean_redirects(t_list **lst)
 	}
 }
 
-static t_list	*expansion_token(t_list *list, t_token *token, char *envp[])
+static t_list	*expansion_token(t_list *list, t_token *token, char *envp[], int *exit_status)
 {
 	t_list	*new_list;
 	t_list	*aux;
 	char	*string;
 
-	string = expand_evals(token, token->string, envp);
+	string = expand_evals(token->string, envp, exit_status);
+	if (!string)
+		return (NULL);
 	if (!ft_strchr(string, ' ') || token->quotes > 0)
 	{
 		token->string = string;
@@ -88,15 +90,14 @@ int	process_tokens(t_list **token_list, char *envp[], int *exit_status)
 		if (remove_quotes(&aux))
 			return (12);
 		if (ft_strchr(aux->string, '$') && (aux->quotes == 2 || !aux->quotes))
-			tmp_lst = expansion_token(tmp_lst, aux, envp);
+			tmp_lst = expansion_token(tmp_lst, aux, envp, exit_status); // Must check exit status 
 		tmp_lst = tmp_lst->next;
 		aux = tmp_lst->content;
 	}
-
-	*token_list = join_subtoken(token_list); // Left here
+	if (join_subtoken(token_list))
+		return (12);
 	clean_redirects(token_list);
 	*token_list = remove_duplicates(*token_list);
-	print_tokens(*token_list);
+	print_tokens(*token_list); // DEBUG
 	return (0);
-	*exit_status = 0; // DBEUGEUBAEJFAK
 }
