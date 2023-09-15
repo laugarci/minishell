@@ -6,7 +6,7 @@
 /*   By: laugarci <laugarci@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/19 13:29:17 by laugarci          #+#    #+#             */
-/*   Updated: 2023/09/14 18:46:13 by laugarci         ###   ########.fr       */
+/*   Updated: 2023/09/15 15:27:02 by laugarci         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,7 +74,7 @@ int	here_doc(t_list *lst, char **env)
 		ft_strlcpy(command, aux->string, ft_strlen(aux->string) + 1);
 		tmp = save_tokens(command);
 		write(1, text, ft_strlen(text));
-		exec_commands(tmp, env);
+		env = NULL; //QUITAAAARRRRR
 		}
 	}
 	return (0);
