@@ -6,7 +6,7 @@
 /*   By: ffornes- <ffornes-@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/27 11:32:21 by ffornes-          #+#    #+#             */
-/*   Updated: 2023/09/14 12:04:49 by ffornes-         ###   ########.fr       */
+/*   Updated: 2023/09/15 10:24:41 by ffornes-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,5 +58,5 @@ int			exec_echo(t_list *lst);
 int			builtin_export(char *eval, char **envp);
 
 void		print_error(char *error_message);
-
+int			print_and_return(int error_id);
 #endif

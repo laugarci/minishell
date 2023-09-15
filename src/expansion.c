@@ -6,7 +6,7 @@
 /*   By: ffornes- <ffornes-@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/24 14:47:53 by ffornes-          #+#    #+#             */
-/*   Updated: 2023/09/14 18:33:09 by ffornes-         ###   ########.fr       */
+/*   Updated: 2023/09/15 10:20:21 by ffornes-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,8 +69,6 @@ static char	*update_input(char *input, char *str)
 	aux = str;
 	tmp = update_input_util(i, tmp, str, input);
 	free(str);
-	if (!tmp)
-		return (NULL);
 	return (tmp);
 }
 
@@ -146,16 +144,13 @@ char	*expand_evals(char *input, char *envp[], int *exit_status)
 		aux = input;
 		free(out);
 		out = expand_input(input, envp, exit_status);
-		if (!out)
-			return (NULL);
-		out = update_input(input, out);
+		if (out)
+			out = update_input(input, out);
 		if (!out)
 			return (NULL);
 		input = ft_strdup(out);
 		free(aux);
 	}
 	free(out);
-	if (!input)
-		return (NULL);
 	return (input);
 }

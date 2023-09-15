@@ -6,7 +6,7 @@
 /*   By: ffornes- <ffornes-@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/01 15:33:06 by ffornes-          #+#    #+#             */
-/*   Updated: 2023/09/04 11:42:04 by ffornes-         ###   ########.fr       */
+/*   Updated: 2023/09/15 10:23:46 by ffornes-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,16 +52,17 @@ static void	remove_duplicates_loop(t_list *aux, t_list *previous, int deleted)
 	}
 }
 
-t_list	*remove_duplicates(t_list *token_list)
+void	remove_duplicates(t_list **lst)
 {
+	t_list	*token_list;
 	t_list	*aux;
 	t_list	*previous;
 	int		deleted;
 
+	token_list = *lst;
 	deleted = 0;
 	token_list = remove_first_token(token_list, &deleted);
 	aux = token_list;
 	previous = aux;
 	remove_duplicates_loop(aux, previous, deleted);
-	return (token_list);
 }

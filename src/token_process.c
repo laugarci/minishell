@@ -6,10 +6,11 @@
 /*   By: ffornes- <ffornes-@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/04 11:34:52 by ffornes-          #+#    #+#             */
-/*   Updated: 2023/09/14 17:23:35 by ffornes-         ###   ########.fr       */
+/*   Updated: 2023/09/15 10:25:08 by ffornes-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+#include "minishell.h"
 #include "parser.h"
 #include "libft.h"
 #include <stdlib.h>
@@ -59,6 +60,8 @@ static t_list	*expansion_token(t_list *list, t_token *token, char *envp[], int *
 		return (list);
 	}
 	new_list = save_tokens(string);
+	if (!new_list)
+		return (NULL);
 	free(list->content);
 	free(string);
 	list->content = new_list->content;
@@ -79,25 +82,29 @@ int	process_tokens(t_list **token_list, char *envp[], int *exit_status)
 	t_list	*tmp_lst;
 	t_token	*aux;
 
+	print_tokens(*token_list);
 	tmp_lst = set_type(token_list);
 	if (syntax_error_check(tmp_lst))
 		return (258);
 	if (process_subtokens(&tmp_lst))
-		return (12);
+		return (print_and_return(12));
 	aux = tmp_lst->content;
 	while (aux->string)
 	{
 		if (remove_quotes(&aux))
-			return (12);
+			return (print_and_return(12));
 		if (ft_strchr(aux->string, '$') && (aux->quotes == 2 || !aux->quotes))
-			tmp_lst = expansion_token(tmp_lst, aux, envp, exit_status); // Must check exit status 
+		{
+			tmp_lst = expansion_token(tmp_lst, aux, envp, exit_status);
+			if (!tmp_lst)
+				return (print_and_return(12));
+		}
 		tmp_lst = tmp_lst->next;
 		aux = tmp_lst->content;
 	}
 	if (join_subtoken(token_list))
-		return (12);
+		return (print_and_return(12));
 	clean_redirects(token_list);
-	*token_list = remove_duplicates(*token_list);
-	print_tokens(*token_list); // DEBUG
+	remove_duplicates(token_list);
 	return (0);
 }
