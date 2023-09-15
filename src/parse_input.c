@@ -6,7 +6,7 @@
 /*   By: ffornes- <ffornes-@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/27 12:29:42 by ffornes-          #+#    #+#             */
-/*   Updated: 2023/09/13 19:58:28 by ffornes-         ###   ########.fr       */
+/*   Updated: 2023/09/15 10:28:31 by ffornes-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,14 +50,14 @@ int	parse_input(char *str, char *envp[], t_list **token_list, int *exit_status)
 	{
 		str = clean_input(str);
 		if (!str)
-			return (12);
+			return (print_and_return(12));
 		flag = 1;
 	}
 	lst = save_tokens(str);
 	if (flag)
 		free(str);
 	if (!lst)
-		return (12);
+		return (print_and_return(12));
 	error = process_tokens(&lst, envp, exit_status);
 	if (error)
 		return (free_list_and_return(lst, error));
