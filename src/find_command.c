@@ -6,7 +6,7 @@
 /*   By: laugarci <laugarci@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/17 10:09:20 by laugarci          #+#    #+#             */
-/*   Updated: 2023/09/05 15:22:17 by ffornes-         ###   ########.fr       */
+/*   Updated: 2023/09/15 13:02:54 by laugarci         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,8 @@
 #include "libft.h"
 #include "parser.h"
 #include "libft_bonus.h"
+
+#include <stdio.h>
 
 char	*find_command(t_list *lst)
 {
@@ -27,13 +29,13 @@ char	*find_command(t_list *lst)
 	total_length = total_input_len(lst);
 	result = malloc(sizeof(char) * (total_length + 1));
 	if (!result)
-		return (NULL);
+		return (NULL); // Error: malloc
 	current = lst;
 	i = 0;
 	while (current->next)
 	{
 		token = current->content;
-		if (token->type == 3 || token->type == 4)
+		if ((token->type == 3 || token->type == 4))
 			break ;
 		if (i > 0)
 			result[i++] = ' ';
@@ -50,20 +52,31 @@ char	*find_output(t_list *lst)
 	t_list	*tmp;
 	t_token	*token;
 	char	*output;
+	int		flag;
 
 	tmp = lst;
 	token = tmp->content;
-	while (tmp->next)
+	output = NULL;
+	while (tmp)
 	{
-		if (token->type == 3 || token->type == 4)
+		flag = 0;
+		if (token->type == 3 || token->type == 4 || token->type == 1)
 		{
 			output = malloc(sizeof(char) * ft_strlen(token->string) + 1);
 			if (!output)
-				return (NULL);
+				return (NULL); // Error: malloc
 			ft_strlcpy(output, token->string, ft_strlen(token->string) + 1);
+			tmp = tmp->next;
+			token = tmp->content;
+			flag = 1;
+			if (token->type != 3 && token->type != 4)
+				break ;
 		}
-		tmp = tmp->next;
-		token = tmp->content;
+		if (flag == 0)
+		{
+			tmp = tmp->next;
+			token = tmp->content;
+		}
 	}
 	return (output);
 }
