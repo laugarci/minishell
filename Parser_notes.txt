@@ -3,10 +3,7 @@ vpath Makefile directiva
 ToDo:
 
 	Errors:
-	Implement error handling, exit status and error messages
-
-	Redirects:
-	Fix >>> >>>> and <<< <<<< because rn they don't fail correctly
+	Implement error handling, exit status and error messages in execution
 
 	Signals:
 	Implement Ctrl C, Ctrl D, Ctrl \
