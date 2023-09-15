@@ -6,7 +6,7 @@
 /*   By: ffornes- <ffornes-@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/24 14:47:53 by ffornes-          #+#    #+#             */
-/*   Updated: 2023/09/15 11:29:20 by ffornes-         ###   ########.fr       */
+/*   Updated: 2023/09/15 11:58:10 by ffornes-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,6 +36,23 @@ static char	*expand_input_util(char *input)
 	return (str);
 }
 
+static char	*cut_aux(char *aux)
+{
+	int	i;
+
+	i = 0;
+	while (aux[i])
+	{
+		if (aux[i] == ' ')
+		{
+			aux[i] = '\0';
+			break ;
+		}
+		i++;
+	}
+	return (aux);
+}
+
 // This function locates the environment value in the string 
 // 	recieved as input, trimming the environment value leaving 
 // 	only it's reference name.
@@ -47,7 +64,6 @@ static char	*expand_input(char *input, char *envp[], int *exit_status)
 {
 	char	*str;
 	char	*aux;
-	int		i;
 
 	str = expand_input_util(input);
 	if (!str)
@@ -57,17 +73,11 @@ static char	*expand_input(char *input, char *envp[], int *exit_status)
 	aux = ft_strdup(str);
 	if (!aux)
 		return (NULL);
-	i = -1;
-	while (aux[++i])
-	{
-		if (aux[i] == ' ')
-		{
-			aux[i] = '\0';
-			break ;
-		}
-	}
+	aux = cut_aux(aux);
 	find_eval(aux, envp, &str);
 	free(aux);
+	if (!str)
+		return (NULL);
 	return (ft_strdup(str));
 }
 

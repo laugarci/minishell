@@ -6,13 +6,15 @@
 /*   By: ffornes- <ffornes-@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/01 15:33:06 by ffornes-          #+#    #+#             */
-/*   Updated: 2023/09/15 10:23:46 by ffornes-         ###   ########.fr       */
+/*   Updated: 2023/09/15 12:47:49 by ffornes-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft_bonus.h"
 #include "parser.h"
 #include <stdlib.h>
+
+#include <stdio.h>
 
 static t_list	*remove_first_token(t_list *token_list, int *deleted)
 {
@@ -65,4 +67,5 @@ void	remove_duplicates(t_list **lst)
 	aux = token_list;
 	previous = aux;
 	remove_duplicates_loop(aux, previous, deleted);
+	*lst = token_list;
 }
