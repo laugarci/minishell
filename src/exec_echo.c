@@ -6,7 +6,7 @@
 /*   By: laugarci <laugarci@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/04 11:30:35 by laugarci          #+#    #+#             */
-/*   Updated: 2023/09/14 21:20:47 by laugarci         ###   ########.fr       */
+/*   Updated: 2023/09/15 18:02:38 by laugarci         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,7 +44,9 @@ int	exec_echo(t_list *lst)
 	t_list	*aux;
 	int		i;
 	int		flag;
-
+	
+	write(1, "llega\n", 6);
+	print_tokens(lst);
 	aux = lst;
 	flag = 0;
 	i = count_list(lst);
