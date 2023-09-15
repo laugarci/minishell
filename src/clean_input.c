@@ -6,7 +6,7 @@
 /*   By: ffornes- <ffornes-@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/27 14:53:30 by ffornes-          #+#    #+#             */
-/*   Updated: 2023/09/15 09:45:00 by ffornes-         ###   ########.fr       */
+/*   Updated: 2023/09/15 11:08:32 by ffornes-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,20 +73,14 @@ char	*clean_input(char *str)
 
 	tmp = first_pos_re(str);
 	if (!tmp)
-	{
-		print_error("Cannot allocate memory\n");
 		return (NULL);
-	}
 	i = needs_space(tmp);
 	while (i)
 	{
 		aux = tmp;
 		tmp = rewrite_input(tmp, i);
 		if (!tmp)
-		{
-			print_error("Cannot allocate memory\n");
 			return (NULL);
-		}
 		free(aux);
 		i = needs_space(tmp);
 	}
