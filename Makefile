@@ -6,7 +6,7 @@
 #    By: ffornes- <ffornes-@student.42barcel>       +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/06/26 15:00:09 by ffornes-          #+#    #+#              #
-#    Updated: 2023/09/15 11:29:53 by ffornes-         ###   ########.fr        #
+#    Updated: 2023/09/15 12:55:32 by ffornes-         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -21,7 +21,7 @@ SRC_FILES = minishell.c \
 			quotes.c \
 			token_new.c token_free.c token_save.c token_type.c \
 			token_process.c token_process_rm.c \
-			subtoken_process.c subtoken_count.c subtoken_join.c \
+			subtoken_process.c subtoken_count.c subtoken_join.c organize_tokens.c \
 			builtin_export.c \
 			errors.c syntax_error.c
 
