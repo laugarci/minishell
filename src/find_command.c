@@ -6,7 +6,7 @@
 /*   By: laugarci <laugarci@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/17 10:09:20 by laugarci          #+#    #+#             */
-/*   Updated: 2023/09/14 21:40:26 by laugarci         ###   ########.fr       */
+/*   Updated: 2023/09/15 13:02:54 by laugarci         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,13 +52,15 @@ char	*find_output(t_list *lst)
 	t_list	*tmp;
 	t_token	*token;
 	char	*output;
+	int		flag;
 
 	tmp = lst;
 	token = tmp->content;
 	output = NULL;
 	while (tmp)
 	{
-		if (token->type == 3 || token->type == 4)
+		flag = 0;
+		if (token->type == 3 || token->type == 4 || token->type == 1)
 		{
 			output = malloc(sizeof(char) * ft_strlen(token->string) + 1);
 			if (!output)
@@ -66,11 +68,15 @@ char	*find_output(t_list *lst)
 			ft_strlcpy(output, token->string, ft_strlen(token->string) + 1);
 			tmp = tmp->next;
 			token = tmp->content;
+			flag = 1;
 			if (token->type != 3 && token->type != 4)
 				break ;
 		}
-		tmp = tmp->next;
-		token = tmp->content;
+		if (flag == 0)
+		{
+			tmp = tmp->next;
+			token = tmp->content;
+		}
 	}
 	return (output);
 }

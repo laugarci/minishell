@@ -6,7 +6,7 @@
 /*   By: laugarci <laugarci@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/14 12:07:29 by laugarci          #+#    #+#             */
-/*   Updated: 2023/09/14 21:36:15 by laugarci         ###   ########.fr       */
+/*   Updated: 2023/09/15 13:03:43 by laugarci         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,7 +54,7 @@ int	check_redirect(t_list *lst)
 	{
 		if (!aux->next)
 			break ;
-		if (token->type == 3 || token->type == 4)
+		if (token->type == 3 || token->type == 4 || token->type == 1)
 			i++;
 		if (token->type == PIPE)
 			break ;
@@ -120,11 +120,13 @@ int	exec_redirect(t_list *lst)
 	output = find_output(lst);
 	if (redirect > 1)
 		open_fds(lst, redirect);
-	flags = O_WRONLY | O_CREAT;
+	flags = O_CREAT;
 	if (is_type(lst, 3) == 1)
-		flags = flags | O_APPEND;
+		flags = flags | O_APPEND | O_WRONLY;
 	else if (is_type(lst, 4) == 1)
-		flags = flags | O_TRUNC;
+		flags = flags | O_TRUNC | O_WRONLY;
+	else if (is_type(lst, 1))
+		flags = flags | O_RDONLY;
 	fd = open(output, flags, 0666);
 	if (fd < 0)
 		return (1);
