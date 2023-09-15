@@ -6,7 +6,7 @@
 /*   By: laugarci <laugarci@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/16 15:26:31 by laugarci          #+#    #+#             */
-/*   Updated: 2023/08/17 09:56:49 by laugarci         ###   ########.fr       */
+/*   Updated: 2023/09/14 21:36:35 by laugarci         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,8 @@
 #include "libft.h"
 #include "parser.h"
 #include "libft_bonus.h"
+
+#include <stdio.h>
 
 int	is_type(t_list *lst, int type)
 {
@@ -31,7 +33,7 @@ int	is_type(t_list *lst, int type)
 	return (0);
 }
 
-int	count_chars(t_list *lst)
+int	count_types(t_list *lst, int type)
 {
 	int		c;
 	t_list	*tmp;
@@ -42,7 +44,10 @@ int	count_chars(t_list *lst)
 	while (tmp)
 	{
 		aux = tmp->content;
-		if (aux->type == PIPE)
+		if (type != PIPE)
+			if (aux->type == PIPE)
+				break ;
+		if (aux->type == type)
 			c++;
 		tmp = tmp->next;
 	}
@@ -67,6 +72,24 @@ int	total_input_len(t_list *lst)
 	return (total_length);
 }
 
+char	*cpy_list(t_list *lst)
+{
+	t_token	*token;
+	char	*cmd;
+
+	cmd = NULL;
+	token = lst->content;
+	while (lst)
+	{
+		if (token->type != -1)
+			break ;
+		cmd = ft_strjoin(cmd, token->string);
+		lst = lst->next;
+		token = lst->content;
+	}
+	return (cmd);
+}
+
 int	count_list(t_list *lst)
 {
 	int		i;
@@ -80,55 +103,4 @@ int	count_list(t_list *lst)
 		i++;
 	}
 	return (i);
-}
-
-char	*ft_strtok(char *str, const char *del)
-{
-	static char	*token;
-	char		*start;
-	int			i;
-	int			j;
-	char		*final;
-
-	i = 0;
-	if (str != NULL)
-		token = str;
-	if (token == NULL || *token == '\0')
-		return (NULL);
-	while (token[i])
-	{
-		j = 0;
-		while (del[++j])
-		{
-			if (token[i] == del[j])
-			{
-				i++;
-				break ;
-			}
-		}
-		if (del[j] == '\0')
-			break ;
-	}
-	if (token[i] == '\0')
-		return (NULL);
-	start = &token[i];
-	while (token[++i])
-	{
-		j = 0;
-		while (del[j])
-		{
-			if (token[i] == del[j])
-			{
-				token[i] = '\0';
-				i++;
-				token += i;
-				final = ft_strtrim(start, " ");
-				return (final);
-			}
-			j++;
-		}
-	}
-	token += i;
-	final = ft_strtrim(start, " ");
-	return (final);
 }

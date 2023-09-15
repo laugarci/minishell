@@ -6,7 +6,7 @@
 /*   By: laugarci <laugarci@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/14 09:52:31 by laugarci          #+#    #+#             */
-/*   Updated: 2023/08/24 17:50:08 by laugarci         ###   ########.fr       */
+/*   Updated: 2023/09/15 13:03:26 by laugarci         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,8 +65,13 @@ int	**pipe_fds(int num_pipes)
 	return (fds);
 }
 
-void	close_pipes_child(int **fds, int i, int num_pipes)
+void	close_pipes_child(int **fds, int i, int num_pipes, t_list *lst)
 {
+	if (is_type(lst, 3) || is_type(lst, 4) || is_type(lst, 1))
+	{
+		if (check_redirect(lst))
+			exec_redirect(lst);
+	}
 	if (i != 0)
 	{
 		close(fds[i - 1][WRITE_END]);
@@ -76,7 +81,8 @@ void	close_pipes_child(int **fds, int i, int num_pipes)
 	if (i != num_pipes)
 	{
 		close(fds[i][READ_END]);
-		dup2(fds[i][WRITE_END], STDOUT_FILENO);
+		if (check_redirect(lst) == 0)
+			dup2(fds[i][WRITE_END], STDOUT_FILENO);
 		close(fds[i][WRITE_END]);
 	}
 }
@@ -89,43 +95,29 @@ void	close_pipes_parent(int **fds, int i, int num_pipes)
 		close(fds[i][WRITE_END]);
 }
 
-void	exec_pipes_aux(int **fds, int i, int num_pipes, t_list *lst)
-{
-	if (i < num_pipes)
-		close_pipes_child(fds, i, num_pipes);
-	else
-	{
-		close_pipes_child(fds, i, num_pipes);
-		if (is_type(lst, 3) == 1 || is_type(lst, 4) == 1)
-			exec_redirect(lst);
-	}
-}
-
-void	exec_pipes(char **env, int num_pipes, char *command, t_list *lst)
+void	exec_pipes(char **env, int num_pipes, t_list *lst)
 {
 	int		i;
 	pid_t	pid;
 	int		**fds;
-	t_list	*aux;
 
-	fds = pipe_fds(num_pipes);
-	command = ft_strtok(command, "|");
+	if (num_pipes)
+		fds = pipe_fds(num_pipes);
 	i = 0;
-	while (command != NULL)
+	while (i < (num_pipes + 1))
 	{
 		pid = fork();
 		if (pid == -1)
 			exit(-1);
 		else if (pid == 0)
 		{
-			exec_pipes_aux(fds, i, num_pipes, lst);
-			aux = save_tokens(command);
-			exec_commands(aux, env);
+			close_pipes_child(fds, i, num_pipes, lst);
+			exec_commands(lst, env);
 			exit(1);
 		}
 		else
 			close_pipes_parent(fds, i, num_pipes);
-		command = ft_strtok(NULL, "|");
+		lst = move_to_pipe(lst);
 		i++;
 	}
 	close_pipes(fds, num_pipes);

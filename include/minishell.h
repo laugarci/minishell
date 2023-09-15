@@ -6,7 +6,7 @@
 /*   By: ffornes- <ffornes-@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/27 11:32:21 by ffornes-          #+#    #+#             */
-/*   Updated: 2023/09/15 10:24:41 by ffornes-         ###   ########.fr       */
+/*   Updated: 2023/09/15 13:10:41 by ffornes-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,9 +31,9 @@ int			exec_cd(t_list *lst);
 
 int			is_type(t_list *lst, int type);
 
-int			count_chars(t_list *lst);
+int			count_types(t_list *lst, int type);
 
-void		exec_pipes(char **env, int num_pipes, char *command, t_list *lst);
+void		exec_pipes(char **env, int num_pipes, t_list *lst);
 
 int			count_args(t_list *lst);
 
@@ -42,8 +42,6 @@ char		*find_command(t_list *lst);
 char		*find_output(t_list *lst);
 
 int			exec_redirect(t_list *lst);
-
-char		*ft_strtok(char *str, const char *del);
 
 int			count_list(t_list *lst);
 
@@ -59,4 +57,11 @@ int			builtin_export(char *eval, char **envp);
 
 void		print_error(char *error_message);
 int			print_and_return(int error_id);
+
+t_list		*process_list(t_list *lst, int i);
+
+int			check_redirect(t_list *lst);
+
+t_list		*move_to_pipe(t_list *lst);
+
 #endif
