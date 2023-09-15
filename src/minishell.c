@@ -6,7 +6,7 @@
 /*   By: laugarci <laugarci@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/05 14:01:37 by laugarci          #+#    #+#             */
-/*   Updated: 2023/09/14 17:28:35 by ffornes-         ###   ########.fr       */
+/*   Updated: 2023/09/15 10:29:24 by ffornes-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -113,7 +113,6 @@ static int	main_loop(char *prompt, char **envp, int *exit_status)
 			cmp_commands(list, envp);
 			ft_lstclear(&list, (void *)free_token);
 		}
-		printf("EXIT STATUS: %d\n", *exit_status);
 	}
 	free(input);
 	return (0);
@@ -130,10 +129,10 @@ int	main(int argc, char *argv[], char *envp[])
 		return (1);
 	my_env = set_env(envp);
 	if (!my_env)
-		return (12);
+		return (print_and_return(12));
 	prompt = ft_strjoin((argv[0] + 2), "$ ");
 	if (!prompt)
-		return (12);
+		return (print_and_return(12));
 	while (42)
 		if (main_loop(prompt, my_env, &exit_status))
 			break ;
