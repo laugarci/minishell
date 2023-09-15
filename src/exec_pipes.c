@@ -6,7 +6,7 @@
 /*   By: laugarci <laugarci@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/14 09:52:31 by laugarci          #+#    #+#             */
-/*   Updated: 2023/09/15 13:03:26 by laugarci         ###   ########.fr       */
+/*   Updated: 2023/09/15 15:13:06 by laugarci         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,8 +75,9 @@ void	close_pipes_child(int **fds, int i, int num_pipes, t_list *lst)
 	if (i != 0)
 	{
 		close(fds[i - 1][WRITE_END]);
-		dup2(fds[i - 1][READ_END], STDIN_FILENO);
-		close(fds[i - 1][READ_END]);
+		if (check_redirect(lst) == 0)
+			dup2(fds[i - 1][READ_END], STDIN_FILENO);
+		close(fds[i - 1][READ_END]);	
 	}
 	if (i != num_pipes)
 	{
@@ -100,7 +101,9 @@ void	exec_pipes(char **env, int num_pipes, t_list *lst)
 	int		i;
 	pid_t	pid;
 	int		**fds;
+	int		check;
 
+	check = 0;
 	if (num_pipes)
 		fds = pipe_fds(num_pipes);
 	i = 0;
@@ -112,7 +115,10 @@ void	exec_pipes(char **env, int num_pipes, t_list *lst)
 		else if (pid == 0)
 		{
 			close_pipes_child(fds, i, num_pipes, lst);
-			exec_commands(lst, env);
+			if (is_type(lst, 1))
+				check = check_infile(lst);
+			if (check == 0)
+				exec_commands(lst, env);
 			exit(1);
 		}
 		else
