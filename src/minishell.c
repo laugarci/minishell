@@ -6,7 +6,7 @@
 /*   By: laugarci <laugarci@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/05 14:01:37 by laugarci          #+#    #+#             */
-/*   Updated: 2023/09/15 11:09:53 by ffornes-         ###   ########.fr       */
+/*   Updated: 2023/09/15 13:08:05 by ffornes-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -109,10 +109,18 @@ static int	main_loop(char *prompt, char **envp, int *exit_status)
 		*exit_status = parse_input(input, envp, &list, exit_status);
 		if (*exit_status == 0)
 		{
-			//print_tokens(list);
-			cmp_commands(list, envp);
+			printf("TOKENS BEFORE ORGANISING:\n");
+			print_tokens(list);
+
+			list = organize_list(list);
+
+			printf("TOKENS AFTER ORGANISING: \n");
+			print_tokens(list);
+
+			//cmp_commands(list, envp);
 			ft_lstclear(&list, (void *)free_token);
 		}
+		printf("EXIT STATUS: %d\n", *exit_status);
 	}
 	free(input);
 	return (0);

@@ -5,12 +5,17 @@ ToDo:
 	Errors:
 	Implement error handling, exit status and error messages in execution
 
+	Expansions:
+	When exanding value that is not stored in envp, program segfaults
+
 	Signals:
 	Implement Ctrl C, Ctrl D, Ctrl \
 	
 	Builtin Export:
 	Parse
 	When finding += must append instead of trunc
+
+	Repasar la libft per mallocs no protegits LMAO!
 
 	Syntax Errors:
 		test
