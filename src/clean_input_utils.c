@@ -6,7 +6,7 @@
 /*   By: ffornes- <ffornes-@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/09 16:48:00 by ffornes-          #+#    #+#             */
-/*   Updated: 2023/09/08 19:36:59 by ffornes-         ###   ########.fr       */
+/*   Updated: 2023/09/15 09:44:50 by ffornes-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,8 +26,10 @@ static int	check_redirections(char *str, int i)
 {
 	if (i > 0 && str[i - 1] != ' ' && str[i - 1] != str[i])
 		return (i);
-	if (str[i + 1] != ' ' && str[i + 1] != str[i] && str[i + 1])
+	if (str[i + 1] && str[i + 1] != str[i] && str[i + 1] != ' ')
 		return (i + 1);
+	else if (str[i + 1] && str[i + 1] == str[i] && str[i + 2] && str[i + 2] != ' ')
+		return (i + 2);
 	return (0);
 }
 
