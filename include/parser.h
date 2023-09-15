@@ -6,7 +6,7 @@
 /*   By: laugarci <laugarci@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/06 11:42:45 by ffornes-          #+#    #+#             */
-/*   Updated: 2023/09/14 15:21:01 by ffornes-         ###   ########.fr       */
+/*   Updated: 2023/09/15 10:24:09 by ffornes-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,7 +52,7 @@ int			process_subtokens(t_list **token_list);
 int			count_subtokens(char *string);
 int			join_subtoken(t_list **token_list);
 t_list		*set_type(t_list **token_list);
-t_list		*remove_duplicates(t_list *token_list);
+void		remove_duplicates(t_list **token_list);
 void		free_token(void *var);
 
 void		print_tokens(t_list *lst); // DEBUG
