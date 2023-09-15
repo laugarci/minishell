@@ -6,7 +6,7 @@
 /*   By: ffornes- <ffornes-@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/04 11:34:52 by ffornes-          #+#    #+#             */
-/*   Updated: 2023/09/15 10:25:08 by ffornes-         ###   ########.fr       */
+/*   Updated: 2023/09/15 11:26:02 by ffornes-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,37 +44,58 @@ static void	clean_redirects(t_list **lst)
 	}
 }
 
-static t_list	*expansion_token(t_list *list, t_token *token, char *envp[], int *exit_status)
+static int	exp_token_util(char *string, t_token **tkn, t_list **lst)
+{
+	t_list	*aux;
+	t_token	*token;
+
+	aux = *lst;
+	token = *tkn;
+	if (!ft_strchr(string, ' ') || token->quotes > 0)
+	{
+		token->string = string;
+		aux->content = token;
+		return (1);
+	}
+	return (0);
+}
+
+static t_list	*exp_token(t_list *lst, t_token *tkn, char **envp, int *exit)
 {
 	t_list	*new_list;
 	t_list	*aux;
 	char	*string;
 
-	string = expand_evals(token->string, envp, exit_status);
+	string = expand_evals(tkn->string, envp, exit);
 	if (!string)
 		return (NULL);
-	if (!ft_strchr(string, ' ') || token->quotes > 0)
-	{
-		token->string = string;
-		list->content = token;
-		return (list);
-	}
+	if (exp_token_util(string, &tkn, &lst))
+		return (lst);
 	new_list = save_tokens(string);
 	if (!new_list)
 		return (NULL);
-	free(list->content);
+	free(lst->content);
 	free(string);
-	list->content = new_list->content;
+	lst->content = new_list->content;
 	aux = new_list;
 	new_list = new_list->next;
 	free(aux);
-	aux = list->next;
-	list->next = new_list;
+	aux = lst->next;
+	lst->next = new_list;
 	while (new_list->next)
 		new_list = new_list->next;
 	new_list->content = aux->content;
 	new_list->next = aux->next;
-	return (list);
+	return (lst);
+}
+
+static int	process_tokens_util(t_list **token_list)
+{
+	if (join_subtoken(token_list))
+		return (12);
+	clean_redirects(token_list);
+	remove_duplicates(token_list);
+	return (0);
 }
 
 int	process_tokens(t_list **token_list, char *envp[], int *exit_status)
@@ -82,7 +103,6 @@ int	process_tokens(t_list **token_list, char *envp[], int *exit_status)
 	t_list	*tmp_lst;
 	t_token	*aux;
 
-	print_tokens(*token_list);
 	tmp_lst = set_type(token_list);
 	if (syntax_error_check(tmp_lst))
 		return (258);
@@ -95,16 +115,14 @@ int	process_tokens(t_list **token_list, char *envp[], int *exit_status)
 			return (print_and_return(12));
 		if (ft_strchr(aux->string, '$') && (aux->quotes == 2 || !aux->quotes))
 		{
-			tmp_lst = expansion_token(tmp_lst, aux, envp, exit_status);
+			tmp_lst = exp_token(tmp_lst, aux, envp, exit_status);
 			if (!tmp_lst)
 				return (print_and_return(12));
 		}
 		tmp_lst = tmp_lst->next;
 		aux = tmp_lst->content;
 	}
-	if (join_subtoken(token_list))
+	if (process_tokens_util(token_list))
 		return (print_and_return(12));
-	clean_redirects(token_list);
-	remove_duplicates(token_list);
 	return (0);
 }

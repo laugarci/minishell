@@ -6,7 +6,7 @@
 #    By: ffornes- <ffornes-@student.42barcel>       +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/06/26 15:00:09 by ffornes-          #+#    #+#              #
-#    Updated: 2023/09/14 11:32:09 by ffornes-         ###   ########.fr        #
+#    Updated: 2023/09/15 11:29:53 by ffornes-         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -15,7 +15,7 @@ NAME = minishell
 SRC_DIR = src/
 SRC_FILES = minishell.c \
 			parse_input.c clean_input.c clean_input_utils.c split_input.c \
-			expansion.c expansion_utils.c \
+			expansion.c expansion_utils.c expansion_update.c \
 			get_path.c exec_commands.c exec_pipes.c exec_here_doc.c \
 			put_error.c exec_redirec.c utils.c find_command.c exec_pwd.c exec_echo.c \
 			quotes.c \
