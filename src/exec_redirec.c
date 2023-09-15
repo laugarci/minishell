@@ -6,7 +6,7 @@
 /*   By: laugarci <laugarci@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/14 12:07:29 by laugarci          #+#    #+#             */
-/*   Updated: 2023/09/15 13:03:43 by laugarci         ###   ########.fr       */
+/*   Updated: 2023/09/15 15:11:49 by laugarci         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,17 @@
 #include <sys/stat.h>
 #include <sys/wait.h>
 #include <fcntl.h>
+
+int	check_infile(t_list *lst)
+{
+	char *infile;
+
+	infile = find_output(lst);
+	if (access(infile, F_OK) == 0)
+		return (0);
+	else
+		return (1); // Error: No such file or directory
+}
 
 t_list	*move_to_pipe(t_list *lst)
 {
@@ -93,21 +104,6 @@ static void	open_fds(t_list *lst, int count)
 	}
 }
 
-int	count_args(t_list *lst)
-{
-	int		i;
-	t_list	*tmp;
-
-	i = 0;
-	tmp = lst;
-	while (tmp)
-	{
-		i++;
-		tmp = tmp->next;
-	}
-	return (i);
-}
-
 int	exec_redirect(t_list *lst)
 {
 	char	*output;
@@ -118,20 +114,33 @@ int	exec_redirect(t_list *lst)
 	redirect = count_types(lst, 3);
 	redirect += count_types(lst, 4);
 	output = find_output(lst);
+	flags = O_CREAT;
+	if (is_type(lst, 1))
+	{
+		if (access(output, F_OK) == 0)
+			flags = O_RDONLY;
+		else
+			return (0); // Error: no such file or directory
+	}
 	if (redirect > 1)
 		open_fds(lst, redirect);
-	flags = O_CREAT;
 	if (is_type(lst, 3) == 1)
 		flags = flags | O_APPEND | O_WRONLY;
 	else if (is_type(lst, 4) == 1)
 		flags = flags | O_TRUNC | O_WRONLY;
-	else if (is_type(lst, 1))
-		flags = flags | O_RDONLY;
 	fd = open(output, flags, 0666);
 	if (fd < 0)
 		return (1);
-	if (dup2(fd, STDOUT_FILENO) == -1)
-		return (1);
+	if (is_type(lst, 3) || is_type(lst, 4))
+	{
+		if (dup2(fd, STDOUT_FILENO) == -1)
+			return (1); // Error: dup2
+	}
+	else
+	{
+		if (dup2(fd, STDIN_FILENO) == -1)
+			return(1); //Error: dup2
+	}
 	close(fd);
 	return (0);
 }
