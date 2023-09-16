@@ -6,7 +6,7 @@
 /*   By: laugarci <laugarci@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/04 14:04:45 by laugarci          #+#    #+#             */
-/*   Updated: 2023/09/16 11:14:32 by laugarci         ###   ########.fr       */
+/*   Updated: 2023/09/16 11:21:42 by laugarci         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -103,7 +103,6 @@ int	exec_commands(t_list *lst, char **env)
 	char	*cmd;
 	char	**split_cmd;
 
-	print_tokens(lst);
 	cmd = find_command(lst);
 	split_cmd = ft_split(cmd, '|');
 	lst = save_tokens(split_cmd[0]);

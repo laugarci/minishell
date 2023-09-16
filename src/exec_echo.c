@@ -6,7 +6,7 @@
 /*   By: laugarci <laugarci@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/04 11:30:35 by laugarci          #+#    #+#             */
-/*   Updated: 2023/09/15 18:02:38 by laugarci         ###   ########.fr       */
+/*   Updated: 2023/09/16 12:52:41 by laugarci         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,8 +45,6 @@ int	exec_echo(t_list *lst)
 	int		i;
 	int		flag;
 	
-	write(1, "llega\n", 6);
-	print_tokens(lst);
 	aux = lst;
 	flag = 0;
 	i = count_list(lst);
@@ -57,7 +55,7 @@ int	exec_echo(t_list *lst)
 	}
 	aux = aux->next;
 	token = aux->content;
-	if (ft_strncmp(token->string, "-n", 2) == 0)
+	if (ft_strncmp(token->string, "-n\0", 3) == 0)
 	{
 		flag = 1;
 		aux = aux->next;
