@@ -6,7 +6,7 @@
 /*   By: ffornes- <ffornes-@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/15 12:12:15 by ffornes-          #+#    #+#             */
-/*   Updated: 2023/09/16 13:19:06 by ffornes-         ###   ########.fr       */
+/*   Updated: 2023/09/16 18:41:18 by ffornes-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,78 +14,101 @@
 #include "parser.h"
 #include "libft.h"
 #include "libft_bonus.h"
-
 #include <stdlib.h>
 #include <stdio.h>
 
-static t_list	*add_type(t_list *lst, int type1, int type2)
+static int	count_processess(t_list *lst)
 {
 	t_token	*token;
-	t_list	*new_list;
-	t_list	*tmp;
+	int		i;
 
-	new_list = NULL;
+	i = 1;
 	while (42)
 	{
 		token = lst->content;
 		if (token->type == PIPE)
-			break ;
-		if (token->string && (token->type == type1 || token->type == type2))
-		{
-			tmp = ft_lstnew((void *)token);
-			ft_lstadd_back(&new_list, ft_lstnew((void *)token));
-		}
+			i++;
 		if (!lst->next)
 			break ;
 		lst = lst->next;
 	}
-	return (new_list);
+	return (i);
 }
 
-static t_list	*organize_list_utils(t_list *new_list, t_list *aux, t_list *lst)
+static void	add_to_list(t_list **aux, t_list **dst)
 {
-	if (new_list)
+	t_list	*tmp;
+
+	tmp = *aux;
+	*aux = (t_list *)(*aux)->next;
+	tmp->next = NULL;
+	ft_lstadd_back(dst, tmp);
+}
+
+static void	preserve_previous_util(t_list **previous, t_list **aux)
+{
+	t_list	*pre;
+	t_list	*tmp;
+
+	pre = *previous;
+	tmp = *aux;
+	*previous = tmp;
+	*aux = tmp->next;
+}
+
+static t_list	*type_to_lst(t_list *dst, t_list **src, int type1, int type2)
+{
+	t_list	*aux;
+	t_list	*previous;
+
+	aux = *src;
+	previous = NULL;
+	while (aux->next)
 	{
-		aux = add_type(lst, -1, -1);
-		join_lists(&new_list, aux);
+		if (((t_token *)(aux->content))->type == PIPE
+			&& type1 != PIPE && type2 != PIPE)
+			break ;
+		if ((((t_token *)(aux->content))->type == type1)
+			|| ((t_token *)(aux->content))->type == type2)
+		{
+			if (!previous)
+				*src = aux->next;
+			else
+				previous->next = aux->next;
+			add_to_list(&aux, &dst);
+			if (type1 == PIPE || type2 == PIPE)
+				break ;
+		}
+		else
+			preserve_previous_util(&previous, &aux);
 	}
-	else
-		new_list = add_type(lst, -1, -1);
-	aux = add_type(lst, INFILE, HERE_DOC);
-	if (aux)
-		join_lists(&new_list, aux);
-	aux = add_type(lst, APPEND, TRUNC);
-	if (aux)
-		join_lists(&new_list, aux);
-	return (new_list);
+	return (dst);
 }
 
 t_list	*organize_list(t_list *lst)
 {
 	t_list	*new_list;
-	t_list	*aux;
+	t_list	*tmp;
 	int		count;
-	t_token	*token;
 
 	count = count_processess(lst);
+	new_list = NULL;
 	if (!count)
 		return (lst);
-	new_list = NULL;
-	aux = NULL;
 	while (count--)
 	{
-		new_list = organize_list_utils(new_list, aux, lst);
-		if (count)
+		tmp = type_to_lst(new_list, &lst, -1, -1);
+		new_list = tmp;
+		tmp = type_to_lst(new_list, &lst, INFILE, HERE_DOC);
+		new_list = tmp;
+		tmp = type_to_lst(new_list, &lst, APPEND, TRUNC);
+		new_list = tmp;
+		if (count > 0)
 		{
-			token = new_token(ft_strdup("|"), PIPE, 0);
-			ft_lstadd_back(&new_list, ft_lstnew((void *)token));
-			lst = move_to_pipe(lst);
-		}
-		else
-		{
-			ft_lstadd_back(&new_list, ft_lstnew((void *)new_token(NULL, -1, -1)));
-			return (new_list);
+			tmp = type_to_lst(new_list, &lst, PIPE, PIPE);
+			new_list = tmp;
 		}
 	}
-	return (lst);
+	ft_lstadd_back(&new_list, lst);
+	return (new_list);
 }
