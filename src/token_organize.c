@@ -6,7 +6,7 @@
 /*   By: ffornes- <ffornes-@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/15 12:12:15 by ffornes-          #+#    #+#             */
-/*   Updated: 2023/09/16 18:41:18 by ffornes-         ###   ########.fr       */
+/*   Updated: 2023/09/16 20:29:19 by ffornes-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,10 +47,8 @@ static void	add_to_list(t_list **aux, t_list **dst)
 
 static void	preserve_previous_util(t_list **previous, t_list **aux)
 {
-	t_list	*pre;
 	t_list	*tmp;
 
-	pre = *previous;
 	tmp = *aux;
 	*previous = tmp;
 	*aux = tmp->next;
