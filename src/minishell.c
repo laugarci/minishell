@@ -6,7 +6,7 @@
 /*   By: laugarci <laugarci@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/05 14:01:37 by laugarci          #+#    #+#             */
-/*   Updated: 2023/09/15 19:07:55 by ffornes-         ###   ########.fr       */
+/*   Updated: 2023/09/16 10:40:30 by ffornes-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -136,7 +136,7 @@ static int	main_loop(char *prompt, char **envp, int *exit_status)
 			aux = list;
 			list = organize_list(list);
 			clean_lst(aux);
-			//cmp_commands(list, envp);
+			cmp_commands(list, envp);
 			ft_lstclear(&list, (void *)free_token);
 		}
 	}
