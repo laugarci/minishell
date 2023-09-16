@@ -27,7 +27,7 @@ int	cmp_commands(t_list *lst, char **env)
 	int		num_pipes;
 
 	token = lst->content;
-	if (ft_strncmp(token->string, "cd", 3) == 0)
+	if (ft_strncmp(token->string, "cd\0", 3) == 0)
 		exec_cd(lst);
 	else if (is_type(lst, 0) || is_type(lst, 3) || is_type(lst, 4) || is_type(lst, 1) || is_type(lst, 2))
 	{
@@ -36,18 +36,20 @@ int	cmp_commands(t_list *lst, char **env)
 	}
 	else if (is_type(lst, 2) == 1)
 		here_doc(lst, env);
-	else if (ft_strncmp(token->string, "echo", 4) == 0)
+	else if (ft_strncmp(token->string, "echo\0", 5) == 0)
 		exec_echo(lst);
-	else if (ft_strncmp(token->string, "pwd", 3) == 0)
+	else if (ft_strncmp(token->string, "pwd\0", 4) == 0)
 		exec_pwd();
-	else if (ft_strncmp(token->string, "export", 6) == 0)
+	else if (ft_strncmp(token->string, "export\0", 7) == 0)
 	{
 		lst = lst->next;
 		token = lst->content;
 		builtin_export(token->string, env);
 	}
-	else if (ft_strncmp(token->string, "env", 3) == 0)
+	else if (ft_strncmp(token->string, "env\0", 4) == 0)
 		exec_env(env);
+	else if (ft_strncmp(token->string, "unset\0", 6) == 0)
+		exec_unset(lst, env);
 	else
 		exec_commands(lst, env);
 	return (0);
