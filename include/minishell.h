@@ -68,4 +68,6 @@ int			check_infile(t_list *lst);
 
 int		exec_env(char **env);
 
+int		exec_unset(t_list *lst, char **env);
+
 #endif
