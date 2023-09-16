@@ -6,7 +6,7 @@
 /*   By: ffornes- <ffornes-@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/26 16:31:29 by ffornes-          #+#    #+#             */
-/*   Updated: 2023/08/04 14:12:27 by laugarci         ###   ########.fr       */
+/*   Updated: 2023/09/16 20:14:05 by ffornes-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,9 +14,6 @@
 #include <unistd.h>
 #include "libft.h"
 #include "minishell.h"
-
-// Debugging - Must delete later
-#include <stdio.h>
 
 static char	**join_path_cmd(char **path, char *cmd)
 {
@@ -55,11 +52,13 @@ static char	*get_right_path(char **path, char *cmd)
 			out = ft_strdup(path[i]);
 			if (access(path[i], X_OK))
 			{
-				put_error(cmd, 128); // Error: Path has been found but it's not executable
+				print_and_return(126);
 				free(out);
 				return (NULL);
 			}
 		}
+		else
+			print_and_return(127);
 		i++;
 	}
 	return (out);
@@ -104,10 +103,10 @@ char	*get_path(char *cmd, char **envp)
 		if (!access(cmd, F_OK))
 		{
 			if (access(cmd, X_OK))
-				put_error(cmd, 128);
+				print_and_return(126); // Must add filename
 		}
 		else
-			put_error(cmd, 127);
+			print_and_return(127); // Must add the filename I tried to open
 		return (cmd);
 	}
 	i = 0;
@@ -119,11 +118,11 @@ char	*get_path(char *cmd, char **envp)
 	}
 	if (!aux)
 	{
-		put_error(cmd, 127); // Error: command not found
+		print_and_return(127);
 		return (NULL);
 	}
 	out = get_path_util(aux, cmd);
 	if (!out)
-		put_error(cmd, 127); // Error: command not found
+		print_and_return(12); // This can be malloc fail or others...
 	return (out);
 }
