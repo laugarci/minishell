@@ -52,7 +52,7 @@ int	needs_space(char *str)
 		{
 			if (str[i] == '|')
 				out += check_pipes(str, i);
-			else if (str[i] == '<' | str[i] == '>')
+			else if (str[i] == '<' || str[i] == '>')
 				out = check_redirections(str, i);
 		}
 		if (out != 0)

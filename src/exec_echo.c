@@ -23,9 +23,9 @@ void	print_echo(t_list *aux, t_list *lst, int flag)
 	t_token	*token;
 	int		i;
 
-	i = 1;
+	i = 0;
 	token = aux->content;
-	while (i < (count_list(lst) - 1 - flag))
+	while (i < (count_list(aux) - 1))
 	{
 		printf("%s", token->string);
 		if (i < (count_list(lst) - 2 - flag))
@@ -58,7 +58,15 @@ int	exec_echo(t_list *lst)
 	if (ft_strncmp(token->string, "-n\0", 3) == 0)
 	{
 		flag = 1;
-		aux = aux->next;
+		while (aux)
+		{ 
+			if (ft_strncmp(token->string, "-n\0", 3) != 0)
+				break ;
+			aux = aux->next;
+			token = aux->content;
+			flag++;
+		}
+		
 	}
 	print_echo(aux, lst, flag);
 	return (0);

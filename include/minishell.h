@@ -66,4 +66,6 @@ t_list		*move_to_pipe(t_list *lst);
 
 int			check_infile(t_list *lst);
 
+int		exec_env(char **env);
+
 #endif

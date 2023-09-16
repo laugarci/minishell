@@ -46,6 +46,8 @@ int	cmp_commands(t_list *lst, char **env)
 		token = lst->content;
 		builtin_export(token->string, env);
 	}
+	else if (ft_strncmp(token->string, "env", 3) == 0)
+		exec_env(env);
 	else
 		exec_commands(lst, env);
 	return (0);
