@@ -6,7 +6,7 @@
 /*   By: ffornes- <ffornes-@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/24 14:47:53 by ffornes-          #+#    #+#             */
-/*   Updated: 2023/09/14 18:33:09 by ffornes-         ###   ########.fr       */
+/*   Updated: 2023/09/15 11:58:10 by ffornes-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,64 +15,6 @@
 #include "libft.h"
 #include <stdlib.h>
 #include <stdio.h>
-
-static char	*update_input_util(int i, char *tmp, char *str, char *input)
-{
-	char	*aux;
-
-	aux = tmp;
-	if (!str)
-		str = "";
-	tmp = ft_strjoin(tmp, str);
-	free(aux);
-	if (!tmp)
-		return (NULL);
-	aux = tmp;
-	while (input[i] && ((i && input[i - 1] == '$'
-				&& (ft_isalpha(input[i]) || input[i] == '_' || input[i] == '?'))
-			|| (ft_isalnum(input[i]) || input[i] == '_')))
-	{
-		i++;
-		if (input[i - 1] == '?')
-			break ;
-	}
-	if (input[i])
-	{
-		tmp = ft_strjoin(tmp, (input + i));
-		free(aux);
-		if (!tmp)
-			return (NULL);
-	}
-	return (tmp);
-}
-
-static char	*update_input(char *input, char *str)
-{
-	int		i;
-	char	*tmp;
-	char	*aux;
-
-	i = 0;
-	while (input[i])
-		if (input[i++] == '$')
-			if (ft_isalpha(input[i]) || input[i] == '_'
-				|| (input[i - 1] == '$' && input[i] == '?'))
-				break ;
-	if (i > 1)
-		tmp = malloc(sizeof(char) * i);
-	else
-		tmp = ft_strdup("");
-	if (!tmp)
-		return (NULL);
-	if (i > 1)
-		ft_strlcpy(tmp, input, i);
-	aux = str;
-	tmp = update_input_util(i, tmp, str, input);
-	free(str);
-	if (!tmp)
-		return (NULL);
-	return (tmp);
-}
 
 static char	*expand_input_util(char *input)
 {
@@ -94,6 +36,23 @@ static char	*expand_input_util(char *input)
 	return (str);
 }
 
+static char	*cut_aux(char *aux)
+{
+	int	i;
+
+	i = 0;
+	while (aux[i])
+	{
+		if (aux[i] == ' ')
+		{
+			aux[i] = '\0';
+			break ;
+		}
+		i++;
+	}
+	return (aux);
+}
+
 // This function locates the environment value in the string 
 // 	recieved as input, trimming the environment value leaving 
 // 	only it's reference name.
@@ -105,7 +64,6 @@ static char	*expand_input(char *input, char *envp[], int *exit_status)
 {
 	char	*str;
 	char	*aux;
-	int		i;
 
 	str = expand_input_util(input);
 	if (!str)
@@ -115,17 +73,11 @@ static char	*expand_input(char *input, char *envp[], int *exit_status)
 	aux = ft_strdup(str);
 	if (!aux)
 		return (NULL);
-	i = -1;
-	while (aux[++i])
-	{
-		if (aux[i] == ' ')
-		{
-			aux[i] = '\0';
-			break ;
-		}
-	}
+	aux = cut_aux(aux);
 	find_eval(aux, envp, &str);
 	free(aux);
+	if (!str)
+		return (NULL);
 	return (ft_strdup(str));
 }
 
@@ -146,16 +98,13 @@ char	*expand_evals(char *input, char *envp[], int *exit_status)
 		aux = input;
 		free(out);
 		out = expand_input(input, envp, exit_status);
-		if (!out)
-			return (NULL);
-		out = update_input(input, out);
+		if (out)
+			out = update_input(input, out);
 		if (!out)
 			return (NULL);
 		input = ft_strdup(out);
 		free(aux);
 	}
 	free(out);
-	if (!input)
-		return (NULL);
 	return (input);
 }
