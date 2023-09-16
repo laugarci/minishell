@@ -6,7 +6,7 @@
 /*   By: ffornes- <ffornes-@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/15 12:12:15 by ffornes-          #+#    #+#             */
-/*   Updated: 2023/09/15 19:08:07 by ffornes-         ###   ########.fr       */
+/*   Updated: 2023/09/16 11:15:36 by ffornes-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -116,6 +116,11 @@ t_list	*organize_list(t_list *lst)
 			ft_lstadd_back(&new_list, ft_lstnew((void *)token));
 			lst = move_to_pipe(lst);
 		}
+		else
+		{
+			ft_lstadd_back(&new_list, ft_lstnew((void *)new_token(NULL, -1, -1)));
+			return (new_list);
+		}
 	}
-	return (new_list);
+	return (lst);
 }

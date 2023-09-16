@@ -6,7 +6,7 @@
 /*   By: laugarci <laugarci@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/14 12:07:29 by laugarci          #+#    #+#             */
-/*   Updated: 2023/09/15 18:15:13 by laugarci         ###   ########.fr       */
+/*   Updated: 2023/09/16 11:19:12 by laugarci         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -122,7 +122,6 @@ int	exec_redirect(t_list *lst)
 		else
 			return (0); // Error: no such file or directory
 	}
-	printf("red >> %d\n", redirect);
 	if (redirect > 1)
 		open_fds(lst, redirect);
 	if (is_type(lst, 3) == 1)
