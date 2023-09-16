@@ -23,7 +23,7 @@ SRC_FILES = minishell.c \
 			token_process.c token_process_rm.c \
 			subtoken_process.c subtoken_count.c subtoken_join.c organize_tokens.c \
 			builtin_export.c \
-			errors.c syntax_error.c process_list.c exec_cd.c \
+			errors.c syntax_error.c process_list.c exec_cd.c exec_env.c \
 
 OBJ_DIR = objs/
 OBJ_FILES = $(SRC_FILES:.c=.o)
