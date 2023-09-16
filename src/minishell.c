@@ -6,7 +6,7 @@
 /*   By: laugarci <laugarci@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/05 14:01:37 by laugarci          #+#    #+#             */
-/*   Updated: 2023/09/16 11:18:06 by laugarci         ###   ########.fr       */
+/*   Updated: 2023/09/16 18:41:33 by ffornes-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,33 +93,9 @@ static int	exit_check(char *input) // Make builtin
 	return (0);
 }
 
-static void	clean_lst(t_list *lst)
-{
-	t_list	*aux;
-	t_token	*token;
-
-	aux = lst;
-	while (lst)
-	{
-		token = lst->content;
-		lst = lst->next;
-		if (token && !token->string)
-			free(token);
-		else if (token && token->type == PIPE)
-		{
-			free(token->string);
-			free(token);
-		}
-		free(aux);
-		aux = lst;
-	}
-	free(aux);
-}
-
 static int	main_loop(char *prompt, char **envp, int *exit_status)
 {
 	char	*input;
-	t_list	*aux;
 	t_list	*list;
 
 	input = readline(prompt);
@@ -133,9 +109,7 @@ static int	main_loop(char *prompt, char **envp, int *exit_status)
 		*exit_status = parse_input(input, envp, &list, exit_status);
 		if (*exit_status == 0)
 		{
-			aux = list;
 			list = organize_list(list);
-			clean_lst(aux);
 			cmp_commands(list, envp);
 			ft_lstclear(&list, (void *)free_token);
 		}
