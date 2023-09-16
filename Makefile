@@ -35,7 +35,7 @@ DEPS = $(addprefix $(OBJ_DIR), $(DEP_FILES))
 LIBFT = libft/libft.a
 
 CC = 		gcc
-#CFLAGS = 	-Wall -Wextra -Werror -MMD #-fsanitize=address
+CFLAGS = 	-Wall -Wextra -Werror -MMD #-fsanitize=address
 RM = 		rm -f
 INCLUDE =	-I include/ -I libft/include/
 
