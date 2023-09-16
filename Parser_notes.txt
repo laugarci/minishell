@@ -1,13 +1,12 @@
 vpath Makefile directiva
 
 ToDo:
-	
-	Expansions:
-	Program expansion of $? in order to show the error code
 
 	Errors:
-	Implement error handling, exit status and error messages
-	Implement syntax errors for unclosed quotes
+	Implement error handling, exit status and error messages in execution
+
+	Expansions:
+	When exanding value that is not stored in envp, program segfaults
 
 	Signals:
 	Implement Ctrl C, Ctrl D, Ctrl \
@@ -15,6 +14,8 @@ ToDo:
 	Builtin Export:
 	Parse
 	When finding += must append instead of trunc
+
+	Repasar la libft per mallocs no protegits LMAO!
 
 	Syntax Errors:
 		test
