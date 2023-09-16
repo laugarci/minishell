@@ -6,7 +6,7 @@
 /*   By: ffornes- <ffornes-@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/26 16:31:29 by ffornes-          #+#    #+#             */
-/*   Updated: 2023/09/16 20:14:05 by ffornes-         ###   ########.fr       */
+/*   Updated: 2023/09/16 20:29:54 by ffornes-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,6 +62,7 @@ static char	*get_right_path(char **path, char *cmd)
 		i++;
 	}
 	return (out);
+	cmd = NULL; // DEBUG
 }
 
 static char	*get_path_util(char *str, char *cmd)
