@@ -6,7 +6,7 @@
 /*   By: laugarci <laugarci@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/04 14:04:45 by laugarci          #+#    #+#             */
-/*   Updated: 2023/09/16 11:21:42 by laugarci         ###   ########.fr       */
+/*   Updated: 2023/09/16 13:08:52 by laugarci         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,6 +76,7 @@ int	exec_commands_wf(t_list *lst, char **env, int flags)
 	token = lst->content;
 	if ((execve(args[0], args, env)) == -1)
 		return (-1); // Error: szh: command not found
+	free_double((void **)args);
 	return (0);
 }
 
@@ -92,6 +93,7 @@ int	exec_commands_nf(t_list *lst, char **env)
 	args[1] = NULL;
 	if ((execve(args[0], args, env)) == -1)
 		printf("zsh: command not found: %s\n", token->string);
+	free_double((void **)args);
 	return (0);
 }
 
@@ -120,5 +122,7 @@ int	exec_commands(t_list *lst, char **env)
 	}
 	else
 		waitpid(pid, &status, 0);
+	free_double((void **)split_cmd);
+	free(cmd);
 	return (0);
 }
