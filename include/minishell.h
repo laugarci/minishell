@@ -6,7 +6,7 @@
 /*   By: ffornes- <ffornes-@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/27 11:32:21 by ffornes-          #+#    #+#             */
-/*   Updated: 2023/09/16 11:01:50 by laugarci         ###   ########.fr       */
+/*   Updated: 2023/09/16 20:14:29 by ffornes-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,8 +16,6 @@
 # include "libft_defs.h"
 
 char		*get_path(char *cmd, char **envp);
-
-void		put_error(char *str, int error_id);
 
 int			exec_commands(t_list *lst, char **env);
 
