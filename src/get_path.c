@@ -6,7 +6,7 @@
 /*   By: ffornes- <ffornes-@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/26 16:31:29 by ffornes-          #+#    #+#             */
-/*   Updated: 2023/09/16 20:29:54 by ffornes-         ###   ########.fr       */
+/*   Updated: 2023/09/16 20:33:14 by ffornes-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,30 @@
 #include <unistd.h>
 #include "libft.h"
 #include "minishell.h"
+
+// Debugging - Must delete later
+#include <stdio.h>
+
+static void	put_error(char *str, int error_id)
+{
+	char	*aux;
+
+	aux = NULL;
+	if (error_id == 44)
+		aux = ft_strjoin(str, ": error near unexpected token `\'\'\n");
+	else if (error_id == 45)
+		aux = ft_strjoin(str, ": error near unexpected token `\"\'\n");
+	else if (error_id == 46)
+		aux = ft_strjoin(str, ": error near unexpected token `|'\n");
+	else if (error_id == 47)
+		aux = ft_strjoin(str, ": error near unexpected token `<'\n");
+	else if (error_id == 127)
+		aux = ft_strjoin(str, ": No such file or directory\n");
+	else if (error_id == 128)
+		aux = ft_strjoin(str, ": unable to execute command XD\n");
+	ft_putstr_fd(aux, 2);
+	free(aux);
+}
 
 static char	**join_path_cmd(char **path, char *cmd)
 {
@@ -52,17 +76,14 @@ static char	*get_right_path(char **path, char *cmd)
 			out = ft_strdup(path[i]);
 			if (access(path[i], X_OK))
 			{
-				print_and_return(126);
+				put_error(cmd, 128); // Error: Path has been found but it's not executable
 				free(out);
 				return (NULL);
 			}
 		}
-		else
-			print_and_return(127);
 		i++;
 	}
 	return (out);
-	cmd = NULL; // DEBUG
 }
 
 static char	*get_path_util(char *str, char *cmd)
@@ -83,14 +104,14 @@ static char	*get_path_util(char *str, char *cmd)
 
 /* cmd is a command and it's arguments splitted by spaces since it's needed
  * by execve that the command and it's flags/arguments are in a char **
- * 
- * This function recieves a command and returns an allocated string containing 
+ *
+ * This function recieves a command and returns an allocated string containing
  * it's path + command.
- * In order to do this, must check first if the command recieved already has 
+ * In order to do this, must check first if the command recieved already has
  * it's path or needs to find it.
  * If it has it's path, it must return it.
  * If it doesn't, it appends all possible Paths with the command, in order
- * to check with access if the directory exists and it's executable, and 
+ * to check with access if the directory exists and it's executable, and
  * returns the correct path. */
 char	*get_path(char *cmd, char **envp)
 {
@@ -104,10 +125,10 @@ char	*get_path(char *cmd, char **envp)
 		if (!access(cmd, F_OK))
 		{
 			if (access(cmd, X_OK))
-				print_and_return(126); // Must add filename
+				put_error(cmd, 128);
 		}
 		else
-			print_and_return(127); // Must add the filename I tried to open
+			put_error(cmd, 127);
 		return (cmd);
 	}
 	i = 0;
@@ -119,11 +140,11 @@ char	*get_path(char *cmd, char **envp)
 	}
 	if (!aux)
 	{
-		print_and_return(127);
+		put_error(cmd, 127); // Error: command not found
 		return (NULL);
 	}
 	out = get_path_util(aux, cmd);
 	if (!out)
-		print_and_return(12); // This can be malloc fail or others...
+		put_error(cmd, 127); // Error: command not found
 	return (out);
 }
