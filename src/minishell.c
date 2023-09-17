@@ -6,7 +6,7 @@
 /*   By: laugarci <laugarci@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/05 14:01:37 by laugarci          #+#    #+#             */
-/*   Updated: 2023/09/17 16:33:50 by ffornes-         ###   ########.fr       */
+/*   Updated: 2023/09/17 17:47:47 by ffornes-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,7 @@
 #include "libft.h"
 #include "libft_bonus.h"
 #include "minishell.h"
+#include "minishell_defs.h"
 #include "parser.h"
 
 // AJNKNAEKK DEBUGGGGGGGGGGGG // INCLUDED IN PARSER.H
@@ -82,7 +83,7 @@ static char	**set_env(char *env[])
 	return (dst);
 }
 
-static int	exit_check(char *input) // Make builtin
+int	exit_check(char *input) // Make builtin
 {
 	if (!ft_strncmp(input, "exit\0", 5))
 	{
@@ -97,7 +98,10 @@ static int	main_loop(char *prompt, char **envp, int *exit_status)
 {
 	char	*input;
 	t_list	*list;
+	int		state;
 
+	state = STATE_READ;
+	signal_handler(&state, exit_status);
 	input = readline(prompt);
 	if (!input)
 		return (1);
@@ -111,7 +115,7 @@ static int	main_loop(char *prompt, char **envp, int *exit_status)
 		{
 			list = organize_list(list);
 			print_tokens(list);
-			cmp_commands(list, envp);
+			cmp_commands(list, envp); // Send &state in order to update it's value when starts executing or when on here_doc
 			ft_lstclear(&list, (void *)free_token);
 		}
 	}
@@ -133,7 +137,10 @@ int	main(int argc, char *argv[], char *envp[])
 		return (print_and_return(12));
 	prompt = ft_strjoin((argv[0] + 2), "$ ");
 	if (!prompt)
+	{
+		free_double((void **)my_env);
 		return (print_and_return(12));
+	}
 	while (42)
 		if (main_loop(prompt, my_env, &exit_status))
 			break ;
