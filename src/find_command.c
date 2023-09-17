@@ -6,7 +6,7 @@
 /*   By: laugarci <laugarci@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/17 10:09:20 by laugarci          #+#    #+#             */
-/*   Updated: 2023/09/17 11:24:07 by laugarci         ###   ########.fr       */
+/*   Updated: 2023/09/17 12:35:36 by laugarci         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,7 +69,7 @@ char	*find_output(t_list *lst)
 			tmp = tmp->next;
 			token = tmp->content;
 			flag = 1;
-			if (token->type != 3 && token->type != 4)
+			if (token->type != 3 && token->type != 4 && token->type != 1)
 				break ;
 		}
 		if (flag == 0)
