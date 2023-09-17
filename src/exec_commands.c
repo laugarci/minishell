@@ -6,7 +6,7 @@
 /*   By: laugarci <laugarci@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/04 14:04:45 by laugarci          #+#    #+#             */
-/*   Updated: 2023/09/17 11:52:45 by laugarci         ###   ########.fr       */
+/*   Updated: 2023/09/17 13:03:50 by laugarci         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,8 +34,6 @@ int	cmp_commands(t_list *lst, char **env)
 		num_pipes = count_types(lst, PIPE);
 		exec_pipes(env, num_pipes, lst);
 	}
-//	else if (is_type(lst, 2) == 1)
-//		here_doc(lst, env);
 	else if (ft_strncmp(token->string, "echo\0", 5) == 0)
 		exec_echo(lst);
 	else if (ft_strncmp(token->string, "pwd\0", 4) == 0)
