@@ -6,7 +6,7 @@
 /*   By: laugarci <laugarci@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/14 12:07:29 by laugarci          #+#    #+#             */
-/*   Updated: 2023/09/17 12:36:40 by laugarci         ###   ########.fr       */
+/*   Updated: 2023/09/17 13:05:09 by laugarci         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -114,7 +114,6 @@ int	exec_redirect(t_list *lst)
 	redirect = count_types(lst, 3);
 	redirect += count_types(lst, 4);
 	output = find_output(lst);
-	printf("output >> %s\n", output);
 	flags = O_CREAT;
 	if (is_type(lst, 1))
 	{

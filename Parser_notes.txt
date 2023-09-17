@@ -15,6 +15,9 @@ ToDo:
 	Parse
 	When finding += must append instead of trunc
 
+	Exit, is a builtin? how? why?
+	126 Command was found but could not be executed
+	127	No such file or directory
 	Repasar la libft per mallocs no protegits LMAO!
 
 	Syntax Errors:

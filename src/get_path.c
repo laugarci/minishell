@@ -6,7 +6,7 @@
 /*   By: ffornes- <ffornes-@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/26 16:31:29 by ffornes-          #+#    #+#             */
-/*   Updated: 2023/08/04 14:12:27 by laugarci         ###   ########.fr       */
+/*   Updated: 2023/09/16 20:33:14 by ffornes-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,27 @@
 
 // Debugging - Must delete later
 #include <stdio.h>
+
+static void	put_error(char *str, int error_id)
+{
+	char	*aux;
+
+	aux = NULL;
+	if (error_id == 44)
+		aux = ft_strjoin(str, ": error near unexpected token `\'\'\n");
+	else if (error_id == 45)
+		aux = ft_strjoin(str, ": error near unexpected token `\"\'\n");
+	else if (error_id == 46)
+		aux = ft_strjoin(str, ": error near unexpected token `|'\n");
+	else if (error_id == 47)
+		aux = ft_strjoin(str, ": error near unexpected token `<'\n");
+	else if (error_id == 127)
+		aux = ft_strjoin(str, ": No such file or directory\n");
+	else if (error_id == 128)
+		aux = ft_strjoin(str, ": unable to execute command XD\n");
+	ft_putstr_fd(aux, 2);
+	free(aux);
+}
 
 static char	**join_path_cmd(char **path, char *cmd)
 {
@@ -83,14 +104,14 @@ static char	*get_path_util(char *str, char *cmd)
 
 /* cmd is a command and it's arguments splitted by spaces since it's needed
  * by execve that the command and it's flags/arguments are in a char **
- * 
- * This function recieves a command and returns an allocated string containing 
+ *
+ * This function recieves a command and returns an allocated string containing
  * it's path + command.
- * In order to do this, must check first if the command recieved already has 
+ * In order to do this, must check first if the command recieved already has
  * it's path or needs to find it.
  * If it has it's path, it must return it.
  * If it doesn't, it appends all possible Paths with the command, in order
- * to check with access if the directory exists and it's executable, and 
+ * to check with access if the directory exists and it's executable, and
  * returns the correct path. */
 char	*get_path(char *cmd, char **envp)
 {
