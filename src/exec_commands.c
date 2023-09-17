@@ -6,7 +6,7 @@
 /*   By: laugarci <laugarci@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/04 14:04:45 by laugarci          #+#    #+#             */
-/*   Updated: 2023/09/17 13:03:50 by laugarci         ###   ########.fr       */
+/*   Updated: 2023/09/17 19:46:26 by laugarci         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,19 +25,22 @@ int	cmp_commands(t_list *lst, char **env)
 {
 	t_token	*token;
 	int		num_pipes;
+	int		err;
 
 	token = lst->content;
+	err = 0;
 	if (ft_strncmp(token->string, "cd\0", 3) == 0)
-		exec_cd(lst);
-	else if (is_type(lst, 0) || is_type(lst, 3) || is_type(lst, 4) || is_type(lst, 1) || is_type(lst, 2))
+		err = exec_cd(lst);
+	else if (is_type(lst, 0) || is_type(lst, 3) ||
+			is_type(lst, 4) || is_type(lst, 1) || is_type(lst, 2))
 	{
 		num_pipes = count_types(lst, PIPE);
-		exec_pipes(env, num_pipes, lst);
+		err = exec_pipes(env, num_pipes, lst);
 	}
 	else if (ft_strncmp(token->string, "echo\0", 5) == 0)
-		exec_echo(lst);
+		err = exec_echo(lst);
 	else if (ft_strncmp(token->string, "pwd\0", 4) == 0)
-		exec_pwd();
+		err = exec_pwd();
 	else if (ft_strncmp(token->string, "export\0", 7) == 0)
 	{
 		lst = lst->next;
@@ -45,12 +48,12 @@ int	cmp_commands(t_list *lst, char **env)
 		builtin_export(token->string, env);
 	}
 	else if (ft_strncmp(token->string, "env\0", 4) == 0)
-		exec_env(env);
+		err = exec_env(env);
 	else if (ft_strncmp(token->string, "unset\0", 6) == 0)
-		exec_unset(lst, env);
+		err = exec_unset(lst, env);
 	else
-		exec_commands(lst, env);
-	return (0);
+		err = exec_commands(lst, env);
+	return (check_error(err));
 }
 
 int	exec_commands_wf(t_list *lst, char **env, int flags)
@@ -64,7 +67,7 @@ int	exec_commands_wf(t_list *lst, char **env, int flags)
 	token = lst->content;
 	args = (char **)malloc(sizeof(char *) * (flags + 2));
 	if (!args)
-		return (1);
+		return (-1);
 	args[0] = get_path(ft_strtrim(token->string, " "), env);
 	i = 0;
 	while (i < flags)
@@ -77,8 +80,8 @@ int	exec_commands_wf(t_list *lst, char **env, int flags)
 	args[flags + 1] = NULL;
 	token = lst->content;
 	if ((execve(args[0], args, env)) == -1)
-		return (-1); // Error: szh: command not found
-	free_double((void **)args);
+		return (check_error(127));
+	//free_double((void **)args);
 	return (0);
 }
 
@@ -90,11 +93,11 @@ int	exec_commands_nf(t_list *lst, char **env)
 	token = lst->content;
 	args = (char **)malloc(sizeof(char *) * 2);
 	if (!args)
-		return (1);
+		return (-1);
 	args[0] = get_path(ft_strtrim(token->string, " "), env);
 	args[1] = NULL;
 	if ((execve(args[0], args, env)) == -1)
-		printf("zsh: command not found: %s\n", token->string);
+		return (check_error(127));
 	free_double((void **)args);
 	return (0);
 }
@@ -113,7 +116,7 @@ int	exec_commands(t_list *lst, char **env)
 	i = count_list(lst);
 	pid = fork();
 	if (pid == -1)
-		return (-1); // Error: fail pid
+		return (-1);
 	if (pid == 0)
 	{
 		if (i == 2)
@@ -124,7 +127,8 @@ int	exec_commands(t_list *lst, char **env)
 	}
 	else
 		waitpid(pid, &status, 0);
-	free_double((void **)split_cmd);
-	free(cmd);
+//	free(cmd);
+//	free_double((void **)split_cmd);
+//	ft_lstclear(&lst, (void *)free_token);
 	return (0);
 }

@@ -6,7 +6,7 @@
 /*   By: ffornes- <ffornes-@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/27 11:32:21 by ffornes-          #+#    #+#             */
-/*   Updated: 2023/09/17 13:07:57 by laugarci         ###   ########.fr       */
+/*   Updated: 2023/09/17 19:36:15 by laugarci         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,9 +31,11 @@ int			is_type(t_list *lst, int type);
 
 int			count_types(t_list *lst, int type);
 
-void		exec_pipes(char **env, int num_pipes, t_list *lst);
+int			exec_pipes(char **env, int num_pipes, t_list *lst);
 
 int			count_args(t_list *lst);
+
+int			**close_pipes(int **fds, int num_pipes);
 
 char		*find_command(t_list *lst);
 
@@ -68,5 +70,7 @@ int			check_infile(t_list *lst);
 int		exec_env(char **env);
 
 int		exec_unset(t_list *lst, char **env);
+
+int		check_error(int error);
 
 #endif
