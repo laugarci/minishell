@@ -6,7 +6,7 @@
 /*   By: laugarci <laugarci@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/14 09:52:31 by laugarci          #+#    #+#             */
-/*   Updated: 2023/09/17 13:35:49 by laugarci         ###   ########.fr       */
+/*   Updated: 2023/09/17 16:11:59 by laugarci         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,8 +67,6 @@ int	**pipe_fds(int num_pipes)
 
 void	close_pipes_child(int **fds, int i, int num_pipes, t_list *lst)
 {
-	if ((is_type(lst, 2)))
-		here_doc(lst);
 	if (is_type(lst, 3) || is_type(lst, 4) || is_type(lst, 1))
 	{
 		if (check_redirect(lst))
@@ -104,10 +102,10 @@ void	exec_pipes(char **env, int num_pipes, t_list *lst)
 	pid_t	pid;
 	int		**fds;
 	int		check;
-	int		flag;
+	t_list	*aux;
 
-	flag = 0;
 	check = 0;
+	aux = lst;
 	if (num_pipes)
 		fds = pipe_fds(num_pipes);
 	i = 0;
@@ -118,6 +116,11 @@ void	exec_pipes(char **env, int num_pipes, t_list *lst)
 			exit(-1);
 		else if (pid == 0)
 		{
+			if (i == num_pipes)
+			{
+				if (is_type(aux, 2))
+					here_doc(aux);
+			}
 			close_pipes_child(fds, i, num_pipes, lst);
 			if (is_type(lst, 1))
 				check = check_infile(lst);
