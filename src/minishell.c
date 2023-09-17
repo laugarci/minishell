@@ -6,7 +6,7 @@
 /*   By: laugarci <laugarci@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/05 14:01:37 by laugarci          #+#    #+#             */
-/*   Updated: 2023/09/16 18:41:33 by ffornes-         ###   ########.fr       */
+/*   Updated: 2023/09/17 16:33:50 by ffornes-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -110,6 +110,7 @@ static int	main_loop(char *prompt, char **envp, int *exit_status)
 		if (*exit_status == 0)
 		{
 			list = organize_list(list);
+			print_tokens(list);
 			cmp_commands(list, envp);
 			ft_lstclear(&list, (void *)free_token);
 		}
