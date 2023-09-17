@@ -6,7 +6,7 @@
 /*   By: laugarci <laugarci@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/14 09:52:31 by laugarci          #+#    #+#             */
-/*   Updated: 2023/09/16 13:15:14 by laugarci         ###   ########.fr       */
+/*   Updated: 2023/09/17 12:17:06 by laugarci         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,6 +67,8 @@ int	**pipe_fds(int num_pipes)
 
 void	close_pipes_child(int **fds, int i, int num_pipes, t_list *lst)
 {
+	if (is_type(lst, 2))
+		here_doc(lst);
 	if (is_type(lst, 3) || is_type(lst, 4) || is_type(lst, 1))
 	{
 		if (check_redirect(lst))
@@ -75,14 +77,14 @@ void	close_pipes_child(int **fds, int i, int num_pipes, t_list *lst)
 	if (i != 0)
 	{
 		close(fds[i - 1][WRITE_END]);
-		if (!is_type(lst, 1))
+		if (!is_type(lst, 1) && !is_type(lst, 2))
 			dup2(fds[i - 1][READ_END], STDIN_FILENO);
 		close(fds[i - 1][READ_END]);	
 	}	
 	if (i != num_pipes)
 	{
 		close(fds[i][READ_END]);
-		if (check_redirect(lst) == 0)
+		if (check_redirect(lst) == 0 && !is_type(lst, 2))
 			dup2(fds[i][WRITE_END], STDOUT_FILENO);
 		close(fds[i][WRITE_END]);
 	}
@@ -104,8 +106,6 @@ void	exec_pipes(char **env, int num_pipes, t_list *lst)
 	int		check;
 
 	check = 0;
-	if (is_type(lst, 2))
-		num_pipes++;
 	if (num_pipes)
 		fds = pipe_fds(num_pipes);
 	i = 0;
