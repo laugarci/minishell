@@ -11,6 +11,7 @@ int	exec_unset(t_list *lst, char **env)
 	t_token *token;
 	t_list	*aux;
 	int	i;
+	int	j;
 
 	aux = lst->next;
 	token = aux->content;
@@ -22,8 +23,13 @@ int	exec_unset(t_list *lst, char **env)
 			env[i][ft_strlen(token->string)] == '=')
 		{
 			free(env[i]);
-			i++;
-			return (0) ;
+			j = i;
+			while(env[j])
+			{
+				env[j] = env[j + 1];
+				j++;
+			}
+			return (0);
 		}
 		i++;
 	}
