@@ -6,7 +6,7 @@
 /*   By: ffornes- <ffornes-@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/17 16:24:45 by ffornes-          #+#    #+#             */
-/*   Updated: 2023/09/17 19:56:16 by ffornes-         ###   ########.fr       */
+/*   Updated: 2023/09/18 14:56:27 by ffornes-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,17 +27,13 @@ static void	state_read(int sig, siginfo_t *data, void *n_data)
 	
 	if (sig == SIGINT)
 	{
-		//ft_putstr_fd("Recieved: SIGINT in STATE=READ", 1);
 		ft_putchar_fd('\n', 1);
 		rl_replace_line("", 1);
 		rl_on_new_line();
 		rl_redisplay();
-		ft_putstr_fd("minishell$ ", 1);
-//		ft_putstr_fd("\n", 1);
-//		rl_reset_line_state(); 
 	}
 	else if (sig == SIGQUIT)
-		//printf("Recieved: SIGQUIT in STATE=READ\n");
+		printf("Recieved: SIGQUIT in STATE=READ\n");
 	return ;
 }
 
