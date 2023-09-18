@@ -6,7 +6,7 @@
 /*   By: laugarci <laugarci@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/14 09:52:31 by laugarci          #+#    #+#             */
-/*   Updated: 2023/09/17 19:58:51 by laugarci         ###   ########.fr       */
+/*   Updated: 2023/09/18 11:42:01 by laugarci         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -143,6 +143,6 @@ int	exec_pipes(char **env, int num_pipes, t_list *lst)
 		i++;
 	}
 	fds = close_pipes(fds, num_pipes);
-//	free_double((void **)fds);
+//	free_double((void **)fds); //este free crea muchos problemas
 	return (0);
 }
