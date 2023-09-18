@@ -6,7 +6,7 @@
 /*   By: laugarci <laugarci@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/19 13:29:17 by laugarci          #+#    #+#             */
-/*   Updated: 2023/09/17 12:18:35 by laugarci         ###   ########.fr       */
+/*   Updated: 2023/09/18 19:16:32 by ffornes-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,7 @@
 #include <unistd.h>
 #include "libft.h"
 #include "minishell.h"
+#include "minishell_defs.h"
 #include "libft_bonus.h"
 #include "parser.h"
 #include <readline/readline.h>
@@ -53,8 +54,10 @@ int	here_doc(t_list *lst)
 
 	text = NULL;
 	del = find_del(lst);
+	set_or_return_state(MODE_SET, STATE_HDOC);
+	signal_handler();
 	while (42)
-	{	
+	{
 		input = readline("heredoc> ");
 		if (ft_strncmp(input, del, ft_strlen(del) + 1) == 0)
 			break ;

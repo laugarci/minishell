@@ -1,33 +1,22 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   errors.c                                           :+:      :+:    :+:   */
+/*   exit_status.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ffornes- <ffornes-@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/09/13 17:39:50 by ffornes-          #+#    #+#             */
-/*   Updated: 2023/09/18 15:52:18 by ffornes-         ###   ########.fr       */
+/*   Created: 2023/09/18 15:05:03 by ffornes-          #+#    #+#             */
+/*   Updated: 2023/09/18 18:29:23 by ffornes-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libft.h"
-#include "minishell.h"
 #include "minishell_defs.h"
-#include "parser.h"
 
-void	print_error(char *error_message)
+int	set_or_return_exit_status(int mode, int value)
 {
-	ft_putstr_fd("minishell: ", 2);
-	ft_putstr_fd(error_message, 2);
-}
+	static int	exit_status;
 
-int	print_and_return(int error_id)
-{
-	if (error_id == 12)
-		print_error("Cannot allocate memory\n");
-	else if (error_id == 126)
-		print_error("Unable to execute command\n");
-	else if (error_id == 127)
-		print_error("No such file or directory\n");
-	return (error_id);
+	if (mode == MODE_SET)
+		exit_status = value;
+	return (exit_status);
 }

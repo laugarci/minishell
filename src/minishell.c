@@ -6,7 +6,7 @@
 /*   By: laugarci <laugarci@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/05 14:01:37 by laugarci          #+#    #+#             */
-/*   Updated: 2023/09/17 17:47:47 by ffornes-         ###   ########.fr       */
+/*   Updated: 2023/09/18 19:49:17 by ffornes-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,18 @@
 #include "minishell.h"
 #include "minishell_defs.h"
 #include "parser.h"
+#include "termios.h"
+
+void	ctrl_c(int mode)
+{
+	struct termios	tc;
+
+	tcgetattr(0, &tc);
+	tc.c_lflag &= ~ECHOCTL;
+	if (mode)
+		tc.c_lflag |= ECHOCTL;
+	tcsetattr(0, TCSANOW, &tc);
+}
 
 // AJNKNAEKK DEBUGGGGGGGGGGGG // INCLUDED IN PARSER.H
 void	print_tokens(t_list *lst)
@@ -89,33 +101,36 @@ int	exit_check(char *input) // Make builtin
 	{
 		free(input);
 		printf("exit\n");
+		ctrl_c(MODE_SET);
 		return (1);
 	}
 	return (0);
 }
 
-static int	main_loop(char *prompt, char **envp, int *exit_status)
+static int	main_loop(char *prompt, char **envp)
 {
 	char	*input;
 	t_list	*list;
-	int		state;
 
-	state = STATE_READ;
-	signal_handler(&state, exit_status);
+	set_or_return_state(MODE_SET, STATE_READ);
+	ctrl_c(MODE_UNSET);
+	signal_handler();
 	input = readline(prompt);
 	if (!input)
 		return (1);
 	if (input[0] != '\0')
 	{
+		signal(SIGINT, SIG_IGN);
+		signal(SIGQUIT, SIG_IGN);
 		add_history(input);
 		if (exit_check(input))
 			return (1);
-		*exit_status = parse_input(input, envp, &list, exit_status);
-		if (*exit_status == 0)
+		set_or_return_exit_status(MODE_SET, parse_input(input, envp, &list));
+		if (!set_or_return_exit_status(MODE_RETURN, -1))
 		{
 			list = organize_list(list);
-			print_tokens(list);
-			cmp_commands(list, envp); // Send &state in order to update it's value when starts executing or when on here_doc
+			print_tokens(list); // Debug
+			cmp_commands(list, envp); // Send &state & update value when executing || here_doc
 			ft_lstclear(&list, (void *)free_token);
 		}
 	}
@@ -126,10 +141,8 @@ static int	main_loop(char *prompt, char **envp, int *exit_status)
 int	main(int argc, char *argv[], char *envp[])
 {
 	char	*prompt;
-	int		exit_status;
 	char	**my_env;
 
-	exit_status = 0;
 	if (argc > 1)
 		return (1);
 	my_env = set_env(envp);
@@ -141,11 +154,12 @@ int	main(int argc, char *argv[], char *envp[])
 		free_double((void **)my_env);
 		return (print_and_return(12));
 	}
+	set_or_return_exit_status(MODE_SET, 0);
 	while (42)
-		if (main_loop(prompt, my_env, &exit_status))
+		if (main_loop(prompt, my_env))
 			break ;
 	free_double((void **)my_env);
 	free(prompt);
 	clear_history();
-	return (0);
+	return (set_or_return_exit_status(MODE_RETURN, -1));
 }
