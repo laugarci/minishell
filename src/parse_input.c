@@ -6,7 +6,7 @@
 /*   By: ffornes- <ffornes-@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/27 12:29:42 by ffornes-          #+#    #+#             */
-/*   Updated: 2023/09/15 12:37:44 by ffornes-         ###   ########.fr       */
+/*   Updated: 2023/09/18 15:52:34 by ffornes-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,7 @@ static int	is_empty(char *input)
 	return (1);
 }
 
-int	parse_input(char *str, char *envp[], t_list **token_list, int *exit_status)
+int	parse_input(char *str, char *envp[], t_list **token_list)
 {
 	t_list	*lst;
 	int		flag;
@@ -58,7 +58,7 @@ int	parse_input(char *str, char *envp[], t_list **token_list, int *exit_status)
 		free(str);
 	if (!lst)
 		return (print_and_return(12));
-	error = process_tokens(&lst, envp, exit_status);
+	error = process_tokens(&lst, envp);
 	if (error)
 		return (free_list_and_return(lst, error));
 	*token_list = lst;

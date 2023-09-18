@@ -6,7 +6,7 @@
 /*   By: ffornes- <ffornes-@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/17 16:24:45 by ffornes-          #+#    #+#             */
-/*   Updated: 2023/09/18 14:56:27 by ffornes-         ###   ########.fr       */
+/*   Updated: 2023/09/18 19:38:08 by ffornes-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,20 +20,30 @@
 
 // Using WRITE > PRINTF since PRINTF can crash when used in a signal handler
 
+int	set_or_return_state(int mode, int value)
+{
+	static int	state;
+
+	if (mode == MODE_SET)
+		state = value;
+	return (state);
+}
+
 static void	state_read(int sig, siginfo_t *data, void *n_data)
 {
 	(void) data;
 	(void) n_data;
 	
-	if (sig == SIGINT)
+	if (sig == SIGINT) // Must set exit status to 1
 	{
 		ft_putchar_fd('\n', 1);
 		rl_replace_line("", 1);
 		rl_on_new_line();
 		rl_redisplay();
+		set_or_return_exit_status(MODE_SET, 1);
 	}
 	else if (sig == SIGQUIT)
-		printf("Recieved: SIGQUIT in STATE=READ\n");
+		rl_redisplay();
 	return ;
 }
 
@@ -55,26 +65,30 @@ static void	state_exec(int sig, siginfo_t *data, void *n_data)
 	(void) n_data;
 
 	if (sig == SIGINT)
-		printf("Recieved: SIGINT in STATE=EXEC\n");
+	{
+		ft_putchar_fd('\n', 1);
+//		ft_putstr_fd("Recieved: SIGINT in STATE=EXEC\n", 1);
+	}
 	else if (sig == SIGQUIT)
 		printf("Recieved: SIGQUIT in STATE=EXEC\n");
 	return ;
 }
 
-int	*signal_handler(int	*state, int *exit_status)
+int	*signal_handler(void)
 {
 	struct sigaction	signal;
+	int					state;
 	
+	state = set_or_return_state(MODE_RETURN, -1);
 	signal.sa_flags = SA_RESTART;
 	sigemptyset(&signal.sa_mask);
-	if (*state == STATE_READ)
+	if (state == STATE_READ)
 		signal.sa_sigaction = state_read;
-	else if (*state == STATE_HDOC)
+	else if (state == STATE_HDOC)
 		signal.sa_sigaction = state_hdoc;
-	else if (*state == STATE_EXEC)
+	else if (state == STATE_EXEC)
 		signal.sa_sigaction = state_exec;
 	sigaction(SIGINT, &signal, NULL);
 	sigaction(SIGQUIT, &signal, NULL);
-	*exit_status = 0;
 	return (0);
 }

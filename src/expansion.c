@@ -6,11 +6,12 @@
 /*   By: ffornes- <ffornes-@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/24 14:47:53 by ffornes-          #+#    #+#             */
-/*   Updated: 2023/09/15 11:58:10 by ffornes-         ###   ########.fr       */
+/*   Updated: 2023/09/18 20:03:02 by ffornes-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+#include "minishell_defs.h"
 #include "parser.h"
 #include "libft.h"
 #include <stdlib.h>
@@ -60,7 +61,7 @@ static char	*cut_aux(char *aux)
 // Then find_eval is called, which looks for the environment 
 // 	value in the environment and
 // 		returns the content saved in the environment value.
-static char	*expand_input(char *input, char *envp[], int *exit_status)
+static char	*expand_input(char *input, char *envp[], int *flag)
 {
 	char	*str;
 	char	*aux;
@@ -69,24 +70,26 @@ static char	*expand_input(char *input, char *envp[], int *exit_status)
 	if (!str)
 		return (NULL);
 	else if (*str == '?')
-		return (ft_itoa(*exit_status));
+		return (ft_itoa(set_or_return_exit_status(MODE_RETURN, -1)));
 	aux = ft_strdup(str);
 	if (!aux)
 		return (NULL);
 	aux = cut_aux(aux);
-	find_eval(aux, envp, &str);
+	*flag = find_eval(aux, envp, &str);
 	free(aux);
 	if (!str)
 		return (NULL);
 	return (ft_strdup(str));
 }
 
-char	*expand_evals(char *input, char *envp[], int *exit_status)
+char	*expand_evals(char *input, char *envp[])
 {
 	int		amount;
 	char	*aux;
 	char	*out;
+	int		flag;
 
+	flag = 0;
 	amount = expansion_amount(input);
 	if (!amount)
 		return (input);
@@ -97,10 +100,10 @@ char	*expand_evals(char *input, char *envp[], int *exit_status)
 	{
 		aux = input;
 		free(out);
-		out = expand_input(input, envp, exit_status);
-		if (out)
+		out = expand_input(input, envp, &flag);
+		if (!flag)
 			out = update_input(input, out);
-		if (!out)
+		if (flag && !out)
 			return (NULL);
 		input = ft_strdup(out);
 		free(aux);
