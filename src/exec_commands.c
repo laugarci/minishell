@@ -6,7 +6,7 @@
 /*   By: laugarci <laugarci@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/04 14:04:45 by laugarci          #+#    #+#             */
-/*   Updated: 2023/09/17 19:46:26 by laugarci         ###   ########.fr       */
+/*   Updated: 2023/09/18 11:28:09 by laugarci         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,7 +81,7 @@ int	exec_commands_wf(t_list *lst, char **env, int flags)
 	token = lst->content;
 	if ((execve(args[0], args, env)) == -1)
 		return (check_error(127));
-	//free_double((void **)args);
+//	free_double((void **)args);
 	return (0);
 }
 
@@ -127,8 +127,8 @@ int	exec_commands(t_list *lst, char **env)
 	}
 	else
 		waitpid(pid, &status, 0);
-//	free(cmd);
-//	free_double((void **)split_cmd);
-//	ft_lstclear(&lst, (void *)free_token);
+	free(cmd);
+	free_double((void **)split_cmd);
+	ft_lstclear(&lst, (void *)free_token);
 	return (0);
 }
