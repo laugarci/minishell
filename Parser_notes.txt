@@ -22,4 +22,8 @@ ToDo:
 	ERROR 131, WHERE< WHEN
 	Repasar la libft per mallocs no protegits LMAO!
 
+	SYNTAX ERRORS:
+		/ ./ ./////// ///////// ... is a directory
+		export ARG="a b c" ... <$ARG cat ambiguos redirect
+
 	Check tests: https://github.com/ChewyToast/mpanic/tree/main/test/mandatory
