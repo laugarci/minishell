@@ -19,6 +19,7 @@ ToDo:
 
 	126 Command was found but could not be executed
 	127	No such file or directory
+	ERROR 131, WHERE< WHEN
 	Repasar la libft per mallocs no protegits LMAO!
 
 	Check tests: https://github.com/ChewyToast/mpanic/tree/main/test/mandatory
