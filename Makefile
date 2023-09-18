@@ -6,7 +6,7 @@
 #    By: ffornes- <ffornes-@student.42barcel>       +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/06/26 15:00:09 by ffornes-          #+#    #+#              #
-#    Updated: 2023/09/17 17:15:23 by ffornes-         ###   ########.fr        #
+#    Updated: 2023/09/18 14:52:21 by ffornes-         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -38,7 +38,7 @@ LIBFT = libft/libft.a
 CC = 		gcc
 CFLAGS = 	-Wall -Wextra -Werror -MMD #-fsanitize=address
 RM = 		rm -f
-INCLUDE =	-I include/ -I libft/include/
+INCLUDE =	-I include/ -I libft/include/ -I ~/.brew/Cellar/readline/8.2.1/include/
 
 all:		m_libft $(NAME)
 
@@ -46,7 +46,7 @@ m_libft:
 			@make -C libft/
 
 $(NAME):	$(OBJ_DIR) $(OBJS)
-			$(CC) $(CFLAGS) $(OBJS) -L libft/ -lft -o $@ -lreadline
+			$(CC) $(CFLAGS) $(OBJS) -L libft/ -lft -o $@ -L ~/.brew/Cellar/readline/8.2.1/lib/ -lreadline -lhistory -ltermcap 
 
 
 $(OBJ_DIR):
