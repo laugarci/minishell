@@ -1,101 +1,24 @@
-vpath Makefile directiva
-
 ToDo:
 
 	Errors:
 	Implement error handling, exit status and error messages in execution
 
-	Expansions:
-	When exanding value that is not stored in envp, program segfaults
-
 	Signals:
-	Implement Ctrl C, Ctrl D, Ctrl \
+	Implement Ctrl D everywhere.. CtrlC && Ctrl\ in execution should exit all
+		childs?
 	
 	Builtin Export:
 	Parse
 	When finding += must append instead of trunc
+	Export without = saves in export
+	Export without arguments and options shows env in ascii order.
 
-	Exit, is a builtin? how? why?
+	Builtin Exit:
+	Must recieve a long long which will be the exit status and fail when number
+		is bigger than max long long returning exit 255
+
 	126 Command was found but could not be executed
 	127	No such file or directory
 	Repasar la libft per mallocs no protegits LMAO!
 
-	Syntax Errors:
-		test
-		|test
-		 | test
-		< | test
-		<< | test
-		> | test
-		>> | test
-		| < test
-		| << test
-		| > test
-		| >> test
-		| test
-
-		test | >  
-		test | >>  
-		test | <  
-
-		echo hiecho hi
-		echo hi|echo hi
-		echo hi |echo hi
-		echo hi| echo hi
-		echo hi | | echo hi
-		echo hi ||| echo hi
-
-		echo >
-		echo >>
-		echo <
-		echo >>>
-		echo <<<
-		echo hi >< file
-
 	Check tests: https://github.com/ChewyToast/mpanic/tree/main/test/mandatory
-
-Command [-Flag] [Arg] [Nothing]
-$[Variable]		variable de entorno == $NOMBRE="VALOR" || $NOMBRE=VALOR || $NOMBRE=(comandos)
-<< [DELIMITER]	here_doc
-> [File]		redirection
-< [File]		redirection
-Pipe
-"" ''
-() {}
-builtins:
-	export
-Nothing
-
-1. Get line
-	ex: <Hola.txt cat -e random_file.txt | wc -l | echo $USER
-	1.1 Try to open the file "Hola.txt" - Look in pipex for more details
-		if "Hola.txt" does not exist: 
-			minishell: Hola.txt: No such file or directory
-			First command does not execute && flags && args are ignored
-	1.2 Locate first command
-	1.3 Locate flags
-	1.4 Try to open the file "random_file.txt"
-		if "random_file.txt" does not exist:
-			minishell: random_file.txt:  No such file or directory
-			First command does not execute.
-	1.5 Locate Pipe
-		Save stdin stdout fds with dup to not lose the reference
-		Use dup2 to redirect stdin stdout and proceed with the executions
-	1.6 Execute commands
-		First command, displays error if any file doesn't exist
-		wc -l reads from pipe and writes on pipe so no input/output can be seen
-		echo $USER 
-			looks for the variable in our env
-				if it finds it, displays the value of the variable with a \n
-				else if it doesn't find it displays a \n
-
-Then >> Must separate arguments with pipes, and parse them individually.
-
-	ex: <Hola.txt cat -e random_file.txt | wc -l | echo $USER
-		Tokens:
-			( <Hola.txt cat -e random_file.txt ) 
-			( | ) 
-			( wc -l )
-			( | )
-			( echo $USER )
-		Once split in tokens, must split again in minitokens to parse "'({})'"
