@@ -6,7 +6,7 @@
 /*   By: laugarci <laugarci@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/05 14:01:37 by laugarci          #+#    #+#             */
-/*   Updated: 2023/09/19 14:13:42 by ffornes-         ###   ########.fr       */
+/*   Updated: 2023/09/19 17:44:45 by ffornes-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,31 +70,6 @@ void	print_tokens(t_list *lst)
 }
 // DEBUG DEBUG DEBUG DEBUG DELETE LATER   RR ER E REA EGAG */
 
-static char	**set_env(char *env[])
-{
-	int		i;
-	char	**dst;
-
-	i = 0;
-	while (env[i])
-		i++;
-	dst = malloc(sizeof(char *) * (i + 1));
-	if (!dst)
-		return (NULL);
-	i = 0;
-	while (env[i])
-	{
-		dst[i] = ft_strdup(env[i]);
-		if (!dst[i++])
-		{
-			free_double((void **)dst);
-			return (NULL);
-		}
-	}
-	dst[i] = NULL;
-	return (dst);
-}
-
 static int	main_loop(char *prompt, char **envp)
 {
 	char	*input;
@@ -105,7 +80,7 @@ static int	main_loop(char *prompt, char **envp)
 	signal_handler();
 	input = readline(prompt);
 	if (!input)
-		return (1);
+		builtin_exit(NULL);
 	if (input[0] != '\0')
 	{
 		signal(SIGINT, SIG_IGN);
@@ -115,8 +90,7 @@ static int	main_loop(char *prompt, char **envp)
 		if (!set_or_return_exit_status(MODE_RETURN, -1))
 		{
 			list = organize_list(list);
-			print_tokens(list); // Debug
-			cmp_commands(list, envp); // Send &state & update value when executing || here_doc
+			cmp_commands(list, envp);
 			ft_lstclear(&list, (void *)free_token);
 		}
 	}
@@ -127,24 +101,24 @@ static int	main_loop(char *prompt, char **envp)
 int	main(int argc, char *argv[], char *envp[])
 {
 	char	*prompt;
-	char	**my_env;
+	t_data	data;
 
 	if (argc > 1)
 		return (1);
-	my_env = set_env(envp);
-	if (!my_env)
+	init_data(&data, envp);
+	if (!data.env)
 		return (print_and_return(12));
 	prompt = ft_strjoin((argv[0] + 2), "$ ");
 	if (!prompt)
 	{
-		free_double((void **)my_env);
+		free_double((void **)data.env);
 		return (print_and_return(12));
 	}
 	set_or_return_exit_status(MODE_SET, 0);
 	while (42)
-		if (main_loop(prompt, my_env))
+		if (main_loop(prompt, data.env))
 			break ;
-	free_double((void **)my_env);
+	free_double((void **)data.env);
 	free(prompt);
 	clear_history();
 	return (set_or_return_exit_status(MODE_RETURN, -1));
