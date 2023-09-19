@@ -14,8 +14,19 @@ echo -nnnnn -nnnn loquesea
 ls > a | ls > b
 cat | ls
 <a>b<c>d ls | wc -l < d | cat -e > e
-
-
+ls > a
+ls >> a
+cat <<del
+cat <<del > a
+ls > a > b > c > d
+ls >> a >> b >> c >> d
+cd -
+cd
+cd ruta
+ls -a | wc -l | cat -e
+ls -a | cat << hola | cat -e
+ls | cat
+cat | ls
 
 ----
 cd -
