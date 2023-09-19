@@ -6,7 +6,7 @@
 /*   By: ffornes- <ffornes-@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/26 17:15:53 by ffornes-          #+#    #+#             */
-/*   Updated: 2023/09/19 17:49:03 by ffornes-         ###   ########.fr       */
+/*   Updated: 2023/09/19 17:50:28 by ffornes-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ static void	*free_all(t_list *token_list, char **inputs, int i)
 
 static int	save_tokens_util(char **inputs, int i, t_list **tkn_lst)
 {
-	t_list *aux;
+	t_list	*aux;
 	t_list	*token_list;
 
 	token_list = *tkn_lst;
