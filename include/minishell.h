@@ -6,7 +6,7 @@
 /*   By: ffornes- <ffornes-@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/27 11:32:21 by ffornes-          #+#    #+#             */
-/*   Updated: 2023/09/19 17:41:55 by ffornes-         ###   ########.fr       */
+/*   Updated: 2023/09/19 18:07:21 by ffornes-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,9 +38,11 @@ int			count_args(t_list *lst);
 int			**close_pipes(int **fds, int num_pipes);
 
 char		*find_command(t_list *lst);
-char		*find_output(t_list *lst);
 
-int			exec_redirect(t_list *lst);
+char		*find_output(t_list *lst, int check);
+
+int			exec_redirect(t_list *lst, int flag);
+
 int			count_list(t_list *lst);
 int			total_input_len(t_list *lst);
 int			here_doc(t_list *lst);
@@ -68,5 +70,7 @@ int			check_error(int error);
 
 void		builtin_exit(char *input);
 void		exit_check(t_list *lst);
+
+char	*find_input(t_list *lst);
 
 #endif
