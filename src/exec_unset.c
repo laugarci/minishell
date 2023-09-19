@@ -1,3 +1,14 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   exec_unset.c                                       :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: laugarci <laugarci@student.42barcel>       +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2023/09/19 18:28:10 by laugarci          #+#    #+#             */
+/*   Updated: 2023/09/19 18:30:15 by laugarci         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -8,23 +19,22 @@
 
 int	exec_unset(t_list *lst, char **env)
 {
-	t_token *token;
+	t_token	*token;
 	t_list	*aux;
-	int	i;
-	int	j;
+	int		i;
+	int		j;
 
 	aux = lst->next;
 	token = aux->content;
 	i = 0;
-
-	while(env[i])
+	while (env[i])
 	{
-		if (ft_strncmp(env[i], token->string, ft_strlen(token->string)) == 0 &&
-			env[i][ft_strlen(token->string)] == '=')
+		if (ft_strncmp(env[i], token->string, ft_strlen(token->string)) == 0
+			&& env[i][ft_strlen(token->string)] == '=')
 		{
 			free(env[i]);
 			j = i;
-			while(env[j])
+			while (env[j])
 			{
 				env[j] = env[j + 1];
 				j++;

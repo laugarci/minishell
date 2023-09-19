@@ -6,7 +6,7 @@
 /*   By: laugarci <laugarci@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/14 09:52:31 by laugarci          #+#    #+#             */
-/*   Updated: 2023/09/19 16:27:14 by laugarci         ###   ########.fr       */
+/*   Updated: 2023/09/19 18:23:21 by laugarci         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,7 @@
 #include <sys/types.h>
 #include <sys/wait.h>
 #include "minishell.h"
+#include "minishell_defs.h"
 #include "libft.h"
 #include "parser.h"
 #include "libft_bonus.h"
@@ -66,7 +67,7 @@ int	**pipe_fds(int num_pipes)
 	return (fds);
 }
 
-int close_pipes_child(int **fds, int i, int num_pipes, t_list *lst)
+int	close_pipes_child(int **fds, int i, int num_pipes, t_list *lst)
 {
 	if (is_type(lst, 3) || is_type(lst, 4) || is_type(lst, 1))
 	{
@@ -77,8 +78,8 @@ int close_pipes_child(int **fds, int i, int num_pipes, t_list *lst)
 	{
 		close(fds[i - 1][WRITE_END]);
 		dup2(fds[i - 1][READ_END], STDIN_FILENO);
-		close(fds[i - 1][READ_END]);	
-	}	
+		close(fds[i - 1][READ_END]);
+	}
 	if (i != num_pipes)
 	{
 		close(fds[i][READ_END]);
@@ -91,8 +92,8 @@ int close_pipes_child(int **fds, int i, int num_pipes, t_list *lst)
 
 int	close_pipes_parent(int **fds, int i, int num_pipes)
 {
-	int err;
-	
+	int	err;
+
 	err = 0;
 	if (i != 0)
 		err = close(fds[i - 1][READ_END]);
@@ -126,7 +127,9 @@ int	exec_pipes(char **env, int num_pipes, t_list *lst)
 		else if (pid == 0)
 		{
 			if (i == num_pipes && is_type(aux, 2))
-					here_doc(aux);
+				here_doc(aux);
+			set_or_return_state(MODE_SET, STATE_EXEC);
+			signal_handler();
 			close_pipes_child(fds, i, num_pipes, lst);
 			if (is_type(lst, 1))
 				check = check_infile(lst);
@@ -139,8 +142,6 @@ int	exec_pipes(char **env, int num_pipes, t_list *lst)
 		lst = move_to_pipe(lst);
 		i++;
 	}
-//	if (is_type(aux, 2))
-//		here_doc(aux);
 	fds = close_pipes(fds, num_pipes);
 //	free_double((void **)fds); //este free crea muchos problemas
 	return (0);

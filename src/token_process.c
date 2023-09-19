@@ -6,7 +6,7 @@
 /*   By: ffornes- <ffornes-@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/04 11:34:52 by ffornes-          #+#    #+#             */
-/*   Updated: 2023/09/15 13:10:08 by ffornes-         ###   ########.fr       */
+/*   Updated: 2023/09/18 15:41:27 by ffornes-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,13 +60,13 @@ static int	exp_token_util(char *string, t_token **tkn, t_list **lst)
 	return (0);
 }
 
-static t_list	*exp_token(t_list *lst, t_token *tkn, char **envp, int *exit)
+static t_list	*exp_token(t_list *lst, t_token *tkn, char **envp)
 {
 	t_list	*new_list;
 	t_list	*aux;
 	char	*string;
 
-	string = expand_evals(tkn->string, envp, exit);
+	string = expand_evals(tkn->string, envp);
 	if (!string)
 		return (NULL);
 	if (exp_token_util(string, &tkn, &lst))
@@ -98,7 +98,7 @@ static int	process_tokens_util(t_list **token_list)
 	return (0);
 }
 
-int	process_tokens(t_list **token_list, char *envp[], int *exit_status)
+int	process_tokens(t_list **token_list, char *envp[])
 {
 	t_list	*tmp_lst;
 	t_token	*aux;
@@ -115,7 +115,7 @@ int	process_tokens(t_list **token_list, char *envp[], int *exit_status)
 			return (print_and_return(12));
 		if (ft_strchr(aux->string, '$') && (aux->quotes == 2 || !aux->quotes))
 		{
-			tmp_lst = exp_token(tmp_lst, aux, envp, exit_status);
+			tmp_lst = exp_token(tmp_lst, aux, envp);
 			if (!tmp_lst)
 				return (print_and_return(12));
 		}

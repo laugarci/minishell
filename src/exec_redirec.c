@@ -6,7 +6,7 @@
 /*   By: laugarci <laugarci@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/14 12:07:29 by laugarci          #+#    #+#             */
-/*   Updated: 2023/09/19 16:32:23 by laugarci         ###   ########.fr       */
+/*   Updated: 2023/09/19 18:27:49 by laugarci         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,11 +22,9 @@
 #include <sys/wait.h>
 #include <fcntl.h>
 
-
-
 int	check_infile(t_list *lst)
 {
-	char *infile;
+	char	*infile;
 
 	infile = find_input(lst);
 	if (access(infile, F_OK) == 0)

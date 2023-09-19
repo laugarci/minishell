@@ -6,7 +6,7 @@
 /*   By: laugarci <laugarci@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/04 14:04:45 by laugarci          #+#    #+#             */
-/*   Updated: 2023/09/18 11:28:09 by laugarci         ###   ########.fr       */
+/*   Updated: 2023/09/19 18:25:41 by laugarci         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,7 @@
 #include <sys/wait.h>
 #include "libft.h"
 #include "minishell.h"
+#include "minishell_defs.h"
 #include "libft_bonus.h"
 #include "parser.h"
 
@@ -29,10 +30,11 @@ int	cmp_commands(t_list *lst, char **env)
 
 	token = lst->content;
 	err = 0;
+	exit_check(lst);
 	if (ft_strncmp(token->string, "cd\0", 3) == 0)
 		err = exec_cd(lst);
-	else if (is_type(lst, 0) || is_type(lst, 3) ||
-			is_type(lst, 4) || is_type(lst, 1) || is_type(lst, 2))
+	else if (is_type(lst, 0) || is_type(lst, 3)
+		|| is_type(lst, 4) || is_type(lst, 1) || is_type(lst, 2))
 	{
 		num_pipes = count_types(lst, PIPE);
 		err = exec_pipes(env, num_pipes, lst);
@@ -119,6 +121,9 @@ int	exec_commands(t_list *lst, char **env)
 		return (-1);
 	if (pid == 0)
 	{
+		set_or_return_state(MODE_SET, STATE_EXEC);
+		signal_handler();
+		ctrl_c(MODE_SET);
 		if (i == 2)
 			exec_commands_nf(lst, env);
 		else
@@ -127,6 +132,16 @@ int	exec_commands(t_list *lst, char **env)
 	}
 	else
 		waitpid(pid, &status, 0);
+	if (WTERMSIG(status) == SIGINT)
+	{
+		ft_putchar_fd('\n', 1);
+		set_or_return_exit_status(MODE_SET, 130);
+	}
+	else if (WTERMSIG(status) == SIGQUIT)
+	{
+		ft_putstr_fd("Quit: 3\n", 0);
+		set_or_return_exit_status(MODE_SET, 131);
+	}
 	free(cmd);
 	free_double((void **)split_cmd);
 	ft_lstclear(&lst, (void *)free_token);

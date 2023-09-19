@@ -6,7 +6,7 @@
 /*   By: laugarci <laugarci@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/17 18:57:25 by laugarci          #+#    #+#             */
-/*   Updated: 2023/09/17 18:59:23 by laugarci         ###   ########.fr       */
+/*   Updated: 2023/09/19 18:11:13 by laugarci         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,6 @@
 int	check_error(int err)
 {
 	if (err != 0)
-		return(print_and_return(err));
+		return (print_and_return(err));
 	return (0);
 }

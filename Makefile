@@ -6,7 +6,7 @@
 #    By: ffornes- <ffornes-@student.42barcel>       +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/06/26 15:00:09 by ffornes-          #+#    #+#              #
-#    Updated: 2023/09/17 18:59:45 by laugarci         ###   ########.fr        #
+#    Updated: 2023/09/19 18:01:23 by laugarci         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -22,8 +22,9 @@ SRC_FILES = minishell.c \
 			token_new.c token_free.c token_save.c token_type.c \
 			token_process.c token_process_rm.c \
 			subtoken_process.c subtoken_count.c subtoken_join.c token_organize.c \
-			builtin_export.c \
+			builtin_export.c builtin_exit.c \
 			errors.c syntax_error.c process_list.c exec_cd.c exec_env.c exec_unset.c check.c \
+			signals.c exit_status.c
 
 OBJ_DIR = objs/
 OBJ_FILES = $(SRC_FILES:.c=.o)
@@ -37,7 +38,7 @@ LIBFT = libft/libft.a
 CC = 		gcc
 CFLAGS = 	-Wall -Wextra -Werror -MMD #-fsanitize=address
 RM = 		rm -f
-INCLUDE =	-I include/ -I libft/include/
+INCLUDE =	-I include/ -I libft/include/ -I ~/.brew/Cellar/readline/8.2.1/include/
 
 all:		m_libft $(NAME)
 
@@ -45,7 +46,7 @@ m_libft:
 			@make -C libft/
 
 $(NAME):	$(OBJ_DIR) $(OBJS)
-			$(CC) $(CFLAGS) $(OBJS) -L libft/ -lft -o $@ -lreadline
+			$(CC) $(CFLAGS) $(OBJS) -L libft/ -lft -o $@ -L ~/.brew/Cellar/readline/8.2.1/lib/ -lreadline -lhistory -ltermcap 
 
 
 $(OBJ_DIR):

@@ -1,25 +1,24 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   exec_env.c                                         :+:      :+:    :+:   */
+/*   minishell_defs.h                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: laugarci <laugarci@student.42barcel>       +#+  +:+       +#+        */
+/*   By: ffornes- <ffornes-@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/09/19 18:13:09 by laugarci          #+#    #+#             */
-/*   Updated: 2023/09/19 18:13:32 by laugarci         ###   ########.fr       */
+/*   Created: 2023/09/17 17:00:09 by ffornes-          #+#    #+#             */
+/*   Updated: 2023/09/18 15:50:12 by ffornes-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <unistd.h>
-#include <stdio.h>
-#include "minishell.h"
+#ifndef MINISHELL_DEFS_H
+# define MINISHELL_DEFS_H
 
-int	exec_env(char **env)
-{
-	int	i;
+# define STATE_READ		0
+# define STATE_HDOC		1
+# define STATE_EXEC		2
 
-	i = 0;
-	while (env[i] != NULL)
-		printf("%s\n", env[i++]);
-	return (0);
-}
+# define MODE_RETURN	-1
+# define MODE_UNSET		0
+# define MODE_SET		1
+
+#endif
