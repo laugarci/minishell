@@ -6,7 +6,7 @@
 /*   By: laugarci <laugarci@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/19 13:29:17 by laugarci          #+#    #+#             */
-/*   Updated: 2023/09/17 12:18:35 by laugarci         ###   ########.fr       */
+/*   Updated: 2023/09/18 13:34:26 by laugarci         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,35 @@
 
 //falta solucionar que si hay una redireccion > se haga tambien
 
+int	find_cat(t_list *aux)
+{
+	t_token *token;
+	int		i;
+	t_list	*tmp;
+
+	tmp = aux;
+	token = tmp->content;
+	i = 0;
+	if (token->type != 2)
+	{
+		while(token->type != 2)
+		{
+			tmp = tmp->next;
+			token = tmp->content;
+			if (ft_strncmp(token->string, "cat\0", 4) == 0)
+			{
+				tmp = tmp->next;
+				token = tmp->content;
+				if (token->type == 2)
+				{
+					i = 1;
+					break ;
+				}
+			}
+		}
+	}
+	return (i);
+}
 
 char	*find_del(t_list *lst)
 {
@@ -47,10 +76,12 @@ char	*find_del(t_list *lst)
 int	here_doc(t_list *lst)
 {
 	char	*del;
-	t_token	*aux;
 	char	*input;
 	char	*text;
+	int		flag;
+	t_token *token;
 
+	flag = 0;
 	text = NULL;
 	del = find_del(lst);
 	while (42)
@@ -63,15 +94,17 @@ int	here_doc(t_list *lst)
 //		input = expand_evals(input, env);
 	}
 	if (count_list(lst) > 2)
-	{	
-		aux = lst->content;
-		if (ft_strncmp(aux->string, "cat", 3) == 0)
+	{
+		token = lst->content;
+		flag = find_cat(lst);
+		if (flag == 1 || ft_strncmp(token->string, "cat\0", 3) == 0)
 		{
-			if (is_type(lst, 3) || is_type(lst, 4))
+			if ((is_type(lst, 3) || is_type(lst, 4)))
 				exec_redirect(lst);
 			write(1, text, ft_strlen(text));
 			exit(1);
 		}
 	}
+	//to solve >> ls -a | wc -l | cat -e > a | cat << hola > b
 	return (0);
 }
