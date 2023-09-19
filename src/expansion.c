@@ -6,7 +6,7 @@
 /*   By: ffornes- <ffornes-@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/24 14:47:53 by ffornes-          #+#    #+#             */
-/*   Updated: 2023/09/18 20:03:02 by ffornes-         ###   ########.fr       */
+/*   Updated: 2023/09/19 16:03:28 by ffornes-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,6 +82,13 @@ static char	*expand_input(char *input, char *envp[], int *flag)
 	return (ft_strdup(str));
 }
 
+void	init_expansion_util(char *input, int *amount, char **out)
+{
+	*amount = expansion_amount(input);
+	if (*amount)
+		*out = ft_strdup("");
+}
+
 char	*expand_evals(char *input, char *envp[])
 {
 	int		amount;
@@ -90,10 +97,9 @@ char	*expand_evals(char *input, char *envp[])
 	int		flag;
 
 	flag = 0;
-	amount = expansion_amount(input);
+	init_expansion_util(input, &amount, &out);
 	if (!amount)
 		return (input);
-	out = ft_strdup("");
 	if (!out)
 		return (NULL);
 	while (amount--)

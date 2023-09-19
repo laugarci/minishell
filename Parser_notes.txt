@@ -4,18 +4,14 @@ ToDo:
 	Implement error handling, exit status and error messages in execution
 
 	Signals:
-	Implement Ctrl D everywhere.. CtrlC && Ctrl\ in execution should exit all
-		childs?
+	CtrlC && Ctrl\ in exec... stop all children?
+	CtrlC in HERE_DOC MUST SET EXIT_STATUS TO 1
 	
 	Builtin Export:
 	Parse
 	When finding += must append instead of trunc
 	Export without = saves in export
 	Export without arguments and options shows env in ascii order.
-
-	Builtin Exit:
-	Must recieve a long long which will be the exit status and fail when number
-		is bigger than max long long returning exit 255
 
 	Build different expansor for here_doc case
 

@@ -6,7 +6,7 @@
 /*   By: ffornes- <ffornes-@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/27 11:32:21 by ffornes-          #+#    #+#             */
-/*   Updated: 2023/09/19 18:14:28 by laugarci         ###   ########.fr       */
+/*   Updated: 2023/09/19 18:46:51 by laugarci         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,9 @@
 
 # include <stdio.h>
 # include "libft_defs.h"
+# include "minishell_defs.h"
+
+int			init_data(t_data *data, char **envp);
 
 char		*get_path(char *cmd, char **envp);
 
