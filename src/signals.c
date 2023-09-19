@@ -6,7 +6,7 @@
 /*   By: ffornes- <ffornes-@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/17 16:24:45 by ffornes-          #+#    #+#             */
-/*   Updated: 2023/09/19 15:13:33 by ffornes-         ###   ########.fr       */
+/*   Updated: 2023/09/19 15:54:53 by ffornes-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@
 #include <signal.h>
 #include <readline/readline.h>
 #include <readline/history.h>
-#include <stdio.h>
+#include <stdlib.h>
 
 int	set_or_return_state(int mode, int value)
 {
@@ -51,9 +51,14 @@ static void	state_hdoc(int sig, siginfo_t *data, void *n_data)
 	(void) n_data;
 
 	if (sig == SIGINT)
-		ft_putstr_fd("Recieved SIGINT in STATE=HDOC\n", 1);
+	{
+		set_or_return_exit_status(MODE_SET, 1);
+		ft_putchar_fd('\n', 1);
+		rl_replace_line("", 1);
+		exit(1);
+	}
 	else if (sig == SIGQUIT)
-		ft_putstr_fd("Recieved SIGQUIT in STATE=HDOC\n", 1);
+		rl_redisplay();
 	return ;
 }
 
