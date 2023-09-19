@@ -6,7 +6,7 @@
 /*   By: laugarci <laugarci@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/04 11:30:35 by laugarci          #+#    #+#             */
-/*   Updated: 2023/09/16 12:52:41 by laugarci         ###   ########.fr       */
+/*   Updated: 2023/09/19 10:27:34 by laugarci         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,21 +18,58 @@
 #include "libft_bonus.h"
 #include "parser.h"
 
-void	print_echo(t_list *aux, t_list *lst, int flag)
+int		count_flags(t_list *lst)
+{
+	int		flag;
+	t_token	*token;
+	size_t		i;
+
+	token = lst->content;
+	flag = 0;
+	while (lst->next)
+	{
+		i = 1;
+		if (token->string[0] == '-' && token->string[1] == 'n')
+		{
+			while(token->string[i] == 'n')
+				i++;
+			if (i == ft_strlen(token->string))
+				flag++;
+		}
+		lst = lst->next;
+		token = lst->content;
+	}
+	return (flag);
+}
+
+t_list	*move_list(t_list *aux, int flag)
+{
+	t_token	*token;
+
+	token = aux->content;
+	while(flag > 0)
+	{
+		aux = aux->next;
+		flag--;
+	}
+	return (aux);
+}
+
+void	print_echo(t_list *aux, int flag)
 {
 	t_token	*token;
 	int		i;
 
 	i = 0;
 	token = aux->content;
-	while (i < (count_list(aux) - 1))
+	while (aux->next)
 	{
-		printf("%s", token->string);
-		if (i < (count_list(lst) - 2 - flag))
+		if (i > 0)
 			printf(" ");
+		printf("%s", token->string);
+		i++;
 		aux = aux->next;
 		token = aux->content;
-		i++;
 	}
 	if (flag == 0)
 		printf("\n");
@@ -55,19 +92,9 @@ int	exec_echo(t_list *lst)
 	}
 	aux = aux->next;
 	token = aux->content;
-	if (ft_strncmp(token->string, "-n\0", 3) == 0)
-	{
-		flag = 1;
-		while (aux)
-		{ 
-			if (ft_strncmp(token->string, "-n\0", 3) != 0)
-				break ;
-			aux = aux->next;
-			token = aux->content;
-			flag++;
-		}
-		
-	}
-	print_echo(aux, lst, flag);
+	if (ft_strncmp(token->string, "-n", 2) == 0)
+		flag = count_flags(lst);
+	aux = move_list(aux, flag);
+	print_echo(aux, flag);
 	return (0);
 }

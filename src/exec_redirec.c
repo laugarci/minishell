@@ -6,7 +6,7 @@
 /*   By: laugarci <laugarci@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/14 12:07:29 by laugarci          #+#    #+#             */
-/*   Updated: 2023/09/17 13:05:09 by laugarci         ###   ########.fr       */
+/*   Updated: 2023/09/18 11:43:33 by laugarci         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,7 +65,9 @@ int	check_redirect(t_list *lst)
 	{
 		if (!aux->next)
 			break ;
-		if (token->type == 3 || token->type == 4 || token->type == 1)
+		if (token->type == 3 || token->type == 4)
+			i++;
+		if (token->type == 1 && !is_type(lst, PIPE))
 			i++;
 		if (token->type == PIPE)
 			break ;
