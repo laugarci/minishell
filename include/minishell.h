@@ -6,7 +6,7 @@
 /*   By: ffornes- <ffornes-@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/27 11:32:21 by ffornes-          #+#    #+#             */
-/*   Updated: 2023/09/17 19:36:15 by laugarci         ###   ########.fr       */
+/*   Updated: 2023/09/19 16:32:44 by laugarci         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,9 +39,9 @@ int			**close_pipes(int **fds, int num_pipes);
 
 char		*find_command(t_list *lst);
 
-char		*find_output(t_list *lst);
+char		*find_output(t_list *lst, int check);
 
-int			exec_redirect(t_list *lst);
+int			exec_redirect(t_list *lst, int flag);
 
 int			count_list(t_list *lst);
 
@@ -72,5 +72,7 @@ int		exec_env(char **env);
 int		exec_unset(t_list *lst, char **env);
 
 int		check_error(int error);
+
+char	*find_input(t_list *lst);
 
 #endif

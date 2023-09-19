@@ -6,7 +6,7 @@
 /*   By: laugarci <laugarci@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/14 09:52:31 by laugarci          #+#    #+#             */
-/*   Updated: 2023/09/18 11:42:01 by laugarci         ###   ########.fr       */
+/*   Updated: 2023/09/19 16:27:14 by laugarci         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,7 +71,7 @@ int close_pipes_child(int **fds, int i, int num_pipes, t_list *lst)
 	if (is_type(lst, 3) || is_type(lst, 4) || is_type(lst, 1))
 	{
 		if (check_redirect(lst))
-			exec_redirect(lst);
+			exec_redirect(lst, 0);
 	}
 	if (i != 0)
 	{
@@ -125,11 +125,8 @@ int	exec_pipes(char **env, int num_pipes, t_list *lst)
 			exit(-1);
 		else if (pid == 0)
 		{
-			if (i == num_pipes)
-			{
-				if (is_type(aux, 2))
+			if (i == num_pipes && is_type(aux, 2))
 					here_doc(aux);
-			}
 			close_pipes_child(fds, i, num_pipes, lst);
 			if (is_type(lst, 1))
 				check = check_infile(lst);
@@ -142,6 +139,8 @@ int	exec_pipes(char **env, int num_pipes, t_list *lst)
 		lst = move_to_pipe(lst);
 		i++;
 	}
+//	if (is_type(aux, 2))
+//		here_doc(aux);
 	fds = close_pipes(fds, num_pipes);
 //	free_double((void **)fds); //este free crea muchos problemas
 	return (0);
