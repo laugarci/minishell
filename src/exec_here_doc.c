@@ -6,7 +6,7 @@
 /*   By: laugarci <laugarci@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/19 13:29:17 by laugarci          #+#    #+#             */
-/*   Updated: 2023/09/19 18:46:05 by laugarci         ###   ########.fr       */
+/*   Updated: 2023/09/19 18:56:32 by laugarci         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,17 +93,23 @@ int	here_doc(t_list *lst)
 	char	*del;
 	char	*input;
 	char	*text;
+	int		count;
 
 	text = NULL;
 	del = find_del(lst);
-	while (42)
+	count = count_types(lst, 2);
+	while (count >= 0)
 	{
-		input = readline("heredoc> ");
-		if (ft_strncmp(input, del, ft_strlen(del) + 1) == 0)
-			break ;
-		text = ft_strjoin(text, input);
-		text = ft_strjoin(text, "\n");
+		del = find_del(lst);
+		while(42)
+		{	
+			input = readline("heredoc> ");
+			if (ft_strncmp(input, del, ft_strlen(del) + 1) == 0)
+				break ;
+			text = ft_strjoin(text, input);
+			text = ft_strjoin(text, "\n");
 //		input = expand_evals(input, env);
+		}
 	}
 	if (count_list(lst) > 2)
 		here_doc_cmd(lst, text);
