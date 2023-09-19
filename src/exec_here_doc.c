@@ -6,7 +6,7 @@
 /*   By: laugarci <laugarci@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/19 13:29:17 by laugarci          #+#    #+#             */
-/*   Updated: 2023/09/19 12:39:22 by ffornes-         ###   ########.fr       */
+/*   Updated: 2023/09/19 15:33:15 by ffornes-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,11 +90,13 @@ int	here_doc(t_list *lst)
 	while (42)
 	{
 		input = readline("heredoc> ");
+		if (!input)
+			break ;
 		if (ft_strncmp(input, del, ft_strlen(del) + 1) == 0)
 			break ;
 		text = ft_strjoin(text, input);
 		text = ft_strjoin(text, "\n");
-//		input = expand_evals(input, env);
+//		input = expand_evals(input, env); // Haremos un expand propio del hdoc
 	}
 	if (count_list(lst) > 2)
 	{
