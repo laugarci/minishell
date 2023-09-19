@@ -6,7 +6,7 @@
 #    By: ffornes- <ffornes-@student.42barcel>       +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/06/26 15:00:09 by ffornes-          #+#    #+#              #
-#    Updated: 2023/09/18 15:09:34 by ffornes-         ###   ########.fr        #
+#    Updated: 2023/09/19 12:41:07 by ffornes-         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -23,7 +23,7 @@ SRC_FILES = minishell.c \
 			token_process.c token_process_rm.c \
 			subtoken_process.c subtoken_count.c subtoken_join.c token_organize.c \
 			builtin_export.c \
-			errors.c syntax_error.c process_list.c exec_cd.c exec_env.c exec_unset.c \
+			errors.c syntax_error.c process_list.c exec_cd.c exec_env.c exec_unset.c check.c \
 			signals.c exit_status.c
 
 OBJ_DIR = objs/

@@ -6,7 +6,7 @@
 /*   By: laugarci <laugarci@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/14 09:52:31 by laugarci          #+#    #+#             */
-/*   Updated: 2023/09/18 19:59:37 by ffornes-         ###   ########.fr       */
+/*   Updated: 2023/09/19 12:39:06 by ffornes-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@
 #define READ_END 0
 #define WRITE_END 1
 
-void	close_pipes(int **fds, int num_pipes)
+int	**close_pipes(int **fds, int num_pipes)
 {
 	int	i;
 	int	status;
@@ -44,6 +44,7 @@ void	close_pipes(int **fds, int num_pipes)
 		wait(&status);
 		i++;
 	}
+	return (fds);
 }
 
 int	**pipe_fds(int num_pipes)
@@ -66,7 +67,7 @@ int	**pipe_fds(int num_pipes)
 	return (fds);
 }
 
-void	close_pipes_child(int **fds, int i, int num_pipes, t_list *lst)
+int close_pipes_child(int **fds, int i, int num_pipes, t_list *lst)
 {
 	if (is_type(lst, 3) || is_type(lst, 4) || is_type(lst, 1))
 	{
@@ -76,28 +77,32 @@ void	close_pipes_child(int **fds, int i, int num_pipes, t_list *lst)
 	if (i != 0)
 	{
 		close(fds[i - 1][WRITE_END]);
-		if (!is_type(lst, 1))
-			dup2(fds[i - 1][READ_END], STDIN_FILENO);
+		dup2(fds[i - 1][READ_END], STDIN_FILENO);
 		close(fds[i - 1][READ_END]);	
 	}	
 	if (i != num_pipes)
 	{
 		close(fds[i][READ_END]);
-		if (check_redirect(lst) == 0 && !is_type(lst, 1))
+		if (check_redirect(lst) == 0)
 			dup2(fds[i][WRITE_END], STDOUT_FILENO);
 		close(fds[i][WRITE_END]);
 	}
+	return (0);
 }
 
-void	close_pipes_parent(int **fds, int i, int num_pipes)
+int	close_pipes_parent(int **fds, int i, int num_pipes)
 {
+	int err;
+	
+	err = 0;
 	if (i != 0)
-		close(fds[i - 1][READ_END]);
+		err = close(fds[i - 1][READ_END]);
 	if (i != num_pipes)
-		close(fds[i][WRITE_END]);
+		err = close(fds[i][WRITE_END]);
+	return (check_error(err));
 }
 
-void	exec_pipes(char **env, int num_pipes, t_list *lst)
+int	exec_pipes(char **env, int num_pipes, t_list *lst)
 {
 	int		i;
 	pid_t	pid;
@@ -108,7 +113,11 @@ void	exec_pipes(char **env, int num_pipes, t_list *lst)
 	check = 0;
 	aux = lst;
 	if (num_pipes)
+	{
 		fds = pipe_fds(num_pipes);
+		if (fds == NULL)
+			return (check_error(1));
+	}
 	i = 0;
 	while (i < (num_pipes + 1))
 	{
@@ -136,5 +145,7 @@ void	exec_pipes(char **env, int num_pipes, t_list *lst)
 		lst = move_to_pipe(lst);
 		i++;
 	}
-	close_pipes(fds, num_pipes);
+	fds = close_pipes(fds, num_pipes);
+//	free_double((void **)fds); //este free crea muchos problemas
+	return (0);
 }
