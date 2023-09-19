@@ -6,7 +6,7 @@
 /*   By: laugarci <laugarci@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/14 12:07:29 by laugarci          #+#    #+#             */
-/*   Updated: 2023/09/18 11:43:33 by laugarci         ###   ########.fr       */
+/*   Updated: 2023/09/19 16:32:23 by laugarci         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,11 +22,13 @@
 #include <sys/wait.h>
 #include <fcntl.h>
 
+
+
 int	check_infile(t_list *lst)
 {
 	char *infile;
 
-	infile = find_output(lst);
+	infile = find_input(lst);
 	if (access(infile, F_OK) == 0)
 		return (0);
 	else
@@ -106,43 +108,45 @@ static void	open_fds(t_list *lst, int count)
 	}
 }
 
-int	exec_redirect(t_list *lst)
+int	exec_redirect(t_list *lst, int flag)
 {
 	char	*output;
+	char	*input;
 	int		fd;
 	int		flags;
 	int		redirect;
 
 	redirect = count_types(lst, 3);
 	redirect += count_types(lst, 4);
-	output = find_output(lst);
-	flags = O_CREAT;
+	flags = 0;
 	if (is_type(lst, 1))
 	{
-		if (access(output, F_OK) == 0)
-			flags = O_RDONLY;
+		input = find_input(lst);
+		if (access(input, F_OK) == 0)
+		{
+			fd = open(input, O_RDONLY, 0666);
+			if (dup2(fd, STDIN_FILENO) == -1)
+				return (1);
+			close(fd);
+		}
 		else
 			return (0);	// Error: no such file or directory
 	}
 	if (redirect > 1)
 		open_fds(lst, redirect);
-	if (is_type(lst, 3) == 1)
-		flags = flags | O_APPEND | O_WRONLY;
-	else if (is_type(lst, 4) == 1)
-		flags = flags | O_TRUNC | O_WRONLY;
-	fd = open(output, flags, 0666);
-	if (fd < 0)
-		return (1);
 	if (is_type(lst, 3) || is_type(lst, 4))
 	{
+		output = find_output(lst, flag);
+		if (is_type(lst, 3) == 1)
+			flags = O_CREAT | O_APPEND | O_WRONLY;
+		else if (is_type(lst, 4) == 1)
+			flags = O_CREAT | O_TRUNC | O_WRONLY;
+		fd = open(output, flags, 0666);
+		if (fd < 0)
+			return (1);
 		if (dup2(fd, STDOUT_FILENO) == -1)
 			return (1); // Error: dup2
+		close(fd);
 	}
-	else
-	{
-		if (dup2(fd, STDIN_FILENO) == -1)
-			return(1); //Error: dup2
-	}
-	close(fd);
 	return (0);
 }
