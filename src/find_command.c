@@ -6,7 +6,7 @@
 /*   By: laugarci <laugarci@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/17 10:09:20 by laugarci          #+#    #+#             */
-/*   Updated: 2023/09/17 19:53:39 by laugarci         ###   ########.fr       */
+/*   Updated: 2023/09/19 16:31:53 by laugarci         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,7 +47,7 @@ char	*find_command(t_list *lst)
 	return (result);
 }
 
-char	*find_output(t_list *lst)
+char	*find_output(t_list *lst, int check)
 {
 	t_list	*tmp;
 	t_token	*token;
@@ -57,19 +57,64 @@ char	*find_output(t_list *lst)
 	tmp = lst;
 	token = tmp->content;
 	output = NULL;
+	if (check == 1)
+	{
+		while(token->type != 2)
+		{
+			tmp = tmp->next;
+			token = tmp->content;
+		}
+	}
+//	else
+//	{
+		while (tmp)
+		{
+			flag = 0;
+			if (token->type == 3 || token->type == 4 || token->type == 1)
+			{
+				output = malloc(sizeof(char) * ft_strlen(token->string) + 1);
+				if (!output)
+					return (NULL); // Error: malloc
+				ft_strlcpy(output, token->string, ft_strlen(token->string) + 1);
+				tmp = tmp->next;
+				token = tmp->content;
+				flag = 1;
+				if (token->type != 3 && token->type != 4 && token->type != 1)
+					break ;
+			}
+			if (flag == 0)
+			{
+				tmp = tmp->next;
+				token = tmp->content;
+			}
+		}
+//	}
+	return (output);
+}
+
+char	*find_input(t_list *lst)
+{
+	t_list	*tmp;
+	t_token	*token;
+	char	*input;
+	int		flag;
+
+	tmp = lst;
+	token = tmp->content;
+	input = NULL;
 	while (tmp)
 	{
 		flag = 0;
-		if (token->type == 3 || token->type == 4 || token->type == 1)
+		if (token->type == 1)
 		{
-			output = malloc(sizeof(char) * ft_strlen(token->string) + 1);
-			if (!output)
+			input = malloc(sizeof(char) * ft_strlen(token->string) + 1);
+			if (!input)
 				return (NULL); // Error: malloc
-			ft_strlcpy(output, token->string, ft_strlen(token->string) + 1);
+			ft_strlcpy(input, token->string, ft_strlen(token->string) + 1);
 			tmp = tmp->next;
 			token = tmp->content;
 			flag = 1;
-			if (token->type != 3 && token->type != 4 && token->type != 1)
+			if (token->type != 1)
 				break ;
 		}
 		if (flag == 0)
@@ -78,5 +123,5 @@ char	*find_output(t_list *lst)
 			token = tmp->content;
 		}
 	}
-	return (output);
+	return (input);
 }
