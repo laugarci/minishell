@@ -1,25 +1,22 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   exec_env.c                                         :+:      :+:    :+:   */
+/*   exit_status.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: laugarci <laugarci@student.42barcel>       +#+  +:+       +#+        */
+/*   By: ffornes- <ffornes-@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/09/19 18:13:09 by laugarci          #+#    #+#             */
-/*   Updated: 2023/09/19 18:13:32 by laugarci         ###   ########.fr       */
+/*   Created: 2023/09/18 15:05:03 by ffornes-          #+#    #+#             */
+/*   Updated: 2023/09/18 18:29:23 by ffornes-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <unistd.h>
-#include <stdio.h>
-#include "minishell.h"
+#include "minishell_defs.h"
 
-int	exec_env(char **env)
+int	set_or_return_exit_status(int mode, int value)
 {
-	int	i;
+	static int	exit_status;
 
-	i = 0;
-	while (env[i] != NULL)
-		printf("%s\n", env[i++]);
-	return (0);
+	if (mode == MODE_SET)
+		exit_status = value;
+	return (exit_status);
 }

@@ -6,7 +6,7 @@
 /*   By: laugarci <laugarci@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/04 11:30:35 by laugarci          #+#    #+#             */
-/*   Updated: 2023/09/19 10:27:34 by laugarci         ###   ########.fr       */
+/*   Updated: 2023/09/19 18:14:05 by laugarci         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,11 +18,11 @@
 #include "libft_bonus.h"
 #include "parser.h"
 
-int		count_flags(t_list *lst)
+int	count_flags(t_list *lst)
 {
 	int		flag;
 	t_token	*token;
-	size_t		i;
+	size_t	i;
 
 	token = lst->content;
 	flag = 0;
@@ -31,7 +31,7 @@ int		count_flags(t_list *lst)
 		i = 1;
 		if (token->string[0] == '-' && token->string[1] == 'n')
 		{
-			while(token->string[i] == 'n')
+			while (token->string[i] == 'n')
 				i++;
 			if (i == ft_strlen(token->string))
 				flag++;
@@ -47,7 +47,7 @@ t_list	*move_list(t_list *aux, int flag)
 	t_token	*token;
 
 	token = aux->content;
-	while(flag > 0)
+	while (flag > 0)
 	{
 		aux = aux->next;
 		flag--;
@@ -81,7 +81,7 @@ int	exec_echo(t_list *lst)
 	t_list	*aux;
 	int		i;
 	int		flag;
-	
+
 	aux = lst;
 	flag = 0;
 	i = count_list(lst);

@@ -6,7 +6,7 @@
 /*   By: laugarci <laugarci@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/17 10:09:20 by laugarci          #+#    #+#             */
-/*   Updated: 2023/09/19 16:31:53 by laugarci         ###   ########.fr       */
+/*   Updated: 2023/09/19 18:32:27 by laugarci         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,8 @@ char	*find_command(t_list *lst)
 	while (current->next)
 	{
 		token = current->content;
-		if ((token->type == 3 || token->type == 4 || token->type == 1 || token->type == 2))
+		if ((token->type == 3 || token->type == 4
+				|| token->type == 1 || token->type == 2))
 			break ;
 		if (i > 0)
 			result[i++] = ' ';
@@ -59,36 +60,33 @@ char	*find_output(t_list *lst, int check)
 	output = NULL;
 	if (check == 1)
 	{
-		while(token->type != 2)
+		while (token->type != 2)
 		{
 			tmp = tmp->next;
 			token = tmp->content;
 		}
 	}
-//	else
-//	{
-		while (tmp)
+	while (tmp)
+	{
+		flag = 0;
+		if (token->type == 3 || token->type == 4 || token->type == 1)
 		{
-			flag = 0;
-			if (token->type == 3 || token->type == 4 || token->type == 1)
-			{
-				output = malloc(sizeof(char) * ft_strlen(token->string) + 1);
-				if (!output)
-					return (NULL); // Error: malloc
-				ft_strlcpy(output, token->string, ft_strlen(token->string) + 1);
-				tmp = tmp->next;
-				token = tmp->content;
-				flag = 1;
-				if (token->type != 3 && token->type != 4 && token->type != 1)
-					break ;
-			}
-			if (flag == 0)
-			{
-				tmp = tmp->next;
-				token = tmp->content;
-			}
+			output = malloc(sizeof(char) * ft_strlen(token->string) + 1);
+			if (!output)
+				return (NULL); // Error: malloc
+			ft_strlcpy(output, token->string, ft_strlen(token->string) + 1);
+			tmp = tmp->next;
+			token = tmp->content;
+			flag = 1;
+			if (token->type != 3 && token->type != 4 && token->type != 1)
+				break ;
 		}
-//	}
+		if (flag == 0)
+		{
+			tmp = tmp->next;
+			token = tmp->content;
+		}
+	}
 	return (output);
 }
 

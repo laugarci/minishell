@@ -6,7 +6,7 @@
 /*   By: laugarci <laugarci@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/06 11:42:45 by ffornes-          #+#    #+#             */
-/*   Updated: 2023/09/16 18:40:14 by ffornes-         ###   ########.fr       */
+/*   Updated: 2023/09/18 15:41:55 by ffornes-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@ typedef struct s_token
 	int		quotes;
 }			t_token;
 
-int			parse_input(char *str, char *envp[], t_list **token_list, int *exit_status);
+int			parse_input(char *str, char *envp[], t_list **token_list);
 
 char		*clean_input(char *input);
 int			needs_space(char *str);
@@ -38,7 +38,7 @@ char		**split_input(char *input);
 
 int			syntax_error_check(t_list *lst);
 
-char		*expand_evals(char *input, char *envp[], int *exit_status);
+char		*expand_evals(char *input, char *envp[]);
 int			expansion_amount(char *input);
 int			find_eval(char *str, char *envp[], char **dst);
 char		*update_input(char *input, char *str);
@@ -48,7 +48,7 @@ int			quote_state(int state, char c);
 
 t_token		*new_token(char *string, int type, int quotes);
 t_list		*save_tokens(char *input);
-int			process_tokens(t_list **token_list, char *envp[], int *exit_status);
+int			process_tokens(t_list **token_list, char *envp[]);
 int			process_subtokens(t_list **token_list);
 int			count_subtokens(char *string);
 int			join_subtoken(t_list **token_list);

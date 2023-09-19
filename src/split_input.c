@@ -6,7 +6,7 @@
 /*   By: ffornes- <ffornes-@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/31 12:35:07 by ffornes-          #+#    #+#             */
-/*   Updated: 2023/09/13 19:46:35 by ffornes-         ###   ########.fr       */
+/*   Updated: 2023/09/19 12:43:45 by ffornes-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,11 +20,15 @@ static char	*save_it(char *input, int start, int end)
 {
 	char	*out;
 
+	if (start)
+		input += start;
+	if (!ft_strncmp(input, "~ ", 2) || !ft_strncmp(input, "~\0", 2))
+		return (ft_strdup("$HOME"));
+	else if (!ft_strncmp(input, "~/", 2))
+		return (ft_strjoin("$HOME", (input + 1)));
 	out = malloc(sizeof(char) * (end + 1));
 	if (!out)
 		return (NULL);
-	if (start)
-		input += start;
 	ft_strlcpy(out, input, end + 1);
 	return (out);
 }
@@ -88,6 +92,8 @@ static char	**charp_to_charpp(char *input)
 	out = malloc(sizeof(char *) * 2);
 	if (!out)
 		return (NULL);
+	if (!ft_strncmp(input, "~\0", 2))
+		input = "$HOME";
 	out[0] = ft_strdup(input);
 	if (!out[0])
 	{

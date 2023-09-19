@@ -6,7 +6,7 @@
 /*   By: laugarci <laugarci@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/05 14:01:37 by laugarci          #+#    #+#             */
-/*   Updated: 2023/09/16 18:41:33 by ffornes-         ###   ########.fr       */
+/*   Updated: 2023/09/19 17:16:45 by laugarci         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,20 @@
 #include "libft.h"
 #include "libft_bonus.h"
 #include "minishell.h"
+#include "minishell_defs.h"
 #include "parser.h"
+#include "termios.h"
+
+void	ctrl_c(int mode)
+{
+	struct termios	tc;
+
+	tcgetattr(0, &tc);
+	tc.c_lflag &= ~ECHOCTL;
+	if (mode)
+		tc.c_lflag |= ECHOCTL;
+	tcsetattr(0, TCSANOW, &tc);
+}
 
 // AJNKNAEKK DEBUGGGGGGGGGGGG // INCLUDED IN PARSER.H
 void	print_tokens(t_list *lst)
@@ -82,35 +95,28 @@ static char	**set_env(char *env[])
 	return (dst);
 }
 
-static int	exit_check(char *input) // Make builtin
-{
-	if (!ft_strncmp(input, "exit\0", 5))
-	{
-		free(input);
-		printf("exit\n");
-		return (1);
-	}
-	return (0);
-}
-
-static int	main_loop(char *prompt, char **envp, int *exit_status)
+static int	main_loop(char *prompt, char **envp)
 {
 	char	*input;
 	t_list	*list;
 
+	set_or_return_state(MODE_SET, STATE_READ);
+	ctrl_c(MODE_UNSET);
+	signal_handler();
 	input = readline(prompt);
 	if (!input)
 		return (1);
 	if (input[0] != '\0')
 	{
+		signal(SIGINT, SIG_IGN);
+		signal(SIGQUIT, SIG_IGN);
 		add_history(input);
-		if (exit_check(input))
-			return (1);
-		*exit_status = parse_input(input, envp, &list, exit_status);
-		if (*exit_status == 0)
+		set_or_return_exit_status(MODE_SET, parse_input(input, envp, &list));
+		if (!set_or_return_exit_status(MODE_RETURN, -1))
 		{
 			list = organize_list(list);
-			cmp_commands(list, envp);
+		//	print_tokens(list); // Debug
+			cmp_commands(list, envp); // Send &state & update value when executing || here_doc
 			ft_lstclear(&list, (void *)free_token);
 		}
 	}
@@ -121,10 +127,8 @@ static int	main_loop(char *prompt, char **envp, int *exit_status)
 int	main(int argc, char *argv[], char *envp[])
 {
 	char	*prompt;
-	int		exit_status;
 	char	**my_env;
 
-	exit_status = 0;
 	if (argc > 1)
 		return (1);
 	my_env = set_env(envp);
@@ -132,12 +136,16 @@ int	main(int argc, char *argv[], char *envp[])
 		return (print_and_return(12));
 	prompt = ft_strjoin((argv[0] + 2), "$ ");
 	if (!prompt)
+	{
+		free_double((void **)my_env);
 		return (print_and_return(12));
+	}
+	set_or_return_exit_status(MODE_SET, 0);
 	while (42)
-		if (main_loop(prompt, my_env, &exit_status))
+		if (main_loop(prompt, my_env))
 			break ;
 	free_double((void **)my_env);
 	free(prompt);
 	clear_history();
-	return (0);
+	return (set_or_return_exit_status(MODE_RETURN, -1));
 }

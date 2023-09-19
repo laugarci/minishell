@@ -6,11 +6,13 @@
 /*   By: ffornes- <ffornes-@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/13 17:39:50 by ffornes-          #+#    #+#             */
-/*   Updated: 2023/09/16 20:14:03 by ffornes-         ###   ########.fr       */
+/*   Updated: 2023/09/18 15:52:18 by ffornes-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
+#include "minishell.h"
+#include "minishell_defs.h"
 #include "parser.h"
 
 void	print_error(char *error_message)
