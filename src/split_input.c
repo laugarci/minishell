@@ -6,7 +6,7 @@
 /*   By: ffornes- <ffornes-@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/31 12:35:07 by ffornes-          #+#    #+#             */
-/*   Updated: 2023/09/18 18:18:30 by ffornes-         ###   ########.fr       */
+/*   Updated: 2023/09/19 12:43:45 by ffornes-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,9 @@ static char	*save_it(char *input, int start, int end)
 	if (start)
 		input += start;
 	if (!ft_strncmp(input, "~ ", 2) || !ft_strncmp(input, "~\0", 2))
-		return (ft_strdup("$HOME"));	
+		return (ft_strdup("$HOME"));
+	else if (!ft_strncmp(input, "~/", 2))
+		return (ft_strjoin("$HOME", (input + 1)));
 	out = malloc(sizeof(char) * (end + 1));
 	if (!out)
 		return (NULL);
