@@ -6,7 +6,7 @@
 /*   By: ffornes- <ffornes-@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/19 12:52:54 by ffornes-          #+#    #+#             */
-/*   Updated: 2023/09/19 14:23:11 by ffornes-         ###   ########.fr       */
+/*   Updated: 2023/09/19 14:59:04 by ffornes-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,11 +25,19 @@ static long long	check_limits(unsigned long long j, int i)
 		j -= 1;
 	if (j > LONG_MAX)
 		return (0);
-	else
+	out = (long long)j;
+	if (i)
 	{
-		out = (long long)j;
-		out += 1;
-		out *= -1;
+		if (out == 0)
+		{
+			out += 1;
+			out *= -1;
+		}
+		else
+		{
+			out *= -1;
+			out += 1;
+		}
 	}
 	return (out);
 }
@@ -57,13 +65,13 @@ long long	ft_atoll(const char *str)
 		j = (j * 10) + (*str - '0');
 		str++;
 	}
-	if (i > 0)
-		j *= -1;
 	return (check_limits(j, i));
 }
 
 static int	check_digits(char *input)
 {
+	if (*input == '-' || *input == '+')
+		input++;
 	while (ft_isdigit(*input))
 		input++;
 	if (*input && !ft_isdigit(*input))
@@ -76,9 +84,11 @@ void	builtin_exit(char *input)
 	long long	out;
 
 	if (!input)
+	{
+		ft_putstr_fd("exit\n", 1);
 		exit(0);
+	}
 	out = ft_atoll(input);
-	printf("INPUT: %s\nOUTPUT: %lld\n", input, out);
 	while (*input == '0')
 		input++;
 	if (check_digits(input) || (!out && *input != '\0'))
@@ -88,7 +98,9 @@ void	builtin_exit(char *input)
 		ft_putstr_fd(": numeric argument required\n", 2);
 		exit(255);
 	}
-	ft_putstr_fd("exit", 1);
+	ft_putstr_fd("exit\n", 1);
+	while (out > 255)
+		out -= (out / 255) * 256;
 	exit(out);
 }
 
@@ -98,7 +110,8 @@ void	exit_check(t_list *lst)
 	t_token	*aux;
 
 	token = lst->content;
-	if (!ft_strncmp(token->string, "exit\0", 5))
+	if (!ft_strncmp(token->string, "exit\0", 5)
+		|| !ft_strncmp(token->string, "exit ", 5))
 	{
 		lst = lst->next;
 		token = lst->content;
