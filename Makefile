@@ -6,14 +6,14 @@
 #    By: ffornes- <ffornes-@student.42barcel>       +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/06/26 15:00:09 by ffornes-          #+#    #+#              #
-#    Updated: 2023/09/19 13:18:04 by ffornes-         ###   ########.fr        #
+#    Updated: 2023/09/19 16:14:56 by ffornes-         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME = minishell
 
 SRC_DIR = src/
-SRC_FILES = minishell.c \
+SRC_FILES = minishell.c init_data.c \
 			parse_input.c clean_input.c clean_input_utils.c split_input.c \
 			expansion.c expansion_utils.c expansion_update.c \
 			get_path.c exec_commands.c exec_pipes.c exec_here_doc.c \
