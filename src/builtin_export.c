@@ -6,7 +6,7 @@
 /*   By: ffornes- <ffornes-@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/10 18:22:49 by ffornes-          #+#    #+#             */
-/*   Updated: 2023/09/14 12:02:51 by ffornes-         ###   ########.fr       */
+/*   Updated: 2023/09/19 12:54:07 by ffornes-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,7 +79,7 @@ int	builtin_export(char *eval, char **envp)
 	new_envp = realloc_envp(eval, envp);
 	if (!new_envp)
 		return (1);
-	free_double((void **)envp);
 	envp = new_envp;
+	free_double((void **)og_envp);
 	return (0);
 }
