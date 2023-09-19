@@ -6,7 +6,7 @@
 /*   By: laugarci <laugarci@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/04 14:04:45 by laugarci          #+#    #+#             */
-/*   Updated: 2023/09/19 14:16:27 by ffornes-         ###   ########.fr       */
+/*   Updated: 2023/09/19 15:13:35 by ffornes-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,6 +30,7 @@ int	cmp_commands(t_list *lst, char **env)
 
 	token = lst->content;
 	err = 0;
+	exit_check(lst);
 	if (ft_strncmp(token->string, "cd\0", 3) == 0)
 		err = exec_cd(lst);
 	else if (is_type(lst, 0) || is_type(lst, 3) ||
@@ -52,8 +53,6 @@ int	cmp_commands(t_list *lst, char **env)
 		err = exec_env(env);
 	else if (ft_strncmp(token->string, "unset\0", 6) == 0)
 		err = exec_unset(lst, env);
-	else if (ft_strncmp(token->string, "exit\0", 5) == 0)
-		exit_check(lst);
 	else
 		err = exec_commands(lst, env);
 	return (check_error(err));
@@ -137,6 +136,11 @@ int	exec_commands(t_list *lst, char **env)
 	{
 		ft_putchar_fd('\n', 1);
 		set_or_return_exit_status(MODE_SET, 130);
+	}
+	else if (WTERMSIG(status) == SIGQUIT)
+	{
+		ft_putstr_fd("Quit: 3\n", 0);
+		set_or_return_exit_status(MODE_SET, 131);
 	}
 	free(cmd);
 	free_double((void **)split_cmd);
