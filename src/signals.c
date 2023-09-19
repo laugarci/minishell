@@ -6,7 +6,7 @@
 /*   By: ffornes- <ffornes-@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/17 16:24:45 by ffornes-          #+#    #+#             */
-/*   Updated: 2023/09/19 15:54:53 by ffornes-         ###   ########.fr       */
+/*   Updated: 2023/09/19 15:57:04 by ffornes-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,8 +31,7 @@ static void	state_read(int sig, siginfo_t *data, void *n_data)
 {
 	(void) data;
 	(void) n_data;
-	
-	if (sig == SIGINT) // Must set exit status to 1
+	if (sig == SIGINT)
 	{
 		ft_putchar_fd('\n', 1);
 		rl_replace_line("", 1);
@@ -49,7 +48,6 @@ static void	state_hdoc(int sig, siginfo_t *data, void *n_data)
 {
 	(void) data;
 	(void) n_data;
-
 	if (sig == SIGINT)
 	{
 		set_or_return_exit_status(MODE_SET, 1);
@@ -66,7 +64,7 @@ int	*signal_handler(void)
 {
 	struct sigaction	signal;
 	int					state;
-	
+
 	signal.sa_flags = SA_RESTART;
 	sigemptyset(&signal.sa_mask);
 	state = set_or_return_state(MODE_RETURN, -1);
