@@ -6,7 +6,7 @@
 /*   By: ffornes- <ffornes-@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/27 11:32:21 by ffornes-          #+#    #+#             */
-/*   Updated: 2023/09/19 12:40:27 by ffornes-         ###   ########.fr       */
+/*   Updated: 2023/09/19 14:13:28 by ffornes-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,12 +56,14 @@ int			exec_env(char **env);
 int			exec_unset(t_list *lst, char **env);
 int			*signal_handler(void);
 
-int			exit_check(char *input);
 int			set_or_return_exit_status(int mode, int value);
 int			set_or_return_state(int mode, int value);
 
 void		ctrl_c(int mode);
 
-int		check_error(int error);
+int			check_error(int error);
+
+void		builtin_exit(char *input);
+void		exit_check(t_list *lst);
 
 #endif

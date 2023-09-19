@@ -6,7 +6,7 @@
 /*   By: laugarci <laugarci@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/05 14:01:37 by laugarci          #+#    #+#             */
-/*   Updated: 2023/09/18 19:49:17 by ffornes-         ###   ########.fr       */
+/*   Updated: 2023/09/19 14:13:42 by ffornes-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -95,18 +95,6 @@ static char	**set_env(char *env[])
 	return (dst);
 }
 
-int	exit_check(char *input) // Make builtin
-{
-	if (!ft_strncmp(input, "exit\0", 5))
-	{
-		free(input);
-		printf("exit\n");
-		ctrl_c(MODE_SET);
-		return (1);
-	}
-	return (0);
-}
-
 static int	main_loop(char *prompt, char **envp)
 {
 	char	*input;
@@ -123,8 +111,6 @@ static int	main_loop(char *prompt, char **envp)
 		signal(SIGINT, SIG_IGN);
 		signal(SIGQUIT, SIG_IGN);
 		add_history(input);
-		if (exit_check(input))
-			return (1);
 		set_or_return_exit_status(MODE_SET, parse_input(input, envp, &list));
 		if (!set_or_return_exit_status(MODE_RETURN, -1))
 		{
