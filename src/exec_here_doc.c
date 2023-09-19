@@ -6,7 +6,7 @@
 /*   By: laugarci <laugarci@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/19 13:29:17 by laugarci          #+#    #+#             */
-/*   Updated: 2023/09/18 13:34:26 by laugarci         ###   ########.fr       */
+/*   Updated: 2023/09/19 16:27:04 by laugarci         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -100,9 +100,10 @@ int	here_doc(t_list *lst)
 		if (flag == 1 || ft_strncmp(token->string, "cat\0", 3) == 0)
 		{
 			if ((is_type(lst, 3) || is_type(lst, 4)))
-				exec_redirect(lst);
+				exec_redirect(lst, 1);
 			write(1, text, ft_strlen(text));
-			exit(1);
+			if (!is_type(lst, PIPE))
+				exit(1);
 		}
 	}
 	//to solve >> ls -a | wc -l | cat -e > a | cat << hola > b

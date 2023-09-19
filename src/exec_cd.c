@@ -6,7 +6,7 @@
 /*   By: laugarci <laugarci@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/14 21:05:30 by laugarci          #+#    #+#             */
-/*   Updated: 2023/09/19 10:55:30 by laugarci         ###   ########.fr       */
+/*   Updated: 2023/09/19 16:35:03 by laugarci         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@ int	exec_cd(t_list *lst)
 	i = count_list(lst);
 	tmp = lst->next;
 	token = tmp->content;
-	if (i == 2 || ft_strncmp(token->string, "~\0", 2) == 0)
+	if (i == 2)
 	{
 		if (chdir(getenv("HOME")) == 1)
 			return (1);

@@ -1,12 +1,12 @@
 # **************************************************************************** #
 #                                                                              #
 #                                                         :::      ::::::::    #
-#    tester.txt                                         :+:      :+:    :+:    #
+/*   tester.c                                           :+:      :+:    :+:   */
 #                                                     +:+ +:+         +:+      #
 #    By: laugarci <laugarci@student.42barcel>       +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/09/18 17:09:36 by laugarci          #+#    #+#              #
-#    Updated: 2023/09/18 17:09:36 by laugarci         ###   ########.fr        #
+/*   Updated: 2023/09/19 12:15:30 by laugarci         ###   ########.fr       */
 #                                                                              #
 # **************************************************************************** #
 
@@ -27,6 +27,8 @@ ls -a | wc -l | cat -e
 ls -a | cat << hola | cat -e
 ls | cat
 cat | ls
+wc -l < Makefile > a
+ls | wc < Makefile > a | cat<<hola > c | ls > b //no funciona
 
 ----
 cd -
