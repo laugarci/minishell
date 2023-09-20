@@ -6,7 +6,7 @@
 /*   By: ffornes- <ffornes-@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/27 11:32:21 by ffornes-          #+#    #+#             */
-/*   Updated: 2023/09/19 18:46:51 by laugarci         ###   ########.fr       */
+/*   Updated: 2023/09/20 17:48:35 by laugarci         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,5 +72,7 @@ void		builtin_exit(char *input);
 void		exit_check(t_list *lst);
 
 char		*find_input(t_list *lst);
+
+int			process_is_type(t_list *lst, int type);
 
 #endif

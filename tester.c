@@ -6,7 +6,7 @@
 #    By: laugarci <laugarci@student.42barcel>       +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/09/18 17:09:36 by laugarci          #+#    #+#              #
-/*   Updated: 2023/09/20 13:20:19 by laugarci         ###   ########.fr       */
+/*   Updated: 2023/09/20 17:46:05 by laugarci         ###   ########.fr       */
 #                                                                              #
 # **************************************************************************** #
 
@@ -41,15 +41,25 @@ HERE_DOC:
 
 #### NO FUNCIONA ####
 
-<<del1 <<del2 (no encuentra la segunda del)
+<<del1 <<del2
+
 ls<<a > b | bla<<b (ejecuta bla antes que nada)
-cmd<<del | cmd<<del (ejecuta el comando antes del HD)
+ls<<bla > a | cat<<ble > b (guarda ls, no guarda cat, pero si es otro comando si guarda cosas)
+ls<<a > b | ls<<b (ejecuta el segundo comando antes que nada)
+cat<<a | <<a (imprime el cat)
+cat<<a > b | <<b (guarda lo escrito cuando esta en el 2do delimitador)
+cat<<bla > a | ls<<ble > b (guarda bien el ls, pero guarda en a lo que se escribe cuando estas en el 2do delimitador)
+>>problemas genericos con CAT y el texto
 
 ##### FUNCIONA #####
 
+cat<<a
+ls<<a > b | <<b
+cmd<<del | cmd<<del
+ls<<a > b | <<b
 <<del
 cmd<<del
 cmd<<del | cmd<<del
-cmd<<del | cmd<<del > a
+cmd<<del > b | cmd<<del > a (ls<<del > b | wc<<del2 > a)
 ls | wc < Makefile > a | cat<<hola > c | ls > b
 
