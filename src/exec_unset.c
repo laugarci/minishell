@@ -13,10 +13,11 @@ int	exec_unset(t_list *lst, char **env)
 	int	i;
 	int	j;
 
+	if (!lst)
+		return (0);
 	aux = lst->next;
 	token = aux->content;
 	i = 0;
-
 	while(env[i])
 	{
 		if (ft_strncmp(env[i], token->string, ft_strlen(token->string)) == 0 &&
@@ -25,13 +26,10 @@ int	exec_unset(t_list *lst, char **env)
 			free(env[i]);
 			j = i;
 			while(env[j])
-			{
-				env[j] = env[j + 1];
-				j++;
-			}
+				env[j] = env[++j];
 			return (0);
 		}
 		i++;
 	}
-	return (1); // Error: variable no encontrada
+	return (1);
 }
