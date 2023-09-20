@@ -1,3 +1,14 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   exec_unset.c                                       :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: ffornes- <ffornes-@student.42barcel>       +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2023/09/20 17:48:17 by ffornes-          #+#    #+#             */
+/*   Updated: 2023/09/20 17:49:24 by ffornes-         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -11,12 +22,12 @@ static int	exec_unset_util(char **env, t_token *token, int i)
 	int	j;
 
 	j = 0;
-	if (ft_strncmp(env[i], token->string, ft_strlen(token->string)) == 0 &&
-		env[i][ft_strlen(token->string)] == '=')
+	if (ft_strncmp(env[i], token->string, ft_strlen(token->string)) == 0
+		&& env[i][ft_strlen(token->string)] == '=')
 	{
 		free(env[i]);
 		j = i;
-		while(env[j])
+		while (env[j])
 		{
 			env[j] = env[j + 1];
 			j++;
@@ -28,10 +39,10 @@ static int	exec_unset_util(char **env, t_token *token, int i)
 
 int	exec_unset(t_list *lst, char **env)
 {
-	t_token *token;
+	t_token	*token;
 	t_list	*aux;
-	int	i;
-	int	out;
+	int		i;
+	int		out;
 
 	if (!lst->next)
 		return (0);
@@ -43,7 +54,7 @@ int	exec_unset(t_list *lst, char **env)
 		return (0);
 	i = 0;
 	out = 0;
-	while(env[i])
+	while (env[i])
 		out = exec_unset_util(env, token, i++);
 	return (out);
 }
