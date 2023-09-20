@@ -6,7 +6,7 @@
 #    By: laugarci <laugarci@student.42barcel>       +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/09/18 17:09:36 by laugarci          #+#    #+#              #
-/*   Updated: 2023/09/20 17:46:05 by laugarci         ###   ########.fr       */
+/*   Updated: 2023/09/20 19:02:32 by laugarci         ###   ########.fr       */
 #                                                                              #
 # **************************************************************************** #
 
@@ -41,8 +41,7 @@ HERE_DOC:
 
 #### NO FUNCIONA ####
 
-<<del1 <<del2
-
+<<del1 <<del2 (no encuentra el siguiente delimitador)
 ls<<a > b | bla<<b (ejecuta bla antes que nada)
 ls<<bla > a | cat<<ble > b (guarda ls, no guarda cat, pero si es otro comando si guarda cosas)
 ls<<a > b | ls<<b (ejecuta el segundo comando antes que nada)
