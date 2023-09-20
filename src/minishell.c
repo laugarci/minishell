@@ -6,7 +6,7 @@
 /*   By: laugarci <laugarci@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/05 14:01:37 by laugarci          #+#    #+#             */
-/*   Updated: 2023/09/19 18:12:14 by ffornes-         ###   ########.fr       */
+/*   Updated: 2023/09/20 18:08:15 by ffornes-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,17 +21,6 @@
 #include "minishell_defs.h"
 #include "parser.h"
 #include "termios.h"
-
-void	ctrl_c(int mode)
-{
-	struct termios	tc;
-
-	tcgetattr(0, &tc);
-	tc.c_lflag &= ~ECHOCTL;
-	if (mode)
-		tc.c_lflag |= ECHOCTL;
-	tcsetattr(0, TCSANOW, &tc);
-}
 
 // AJNKNAEKK DEBUGGGGGGGGGGGG // INCLUDED IN PARSER.H
 void	print_tokens(t_list *lst)
@@ -76,7 +65,7 @@ static int	main_loop(char *prompt, char **envp)
 	t_list	*list;
 
 	set_or_return_state(MODE_SET, STATE_READ);
-	ctrl_c(MODE_UNSET);
+	signal_display(MODE_UNSET);
 	signal_handler();
 	input = readline(prompt);
 	if (!input)
@@ -101,24 +90,24 @@ static int	main_loop(char *prompt, char **envp)
 int	main(int argc, char *argv[], char *envp[])
 {
 	char	*prompt;
-	t_data	data;
+	char	**my_env;
 
 	if (argc > 1)
 		return (1);
-	init_data(&data, envp);
-	if (!data.env)
+	my_env = set_env(envp);
+	if (!my_env)
 		return (print_and_return(12));
 	prompt = ft_strjoin((argv[0] + 2), "$ ");
 	if (!prompt)
 	{
-		free_double((void **)data.env);
+		free_double((void **)my_env);
 		return (print_and_return(12));
 	}
 	set_or_return_exit_status(MODE_SET, 0);
 	while (42)
-		if (main_loop(prompt, data.env))
+		if (main_loop(prompt, my_env))
 			break ;
-	free_double((void **)data.env);
+	free_double((void **)my_env);
 	free(prompt);
 	clear_history();
 	return (set_or_return_exit_status(MODE_RETURN, -1));
