@@ -6,7 +6,7 @@
 #    By: laugarci <laugarci@student.42barcel>       +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/09/18 17:09:36 by laugarci          #+#    #+#              #
-/*   Updated: 2023/09/19 18:08:27 by laugarci         ###   ########.fr       */
+/*   Updated: 2023/09/20 13:20:19 by laugarci         ###   ########.fr       */
 #                                                                              #
 # **************************************************************************** #
 
@@ -34,4 +34,22 @@ ls | wc < Makefile > a | cat<<hola > c | ls > b
 ----
 cd -
 cd carpeta/ anadir /
+
+
+
+HERE_DOC:
+
+#### NO FUNCIONA ####
+
+<<del1 <<del2 (no encuentra la segunda del)
+ls<<a > b | bla<<b (ejecuta bla antes que nada)
+cmd<<del | cmd<<del (ejecuta el comando antes del HD)
+
+##### FUNCIONA #####
+
+<<del
+cmd<<del
+cmd<<del | cmd<<del
+cmd<<del | cmd<<del > a
+ls | wc < Makefile > a | cat<<hola > c | ls > b
 

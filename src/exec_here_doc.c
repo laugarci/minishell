@@ -6,7 +6,7 @@
 /*   By: laugarci <laugarci@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/19 13:29:17 by laugarci          #+#    #+#             */
-/*   Updated: 2023/09/19 18:56:32 by laugarci         ###   ########.fr       */
+/*   Updated: 2023/09/20 13:08:43 by laugarci         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,18 +50,33 @@ int	find_cat(t_list *aux)
 	return (i);
 }
 
-char	*find_del(t_list *lst)
+char	*find_del(t_list *lst, int count)
 {
 	char	*del;
 	t_token	*token;
+	int		total;
 
 	token = lst->content;
-	if (token->type != HERE_DOC)
+	if (token->type != 2)
 	{
-		while (token->type != HERE_DOC)
+		total = count_types(lst, 2) - (count) + 1;
+		token = lst->content;
+		if (token->type != 2)
+		{
+			while (token->type != 2)
+			{
+				lst = lst->next;
+				token = lst->content;
+				if (token->type == 2)
+					total--;
+			}
+		}
+		while (total > 0)
 		{
 			lst = lst->next;
 			token = lst->content;
+			if (token->type == 2)
+				total--;
 		}
 	}
 	del = malloc(sizeof(char) * ft_strlen(token->string) + 1);
@@ -95,21 +110,24 @@ int	here_doc(t_list *lst)
 	char	*text;
 	int		count;
 
-	text = NULL;
-	del = find_del(lst);
 	count = count_types(lst, 2);
-	while (count >= 0)
+	while (count > 0)
 	{
-		del = find_del(lst);
+		text = NULL;
+		del = find_del(lst, count);
+		printf("del >> %s\n", del);
 		while(42)
 		{	
-			input = readline("heredoc> ");
+			input = readline("> ");
 			if (ft_strncmp(input, del, ft_strlen(del) + 1) == 0)
 				break ;
 			text = ft_strjoin(text, input);
 			text = ft_strjoin(text, "\n");
 //		input = expand_evals(input, env);
 		}
+		if (is_type(lst, PIPE))
+			lst = move_to_pipe(lst);
+		count--;
 	}
 	if (count_list(lst) > 2)
 		here_doc_cmd(lst, text);

@@ -6,7 +6,7 @@
 /*   By: laugarci <laugarci@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/14 09:52:31 by laugarci          #+#    #+#             */
-/*   Updated: 2023/09/19 18:46:31 by laugarci         ###   ########.fr       */
+/*   Updated: 2023/09/20 13:24:18 by laugarci         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -126,8 +126,8 @@ int	exec_pipes(char **env, int num_pipes, t_list *lst)
 			exit(-1);
 		else if (pid == 0)
 		{
-			if (i == num_pipes && is_type(aux, 2))
-					here_doc(aux);
+			if (i == 0 && is_type(aux, 2))
+				here_doc(aux);
 			set_or_return_state(MODE_SET, STATE_EXEC);
 			signal_handler();
 			close_pipes_child(fds, i, num_pipes, lst);
