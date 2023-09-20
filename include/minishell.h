@@ -6,7 +6,7 @@
 /*   By: ffornes- <ffornes-@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/27 11:32:21 by ffornes-          #+#    #+#             */
-/*   Updated: 2023/09/19 18:07:21 by ffornes-         ###   ########.fr       */
+/*   Updated: 2023/09/20 17:03:10 by ffornes-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,8 +17,7 @@
 # include "libft_defs.h"
 # include "minishell_defs.h"
 
-int			init_data(t_data *data, char **envp);
-
+char		**set_env(char **envp);
 char		*get_path(char *cmd, char **envp);
 
 int			exec_commands(t_list *lst, char **env);
@@ -64,13 +63,13 @@ int			*signal_handler(void);
 int			set_or_return_exit_status(int mode, int value);
 int			set_or_return_state(int mode, int value);
 
-void		ctrl_c(int mode);
+void		signal_display(int mode);
 
 int			check_error(int error);
 
 void		builtin_exit(char *input);
 void		exit_check(t_list *lst);
 
-char	*find_input(t_list *lst);
+char		*find_input(t_list *lst);
 
 #endif
