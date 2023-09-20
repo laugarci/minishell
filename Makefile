@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: ffornes- <ffornes-@student.42barcel>       +#+  +:+       +#+         #
+#    By: laugarci <laugarci@student.42barcel>       +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
-#    Created: 2023/06/26 15:00:09 by ffornes-          #+#    #+#              #
-#    Updated: 2023/09/19 18:47:13 by laugarci         ###   ########.fr        #
+#    Created: 2023/09/20 10:29:36 by laugarci          #+#    #+#              #
+#    Updated: 2023/09/20 10:29:40 by laugarci         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 

@@ -6,7 +6,7 @@
 /*   By: laugarci <laugarci@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/04 14:04:45 by laugarci          #+#    #+#             */
-/*   Updated: 2023/09/19 18:25:41 by laugarci         ###   ########.fr       */
+/*   Updated: 2023/09/20 13:23:10 by laugarci         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -114,6 +114,7 @@ int	exec_commands(t_list *lst, char **env)
 
 	cmd = find_command(lst);
 	split_cmd = ft_split(cmd, '|');
+	printf("cmd[0] >> %s\n", split_cmd[0]);
 	lst = save_tokens(split_cmd[0]);
 	i = count_list(lst);
 	pid = fork();
