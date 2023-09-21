@@ -6,29 +6,15 @@
 /*   By: laugarci <laugarci@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/06 11:42:45 by ffornes-          #+#    #+#             */
-/*   Updated: 2023/09/18 15:41:55 by ffornes-         ###   ########.fr       */
+/*   Updated: 2023/09/19 18:30:18 by ffornes-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef PARSER_H
 # define PARSER_H
 
-# define PIPE			0
-# define INFILE			1
-# define HERE_DOC		2
-# define APPEND			3
-# define TRUNC			4
-# define TOKEN_APPEND	5
-# define TOKEND			6
-
 # include "libft_defs.h"
-
-typedef struct s_token
-{
-	char	*string;
-	int		type;
-	int		quotes;
-}			t_token;
+# include "minishell_defs.h"
 
 int			parse_input(char *str, char *envp[], t_list **token_list);
 
