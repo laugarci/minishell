@@ -6,7 +6,7 @@
 /*   By: ffornes- <ffornes-@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/10 18:22:49 by ffornes-          #+#    #+#             */
-/*   Updated: 2023/09/21 19:54:08 by ffornes-         ###   ########.fr       */
+/*   Updated: 2023/09/21 20:11:19 by ffornes-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,7 +77,7 @@ int	builtin_export(t_list *tkn_lst, t_list **env_lst, char **env)
     lst = *env_lst;
 	tkn_lst = tkn_lst->next;
     token = tkn_lst->content;
-    if (!token->string)
+	if (!token || (token->type >= 0 || !token->string))
         return (print_export(lst));
 	var = new_env_var(token->string);
 	if (!var)
