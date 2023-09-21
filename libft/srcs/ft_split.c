@@ -6,7 +6,7 @@
 /*   By: laugarci <laugarci@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/06 16:13:14 by laugarci          #+#    #+#             */
-/*   Updated: 2023/09/19 19:40:01 by ffornes-         ###   ########.fr       */
+/*   Updated: 2023/09/20 14:17:08 by ffornes-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,7 +84,8 @@ char	**ft_split(char const *s, char c)
 	j = 0;
 	if (!s)
 		return (NULL);
-	words = (char **)ft_calloc(sizeof(char *) * (ft_count_words(s, c) + 1));
+	words = (char **)ft_calloc((ft_count_words(s, c) + 1), sizeof(char *));
+
 	while (words && (char)s[i])
 	{
 		if ((char)s[i] == c)
