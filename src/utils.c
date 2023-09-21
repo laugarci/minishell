@@ -6,7 +6,7 @@
 /*   By: laugarci <laugarci@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/16 15:26:31 by laugarci          #+#    #+#             */
-/*   Updated: 2023/09/20 20:05:34 by laugarci         ###   ########.fr       */
+/*   Updated: 2023/09/21 16:32:45 by laugarci         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,12 +44,9 @@ int	count_types(t_list *lst, int type)
 	while (tmp->next)
 	{
 		aux = tmp->content;
-		if (type != 2)
-		{
-			if (type != PIPE)
-				if (aux->type == PIPE)
-					break ;
-		}
+		if (type != PIPE)
+			if (aux->type == PIPE)
+				break ;
 		if (aux->type == type)
 			c++;
 		tmp = tmp->next;

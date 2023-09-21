@@ -6,7 +6,7 @@
 /*   By: laugarci <laugarci@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/14 09:52:31 by laugarci          #+#    #+#             */
-/*   Updated: 2023/09/20 20:24:46 by laugarci         ###   ########.fr       */
+/*   Updated: 2023/09/21 17:26:00 by laugarci         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,7 +69,7 @@ int	**pipe_fds(int num_pipes)
 
 int	close_pipes_child(int **fds, int i, int num_pipes, t_list *lst)
 {
-	if ((is_type(lst, 3) || is_type(lst, 4) || is_type(lst, 1)))
+	if ((process_is_type(lst, 3) || process_is_type(lst, 4) || process_is_type(lst, 1)))
 	{
 		if (check_redirect(lst))
 			exec_redirect(lst, 0);
@@ -112,7 +112,7 @@ int	process_is_type(t_list *lst, int type)
 	{
 		aux = tmp->content;
 		if (aux->type == PIPE)
-			break ;
+			return (0);
 		if (aux->type == type)
 			return (1);
 		tmp = tmp->next;
@@ -127,11 +127,9 @@ int	exec_pipes(char **env, int num_pipes, t_list *lst)
 	pid_t	pid;
 	int		**fds;
 	int		check;
-	int		flag;
 	t_list	*aux;
 
 	aux = lst;
-	flag = 0;
 	check = 0;
 	if (num_pipes)
 	{
@@ -147,19 +145,28 @@ int	exec_pipes(char **env, int num_pipes, t_list *lst)
 			exit(-1);
 		else if (pid == 0)
 		{	
-			if (is_type(aux, 2) && i == num_pipes)
-				here_doc(aux);
+			if (is_type(aux, 2) && i == 0)
+				here_doc(aux, env);
 		//	set_or_return_state(MODE_SET, STATE_EXEC);
 		//	signal_handler();
-			close_pipes_child(fds, i, num_pipes, lst);
-			if (is_type(lst, 1))
-				check = check_infile(lst);
-			if (check == 0)
-				exec_commands(lst, env);
+			if (process_is_type(lst, 2) == 0)
+			{
+				close_pipes_child(fds, i, num_pipes, lst);
+				if (process_is_type(lst, 1))
+					check = check_infile(lst);
+				if (check == 0)
+					exec_commands(lst, env);
+			}
 			exit(1);
 		}
 		else
+		{
+			if (is_type(lst, 2))
+				wait(NULL);
 			close_pipes_parent(fds, i, num_pipes);
+		}
+		if (is_type(lst, 2))
+			wait(NULL);
 		lst = move_to_pipe(lst);
 		i++;
 	}
