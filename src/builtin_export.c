@@ -6,7 +6,7 @@
 /*   By: ffornes- <ffornes-@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/10 18:22:49 by ffornes-          #+#    #+#             */
-/*   Updated: 2023/09/21 18:18:26 by ffornes-         ###   ########.fr       */
+/*   Updated: 2023/09/21 19:45:01 by ffornes-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,6 +41,29 @@ static int  print_export(t_list *env_lst)
     return (0);
 }
 
+static int	add_var_to_env(t_env *var, t_list **env_lst)
+{
+	t_list	*lst;
+	t_env	*env_var;
+
+	lst = *env_lst;
+	while (lst)
+	{
+		env_var = lst->content;
+		if (!ft_strncmp(env_var->key, var->key, ft_strlen(var->key)))
+		{
+			if (env_var->value)
+				free(env_var->value);
+			env_var->value = var->value;
+			free(var->key);
+			free(var);
+			return (0);
+		}
+		lst = lst->next;
+	}
+	return (1);
+}
+
 int	builtin_export(t_list *tkn_lst, t_list **env_lst, char **env)
 {
     t_list  *lst;
@@ -56,13 +79,16 @@ int	builtin_export(t_list *tkn_lst, t_list **env_lst, char **env)
 	var = new_env_var(token->string);
 	if (!var)
 		return (12);
-	aux = ft_lstnew((void *)var);
-	if (!aux)
+	if (add_var_to_env(var, env_lst))
 	{
-		free_var(var);
-		return (12);
+		aux = ft_lstnew((void *)var);
+		if (!aux)
+		{
+			free_var(var);
+			return (12);
+		}
+		ft_lstadd_back(env_lst, aux);
 	}
-	ft_lstadd_back(env_lst, aux);
 	return (0);
 	(void)env;
 }
