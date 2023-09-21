@@ -6,7 +6,7 @@
 /*   By: laugarci <laugarci@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/19 13:29:17 by laugarci          #+#    #+#             */
-/*   Updated: 2023/09/21 17:25:14 by laugarci         ###   ########.fr       */
+/*   Updated: 2023/09/21 19:11:14 by laugarci         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -102,9 +102,9 @@ void	here_doc_cmd(t_list *lst, char *text)
 	t_token	*token;
 
 	token = lst->content;
-	if (ft_strncmp(token->string, "cat\0", 3) == 0 )
+	if (ft_strncmp(token->string, "cat\0", 3) == 0)
 	{
-		if ((is_type(lst, 3) || is_type(lst, 4)))
+		if ((process_is_type(lst, 3) || process_is_type(lst, 4)))
 			exec_redirect(lst, 0);
 		write(1, text, ft_strlen(text));
 	}
@@ -167,30 +167,27 @@ int	here_doc(t_list *lst, char **env)
 			text = ft_strjoin(text, input);
 			text = ft_strjoin(text, "\n");
 		}
-		if (is_cat(aux))
-		{
-			if (process_is_type(aux, TRUNC) || process_is_type(aux, APPEND))
-				here_doc_cmd(aux, text);
-			else
-			{
-				if (count == 1)
-					write(1, text, ft_strlen(text));
-			}
-		}
-		else if ((process_is_type(aux, 3) || process_is_type(aux, 4)))
-		{
-			if (check_redirect(aux))
-				exec_redirect(lst, 1);
-			if (process_is_type(aux, -1)  && !is_cat(aux))
-				exec_commands(aux, env);
-		}
+//		if (is_cat(aux))
+//		{
+//			if (process_is_type(aux, TRUNC) || process_is_type(aux, APPEND))
+//				here_doc_cmd(aux, text);
+//			else
+//			{
+//				if (count == 1)
+//					write(1, text, ft_strlen(text));
+//			}
+//		}
+	//	else if ((process_is_type(aux, 3) || process_is_type(aux, 4)))
+	//	{
+	//		if (check_redirect(aux))
+	//			exec_redirect(lst, 1);
+	//		if (process_is_type(aux, -1)  && !is_cat(aux))
+	//			exec_commands(aux, env);
+	//	}
 		if (is_type(lst, PIPE))
-			aux = move_to_pipe(aux);
-		else
-			aux = aux->next;
-		if (process_is_type(aux, 2))
-			here_doc(aux, env);
+				aux = move_to_pipe(aux);
 		count--;
 	}
 	return (0);
+	env = NULL;
 }

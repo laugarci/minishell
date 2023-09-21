@@ -6,7 +6,7 @@
 /*   By: laugarci <laugarci@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/14 09:52:31 by laugarci          #+#    #+#             */
-/*   Updated: 2023/09/21 17:26:00 by laugarci         ###   ########.fr       */
+/*   Updated: 2023/09/21 19:13:18 by laugarci         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -149,14 +149,11 @@ int	exec_pipes(char **env, int num_pipes, t_list *lst)
 				here_doc(aux, env);
 		//	set_or_return_state(MODE_SET, STATE_EXEC);
 		//	signal_handler();
-			if (process_is_type(lst, 2) == 0)
-			{
-				close_pipes_child(fds, i, num_pipes, lst);
-				if (process_is_type(lst, 1))
-					check = check_infile(lst);
-				if (check == 0)
-					exec_commands(lst, env);
-			}
+			close_pipes_child(fds, i, num_pipes, lst);
+			if (process_is_type(lst, 1))
+				check = check_infile(lst);
+			if (check == 0)
+				exec_commands(lst, env);
 			exit(1);
 		}
 		else

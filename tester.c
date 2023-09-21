@@ -6,7 +6,7 @@
 #    By: laugarci <laugarci@student.42barcel>       +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/09/18 17:09:36 by laugarci          #+#    #+#              #
-/*   Updated: 2023/09/21 16:56:13 by laugarci         ###   ########.fr       */
+/*   Updated: 2023/09/21 19:19:25 by laugarci         ###   ########.fr       */
 #                                                                              #
 # **************************************************************************** #
 
@@ -40,19 +40,18 @@ cd carpeta/ anadir /
 HERE_DOC:
 
 #### NO FUNCIONA ####
-ls<<a > b | bla<<b
-REDIRECCIONES EN EL PRIMER COMANDO
-
-
-#### FUNCIONA #####
-<<del1 <<del2
-ls << a | ls << b
-ls << a | ls << b > a
-ls | wc < Makefile > a | cat<<hola > c | ls > b
+ls | wc < Makefile > a | cat<<hola > c | ls > b (no redireciona cat, pero si ls)
 cat<<a | <<b
-cat<<a | cat<<b > b
-ls<<a | cat<<b > z
+<<a | cat<<b
+ls<<a | cat<<b > b (redirecciona ls)
+cat<<a
+cat en general no funciona
+
+### FUNCIONA ###
+ls<<a > b | bla<<b
+<<del <<del
+ls<<a | ls<<b
+ls<<a | ls<<b > a
 cmd-no-existe << del | ls<<del
 <<del
-cat<<a
 ls<<a | ls<<b > c | ls
