@@ -6,7 +6,7 @@
 /*   By: laugarci <laugarci@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/14 09:52:31 by laugarci          #+#    #+#             */
-/*   Updated: 2023/09/21 19:13:18 by laugarci         ###   ########.fr       */
+/*   Updated: 2023/09/21 20:41:00 by laugarci         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,10 +69,17 @@ int	**pipe_fds(int num_pipes)
 
 int	close_pipes_child(int **fds, int i, int num_pipes, t_list *lst)
 {
+	static char *text;
+	
+	if (is_type(lst, 2) && i == 0)
+		text = here_doc(lst);
+	printf("text>> %s\n", text);
 	if ((process_is_type(lst, 3) || process_is_type(lst, 4) || process_is_type(lst, 1)))
 	{
 		if (check_redirect(lst))
-			exec_redirect(lst, 0);
+			exec_redirect(lst, text);
+		if (process_is_type(lst, 2))
+			i++;
 	}
 	if (i != 0)
 	{
@@ -128,7 +135,9 @@ int	exec_pipes(char **env, int num_pipes, t_list *lst)
 	int		**fds;
 	int		check;
 	t_list	*aux;
+	static char	*text;
 
+	text = NULL;
 	aux = lst;
 	check = 0;
 	if (num_pipes)
@@ -145,10 +154,10 @@ int	exec_pipes(char **env, int num_pipes, t_list *lst)
 			exit(-1);
 		else if (pid == 0)
 		{	
-			if (is_type(aux, 2) && i == 0)
-				here_doc(aux, env);
-		//	set_or_return_state(MODE_SET, STATE_EXEC);
-		//	signal_handler();
+		//	if (is_type(aux, 2) && i == 0)
+		//		text = here_doc(aux);
+			set_or_return_state(MODE_SET, STATE_EXEC);
+			signal_handler();
 			close_pipes_child(fds, i, num_pipes, lst);
 			if (process_is_type(lst, 1))
 				check = check_infile(lst);

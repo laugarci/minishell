@@ -5,8 +5,8 @@
 #                                                     +:+ +:+         +:+      #
 #    By: laugarci <laugarci@student.42barcel>       +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
-#    Created: 2023/09/20 10:29:36 by laugarci          #+#    #+#              #
-#    Updated: 2023/09/20 10:29:40 by laugarci         ###   ########.fr        #
+#    Created: 2023/09/21 19:39:06 by laugarci          #+#    #+#              #
+#    Updated: 2023/09/21 19:39:11 by laugarci         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -46,7 +46,7 @@ m_libft:
 			@make -C libft/
 
 $(NAME):	$(OBJ_DIR) $(OBJS)
-			$(CC) $(CFLAGS) $(OBJS) -L libft/ -lft -o $@ -L ~/.brew/Cellar/readline/8.2.1/lib/ -lreadline -lhistory -ltermcap 
+			$(CC) $(CFLAGS) $(OBJS) -L libft/ -lft -o $@ -L ~/.brew/Cellar/readline/8.2.1/lib/ -lreadline -lhistory -ltermcap
 
 
 $(OBJ_DIR):
