@@ -6,7 +6,7 @@
 /*   By: ffornes- <ffornes-@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/27 11:32:21 by ffornes-          #+#    #+#             */
-/*   Updated: 2023/09/20 17:48:35 by laugarci         ###   ########.fr       */
+/*   Updated: 2023/09/21 13:08:36 by laugarci         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,7 +45,7 @@ int			exec_redirect(t_list *lst, int flag);
 
 int			count_list(t_list *lst);
 int			total_input_len(t_list *lst);
-int			here_doc(t_list *lst);
+int			here_doc(t_list *lst, char **env);
 int			exec_pwd(void);
 int			exec_echo(t_list *lst);
 int			builtin_export(char *eval, char **envp);
