@@ -6,37 +6,46 @@
 /*   By: ffornes- <ffornes-@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/20 18:45:08 by ffornes-          #+#    #+#             */
-/*   Updated: 2023/09/20 18:46:54 by ffornes-         ###   ########.fr       */
+/*   Updated: 2023/09/21 13:05:47 by ffornes-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
+#include "minishell.h"
 #include "minishell_defs.h"
 #include <stdlib.h>
+#include <stdio.h>
 
-t_env	*new_env_var(char *str)
+static void	*free_and_return_envar(t_env *var)
 {
-	t_env	*var;
+	free_var(var);
+	return (NULL);
+}
 
-	var = malloc(sizeof(t_env));
-	if (!var)
+t_env	*new_env_var(char *input)
+{
+	int		i;
+	t_env	*out;
+
+	i = 0;
+	out = malloc(sizeof(t_env));
+	if (!out)
 		return (NULL);
-	var->key = ft_strdup(key);
-	if (!var->key)
+	while (input[i] && input[i] != '=')
+		i++;
+	out->key = malloc(sizeof(char) * i + 1);
+	if (!out->key)
+		return (free_and_return_envar(out));
+	ft_strlcpy(out->key, input, i + 1);
+	input += i;
+	if (input)
 	{
-		free(var);
-		return (NULL);
-	}
-	if (value)
-	{
-		var->value = ft_strjoin("=", value);
-		if (!var->value)
-		{
-			free(var);
-			return (NULL);
-		}
+		out->value = malloc(sizeof(char) * ft_strlen(input) + 1);
+		if (!out->value)
+			return (free_and_return_envar(out));
+		ft_strlcpy(out->value, input, ft_strlen(input) + 1);
 	}
 	else
-		var->value = NULL;
-	return (var);
+		out->value = NULL;
+	return (out);
 }
