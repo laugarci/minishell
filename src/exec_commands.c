@@ -6,7 +6,7 @@
 /*   By: laugarci <laugarci@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/04 14:04:45 by laugarci          #+#    #+#             */
-/*   Updated: 2023/09/19 15:13:35 by ffornes-         ###   ########.fr       */
+/*   Updated: 2023/09/21 16:54:59 by ffornes-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@
 #include "libft_bonus.h"
 #include "parser.h"
 
-int	cmp_commands(t_list *lst, char **env)
+int	cmp_commands(t_list *lst, t_list **env_lst, char **env)
 {
 	t_token	*token;
 	int		num_pipes;
@@ -43,16 +43,12 @@ int	cmp_commands(t_list *lst, char **env)
 		err = exec_echo(lst);
 	else if (ft_strncmp(token->string, "pwd\0", 4) == 0)
 		err = exec_pwd();
-	else if (ft_strncmp(token->string, "export\0", 7) == 0)
-	{
-		lst = lst->next;
-		token = lst->content;
-		builtin_export(token->string, env);
-	}
 	else if (ft_strncmp(token->string, "env\0", 4) == 0)
 		err = exec_env(env);
 	else if (ft_strncmp(token->string, "unset\0", 6) == 0)
 		err = exec_unset(lst, env);
+	else if (ft_strncmp(token->string, "export\0", 7) == 0)
+		err = builtin_export(lst, env_lst, env);
 	else
 		err = exec_commands(lst, env);
 	return (check_error(err));
@@ -123,7 +119,7 @@ int	exec_commands(t_list *lst, char **env)
 	{
 		set_or_return_state(MODE_SET, STATE_EXEC);
 		signal_handler();
-		ctrl_c(MODE_SET);
+		signal_display(MODE_SET);
 		if (i == 2)
 			exec_commands_nf(lst, env);
 		else
