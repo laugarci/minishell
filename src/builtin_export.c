@@ -6,7 +6,7 @@
 /*   By: ffornes- <ffornes-@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/10 18:22:49 by ffornes-          #+#    #+#             */
-/*   Updated: 2023/09/21 19:45:01 by ffornes-         ###   ########.fr       */
+/*   Updated: 2023/09/21 19:54:08 by ffornes-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,16 +26,19 @@ static int  print_export(t_list *env_lst)
     {
         var = env_lst->content;
         printf("declare -x %s", var->key);
-        str = var->value;
-        if (*str == '=')
-        {
-            str++;
-            if (str)
-                printf("=\"%s\"", str);
-            else
-                printf("=\"\"");
-        }
-        printf("\n");
+		if (var->value)
+		{
+    	    str = var->value;
+    	    if (*str == '=')
+    	    {
+    	        str++;
+    	        if (str)
+    	            printf("=\"%s\"", str);
+    	        else
+    	            printf("=\"\"");
+    	    }
+		}
+   	    printf("\n");
 		env_lst = env_lst->next;
     }
     return (0);
