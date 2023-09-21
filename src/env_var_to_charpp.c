@@ -6,7 +6,7 @@
 /*   By: ffornes- <ffornes-@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/20 18:10:10 by ffornes-          #+#    #+#             */
-/*   Updated: 2023/09/21 18:26:25 by ffornes-         ###   ########.fr       */
+/*   Updated: 2023/09/21 19:52:47 by ffornes-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,14 @@
 #include "libft_bonus.h"
 #include "minishell_defs.h"
 #include <stdlib.h>
+
+#include <stdio.h>
+
+static void	*free_and_return(char **out)
+{
+	free_double((void **)out);
+	return (NULL);
+}
 
 char	**envlst_to_charpp(t_list *lst)
 {
@@ -34,11 +42,10 @@ char	**envlst_to_charpp(t_list *lst)
 		{
 			out[i] = ft_strjoin(var->key, var->value);
 			if (!out[i++])
-			{
-				free_double((void **)out);
-				return (NULL);
-			}
+				return (free_and_return(out));
 		}
+		else
+			out[i] = ft_strdup(var->key);
 		lst = lst->next;
 	}
 	out[i] = NULL;

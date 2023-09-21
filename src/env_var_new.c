@@ -6,7 +6,7 @@
 /*   By: ffornes- <ffornes-@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/20 18:45:08 by ffornes-          #+#    #+#             */
-/*   Updated: 2023/09/21 13:05:47 by ffornes-         ###   ########.fr       */
+/*   Updated: 2023/09/21 19:51:48 by ffornes-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,7 @@ t_env	*new_env_var(char *input)
 		return (free_and_return_envar(out));
 	ft_strlcpy(out->key, input, i + 1);
 	input += i;
-	if (input)
+	if (input && *input)
 	{
 		out->value = malloc(sizeof(char) * ft_strlen(input) + 1);
 		if (!out->value)
