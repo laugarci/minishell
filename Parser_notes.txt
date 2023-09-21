@@ -8,10 +8,10 @@ ToDo:
 	CtrlC in HERE_DOC MUST SET EXIT_STATUS TO 1
 	
 	Builtin Export:
-	Parse
 	When finding += must append instead of trunc
-	Export without = saves in export
-	Export without arguments and options shows env in ascii order.
+	Must export multiple variables at the same time:
+		export HOLA=TU ADIOS=YO COCO=CACA
+	Display in ascii order
 
 	Build different expansor for here_doc case
 
@@ -24,4 +24,7 @@ ToDo:
 		/ ./ ./////// ///////// ... is a directory
 		export ARG="a b c" ... <$ARG cat ambiguos redirect
 
-	Check tests: https://github.com/ChewyToast/mpanic/tree/main/test/mandatory
+Check tests: https://github.com/ChewyToast/mpanic/tree/main/test/mandatory
+
+calloc makes it so there's already a NULL value at the end of the allocation
+	which can save lines when saving char*
