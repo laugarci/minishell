@@ -6,7 +6,7 @@
 /*   By: ffornes- <ffornes-@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/27 11:32:21 by ffornes-          #+#    #+#             */
-/*   Updated: 2023/09/22 18:41:23 by ffornes-         ###   ########.fr       */
+/*   Updated: 2023/09/22 18:43:30 by ffornes-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,7 @@
 t_list		*set_env(char *envp[]);
 
 void		free_var(t_env *var);
+int			free_var_return_value(t_env *var, int value);
 t_env		*new_env_var(char *str);
 t_env		*char_to_tenv(char *input);
 char		**envlst_to_charpp(t_list *lst);

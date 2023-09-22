@@ -6,7 +6,7 @@
 /*   By: laugarci <laugarci@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/22 15:29:58 by laugarci          #+#    #+#             */
-/*   Updated: 2023/09/22 17:26:04 by laugarci         ###   ########.fr       */
+/*   Updated: 2023/09/22 19:00:52 by ffornes-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,7 @@ int	execution(t_list *lst, t_list **env_lst, t_exec_fds *exec_fds, char **env)
 	int		err;
 	t_token	*token;
 
+	exit_check(lst);
 	err = 0;
 	token = lst->content;
 	if (ft_strncmp(token->string, "cd\0", 3) == 0)
