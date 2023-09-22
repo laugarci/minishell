@@ -6,7 +6,7 @@
 /*   By: laugarci <laugarci@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/04 14:04:45 by laugarci          #+#    #+#             */
-/*   Updated: 2023/09/22 13:13:51 by ffornes-         ###   ########.fr       */
+/*   Updated: 2023/09/22 14:55:30 by ffornes-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,7 @@ int	cmp_commands(t_list *lst, t_list **env_lst, char **env)
 	else if (ft_strncmp(token->string, "env\0", 4) == 0)
 		err = exec_env(env);
 	else if (ft_strncmp(token->string, "unset\0", 6) == 0)
-		err = exec_unset(lst, env);
+		err = builtin_unset(lst, env_lst);
 	else if (ft_strncmp(token->string, "export\0", 7) == 0)
 		err = builtin_export(lst, env_lst);
 	else

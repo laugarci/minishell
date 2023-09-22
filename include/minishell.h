@@ -6,7 +6,7 @@
 /*   By: ffornes- <ffornes-@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/27 11:32:21 by ffornes-          #+#    #+#             */
-/*   Updated: 2023/09/22 13:13:37 by ffornes-         ###   ########.fr       */
+/*   Updated: 2023/09/22 14:57:50 by ffornes-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,7 +62,7 @@ int			check_redirect(t_list *lst);
 t_list		*move_to_pipe(t_list *lst);
 int			check_infile(t_list *lst);
 int			exec_env(char **env);
-int			exec_unset(t_list *lst, char **env);
+int			builtin_unset(t_list *lst, t_list **env_lst);
 int			*signal_handler(void);
 
 int			set_or_return_exit_status(int mode, int value);
