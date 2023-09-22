@@ -6,7 +6,7 @@
 /*   By: laugarci <laugarci@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/19 13:29:17 by laugarci          #+#    #+#             */
-/*   Updated: 2023/09/22 17:30:58 by laugarci         ###   ########.fr       */
+/*   Updated: 2023/09/22 17:50:07 by laugarci         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,7 @@
 #include "parser.h"
 #include <readline/readline.h>
 #include <readline/history.h>
+#include <fcntl.h>
 
 static char	*find_delimiter(t_list *lst, int id)
 {
@@ -27,12 +28,15 @@ static char	*find_delimiter(t_list *lst, int id)
 	int		i;
 
 	i = 0;
+	token = lst->content;
 	while (lst && i < id)
 	{
-		token = lst->content;
+		if (!token || !token->string)
+			return (NULL);
 		if (token->type == HERE_DOC)
 			i++;
 		lst = lst->next;
+		token = lst->content;
 	}
 	return (token->string);
 }
@@ -43,6 +47,7 @@ char	*input_heredoc(char *del)
 	char	*input;
 	char	*text;
 
+	text = NULL;
 	while (42)
 	{
 		input = readline("> ");
@@ -77,6 +82,6 @@ int	*here_doc(t_list *lst, int id)
 		return (NULL);
 	*out = fds[0];
 	write(fds[1], text, ft_strlen(text));
-//	free(text);
+	free(text);
 	return (out);
 }
