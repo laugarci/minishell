@@ -6,7 +6,7 @@
 /*   By: laugarci <laugarci@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/14 12:07:29 by laugarci          #+#    #+#             */
-/*   Updated: 2023/09/21 20:28:13 by laugarci         ###   ########.fr       */
+/*   Updated: 2023/09/22 12:10:32 by laugarci         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -106,7 +106,7 @@ static void	open_fds(t_list *lst, int count)
 	}
 }
 
-int	exec_redirect(t_list *lst, char *text)
+int	exec_redirect(t_list *lst)
 {
 	char	*output;
 	char	*input;
@@ -115,6 +115,7 @@ int	exec_redirect(t_list *lst, char *text)
 	int		redirect;
 	int flag;
 
+	printf("entra\n");
 	redirect = count_types(lst, 3);
 	redirect += count_types(lst, 4);
 	flags = 0;
@@ -144,14 +145,9 @@ int	exec_redirect(t_list *lst, char *text)
 		fd = open(output, flags, 0666);
 		if (fd < 0)
 			return (1);
-		if (text != NULL)
-			write(fd, text, ft_strlen(text)); //esto puede que este mal
 		if (dup2(fd, STDOUT_FILENO) == -1)
 			return (1); // Error: dup2
 		close(fd);
-		if (process_is_type(lst, 2)) //esto puede que este mal
-			exit(1);
 	}
 	return (0);
-	text = NULL;
 }

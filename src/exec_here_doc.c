@@ -6,7 +6,7 @@
 /*   By: laugarci <laugarci@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/19 13:29:17 by laugarci          #+#    #+#             */
-/*   Updated: 2023/09/21 20:39:14 by laugarci         ###   ########.fr       */
+/*   Updated: 2023/09/22 12:15:54 by laugarci         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,6 @@
 #define	READ_END 0
 #define WRITE_END 1
 
-//falta solucionar que si hay una redireccion > se haga tambien
 
 char	*find_del(t_list *lst, int count)
 {
@@ -70,15 +69,6 @@ char	*find_del(t_list *lst, int count)
 	return (del);
 }
 
-void	here_doc_cmd(t_list *lst, char *text)
-{
-	t_token	*token;
-
-	token = lst->content;
-	if (ft_strncmp(token->string, "cat\0", 3) == 0)
-		write(1, text, ft_strlen(text));
-}
-
 int		is_cat(t_list *lst)
 {
 	t_list *aux;
@@ -109,23 +99,43 @@ int	count_hd(t_list	*lst)
 	return(c);
 }
 
-char	*here_doc(t_list *lst)
+int	**pipe_hd(int num_hd)
+{
+	int	i;
+	int	**fds;
+
+	i = 0;
+	fds = malloc(sizeof(int *) * num_hd);
+	if (!fds)
+		return (NULL);
+	while (i < num_hd)
+	{
+		fds[i] = malloc(sizeof(int) * 2);
+		if (!fds[i])
+			return (NULL);
+		pipe(fds[i]);
+		i++;
+	}
+	return (fds);
+}
+
+int	*here_doc(t_list *lst)
 {
 	char	*del;
 	char	*input;
-	static char	*text;
+	char	*text;
 	int		count;
-	t_list	*aux;
+	int		**fds;
 
-	aux = lst;
-	count = count_hd(aux);
+	count = count_hd(lst);
+	fds = pipe_hd(count);
 	text = NULL;
 	while (count > 0)
 	{
-		del = find_del(aux, count);
-		if (!process_is_type(aux, 2))
-			while (!process_is_type(aux, 2))
-				aux = aux->next;
+		del = find_del(lst, count);
+		if (!process_is_type(lst, 2))
+			while (!process_is_type(lst, 2))
+				lst = lst->next;
 		while(42)
 		{
 			input = readline("> ");
@@ -134,15 +144,9 @@ char	*here_doc(t_list *lst)
 			text = ft_strjoin(text, input);
 			text = ft_strjoin(text, "\n");
 		}
-//		if (is_cat(aux))
-//		{
-//			write(1, text, ft_strlen(text));
-//			if (!is_type(lst, PIPE))
-//				exit(0);
-//		}
 		if (is_type(lst, PIPE))
-				aux = move_to_pipe(aux);
+			lst = move_to_pipe(lst);
 		count--;
 	}
-	return (text);
+	return (fds[0]);
 }
