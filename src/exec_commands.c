@@ -6,7 +6,7 @@
 /*   By: laugarci <laugarci@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/04 14:04:45 by laugarci          #+#    #+#             */
-/*   Updated: 2023/09/22 17:30:56 by laugarci         ###   ########.fr       */
+/*   Updated: 2023/09/22 17:37:50 by laugarci         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,6 +69,7 @@ int	cmp_commands(t_list *lst, t_list **env_lst, char **env)
 		exec_fds.hdoc_fds = malloc(sizeof(int *) * exec_fds.hd_count);
 		if (!exec_fds.hdoc_fds)
 			return (12);
+		printf(">> %d\n", exec_fds.hd_count);
 		while (i < exec_fds.hd_count)
 		{
 			exec_fds.hdoc_fds[i] = here_doc(lst, i);
@@ -88,6 +89,7 @@ int	cmp_commands(t_list *lst, t_list **env_lst, char **env)
 		execution(lst, env_lst, &exec_fds, env);
 		// EXEC CHILD..
 		i++;
+		process_count--;
 	}
 	return (0);
 }
