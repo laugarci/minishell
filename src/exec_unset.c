@@ -5,10 +5,11 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: laugarci <laugarci@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/09/19 18:28:10 by laugarci          #+#    #+#             */
-/*   Updated: 2023/09/19 18:30:15 by laugarci         ###   ########.fr       */
+/*   Created: 2023/09/22 14:47:53 by laugarci          #+#    #+#             */
+/*   Updated: 2023/09/22 14:49:16 by laugarci         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
+
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -17,31 +18,44 @@
 #include "libft_bonus.h"
 #include "parser.h"
 
+static int	exec_unset_util(char **env, t_token *token, int i)
+{
+	int	j;
+
+	j = 0;
+	if (ft_strncmp(env[i], token->string, ft_strlen(token->string)) == 0
+		&& env[i][ft_strlen(token->string)] == '=')
+	{
+		free(env[i]);
+		j = i;
+		while (env[j])
+		{
+			env[j] = env[j + 1];
+			j++;
+		}
+		return (0);
+	}
+	return (1);
+}
+
 int	exec_unset(t_list *lst, char **env)
 {
 	t_token	*token;
 	t_list	*aux;
 	int		i;
-	int		j;
+	int		out;
 
+	if (!lst->next)
+		return (0);
 	aux = lst->next;
+	if (!aux->content)
+		return (0);
 	token = aux->content;
+	if (!token->string)
+		return (0);
 	i = 0;
+	out = 0;
 	while (env[i])
-	{
-		if (ft_strncmp(env[i], token->string, ft_strlen(token->string)) == 0
-			&& env[i][ft_strlen(token->string)] == '=')
-		{
-			free(env[i]);
-			j = i;
-			while (env[j])
-			{
-				env[j] = env[j + 1];
-				j++;
-			}
-			return (0);
-		}
-		i++;
-	}
-	return (1); // Error: variable no encontrada
+		out = exec_unset_util(env, token, i++);
+	return (out);
 }
