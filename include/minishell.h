@@ -6,7 +6,7 @@
 /*   By: ffornes- <ffornes-@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/27 11:32:21 by ffornes-          #+#    #+#             */
-/*   Updated: 2023/09/21 18:14:29 by ffornes-         ###   ########.fr       */
+/*   Updated: 2023/09/22 13:13:37 by ffornes-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,7 +75,7 @@ int			check_error(int error);
 void		builtin_exit(char *input);
 void		exit_check(t_list *lst);
 
-int			builtin_export(t_list *tkn_lst, t_list **env_lst, char **env);
+int			builtin_export(t_list *tkn_lst, t_list **env_lst);
 
 char		*find_input(t_list *lst);
 
