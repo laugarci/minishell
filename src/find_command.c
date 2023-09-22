@@ -6,7 +6,7 @@
 /*   By: laugarci <laugarci@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/17 10:09:20 by laugarci          #+#    #+#             */
-/*   Updated: 2023/09/20 19:22:48 by laugarci         ###   ########.fr       */
+/*   Updated: 2023/09/22 15:13:45 by laugarci         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,7 @@ char	*find_command(t_list *lst)
 	return (result);
 }
 
-char	*find_output(t_list *lst, int check)
+char	*find_output(t_list *lst)
 {
 	t_list	*tmp;
 	t_token	*token;
@@ -58,14 +58,7 @@ char	*find_output(t_list *lst, int check)
 	tmp = lst;
 	token = tmp->content;
 	output = NULL;
-	if (check == 1)
-	{
-		while (token->type != 2)
-		{
-			tmp = tmp->next;
-			token = tmp->content;
-		}
-	}
+
 	while (tmp)
 	{
 		flag = 0;

@@ -6,7 +6,7 @@
 /*   By: laugarci <laugarci@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/04 14:04:45 by laugarci          #+#    #+#             */
-/*   Updated: 2023/09/22 14:50:04 by laugarci         ###   ########.fr       */
+/*   Updated: 2023/09/22 17:30:56 by laugarci         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,77 @@
 #include "libft_bonus.h"
 #include "parser.h"
 
+// 1. Contar procesos
+// 2. Comprobar here_docs
+// 3. Ejecutar loop
+// 4. Ejecutar cmds
+
+static int	count_hd(t_list	*lst)
+{
+	int	c;
+	t_list	*tmp;
+	t_token	*aux;
+
+	tmp = lst;
+	c = 0;
+	while(tmp->next)
+	{
+		aux = tmp->content;
+		if (aux->type == 2)
+			c++;
+		tmp = tmp->next;
+	}
+	return(c);
+}
+
+void	init_exec_fds(t_exec_fds *var)
+{
+	var->hdoc_fds = NULL;
+	var->pipe_fds = NULL;
+	var->hd_count = 0;
+}
+
+int	cmp_commands(t_list *lst, t_list **env_lst, char **env)
+{
+	int			process_count;
+	int			i;
+	t_exec_fds	exec_fds;
+
+	init_exec_fds(&exec_fds);
+	process_count = count_types(lst, PIPE);
+	if (!process_count)
+		process_count = 1;
+	exec_fds.hd_count = count_hd(lst);
+	i = 0;
+	if (exec_fds.hd_count)
+	{
+		exec_fds.hdoc_fds = malloc(sizeof(int *) * exec_fds.hd_count);
+		if (!exec_fds.hdoc_fds)
+			return (12);
+		while (i < exec_fds.hd_count)
+		{
+			exec_fds.hdoc_fds[i] = here_doc(lst, i);
+			if (exec_fds.hdoc_fds[i] < 0)
+				printf("ERROR\n"); // Error
+			i++;
+		}
+	}
+	i = 0;
+	if (process_count > 1)
+		exec_fds.pipe_fds = pipe_fds(process_count);
+	while (process_count)
+	{
+		printf("Amount of heredoc: %d\n", exec_fds.hd_count);
+		// Hacer fork
+		// Compartir hdoc_fds si hdoc_count > 0
+		execution(lst, env_lst, &exec_fds, env);
+		// EXEC CHILD..
+		i++;
+	}
+	return (0);
+}
+
+/*
 int	cmp_commands(t_list *lst, t_list **env_lst, char **env)
 {
 	t_token	*token;
@@ -31,28 +102,16 @@ int	cmp_commands(t_list *lst, t_list **env_lst, char **env)
 	token = lst->content;
 	err = 0;
 	exit_check(lst);
-	if (ft_strncmp(token->string, "cd\0", 3) == 0)
-		err = exec_cd(lst);
-	else if (is_type(lst, 0) || is_type(lst, 3)
-		|| is_type(lst, 4) || is_type(lst, 1) || is_type(lst, 2))
+	if (is_type(lst, PIPE) || is_type(lst, APPEND)
+		|| is_type(lst, TRUNC) || is_type(lst, HERE_DOC)
+		|| is_type(lst, INFILE))
 	{
 		num_pipes = count_types(lst, PIPE);
 		err = exec_pipes(env, num_pipes, lst);
 	}
-	else if (ft_strncmp(token->string, "echo\0", 5) == 0)
-		err = exec_echo(lst);
-	else if (ft_strncmp(token->string, "pwd\0", 4) == 0)
-		err = exec_pwd();
-	else if (ft_strncmp(token->string, "env\0", 4) == 0)
-		err = exec_env(env);
-	else if (ft_strncmp(token->string, "unset\0", 6) == 0)
-		err = exec_unset(lst, env);
-	else if (ft_strncmp(token->string, "export\0", 7) == 0)
-		err = builtin_export(lst, env_lst);
-	else
-		err = exec_commands(lst, env);
-	return (check_error(err));
+	return (0);
 }
+*/
 
 int	exec_commands_wf(t_list *lst, char **env, int flags)
 {

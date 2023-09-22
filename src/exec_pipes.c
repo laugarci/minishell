@@ -6,7 +6,7 @@
 /*   By: laugarci <laugarci@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/14 09:52:31 by laugarci          #+#    #+#             */
-/*   Updated: 2023/09/22 14:49:39 by laugarci         ###   ########.fr       */
+/*   Updated: 2023/09/22 17:21:52 by laugarci         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -123,6 +123,11 @@ int	process_is_type(t_list *lst, int type)
 
 int	exec_pipes(char **env, int num_pipes, t_list *lst)
 {
+	return (0);
+	(void)env;
+	(void)num_pipes;
+	(void)lst;
+	/*
 	int		i;
 	pid_t	pid;
 	int		**fds;
@@ -170,4 +175,5 @@ int	exec_pipes(char **env, int num_pipes, t_list *lst)
 	fds = close_pipes(fds, num_pipes);
 //	free_double((void **)fds); //este free crea muchos problemas
 	return (0);
+	*/
 }

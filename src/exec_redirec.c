@@ -6,7 +6,7 @@
 /*   By: laugarci <laugarci@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/14 12:07:29 by laugarci          #+#    #+#             */
-/*   Updated: 2023/09/22 14:53:10 by laugarci         ###   ########.fr       */
+/*   Updated: 2023/09/22 17:24:54 by laugarci         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,18 +79,18 @@ int	check_redirect(t_list *lst)
 	return (0);
 }
 
-static void	open_fds(t_list *lst, int count)
+static void	open_fds(t_list *lst)
 {
 	int		fd;
 	t_token	*token;
 	int		i;
 
 	i = 0;
-	while (i <= count)
+	while (lst->next)
 	{
 		token = lst->content;
 		if (token->type == 3)
-		{
+		{	
 			fd = open(token->string, O_WRONLY | O_CREAT | O_APPEND, 0666);
 			close(fd);
 		}
@@ -113,12 +113,11 @@ int	exec_redirect(t_list *lst)
 	int		fd;
 	int		flags;
 	int		redirect;
-	int flag;
 
 	redirect = count_types(lst, 3);
 	redirect += count_types(lst, 4);
+	printf("redirect >> %d\n", redirect);
 	flags = 0;
-	flag = 0;
 	if (is_type(lst, 1))
 	{
 		input = find_input(lst);
@@ -133,10 +132,10 @@ int	exec_redirect(t_list *lst)
 			return (0);	// Error: no such file or directory
 	}
 	if (redirect > 1)
-		open_fds(lst, redirect);
+		open_fds(lst);
 	if (is_type(lst, 3) || is_type(lst, 4))
 	{
-		output = find_output(lst, flag);
+		output = find_output(lst);
 		if (is_type(lst, 3) == 1)
 			flags = O_CREAT | O_APPEND | O_WRONLY;
 		else if (is_type(lst, 4) == 1)
