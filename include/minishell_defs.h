@@ -6,7 +6,7 @@
 /*   By: ffornes- <ffornes-@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/17 17:00:09 by ffornes-          #+#    #+#             */
-/*   Updated: 2023/09/19 18:30:11 by ffornes-         ###   ########.fr       */
+/*   Updated: 2023/09/22 15:54:52 by ffornes-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,7 @@
 # include "libft_defs.h"
 
 // If the variable has no = then value = NULL, if it has = then value is ""
-typedef struct	s_env
+typedef struct s_env
 {
 	char	*key;
 	char	*value;
