@@ -6,7 +6,7 @@
 /*   By: ffornes- <ffornes-@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/27 11:32:21 by ffornes-          #+#    #+#             */
-/*   Updated: 2023/09/22 17:10:42 by laugarci         ###   ########.fr       */
+/*   Updated: 2023/09/22 18:39:22 by ffornes-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,7 @@ char		*get_path(char *cmd, char **envp);
 int			exec_commands(t_list *lst, char **env);
 int			exec_commands_wf(t_list *lst, char **env, int flags);
 int			exec_commands_other(char *space_pos, char *input, char **env);
-int	        cmp_commands(t_list *lst, t_list **env_lst, char **env);
+int			cmp_commands(t_list *lst, t_list **env_lst, char **env);
 
 int			exec_cd(t_list *lst);
 
@@ -82,6 +82,7 @@ int			builtin_export(t_list *tkn_lst, t_list **env_lst);
 
 char		*find_input(t_list *lst);
 
-int			execution(t_list *lst, t_list **env_lst, t_exec_fds *exec_fds, char **env);
+int			execution(t_list *lst, t_list **env_lst, t_exec_fds *exec_fds, \
+			char **env);
 
 #endif
