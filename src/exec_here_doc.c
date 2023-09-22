@@ -6,7 +6,7 @@
 /*   By: laugarci <laugarci@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/19 13:29:17 by laugarci          #+#    #+#             */
-/*   Updated: 2023/09/22 12:15:54 by laugarci         ###   ########.fr       */
+/*   Updated: 2023/09/22 17:30:58 by laugarci         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,132 +21,62 @@
 #include <readline/readline.h>
 #include <readline/history.h>
 
-#define	READ_END 0
-#define WRITE_END 1
-
-
-char	*find_del(t_list *lst, int count)
+static char	*find_delimiter(t_list *lst, int id)
 {
-	char	*del;
 	t_token	*token;
-	int		total;
-
-	token = lst->content;
-	if (token->type != 2)
-	{
-		total = count_types(lst, 2) - (count) + 1;
-		token = lst->content;
-		if (token->type != 2)
-		{
-			while (token->type != 2)
-			{
-				lst = lst->next;
-				token = lst->content;
-				if (token->type == 2)
-					total--;
-			}
-		}
-		while (total > 0)
-		{
-			lst = lst->next;
-			token = lst->content;
-			if (token->type == 2)
-				total--;
-		}
-	}
-	else
-	{
-		if (count_types(lst, 2) != count)
-		{
-			lst = lst->next;
-			token = lst->content;
-		}
-	}
-	del = malloc(sizeof(char) * ft_strlen(token->string) + 1);
-	if (!del)
-		return (NULL);
-	ft_strlcpy(del, token->string, ft_strlen(token->string) + 1);
-	return (del);
-}
-
-int		is_cat(t_list *lst)
-{
-	t_list *aux;
-	t_token	*token;
-
-	aux = lst;
-	token = aux->content;
-	if (ft_strncmp(token->string, "cat\0", 4) == 0)
-			return (1);
-	return (0);
-}
-
-int	count_hd(t_list	*lst)
-{
-	int	c;
-	t_list	*tmp;
-	t_token	*aux;
-
-	tmp = lst;
-	c = 0;
-	while(tmp->next)
-	{
-		aux = tmp->content;
-		if (aux->type == 2)
-			c++;
-		tmp = tmp->next;
-	}
-	return(c);
-}
-
-int	**pipe_hd(int num_hd)
-{
-	int	i;
-	int	**fds;
+	int		i;
 
 	i = 0;
-	fds = malloc(sizeof(int *) * num_hd);
-	if (!fds)
-		return (NULL);
-	while (i < num_hd)
+	while (lst && i < id)
 	{
-		fds[i] = malloc(sizeof(int) * 2);
-		if (!fds[i])
-			return (NULL);
-		pipe(fds[i]);
-		i++;
+		token = lst->content;
+		if (token->type == HERE_DOC)
+			i++;
+		lst = lst->next;
 	}
-	return (fds);
+	return (token->string);
 }
 
-int	*here_doc(t_list *lst)
+char	*input_heredoc(char *del)
 {
-	char	*del;
+	char	*aux;
 	char	*input;
 	char	*text;
-	int		count;
-	int		**fds;
 
-	count = count_hd(lst);
-	fds = pipe_hd(count);
-	text = NULL;
-	while (count > 0)
+	while (42)
 	{
-		del = find_del(lst, count);
-		if (!process_is_type(lst, 2))
-			while (!process_is_type(lst, 2))
-				lst = lst->next;
-		while(42)
-		{
-			input = readline("> ");
-			if (ft_strncmp(input, del, ft_strlen(del) + 1) == 0)
-				break ;
-			text = ft_strjoin(text, input);
-			text = ft_strjoin(text, "\n");
-		}
-		if (is_type(lst, PIPE))
-			lst = move_to_pipe(lst);
-		count--;
+		input = readline("> ");
+		if (ft_strncmp(input, del, ft_strlen(del) + 1) == 0)
+			break ;
+		text = ft_strjoin(text, input);
+		if (!text)
+			break ;
+		free(input);
+		aux = text;
+		text = ft_strjoin(text, "\n");
+		free(aux);
+		if (!text)
+			return (NULL);
 	}
-	return (fds[0]);
+	free(input);
+	return (text);
+}
+
+int	*here_doc(t_list *lst, int id)
+{
+	char	*del;
+	char	*text;
+	int		fds[2];
+	int		*out;
+
+	del = find_delimiter(lst, id);
+	text = input_heredoc(del);
+	pipe(fds);
+	out = malloc(sizeof(int));
+	if (!out)
+		return (NULL);
+	*out = fds[0];
+	write(fds[1], text, ft_strlen(text));
+//	free(text);
+	return (out);
 }

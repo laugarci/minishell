@@ -6,7 +6,7 @@
 /*   By: ffornes- <ffornes-@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/17 17:00:09 by ffornes-          #+#    #+#             */
-/*   Updated: 2023/09/19 18:30:11 by ffornes-         ###   ########.fr       */
+/*   Updated: 2023/09/22 17:08:23 by laugarci         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,5 +44,12 @@ typedef struct s_token
 	int		type;
 	int		quotes;
 }			t_token;
+
+typedef struct s_exec_fds
+{
+	int	**hdoc_fds;
+	int	**pipe_fds;
+	int	hd_count;
+}		t_exec_fds;
 
 #endif

@@ -6,7 +6,7 @@
 /*   By: ffornes- <ffornes-@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/27 11:32:21 by ffornes-          #+#    #+#             */
-/*   Updated: 2023/09/22 14:50:45 by laugarci         ###   ########.fr       */
+/*   Updated: 2023/09/22 17:10:42 by laugarci         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,8 @@ void		free_var(t_env *var);
 t_env		*new_env_var(char *str);
 t_env		*char_to_tenv(char *input);
 char		**envlst_to_charpp(t_list *lst);
+
+int			**pipe_fds(int num_pipes);
 
 char		*get_path(char *cmd, char **envp);
 
@@ -44,13 +46,13 @@ int			**close_pipes(int **fds, int num_pipes);
 
 char		*find_command(t_list *lst);
 
-char		*find_output(t_list *lst, int check);
+char		*find_output(t_list *lst);
 
 int			exec_redirect(t_list *lst);
 
 int			count_list(t_list *lst);
 int			total_input_len(t_list *lst);
-int			*here_doc(t_list *lst);
+int			*here_doc(t_list *lst, int id);
 int			exec_pwd(void);
 int			exec_echo(t_list *lst);
 
@@ -62,7 +64,7 @@ int			check_redirect(t_list *lst);
 t_list		*move_to_pipe(t_list *lst);
 int			check_infile(t_list *lst);
 int			exec_env(char **env);
-int			exec_unset(t_list *lst, char **env);
+int			builtin_unset(t_list *lst, t_list **env_lst);
 int			*signal_handler(void);
 
 int			set_or_return_exit_status(int mode, int value);
@@ -79,5 +81,7 @@ int			process_is_type(t_list *lst, int type);
 int			builtin_export(t_list *tkn_lst, t_list **env_lst);
 
 char		*find_input(t_list *lst);
+
+int			execution(t_list *lst, t_list **env_lst, t_exec_fds *exec_fds, char **env);
 
 #endif

@@ -1,15 +1,14 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   exec_unset.c                                       :+:      :+:    :+:   */
+/*   builtin_unset.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: laugarci <laugarci@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/09/22 14:47:53 by laugarci          #+#    #+#             */
-/*   Updated: 2023/09/22 14:49:16 by laugarci         ###   ########.fr       */
+/*   Created: 2023/09/20 17:48:17 by ffornes-          #+#    #+#             */
+/*   Updated: 2023/09/22 15:10:47 by laugarci         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
-
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -18,32 +17,13 @@
 #include "libft_bonus.h"
 #include "parser.h"
 
-static int	exec_unset_util(char **env, t_token *token, int i)
-{
-	int	j;
-
-	j = 0;
-	if (ft_strncmp(env[i], token->string, ft_strlen(token->string)) == 0
-		&& env[i][ft_strlen(token->string)] == '=')
-	{
-		free(env[i]);
-		j = i;
-		while (env[j])
-		{
-			env[j] = env[j + 1];
-			j++;
-		}
-		return (0);
-	}
-	return (1);
-}
-
-int	exec_unset(t_list *lst, char **env)
+int	builtin_unset(t_list *lst, t_list **env_lst)
 {
 	t_token	*token;
 	t_list	*aux;
-	int		i;
-	int		out;
+	t_list	*previous;
+	t_list	*var_lst;
+	t_env	*var;
 
 	if (!lst->next)
 		return (0);
@@ -53,9 +33,20 @@ int	exec_unset(t_list *lst, char **env)
 	token = aux->content;
 	if (!token->string)
 		return (0);
-	i = 0;
-	out = 0;
-	while (env[i])
-		out = exec_unset_util(env, token, i++);
-	return (out);
+	var_lst = *env_lst;
+	previous = NULL;
+	while (var_lst)
+	{
+		var = var_lst->content;
+		if (!ft_strncmp(var->key, token->string, ft_strlen(token->string)))
+		{
+			previous->next = var_lst->next;
+			var_lst->next = NULL;
+			ft_lstclear(&var_lst, (void *)free_var);
+			break ;
+		}
+		previous = var_lst;
+		var_lst = var_lst->next;
+	}
+	return (0);
 }
