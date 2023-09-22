@@ -6,7 +6,7 @@
 /*   By: ffornes- <ffornes-@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/20 18:46:10 by ffornes-          #+#    #+#             */
-/*   Updated: 2023/09/20 19:41:12 by ffornes-         ###   ########.fr       */
+/*   Updated: 2023/09/22 18:44:16 by ffornes-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,4 +24,10 @@ void	free_var(t_env *var)
 		free(var);
 	}
 	return ;
+}
+
+int		free_var_return_value(t_env *var, int value)
+{
+	free_var(var);
+	return (value);
 }

@@ -6,7 +6,7 @@
 /*   By: ffornes- <ffornes-@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/10 18:22:49 by ffornes-          #+#    #+#             */
-/*   Updated: 2023/09/22 15:58:21 by ffornes-         ###   ########.fr       */
+/*   Updated: 2023/09/22 18:43:59 by ffornes-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -147,10 +147,7 @@ int	builtin_export(t_list *tkn_lst, t_list **env_lst)
 	{
 		aux = ft_lstnew((void *)var);
 		if (!aux)
-		{
-			free_var(var);
-			return (12);
-		}
+			return (free_var_return_value(var, 12));
 		ft_lstadd_back(env_lst, aux);
 	}
 	return (0);
