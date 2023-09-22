@@ -6,7 +6,7 @@
 /*   By: laugarci <laugarci@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/14 12:07:29 by laugarci          #+#    #+#             */
-/*   Updated: 2023/09/22 12:10:32 by laugarci         ###   ########.fr       */
+/*   Updated: 2023/09/22 14:53:10 by laugarci         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -115,7 +115,6 @@ int	exec_redirect(t_list *lst)
 	int		redirect;
 	int flag;
 
-	printf("entra\n");
 	redirect = count_types(lst, 3);
 	redirect += count_types(lst, 4);
 	flags = 0;
