@@ -6,7 +6,7 @@
 /*   By: ffornes- <ffornes-@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/10 18:22:49 by ffornes-          #+#    #+#             */
-/*   Updated: 2023/09/21 20:12:18 by ffornes-         ###   ########.fr       */
+/*   Updated: 2023/09/22 13:17:54 by ffornes-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,20 +44,52 @@ static int  print_export(t_list *env_lst)
     return (0);
 }
 
-static int	add_var_to_env(t_env *var, t_list **env_lst)
+static t_env	*check_flag(t_env *env_var, t_env *var, char *str)
+{
+	int		j;
+	int		flag;
+
+	j = 0;
+	flag = 0;
+	while (str[j] && str[j] != '=')
+		j++;
+	if (str[j])
+		if (j)
+			if (str[j - 1] == '+')
+				flag = 1;
+	if (flag)
+	{
+		env_var->value = ft_strjoin(env_var->value, ++var->value);
+		if (!env_var->value)
+			return (NULL);
+	}
+	else
+	{
+		env_var->value = ft_strdup(var->value);
+		if (!env_var->value)
+			return (NULL);
+	}
+	return (env_var);
+}
+
+static int	add_var_to_env(t_env *var, t_list **env_lst, char *str)
 {
 	t_list	*lst;
 	t_env	*env_var;
+	char	*aux;
 
 	lst = *env_lst;
+	aux = NULL;
 	while (lst)
 	{
 		env_var = lst->content;
 		if (!ft_strncmp(env_var->key, var->key, ft_strlen(var->key)))
 		{
 			if (env_var->value)
-				free(env_var->value);
-			env_var->value = var->value;
+				aux = env_var->value;
+			env_var = check_flag(env_var, var, str);
+			if (aux)
+				free(aux);
 			free(var->key);
 			free(var);
 			return (0);
@@ -67,7 +99,9 @@ static int	add_var_to_env(t_env *var, t_list **env_lst)
 	return (1);
 }
 
-int	builtin_export(t_list *tkn_lst, t_list **env_lst, char **env)
+// Parser first char _ALPHA 
+
+int	builtin_export(t_list *tkn_lst, t_list **env_lst)
 {
     t_list  *lst;
 	t_list	*aux;
@@ -79,10 +113,11 @@ int	builtin_export(t_list *tkn_lst, t_list **env_lst, char **env)
     token = tkn_lst->content;
 	if (!token || (token->type >= 0 || !token->string))
         return (print_export(lst));
+	if () // PARSEE
 	var = new_env_var(token->string);
 	if (!var)
 		return (12);
-	if (add_var_to_env(var, env_lst))
+	if (add_var_to_env(var, env_lst, token->string))
 	{
 		aux = ft_lstnew((void *)var);
 		if (!aux)
@@ -93,5 +128,4 @@ int	builtin_export(t_list *tkn_lst, t_list **env_lst, char **env)
 		ft_lstadd_back(env_lst, aux);
 	}
 	return (0);
-	(void)env;
 }
