@@ -6,7 +6,7 @@
 /*   By: ffornes- <ffornes-@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/20 18:45:08 by ffornes-          #+#    #+#             */
-/*   Updated: 2023/09/22 12:58:07 by ffornes-         ###   ########.fr       */
+/*   Updated: 2023/09/22 14:44:59 by ffornes-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,6 +58,5 @@ t_env	*new_env_var(char *input)
 	}
 	else
 		out->value = NULL;
-	printf("KEY: %s\tVALUE %s\n", out->key, out->value);
 	return (out);
 }

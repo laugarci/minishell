@@ -6,7 +6,7 @@
 /*   By: ffornes- <ffornes-@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/10 18:22:49 by ffornes-          #+#    #+#             */
-/*   Updated: 2023/09/22 13:17:54 by ffornes-         ###   ########.fr       */
+/*   Updated: 2023/09/22 14:43:56 by ffornes-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,7 @@
 #include "libft.h"
 #include "libft_bonus.h"
 #include "minishell.h"
+#include "minishell_defs.h"
 
 #include <stdio.h>
 
@@ -99,7 +100,31 @@ static int	add_var_to_env(t_env *var, t_list **env_lst, char *str)
 	return (1);
 }
 
-// Parser first char _ALPHA 
+static int	is_valid_input(char *str)
+{
+	int	i;
+	int	flag;
+
+	i = 0;
+	flag = 0;
+	while (str[i] && str[i] != '=')
+	{
+		if (!i && ft_isdigit(str[i]))
+			flag++;
+		else if (!ft_isalnum(str[i]) && str[i] != '_')
+			flag++;
+		if (flag)
+		{
+			ft_putstr_fd("minishell: export: `", 2);
+			ft_putstr_fd(str, 2);
+			ft_putstr_fd("\': not a valid identifier\n", 2);
+			set_or_return_exit_status(MODE_SET, 1);
+			return (0);
+		}
+		i++;
+	}
+	return (1);
+}
 
 int	builtin_export(t_list *tkn_lst, t_list **env_lst)
 {
@@ -113,7 +138,8 @@ int	builtin_export(t_list *tkn_lst, t_list **env_lst)
     token = tkn_lst->content;
 	if (!token || (token->type >= 0 || !token->string))
         return (print_export(lst));
-	if () // PARSEE
+	if (!is_valid_input(token->string))
+		return (1);
 	var = new_env_var(token->string);
 	if (!var)
 		return (12);
