@@ -6,7 +6,7 @@
 /*   By: ffornes- <ffornes-@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/20 18:45:08 by ffornes-          #+#    #+#             */
-/*   Updated: 2023/09/22 14:44:59 by ffornes-         ###   ########.fr       */
+/*   Updated: 2023/09/22 20:17:53 by ffornes-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,12 @@ static void	*free_and_return_envar(t_env *var)
 	return (NULL);
 }
 
+/*
+static char	*allocate_key()
+{
 
+}
+*/
 
 t_env	*new_env_var(char *input)
 {
