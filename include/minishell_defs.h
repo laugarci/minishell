@@ -6,7 +6,7 @@
 /*   By: ffornes- <ffornes-@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/17 17:00:09 by ffornes-          #+#    #+#             */
-/*   Updated: 2023/09/23 13:26:56 by laugarci         ###   ########.fr       */
+/*   Updated: 2023/09/23 16:33:54 by laugarci         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,9 +47,10 @@ typedef struct s_token
 
 typedef struct s_exec_fds
 {
-	int	**hdoc_fds;
-	int	**pipe_fds;
+	int	*hdoc_fds;
 	int	pipe_count;
+	int	*read_pipe_fds;
+	int	*write_pipe_fds;
 	int	hd_count;
 	int	process_id;
 }		t_exec_fds;

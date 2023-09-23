@@ -6,7 +6,7 @@
 /*   By: laugarci <laugarci@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/19 13:29:17 by laugarci          #+#    #+#             */
-/*   Updated: 2023/09/23 12:14:24 by laugarci         ###   ########.fr       */
+/*   Updated: 2023/09/23 16:36:05 by laugarci         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,11 +88,10 @@ static void	check_signal(int pid)
 	set_or_return_exit_status(MODE_SET, WEXITSTATUS(status));
 }
 
-int	*here_doc(t_list *lst, int id)
+int	here_doc(t_list *lst, int id)
 {
 	char	*del;
 	int		fds[2];
-	int		*out;
 	int		pid;
 
 	del = find_delimiter(lst, id);
@@ -108,9 +107,5 @@ int	*here_doc(t_list *lst, int id)
 	}
 	close(fds[1]);
 	check_signal(pid);
-	out = malloc(sizeof(int));
-	if (!out)
-		return (NULL);
-	*out = fds[0];
-	return (out);
+	return (fds[0]);
 }

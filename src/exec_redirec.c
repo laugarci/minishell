@@ -6,7 +6,7 @@
 /*   By: laugarci <laugarci@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/14 12:07:29 by laugarci          #+#    #+#             */
-/*   Updated: 2023/09/23 12:48:32 by laugarci         ###   ########.fr       */
+/*   Updated: 2023/09/23 17:16:21 by laugarci         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,13 +24,14 @@
 
 int	check_infile(t_list *lst)
 {
-	char	*infile;
+/*	char	*infile;
 
 	infile = find_input(lst);
 	if (access(infile, F_OK) == 0)
 		return (0);
 	else
-		return (1); // Error: No such file or directory
+		return (1); // Error: No such file or directory*/
+	return (0); lst = NULL;
 }
 
 t_list	*move_to_pipe(t_list *lst)
@@ -52,63 +53,55 @@ t_list	*move_to_pipe(t_list *lst)
 	return (aux);
 }
 
-int	check_redirect(t_list *lst)
+int	check_redirect(t_list *lst, int type1, int type2)
 {
-	t_list	*aux;
 	t_token	*token;
 	int		i;
 
 	i = 0;
 	token = lst->content;
-	aux = lst;
-	while (aux)
+	while (lst)
 	{
-		if (!aux->next)
+		if (!lst->next)
 			break ;
-		if (token->type == 3 || token->type == 4)
-			i++;
-		if (token->type == 1 && !is_type(lst, PIPE))
+		if (token->type == type1 || token->type == type2)
 			i++;
 		if (token->type == PIPE)
 			break ;
-		aux = aux->next;
-		token = aux->content;
+		lst = lst->next;
+		token = lst->content;
 	}
 	if (i > 0)
 		return (1);
 	return (0);
 }
-
-static void	open_fds(t_list *lst)
+void	create_files(t_list *lst)
 {
 	int		fd;
 	t_token	*token;
-	int		i;
 
-	i = 0;
 	while (lst->next)
 	{
 		token = lst->content;
-		if (token->type == 3)
+		if (token->type == PIPE)
+			break ;
+		if (token->type == APPEND)
 		{	
 			fd = open(token->string, O_WRONLY | O_CREAT | O_APPEND, 0666);
 			close(fd);
 		}
-		else if (token->type == 4)
+		else if (token->type == TRUNC)
 		{
 			fd = open(token->string, O_WRONLY | O_CREAT | O_TRUNC, 0666);
 			close(fd);
 		}
-		else if (token->type == PIPE)
-			break ;
 		lst = lst->next;
-		i++;
 	}
 }
 
 int	exec_redirect(t_list *lst)
 {
-	char	*output;
+/*	char	*output;
 	char	*input;
 	int		fd;
 	int		flags;
@@ -146,6 +139,7 @@ int	exec_redirect(t_list *lst)
 		if (dup2(fd, STDOUT_FILENO) == -1)
 			return (1); // Error: dup2
 		close(fd);
-	}
+	}*/
 	return (0);
+	lst = NULL;
 }

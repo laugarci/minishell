@@ -6,7 +6,7 @@
 /*   By: laugarci <laugarci@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/04 14:04:45 by laugarci          #+#    #+#             */
-/*   Updated: 2023/09/23 13:29:12 by laugarci         ###   ########.fr       */
+/*   Updated: 2023/09/23 16:34:48 by laugarci         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,8 @@ static int	count_hd(t_list	*lst)
 void	init_exec_fds(t_exec_fds *var)
 {
 	var->hdoc_fds = NULL;
-	var->pipe_fds = NULL;
+	var->read_pipe_fds = NULL;
+	var->write_pipe_fds = NULL;
 	var->hd_count = 0;
 	var->process_id = 0;
 	var->pipe_count = 0;
@@ -58,21 +59,22 @@ int	cmp_commands(t_list *lst, t_list **env_lst, char **env)
 {
 	int			process_count;
 	int			i;
+	int			hdoc_total;
 	t_exec_fds	exec_fds;
 
 	init_exec_fds(&exec_fds);
 	process_count = count_types(lst, PIPE);
-	exec_fds->pipe_count = process_count;
+	exec_fds.pipe_count = process_count;
 	if (!process_count)
 		process_count = 1; 
-	exec_fds.hd_count = count_hd(lst);
+	hdoc_total = count_hd(lst);
 	i = 0;
-	if (exec_fds.hd_count)
+	if (hdoc_total)
 	{
-		exec_fds.hdoc_fds = malloc(sizeof(int *) * exec_fds.hd_count);
+		exec_fds.hdoc_fds = malloc(sizeof(int) * hdoc_total);
 		if (!exec_fds.hdoc_fds)
 			return (12);
-		while (i < exec_fds.hd_count)
+		while (i < hdoc_total)
 		{
 			exec_fds.hdoc_fds[i] = here_doc(lst, i);
 			if (exec_fds.hdoc_fds[i] < 0)
@@ -83,21 +85,16 @@ int	cmp_commands(t_list *lst, t_list **env_lst, char **env)
 	set_or_return_state(MODE_SET, STATE_EXEC);
 	signal_handler();
 	i = 0;
-	if (process_count > 1)
-		exec_fds.pipe_fds = pipe_fds(process_count);
-	else
+	while (process_count)
 	{
-		while (process_count)
-		{
-			printf("Amount of heredoc: %d\n", exec_fds.hd_count);
-			// Hacer fork
-			// Compartir hdoc_fds si hdoc_count > 0
-			execution(lst, env_lst, &exec_fds, env);
-			// EXEC CHILD..
-			i++;
-			process_count--;
+		printf("Amount of heredoc: %d\n", exec_fds.hd_count);
+		// Hacer fork
+		// Compartir hdoc_fds si hdoc_count > 0
+		execution(lst, env_lst, &exec_fds, env);
+		// EXEC CHILD..
+		i++;
+		process_count--;
 		}
-	}
 	return (0);
 }
 
