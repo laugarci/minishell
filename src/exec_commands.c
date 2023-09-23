@@ -6,7 +6,7 @@
 /*   By: laugarci <laugarci@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/04 14:04:45 by laugarci          #+#    #+#             */
-/*   Updated: 2023/09/23 11:49:55 by laugarci         ###   ########.fr       */
+/*   Updated: 2023/09/23 13:29:12 by laugarci         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,6 +50,8 @@ void	init_exec_fds(t_exec_fds *var)
 	var->hdoc_fds = NULL;
 	var->pipe_fds = NULL;
 	var->hd_count = 0;
+	var->process_id = 0;
+	var->pipe_count = 0;
 }
 
 int	cmp_commands(t_list *lst, t_list **env_lst, char **env)
@@ -60,6 +62,7 @@ int	cmp_commands(t_list *lst, t_list **env_lst, char **env)
 
 	init_exec_fds(&exec_fds);
 	process_count = count_types(lst, PIPE);
+	exec_fds->pipe_count = process_count;
 	if (!process_count)
 		process_count = 1; 
 	exec_fds.hd_count = count_hd(lst);
@@ -82,8 +85,6 @@ int	cmp_commands(t_list *lst, t_list **env_lst, char **env)
 	i = 0;
 	if (process_count > 1)
 		exec_fds.pipe_fds = pipe_fds(process_count);
-	if (process_count == 1 && !is_type(lst, 2))
-		execution(lst, env_lst, &exec_fds, env);
 	else
 	{
 		while (process_count)
