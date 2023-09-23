@@ -6,7 +6,7 @@
 /*   By: ffornes- <ffornes-@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/17 16:24:45 by ffornes-          #+#    #+#             */
-/*   Updated: 2023/09/20 17:29:08 by ffornes-         ###   ########.fr       */
+/*   Updated: 2023/09/23 11:51:34 by ffornes-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,7 +62,6 @@ static void	state_hdoc(int sig, siginfo_t *data, void *n_data)
 	(void) n_data;
 	if (sig == SIGINT)
 	{
-		set_or_return_exit_status(MODE_SET, 1);
 		ft_putchar_fd('\n', 1);
 		rl_replace_line("", 1);
 		exit(1);
