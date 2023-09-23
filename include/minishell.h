@@ -6,7 +6,7 @@
 /*   By: ffornes- <ffornes-@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/27 11:32:21 by ffornes-          #+#    #+#             */
-/*   Updated: 2023/09/23 11:33:39 by laugarci         ###   ########.fr       */
+/*   Updated: 2023/09/23 17:17:25 by laugarci         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,15 +53,15 @@ int			exec_redirect(t_list *lst);
 
 int			count_list(t_list *lst);
 int			total_input_len(t_list *lst);
-int			*here_doc(t_list *lst, int id);
+int			here_doc(t_list *lst, int id);
 int			exec_pwd(void);
 int			exec_echo(t_list *lst);
-
+void		create_files(t_list *lst);
 void		print_error(char *error_message);
 int			print_and_return(int error_id);
 
 t_list		*process_list(t_list *lst, int i);
-int			check_redirect(t_list *lst);
+int			check_redirect(t_list *lst, int type1, int type2);
 t_list		*move_to_pipe(t_list *lst);
 int			check_infile(t_list *lst);
 int			exec_env(char **env);
@@ -81,7 +81,7 @@ void		exit_check(t_list *lst);
 int			process_is_type(t_list *lst, int type);
 int			builtin_export(t_list *tkn_lst, t_list **env_lst);
 
-char		*find_input(t_list *lst);
+int		find_input(t_list *lst, char **dst, int type1, int type2);
 
 int			execution(t_list *lst, t_list **env_lst, t_exec_fds *exec_fds, \
 			char **env);

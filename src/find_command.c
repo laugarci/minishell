@@ -6,7 +6,7 @@
 /*   By: laugarci <laugarci@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/17 10:09:20 by laugarci          #+#    #+#             */
-/*   Updated: 2023/09/23 13:00:28 by laugarci         ###   ########.fr       */
+/*   Updated: 2023/09/23 16:04:47 by laugarci         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 #include "libft.h"
 #include "parser.h"
 #include "libft_bonus.h"
-
+#include <unistd.h>
 #include <stdio.h>
 
 char	*find_command(t_list *lst)
@@ -86,22 +86,21 @@ char	*find_output(t_list *lst)
 int	find_input(t_list *lst, char **dst, int type1, int type2)
 {
 	t_token	*token;
-	char	*input;
 
-	input = *dst;
+	token = lst->content;
 	while (lst)
 	{
-		token = lst->content;
-		lst = lst->next;
 		if (token->type == PIPE || !token->string)
 			break ;
 		if (token->type == type1 || token->type == type2)
 		{
-			input = token->string;
+			*dst = token->string;
 			if (token->type == INFILE)
-				if (access(input, F_OK))
-					return (print_and_return(126));
+				if (access(*dst, F_OK))
+					return (print_and_return(126)); 
 		}
+		lst = lst->next;
+		token = lst->content;
 	}
 	return (0);
 }
