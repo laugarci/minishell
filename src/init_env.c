@@ -6,7 +6,7 @@
 /*   By: ffornes- <ffornes-@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/20 18:21:07 by ffornes-          #+#    #+#             */
-/*   Updated: 2023/09/21 16:41:52 by ffornes-         ###   ########.fr       */
+/*   Updated: 2023/09/22 19:43:49 by ffornes-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,7 @@ static int	check_for_oldpwd(t_list *lst)
 	return (0);
 }
 
-static t_list	*lst_oldpwd()
+static t_list	*lst_oldpwd(void)
 {
 	t_env	*var;
 	t_list	*out;
@@ -64,7 +64,7 @@ t_list	*set_env(char *envp[])
 	while (*envp)
 	{
 		var = new_env_var(*envp);
-		if  (!var)
+		if (!var)
 			return (free_var_and_list_and_return(var, NULL));
 		aux = ft_lstnew((void *)var);
 		if (!aux)

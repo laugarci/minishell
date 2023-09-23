@@ -6,7 +6,7 @@
 /*   By: laugarci <laugarci@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/04 14:04:45 by laugarci          #+#    #+#             */
-/*   Updated: 2023/09/23 10:53:07 by laugarci         ###   ########.fr       */
+/*   Updated: 2023/09/23 11:49:55 by laugarci         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,7 +61,7 @@ int	cmp_commands(t_list *lst, t_list **env_lst, char **env)
 	init_exec_fds(&exec_fds);
 	process_count = count_types(lst, PIPE);
 	if (!process_count)
-		process_count = 1; //y si hay mas de un HD pero no hay pipes?
+		process_count = 1; 
 	exec_fds.hd_count = count_hd(lst);
 	i = 0;
 	if (exec_fds.hd_count)
@@ -69,7 +69,6 @@ int	cmp_commands(t_list *lst, t_list **env_lst, char **env)
 		exec_fds.hdoc_fds = malloc(sizeof(int *) * exec_fds.hd_count);
 		if (!exec_fds.hdoc_fds)
 			return (12);
-		printf(">> %d\n", exec_fds.hd_count);
 		while (i < exec_fds.hd_count)
 		{
 			exec_fds.hdoc_fds[i] = here_doc(lst, i);
@@ -78,6 +77,8 @@ int	cmp_commands(t_list *lst, t_list **env_lst, char **env)
 			i++;
 		}
 	}
+	set_or_return_state(MODE_SET, STATE_EXEC);
+	signal_handler();
 	i = 0;
 	if (process_count > 1)
 		exec_fds.pipe_fds = pipe_fds(process_count);
