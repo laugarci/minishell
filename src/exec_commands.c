@@ -6,7 +6,7 @@
 /*   By: laugarci <laugarci@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/04 14:04:45 by laugarci          #+#    #+#             */
-/*   Updated: 2023/09/22 17:37:50 by laugarci         ###   ########.fr       */
+/*   Updated: 2023/09/23 10:53:07 by laugarci         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,7 +61,7 @@ int	cmp_commands(t_list *lst, t_list **env_lst, char **env)
 	init_exec_fds(&exec_fds);
 	process_count = count_types(lst, PIPE);
 	if (!process_count)
-		process_count = 1;
+		process_count = 1; //y si hay mas de un HD pero no hay pipes?
 	exec_fds.hd_count = count_hd(lst);
 	i = 0;
 	if (exec_fds.hd_count)
@@ -81,15 +81,20 @@ int	cmp_commands(t_list *lst, t_list **env_lst, char **env)
 	i = 0;
 	if (process_count > 1)
 		exec_fds.pipe_fds = pipe_fds(process_count);
-	while (process_count)
-	{
-		printf("Amount of heredoc: %d\n", exec_fds.hd_count);
-		// Hacer fork
-		// Compartir hdoc_fds si hdoc_count > 0
+	if (process_count == 1 && !is_type(lst, 2))
 		execution(lst, env_lst, &exec_fds, env);
-		// EXEC CHILD..
-		i++;
-		process_count--;
+	else
+	{
+		while (process_count)
+		{
+			printf("Amount of heredoc: %d\n", exec_fds.hd_count);
+			// Hacer fork
+			// Compartir hdoc_fds si hdoc_count > 0
+			execution(lst, env_lst, &exec_fds, env);
+			// EXEC CHILD..
+			i++;
+			process_count--;
+		}
 	}
 	return (0);
 }

@@ -6,7 +6,7 @@
 /*   By: laugarci <laugarci@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/19 13:29:17 by laugarci          #+#    #+#             */
-/*   Updated: 2023/09/22 17:50:07 by laugarci         ###   ########.fr       */
+/*   Updated: 2023/09/23 10:50:49 by laugarci         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,6 +35,11 @@ static char	*find_delimiter(t_list *lst, int id)
 			return (NULL);
 		if (token->type == HERE_DOC)
 			i++;
+		lst = lst->next;
+		token = lst->content;
+	}
+	if (token->type != HERE_DOC)
+	{
 		lst = lst->next;
 		token = lst->content;
 	}
