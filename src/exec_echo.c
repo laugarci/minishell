@@ -6,7 +6,7 @@
 /*   By: laugarci <laugarci@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/04 11:30:35 by laugarci          #+#    #+#             */
-/*   Updated: 2023/09/19 18:14:05 by laugarci         ###   ########.fr       */
+/*   Updated: 2023/09/23 18:52:05 by laugarci         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,6 +64,8 @@ void	print_echo(t_list *aux, int flag)
 	token = aux->content;
 	while (aux->next)
 	{
+		if (token->type != -1)
+			break ;
 		if (i > 0)
 			printf(" ");
 		printf("%s", token->string);

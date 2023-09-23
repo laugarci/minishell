@@ -6,7 +6,7 @@
 /*   By: laugarci <laugarci@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/19 13:29:17 by laugarci          #+#    #+#             */
-/*   Updated: 2023/09/23 16:36:05 by laugarci         ###   ########.fr       */
+/*   Updated: 2023/09/23 19:01:43 by laugarci         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,17 +29,15 @@ static char	*find_delimiter(t_list *lst, int id)
 
 	i = 0;
 	token = lst->content;
+	id++;
 	while (lst && i < id)
 	{
 		if (!token || !token->string)
 			return (NULL);
 		if (token->type == HERE_DOC)
 			i++;
-		lst = lst->next;
-		token = lst->content;
-	}
-	if (token->type != HERE_DOC)
-	{
+		if (i == id)
+			break ;
 		lst = lst->next;
 		token = lst->content;
 	}
@@ -95,6 +93,7 @@ int	here_doc(t_list *lst, int id)
 	int		pid;
 
 	del = find_delimiter(lst, id);
+	printf("%s\n", del);
 	pipe(fds);
 	pid = fork();
 	if (pid == 0)
