@@ -6,7 +6,7 @@
 /*   By: ffornes- <ffornes-@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/20 18:45:08 by ffornes-          #+#    #+#             */
-/*   Updated: 2023/09/23 17:53:25 by ffornes-         ###   ########.fr       */
+/*   Updated: 2023/09/23 17:59:52 by ffornes-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ static void	*free_and_return_envar(t_env *var)
 	return (NULL);
 }
 
-static char	*new_var_utils(char *input, int *n)
+static char	*new_var_utils(char *input, int *n, int *add)
 {
 	char	*out;
 	int		i;
@@ -32,7 +32,7 @@ static char	*new_var_utils(char *input, int *n)
 		i++;
 	if (input[i - 1] == '+')
 	{
-		add = 1;
+		*add = 1;
 		i--;
 	}
 	*n = i;
@@ -54,7 +54,7 @@ t_env	*new_env_var(char *input)
 	out = malloc(sizeof(t_env));
 	if (!out)
 		return (NULL);
-	out->key = new_var_utils(input, &i);
+	out->key = new_var_utils(input, &i, &add);
 	if (!out->key)
 		return (free_and_return_envar(out));
 	input += i;
