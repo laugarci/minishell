@@ -6,7 +6,7 @@
 /*   By: ffornes- <ffornes-@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/17 17:00:09 by ffornes-          #+#    #+#             */
-/*   Updated: 2023/09/23 16:33:54 by laugarci         ###   ########.fr       */
+/*   Updated: 2023/09/23 19:11:42 by laugarci         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,6 +51,7 @@ typedef struct s_exec_fds
 	int	pipe_count;
 	int	*read_pipe_fds;
 	int	*write_pipe_fds;
+	int	*next_read_fd;
 	int	hd_count;
 	int	process_id;
 }		t_exec_fds;
