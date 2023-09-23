@@ -6,7 +6,7 @@
 /*   By: laugarci <laugarci@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/17 10:09:20 by laugarci          #+#    #+#             */
-/*   Updated: 2023/09/22 15:13:45 by laugarci         ###   ########.fr       */
+/*   Updated: 2023/09/23 13:00:28 by laugarci         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,36 +83,25 @@ char	*find_output(t_list *lst)
 	return (output);
 }
 
-char	*find_input(t_list *lst)
+int	find_input(t_list *lst, char **dst, int type1, int type2)
 {
-	t_list	*tmp;
 	t_token	*token;
 	char	*input;
-	int		flag;
 
-	tmp = lst;
-	token = tmp->content;
-	input = NULL;
-	while (tmp)
+	input = *dst;
+	while (lst)
 	{
-		flag = 0;
-		if (token->type == 1)
+		token = lst->content;
+		lst = lst->next;
+		if (token->type == PIPE || !token->string)
+			break ;
+		if (token->type == type1 || token->type == type2)
 		{
-			input = malloc(sizeof(char) * ft_strlen(token->string) + 1);
-			if (!input)
-				return (NULL); // Error: malloc
-			ft_strlcpy(input, token->string, ft_strlen(token->string) + 1);
-			tmp = tmp->next;
-			token = tmp->content;
-			flag = 1;
-			if (token->type != 1)
-				break ;
-		}
-		if (flag == 0)
-		{
-			tmp = tmp->next;
-			token = tmp->content;
+			input = token->string;
+			if (token->type == INFILE)
+				if (access(input, F_OK))
+					return (print_and_return(126));
 		}
 	}
-	return (input);
+	return (0);
 }
