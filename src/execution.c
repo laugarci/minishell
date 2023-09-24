@@ -6,7 +6,7 @@
 /*   By: laugarci <laugarci@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/22 15:29:58 by laugarci          #+#    #+#             */
-/*   Updated: 2023/09/24 17:19:07 by ffornes-         ###   ########.fr       */
+/*   Updated: 2023/09/24 17:37:05 by ffornes-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -117,7 +117,7 @@ static int	execution_utils(t_list *lst, t_list **env_lst, t_data *data, char **e
 	return (err);
 }
 
-static int	single_process_check(t_list *lst)
+static int	single_process_check(t_list *lst, t_list **env_lst)
 {
 	t_token	*token;
 
@@ -125,6 +125,8 @@ static int	single_process_check(t_list *lst)
 	token = lst->content;
 	if (!ft_strncmp(token->string, "cd\0", 3))
 		return (exec_cd(lst));
+	else if (ft_strncmp(token->string, "export\0", 7) == 0)
+		return (builtin_export(lst, env_lst));
 	return (-1);
 }
 
@@ -143,7 +145,7 @@ int	execution(t_list *lst, t_list **env_lst, t_data *data, char **env)
 			pipe(data->write_pipe_fds);
 			*data->next_read_fd = data->write_pipe_fds[0];
 		}
-		else if (single_process_check(lst) >= 0)
+		else if (single_process_check(lst, env_lst) >= 0)
 			break ;
 		err = execution_utils(lst, env_lst, data, env);
 		data->process_id++;
