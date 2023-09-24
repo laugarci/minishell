@@ -6,7 +6,7 @@
 /*   By: laugarci <laugarci@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/04 14:04:45 by laugarci          #+#    #+#             */
-/*   Updated: 2023/09/23 19:12:38 by laugarci         ###   ########.fr       */
+/*   Updated: 2023/09/24 12:42:00 by ffornes-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,6 +56,7 @@ void	init_exec_fds(t_exec_fds *var)
 		*var->next_read_fd = -1;
 	var->write_pipe_fds = NULL;
 	var->hd_count = 0;
+	var->hd_total = 0;
 	var->process_id = 0;
 	var->pipe_count = 0;
 }
@@ -64,7 +65,6 @@ int	cmp_commands(t_list *lst, t_list **env_lst, char **env)
 {
 	int			process_count;
 	int			i;
-	int			hdoc_total;
 	t_exec_fds	exec_fds;
 
 	init_exec_fds(&exec_fds);
@@ -74,14 +74,14 @@ int	cmp_commands(t_list *lst, t_list **env_lst, char **env)
 	exec_fds.pipe_count = process_count;
 	if (!process_count)
 		process_count = 1; 
-	hdoc_total = count_hd(lst);
+	exec_fds.hd_total = count_hd(lst);
 	i = 0;
-	if (hdoc_total)
+	if (exec_fds.hd_total)
 	{
-		exec_fds.hdoc_fds = malloc(sizeof(int) * hdoc_total);
+		exec_fds.hdoc_fds = malloc(sizeof(int) * exec_fds.hd_total);
 		if (!exec_fds.hdoc_fds)
 			return (12);
-		while (i < hdoc_total)
+		while (i < exec_fds.hd_total)
 		{
 			exec_fds.hdoc_fds[i] = here_doc(lst, i);
 			if (exec_fds.hdoc_fds[i] < 0)

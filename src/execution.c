@@ -6,7 +6,7 @@
 /*   By: laugarci <laugarci@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/22 15:29:58 by laugarci          #+#    #+#             */
-/*   Updated: 2023/09/24 12:16:21 by laugarci         ###   ########.fr       */
+/*   Updated: 2023/09/24 12:43:41 by ffornes-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,7 @@ static int	dup_read(t_list *lst, t_exec_fds *exec_fds)
 
 	input = NULL;
 	fd = 0;
-	if (count_types(lst, INFILE) || exec_fds->hd_count)
+	if (count_types(lst, INFILE) || is_type(lst, HERE_DOC))
 	{
 		if (find_input(lst, &input, INFILE, HERE_DOC))
 			return (126);
@@ -137,8 +137,9 @@ static int	execution_utils(t_list *lst, t_list **env_lst, t_exec_fds *exec_fds, 
 			exit(err); // Must print error message before 
 		else if (exec_fds->read_pipe_fds[0] >= 0)
 		{
-			if (dup2(exec_fds->read_pipe_fds[0], STDIN_FILENO) < 0)
-				return(1);
+			if (!count_types(lst, INFILE) && !count_types(lst, HERE_DOC))
+				if (dup2(exec_fds->read_pipe_fds[0], STDIN_FILENO) < 0)
+					return(1);
 			close(exec_fds->read_pipe_fds[0]);
 		}
 		if (dup_write(lst))
