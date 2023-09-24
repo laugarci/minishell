@@ -3,6 +3,10 @@ ToDo:
 	Errors:
 	Implement error handling, exit status and error messages in execution
 
+	Builtins: 
+	Quitar trim de espacios del exec builtins y meterlo en el parser ANTES
+	de expandir uwu
+
 	Builtin Export:
 	Export multiple arguments
 	Display in ascii order
