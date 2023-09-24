@@ -3,14 +3,7 @@ ToDo:
 	Errors:
 	Implement error handling, exit status and error messages in execution
 
-	Signals:
-	CtrlC && Ctrl\ in exec... stop all children?
-	CtrlC in HERE_DOC MUST SET EXIT_STATUS TO 1
-	
 	Builtin Export:
-	When finding += must append instead of trunc
-	Must export multiple variables at the same time:
-		export HOLA=TU ADIOS=YO COCO=CACA
 	Display in ascii order
 
 	Build different expansor for here_doc case
