@@ -4,6 +4,7 @@ ToDo:
 	Implement error handling, exit status and error messages in execution
 
 	Builtin Export:
+	Export multiple arguments
 	Display in ascii order
 
 	Build different expansor for here_doc case
