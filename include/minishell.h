@@ -6,7 +6,7 @@
 /*   By: ffornes- <ffornes-@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/27 11:32:21 by ffornes-          #+#    #+#             */
-/*   Updated: 2023/09/24 17:20:52 by ffornes-         ###   ########.fr       */
+/*   Updated: 2023/09/24 17:46:35 by ffornes-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,6 +81,7 @@ void		exit_check(t_list *lst);
 
 int			process_is_type(t_list *lst, int type);
 int			builtin_export(t_list *tkn_lst, t_list **env_lst);
+t_env		*check_flag(t_env *env_var, t_env *var, char *str);
 
 int			find_input(t_list *lst, char **dst, int type1, int type2);
 
