@@ -6,7 +6,7 @@
 /*   By: laugarci <laugarci@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/22 15:29:58 by laugarci          #+#    #+#             */
-/*   Updated: 2023/09/24 12:43:41 by ffornes-         ###   ########.fr       */
+/*   Updated: 2023/09/24 13:09:08 by laugarci         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -102,6 +102,7 @@ static int check_builtins(t_list *lst, t_list **env_lst, char **env)
 
 	err = 0;
 	token = lst->content;
+	exit_check(lst);
 	if (ft_strncmp(token->string, "cd\0", 3) == 0)
 		err = exec_cd(lst);
 	else if (ft_strncmp(token->string, "echo\0", 5) == 0)
@@ -192,7 +193,7 @@ int	execution(t_list *lst, t_list **env_lst, t_exec_fds *exec_fds, char **env)
 			*exec_fds->read_pipe_fds = -1;
 
 		exec_fds->pipe_count--;
-		if (exec_fds->pipe_count == 0)
+		if (exec_fds->pipe_count <= 0)
 			break ;
 	}
 	return (err);
