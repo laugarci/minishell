@@ -6,7 +6,7 @@
 /*   By: laugarci <laugarci@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/22 15:29:58 by laugarci          #+#    #+#             */
-/*   Updated: 2023/09/24 15:19:19 by ffornes-         ###   ########.fr       */
+/*   Updated: 2023/09/24 15:29:01 by ffornes-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -160,7 +160,6 @@ static int	execution_utils(t_list *lst, t_list **env_lst, t_exec_fds *exec_fds, 
 		check_builtins(lst, env_lst, env);
 		exit(err);
 	}
-	wait(NULL);
 	return (err);
 }
 
@@ -180,7 +179,7 @@ int	execution(t_list *lst, t_list **env_lst, t_exec_fds *exec_fds, char **env)
 	int	err;
 
 	exit_check(lst);
-	exec_fds->pipe_count = count_types(lst, PIPE) + 1;
+	exec_fds->pipe_count = count_types(lst, PIPE);
 	while (exec_fds->process_id <= exec_fds->pipe_count)
 	{
 		if (is_type(lst, PIPE))
@@ -208,8 +207,8 @@ int	execution(t_list *lst, t_list **env_lst, t_exec_fds *exec_fds, char **env)
 		}
 		else
 			*exec_fds->read_pipe_fds = -1;
-		exec_fds->pipe_count--;
 	}
-	// Aqui esperar todos los hijos XD! unfunnny business
+	while (exec_fds->process_id--)
+		wait(NULL);
 	return (err);
 }
