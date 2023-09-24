@@ -6,7 +6,7 @@
 /*   By: laugarci <laugarci@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/22 15:29:58 by laugarci          #+#    #+#             */
-/*   Updated: 2023/09/24 13:09:08 by laugarci         ###   ########.fr       */
+/*   Updated: 2023/09/24 13:12:49 by laugarci         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -175,6 +175,11 @@ int	execution(t_list *lst, t_list **env_lst, t_exec_fds *exec_fds, char **env)
 				return (12); // Check clean exit
 			pipe(exec_fds->write_pipe_fds);
 			*exec_fds->next_read_fd = exec_fds->write_pipe_fds[0];
+		}
+		else
+		{
+			check_builtins(lst, env_lst, env);
+			break ;
 		}
 		err = execution_utils(lst, env_lst, exec_fds, env);
 		exec_fds->process_id++;

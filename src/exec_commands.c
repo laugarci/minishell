@@ -6,7 +6,7 @@
 /*   By: laugarci <laugarci@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/04 14:04:45 by laugarci          #+#    #+#             */
-/*   Updated: 2023/09/24 12:42:00 by ffornes-         ###   ########.fr       */
+/*   Updated: 2023/09/24 13:22:34 by laugarci         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,20 +29,20 @@
 
 static int	count_hd(t_list	*lst)
 {
-	int	c;
+	int		c;
 	t_list	*tmp;
 	t_token	*aux;
 
 	tmp = lst;
 	c = 0;
-	while(tmp->next)
+	while (tmp->next)
 	{
 		aux = tmp->content;
 		if (aux->type == 2)
 			c++;
 		tmp = tmp->next;
 	}
-	return(c);
+	return (c);
 }
 
 void	init_exec_fds(t_exec_fds *var)
@@ -73,7 +73,7 @@ int	cmp_commands(t_list *lst, t_list **env_lst, char **env)
 	process_count = count_types(lst, PIPE);
 	exec_fds.pipe_count = process_count;
 	if (!process_count)
-		process_count = 1; 
+		process_count = 1;
 	exec_fds.hd_total = count_hd(lst);
 	i = 0;
 	if (exec_fds.hd_total)
@@ -95,27 +95,6 @@ int	cmp_commands(t_list *lst, t_list **env_lst, char **env)
 	execution(lst, env_lst, &exec_fds, env);
 	return (0);
 }
-
-/*
-int	cmp_commands(t_list *lst, t_list **env_lst, char **env)
-{
-	t_token	*token;
-	int		num_pipes;
-	int		err;
-
-	token = lst->content;
-	err = 0;
-	exit_check(lst);
-	if (is_type(lst, PIPE) || is_type(lst, APPEND)
-		|| is_type(lst, TRUNC) || is_type(lst, HERE_DOC)
-		|| is_type(lst, INFILE))
-	{
-		num_pipes = count_types(lst, PIPE);
-		err = exec_pipes(env, num_pipes, lst);
-	}
-	return (0);
-}
-*/
 
 int	exec_commands_wf(t_list *lst, char **env, int flags)
 {
