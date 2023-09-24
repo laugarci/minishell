@@ -6,7 +6,7 @@
 #    By: laugarci <laugarci@student.42barcel>       +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/06/26 15:00:09 by ffornes-          #+#    #+#              #
-#    Updated: 2023/09/24 16:56:07 by ffornes-         ###   ########.fr        #
+#    Updated: 2023/09/24 17:44:19 by ffornes-         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -24,9 +24,10 @@ SRC_FILES = minishell.c \
 			token_new.c token_free.c token_save.c token_type.c \
 			token_process.c token_process_rm.c \
 			subtoken_process.c subtoken_count.c subtoken_join.c token_organize.c \
-			builtin_unset.c builtin_export.c builtin_exit.c \
+			builtin_unset.c builtin_export.c builtin_export_utils.c builtin_exit.c \
 			errors.c syntax_error.c process_list.c exec_cd.c exec_env.c check.c \
-			signals.c exit_status.c execution.c dup_read_write.c
+			signals.c signal_display.c \
+			exit_status.c execution.c dup_read_write.c
 
 OBJ_DIR = objs/
 OBJ_FILES = $(SRC_FILES:.c=.o)

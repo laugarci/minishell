@@ -6,7 +6,7 @@
 /*   By: ffornes- <ffornes-@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/10 18:22:49 by ffornes-          #+#    #+#             */
-/*   Updated: 2023/09/22 18:43:59 by ffornes-         ###   ########.fr       */
+/*   Updated: 2023/09/24 17:46:10 by ffornes-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,32 +45,12 @@ static int	print_export(t_list *env_lst)
 	return (0);
 }
 
-static t_env	*check_flag(t_env *env_var, t_env *var, char *str)
+static int	free_key_and_return(t_env *var)
 {
-	int		j;
-	int		flag;
-
-	j = 0;
-	flag = 0;
-	while (str[j] && str[j] != '=')
-		j++;
-	if (str[j])
-		if (j)
-			if (str[j - 1] == '+')
-				flag = 1;
-	if (flag)
-	{
-		env_var->value = ft_strjoin(env_var->value, ++var->value);
-		if (!env_var->value)
-			return (NULL);
-	}
-	else
-	{
-		env_var->value = ft_strdup(var->value);
-		if (!env_var->value)
-			return (NULL);
-	}
-	return (env_var);
+	if (var->key)
+		free(var->key);
+	free(var);
+	return (0);
 }
 
 static int	add_var_to_env(t_env *var, t_list **env_lst, char *str)
@@ -86,14 +66,14 @@ static int	add_var_to_env(t_env *var, t_list **env_lst, char *str)
 		env_var = lst->content;
 		if (!ft_strncmp(env_var->key, var->key, ft_strlen(var->key)))
 		{
+			if (!var->value)
+				return (free_key_and_return(var));
 			if (env_var->value)
 				aux = env_var->value;
 			env_var = check_flag(env_var, var, str);
 			if (aux)
 				free(aux);
-			free(var->key);
-			free(var);
-			return (0);
+			return (free_key_and_return(var));
 		}
 		lst = lst->next;
 	}
