@@ -6,7 +6,7 @@
 /*   By: laugarci <laugarci@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/14 21:05:30 by laugarci          #+#    #+#             */
-/*   Updated: 2023/09/19 16:35:03 by laugarci         ###   ########.fr       */
+/*   Updated: 2023/09/23 17:59:08 by ffornes-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,7 @@ int	exec_cd(t_list *lst)
 	t_list	*tmp;
 	int		i;
 
+	printf("OURS\n");
 	i = count_list(lst);
 	tmp = lst->next;
 	token = tmp->content;
