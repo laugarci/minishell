@@ -6,7 +6,7 @@
 /*   By: laugarci <laugarci@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/22 15:29:58 by laugarci          #+#    #+#             */
-/*   Updated: 2023/09/24 13:10:22 by ffornes-         ###   ########.fr       */
+/*   Updated: 2023/09/24 13:13:12 by ffornes-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -155,7 +155,6 @@ static int	execution_utils(t_list *lst, t_list **env_lst, t_exec_fds *exec_fds, 
 		check_builtins(lst, env_lst, env);
 		exit(err);
 	}
-	wait(NULL);
 	return (err);
 }
 
@@ -200,6 +199,6 @@ int	execution(t_list *lst, t_list **env_lst, t_exec_fds *exec_fds, char **env)
 		if (exec_fds->pipe_count == 0)
 			break ;
 	}
+	// Aqui esperar todos los hijos XD! unfunnny business
 	return (err);
 }
-
