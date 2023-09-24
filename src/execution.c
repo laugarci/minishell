@@ -6,7 +6,7 @@
 /*   By: laugarci <laugarci@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/22 15:29:58 by laugarci          #+#    #+#             */
-/*   Updated: 2023/09/24 13:12:49 by laugarci         ###   ########.fr       */
+/*   Updated: 2023/09/24 15:27:37 by laugarci         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,6 +38,7 @@ static int	dup_hdoc(t_list *lst, t_exec_fds *exec_fds)
 	count += exec_fds->hd_count - 1;
 	if (dup2(exec_fds->hdoc_fds[count], STDIN_FILENO) == -1)
 		return (1);
+	ft_putstr_fd("Successfully duped Here_doc\n", 2);
 	return (0);
 }
 
@@ -61,6 +62,7 @@ static int	dup_read(t_list *lst, t_exec_fds *exec_fds)
 		if (dup2(fd, STDIN_FILENO) == -1)
 			return (1);
 		close(fd);
+		ft_putstr_fd("Successfully duped infile\n", 2);
 	}
 	else
 		return (dup_hdoc(lst, exec_fds));
@@ -91,6 +93,7 @@ static int	dup_write(t_list *lst)
 		if (dup2(fd, STDOUT_FILENO) == -1)
 			return (1); // Error: dup2
 		close(fd);
+		ft_putstr_fd("Successfully duped outfile\n", 2);
 	}
 	return (0);
 }
@@ -149,6 +152,7 @@ static int	execution_utils(t_list *lst, t_list **env_lst, t_exec_fds *exec_fds, 
 		{
      		if (dup2(exec_fds->write_pipe_fds[1], STDOUT_FILENO) < 0)
 				return (1);
+			close(exec_fds->write_pipe_fds[0]);
 			close(exec_fds->write_pipe_fds[1]);
 		}
 		token = lst->content;
@@ -160,13 +164,24 @@ static int	execution_utils(t_list *lst, t_list **env_lst, t_exec_fds *exec_fds, 
 	return (err);
 }
 
+static int	single_process_check(t_list *lst)
+{
+	t_token	*token;
+
+	exit_check(lst);
+	token = lst->content;
+	if (!ft_strncmp(token->string, "cd\0", 3))
+		return (exec_cd(lst));
+	return (-1);
+}
+
 int	execution(t_list *lst, t_list **env_lst, t_exec_fds *exec_fds, char **env)
 {
 	int	err;
 
 	exit_check(lst);
 	exec_fds->pipe_count = count_types(lst, PIPE) + 1;
-	while (42)
+	while (exec_fds->process_id < exec_fds->pipe_count)
 	{
 		if (is_type(lst, PIPE))
 		{
@@ -176,11 +191,8 @@ int	execution(t_list *lst, t_list **env_lst, t_exec_fds *exec_fds, char **env)
 			pipe(exec_fds->write_pipe_fds);
 			*exec_fds->next_read_fd = exec_fds->write_pipe_fds[0];
 		}
-		else
-		{
-			check_builtins(lst, env_lst, env);
+		else if (single_process_check(lst) >= 0)
 			break ;
-		}
 		err = execution_utils(lst, env_lst, exec_fds, env);
 		exec_fds->process_id++;
 		exec_fds->hd_count += process_is_type(lst, HERE_DOC);
@@ -196,11 +208,8 @@ int	execution(t_list *lst, t_list **env_lst, t_exec_fds *exec_fds, char **env)
 		}
 		else
 			*exec_fds->read_pipe_fds = -1;
-
-		exec_fds->pipe_count--;
-		if (exec_fds->pipe_count <= 0)
-			break ;
+//		exec_fds->pipe_count--;
 	}
+	// Aqui esperar todos los hijos XD! unfunnny business
 	return (err);
 }
-

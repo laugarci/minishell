@@ -6,7 +6,7 @@
 /*   By: laugarci <laugarci@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/04 14:04:45 by laugarci          #+#    #+#             */
-/*   Updated: 2023/09/24 13:22:34 by laugarci         ###   ########.fr       */
+/*   Updated: 2023/09/24 15:21:52 by laugarci         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,11 +21,6 @@
 #include "minishell_defs.h"
 #include "libft_bonus.h"
 #include "parser.h"
-
-// 1. Contar procesos
-// 2. Comprobar here_docs
-// 3. Ejecutar loop
-// 4. Ejecutar cmds
 
 static int	count_hd(t_list	*lst)
 {
