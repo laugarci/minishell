@@ -6,7 +6,7 @@
 /*   By: laugarci <laugarci@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/22 15:29:58 by laugarci          #+#    #+#             */
-/*   Updated: 2023/09/24 17:37:05 by ffornes-         ###   ########.fr       */
+/*   Updated: 2023/09/24 18:57:42 by ffornes-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,14 +52,20 @@ int	cmp_commands(t_list *lst, t_list **env_lst, char **env)
 	return (0);
 }
 
-static int check_builtins(t_list *lst, t_list **env_lst, char **env)
+static int	builtin_execution(t_list *lst, t_list **env_lst, char **env)
 {
 	t_token *token;
 	int		err;
+	char	*aux;
 
-	err = 0;
+	err = -1;
 	token = lst->content;
 	exit_check(lst);
+	aux = token->string;
+	token->string = ft_strtrim(token->string, " ");
+	free(aux);
+	if (!token->string)
+		return (12);
 	if (ft_strncmp(token->string, "cd\0", 3) == 0)
 		err = exec_cd(lst);
 	else if (ft_strncmp(token->string, "echo\0", 5) == 0)
@@ -72,8 +78,17 @@ static int check_builtins(t_list *lst, t_list **env_lst, char **env)
 		err = builtin_unset(lst, env_lst);
 	else if (ft_strncmp(token->string, "export\0", 7) == 0)
 		err = builtin_export(lst, env_lst);
-	else
-		err = exec_commands(lst, env);
+	return (err);
+}
+
+static int check_builtins(t_list *lst, t_list **env_lst, char **env)
+{
+	int		err;
+
+	err = builtin_execution(lst, env_lst, env);
+	if (err >= 0)
+		return (err);
+	err = exec_commands(lst, env);
 	return (err);
 }
 
@@ -93,12 +108,12 @@ static int	execution_utils(t_list *lst, t_list **env_lst, t_data *data, char **e
 		err = dup_read(lst, data);
 		if (err)
 			exit(err); // Must print error message before 
-		else if (data->read_pipe_fds[0] >= 0)
+		else if (data->read_pipe_fds >= 0)
 		{
 			if (!p_type_count(lst, INFILE) && !p_type_count(lst, HERE_DOC))
-				if (dup2(data->read_pipe_fds[0], STDIN_FILENO) < 0)
+				if (dup2(data->read_pipe_fds, STDIN_FILENO) < 0)
 					return(1);
-			close(data->read_pipe_fds[0]);
+			close(data->read_pipe_fds);
 		}
 		if (dup_write(lst))
 			exit(1);
@@ -117,19 +132,6 @@ static int	execution_utils(t_list *lst, t_list **env_lst, t_data *data, char **e
 	return (err);
 }
 
-static int	single_process_check(t_list *lst, t_list **env_lst)
-{
-	t_token	*token;
-
-	exit_check(lst);
-	token = lst->content;
-	if (!ft_strncmp(token->string, "cd\0", 3))
-		return (exec_cd(lst));
-	else if (ft_strncmp(token->string, "export\0", 7) == 0)
-		return (builtin_export(lst, env_lst));
-	return (-1);
-}
-
 int	execution(t_list *lst, t_list **env_lst, t_data *data, char **env)
 {
 	int	err;
@@ -139,29 +141,26 @@ int	execution(t_list *lst, t_list **env_lst, t_data *data, char **env)
 	{
 		if (data->pipe_count)
 		{
-			data->write_pipe_fds = malloc(sizeof(int) * 2);
-			if (!data->write_pipe_fds)
-				return (12); // Check clean exit
 			pipe(data->write_pipe_fds);
-			*data->next_read_fd = data->write_pipe_fds[0];
+			data->next_read_fd = data->write_pipe_fds[0];
 		}
-		else if (single_process_check(lst, env_lst) >= 0)
+		else if (builtin_execution(lst, env_lst, env) >= 0)
 			break ;
 		err = execution_utils(lst, env_lst, data, env);
 		data->process_id++;
 		data->hd_count += p_type_count(lst, HERE_DOC);
 		lst = move_to_pipe(lst);
-		if (data->write_pipe_fds)
+		if (data->write_pipe_fds[1] > -1)
 			close(data->write_pipe_fds[1]);
-		if (*data->read_pipe_fds >= 0)
-			close(*data->read_pipe_fds);
-		if (*data->next_read_fd >= 0)
+		if (data->read_pipe_fds >= 0)
+			close(data->read_pipe_fds);
+		if (data->next_read_fd >= 0)
 		{
-			*data->read_pipe_fds = *data->next_read_fd;
-			*data->next_read_fd = -1;
+			data->read_pipe_fds = data->next_read_fd;
+			data->next_read_fd = -1;
 		}
 		else
-			*data->read_pipe_fds = -1;
+			data->read_pipe_fds = -1;
 	}
 	while (data->process_id--)
 		wait(NULL);

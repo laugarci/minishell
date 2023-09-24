@@ -6,7 +6,7 @@
 /*   By: ffornes- <ffornes-@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/17 17:00:09 by ffornes-          #+#    #+#             */
-/*   Updated: 2023/09/24 16:27:41 by ffornes-         ###   ########.fr       */
+/*   Updated: 2023/09/24 18:37:13 by ffornes-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,9 +49,9 @@ typedef struct s_data
 {
 	int	*hdoc_fds;
 	int	pipe_count;
-	int	*read_pipe_fds;
-	int	*write_pipe_fds;
-	int	*next_read_fd;
+	int	read_pipe_fds;
+	int	write_pipe_fds[2];
+	int	next_read_fd;
 	int	hd_count;
 	int	hd_total;
 	int	process_id;

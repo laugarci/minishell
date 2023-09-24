@@ -6,7 +6,7 @@
 /*   By: ffornes- <ffornes-@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/10 18:22:49 by ffornes-          #+#    #+#             */
-/*   Updated: 2023/09/24 17:46:10 by ffornes-         ###   ########.fr       */
+/*   Updated: 2023/09/24 19:07:27 by ffornes-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,10 +89,14 @@ static int	is_valid_input(char *str)
 	flag = 0;
 	while (str[i] && str[i] != '=')
 	{
-		if (!i && ft_isdigit(str[i]))
+		if (!i && !ft_isalpha(str[i]) && str[i] != '_')
 			flag++;
 		else if (!ft_isalnum(str[i]) && str[i] != '_')
+		{
+			if (str[i] == '+' && str[i + 1] == '=')
+				return (1);
 			flag++;
+		}
 		if (flag)
 		{
 			ft_putstr_fd("minishell: export: `", 2);
