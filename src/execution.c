@@ -6,7 +6,7 @@
 /*   By: laugarci <laugarci@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/22 15:29:58 by laugarci          #+#    #+#             */
-/*   Updated: 2023/09/23 20:30:27 by laugarci         ###   ########.fr       */
+/*   Updated: 2023/09/24 12:16:21 by laugarci         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -145,7 +145,7 @@ static int	execution_utils(t_list *lst, t_list **env_lst, t_exec_fds *exec_fds, 
 			exit(1);
 		else if (is_type(lst, PIPE) && check_redirect(lst, TRUNC, APPEND) == 0)
 		{
-			if (dup2(exec_fds->write_pipe_fds[1], STDOUT_FILENO) < 0)
+     		if (dup2(exec_fds->write_pipe_fds[1], STDOUT_FILENO) < 0)
 				return (1);
 			close(exec_fds->write_pipe_fds[1]);
 		}
@@ -162,24 +162,22 @@ int	execution(t_list *lst, t_list **env_lst, t_exec_fds *exec_fds, char **env)
 {
 	int	err;
 
-
 	exit_check(lst);
-	if (is_type(lst, PIPE))
-	{
-		exec_fds->write_pipe_fds = malloc(sizeof(int) * 2);
-		if (!exec_fds->write_pipe_fds)
-			return (12); // Check clean exit
-		pipe(exec_fds->write_pipe_fds);
-		*exec_fds->next_read_fd = exec_fds->write_pipe_fds[0];
-	}
 	exec_fds->pipe_count = count_types(lst, PIPE) + 1;
 	while (42)
 	{
+		if (is_type(lst, PIPE))
+		{
+			exec_fds->write_pipe_fds = malloc(sizeof(int) * 2);
+			if (!exec_fds->write_pipe_fds)
+				return (12); // Check clean exit
+			pipe(exec_fds->write_pipe_fds);
+			*exec_fds->next_read_fd = exec_fds->write_pipe_fds[0];
+		}
 		err = execution_utils(lst, env_lst, exec_fds, env);
 		exec_fds->process_id++;
 		exec_fds->hd_count += process_is_type(lst, HERE_DOC);
 		lst = move_to_pipe(lst);
-		exec_fds->pipe_count--;
 		if (exec_fds->write_pipe_fds)
 			close(exec_fds->write_pipe_fds[1]);
 		if (*exec_fds->read_pipe_fds >= 0)
@@ -191,6 +189,8 @@ int	execution(t_list *lst, t_list **env_lst, t_exec_fds *exec_fds, char **env)
 		}
 		else
 			*exec_fds->read_pipe_fds = -1;
+
+		exec_fds->pipe_count--;
 		if (exec_fds->pipe_count == 0)
 			break ;
 	}
