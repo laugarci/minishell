@@ -6,7 +6,7 @@
 /*   By: laugarci <laugarci@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/04 14:04:45 by laugarci          #+#    #+#             */
-/*   Updated: 2023/09/24 14:40:59 by ffornes-         ###   ########.fr       */
+/*   Updated: 2023/09/24 16:44:09 by ffornes-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,96 +21,6 @@
 #include "minishell_defs.h"
 #include "libft_bonus.h"
 #include "parser.h"
-
-static int	count_hd(t_list	*lst)
-{
-	int	c;
-	t_list	*tmp;
-	t_token	*aux;
-
-	tmp = lst;
-	c = 0;
-	while(tmp->next)
-	{
-		aux = tmp->content;
-		if (aux->type == 2)
-			c++;
-		tmp = tmp->next;
-	}
-	return(c);
-}
-
-void	init_exec_fds(t_exec_fds *var)
-{
-	var->hdoc_fds = NULL;
-	var->read_pipe_fds = malloc(sizeof(int));
-	if (var->read_pipe_fds)
-		*var->read_pipe_fds = -1;
-	var->next_read_fd = malloc(sizeof(int));
-	if (var->next_read_fd)
-		*var->next_read_fd = -1;
-	var->write_pipe_fds = NULL;
-	var->hd_count = 0;
-	var->hd_total = 0;
-	var->process_id = 0;
-	var->pipe_count = 0;
-}
-
-int	cmp_commands(t_list *lst, t_list **env_lst, char **env)
-{
-	int			process_count;
-	int			i;
-	t_exec_fds	exec_fds;
-
-	init_exec_fds(&exec_fds);
-	if (!exec_fds.read_pipe_fds || !exec_fds.next_read_fd)
-		return (12);
-	process_count = count_types(lst, PIPE);
-	exec_fds.pipe_count = process_count;
-	if (!process_count)
-		process_count = 1; 
-	exec_fds.hd_total = count_hd(lst);
-	i = 0;
-	if (exec_fds.hd_total)
-	{
-		exec_fds.hdoc_fds = malloc(sizeof(int) * exec_fds.hd_total);
-		if (!exec_fds.hdoc_fds)
-			return (12);
-		while (i < exec_fds.hd_total)
-		{
-			exec_fds.hdoc_fds[i] = here_doc(lst, i);
-			if (exec_fds.hdoc_fds[i] < 0)
-				printf("ERROR\n"); // Error
-			i++;
-		}
-	}
-	set_or_return_state(MODE_SET, STATE_EXEC);
-	signal_handler();
-	i = 0;
-	execution(lst, env_lst, &exec_fds, env);
-	return (0);
-}
-
-/*
-int	cmp_commands(t_list *lst, t_list **env_lst, char **env)
-{
-	t_token	*token;
-	int		num_pipes;
-	int		err;
-
-	token = lst->content;
-	err = 0;
-	exit_check(lst);
-	if (is_type(lst, PIPE) || is_type(lst, APPEND)
-		|| is_type(lst, TRUNC) || is_type(lst, HERE_DOC)
-		|| is_type(lst, INFILE))
-	{
-		num_pipes = count_types(lst, PIPE);
-		err = exec_pipes(env, num_pipes, lst);
-	}
-	return (0);
-}
-*/
 
 int	exec_commands_wf(t_list *lst, char **env, int flags)
 {

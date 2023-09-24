@@ -6,7 +6,7 @@
 /*   By: ffornes- <ffornes-@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/17 17:00:09 by ffornes-          #+#    #+#             */
-/*   Updated: 2023/09/24 12:40:33 by ffornes-         ###   ########.fr       */
+/*   Updated: 2023/09/24 16:27:41 by ffornes-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,7 +45,7 @@ typedef struct s_token
 	int		quotes;
 }			t_token;
 
-typedef struct s_exec_fds
+typedef struct s_data
 {
 	int	*hdoc_fds;
 	int	pipe_count;
@@ -55,6 +55,6 @@ typedef struct s_exec_fds
 	int	hd_count;
 	int	hd_total;
 	int	process_id;
-}		t_exec_fds;
+}		t_data;
 
 #endif
