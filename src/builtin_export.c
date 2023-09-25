@@ -6,7 +6,7 @@
 /*   By: ffornes- <ffornes-@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/10 18:22:49 by ffornes-          #+#    #+#             */
-/*   Updated: 2023/09/25 12:24:22 by ffornes-         ###   ########.fr       */
+/*   Updated: 2023/09/25 19:40:30 by ffornes-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,7 +77,9 @@ static int	is_valid_input(char *str, int i)
 	int	flag;
 
 	flag = 0;
-	while (str[i] && str[i] != '=')
+	if (!str[i])
+		return (invalid_identifier("export", ""));
+	while (str[i])
 	{
 		if (!i && !ft_isalpha(str[i]) && str[i] != '_')
 			flag++;
@@ -88,14 +90,9 @@ static int	is_valid_input(char *str, int i)
 			flag++;
 		}
 		if (flag)
-		{
-			ft_putstr_fd("minishell: export: `", 2);
-			ft_putstr_fd(str, 2);
-			ft_putstr_fd("\': not a valid identifier\n", 2);
-			set_or_return_exit_status(MODE_SET, 1);
-			return (0);
-		}
-		i++;
+			return (invalid_identifier("export", str));
+		if (str[++i] == '=')
+			break ;
 	}
 	return (1);
 }
