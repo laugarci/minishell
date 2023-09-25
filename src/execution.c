@@ -6,7 +6,7 @@
 /*   By: laugarci <laugarci@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/22 15:29:58 by laugarci          #+#    #+#             */
-/*   Updated: 2023/09/24 19:58:37 by ffornes-         ###   ########.fr       */
+/*   Updated: 2023/09/25 17:10:46 by ffornes-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,41 +18,27 @@
 #include <unistd.h>
 #include <stdlib.h>
 
-int	cmp_commands(t_list *lst, t_list **env_lst, char **env)
+static int	builtin_check(t_list *lst, t_list **env_lst, char **env)
 {
-	int			process_count;
-	int			i;
-	t_data		data;
+	t_token	*token;
 
-	init_data(&data);
-	if (!data.read_pipe_fds || !data.next_read_fd)
-		return (12);
-	process_count = type_count(lst, PIPE);
-	data.pipe_count = process_count;
-	if (!process_count)
-		process_count = 1;
-	data.hd_total = type_count(lst, HERE_DOC);
-	i = 0;
-	if (data.hd_total)
-	{
-		data.hdoc_fds = malloc(sizeof(int) * data.hd_total);
-		if (!data.hdoc_fds)
-			return (12);
-		while (i < data.hd_total)
-		{
-			data.hdoc_fds[i] = here_doc(lst, i);
-			if (data.hdoc_fds[i] < 0)
-				printf("ERROR\n"); // Error
-			i++;
-		}
-	}
-	set_or_return_state(MODE_SET, STATE_EXEC);
-	signal_handler();
-	execution(lst, env_lst, &data, env);
-	return (0);
+	token = lst->content;
+	if (ft_strncmp(token->string, "cd\0", 3) == 0)
+		return (builtin_cd(lst, env_lst));
+	else if (ft_strncmp(token->string, "echo\0", 5) == 0)
+		return (exec_echo(lst));
+	else if (ft_strncmp(token->string, "pwd\0", 4) == 0)
+		return (exec_pwd());
+	else if (ft_strncmp(token->string, "env\0", 4) == 0)
+		return (exec_env(env));
+	else if (ft_strncmp(token->string, "unset\0", 6) == 0)
+		return (builtin_unset(lst, env_lst));
+	else if (ft_strncmp(token->string, "export\0", 7) == 0)
+		return (builtin_export(lst, env_lst));
+	return (-1);
 }
 
-static int	builtin_execution(t_list *lst, t_list **env_lst, char **env, t_data *data)
+static int	parent_exec(t_list *lst, t_list **env_lst, char **env, t_data *data)
 {
 	t_token *token;
 	int		err;
@@ -74,18 +60,7 @@ static int	builtin_execution(t_list *lst, t_list **env_lst, char **env, t_data *
 	err = -1;
 	if (dup_write(lst))
 		return (1);
-	if (ft_strncmp(token->string, "cd\0", 3) == 0)
-		err = exec_cd(lst);
-	else if (ft_strncmp(token->string, "echo\0", 5) == 0)
-		err = exec_echo(lst);
-	else if (ft_strncmp(token->string, "pwd\0", 4) == 0)
-		err = exec_pwd();
-	else if (ft_strncmp(token->string, "env\0", 4) == 0)
-		err = exec_env(env);
-	else if (ft_strncmp(token->string, "unset\0", 6) == 0)
-		err = builtin_unset(lst, env_lst);
-	else if (ft_strncmp(token->string, "export\0", 7) == 0)
-		err = builtin_export(lst, env_lst);
+	err = builtin_check(lst, env_lst, env);
 	dup2(stdio_fds[0], STDIN_FILENO);
 	dup2(stdio_fds[1], STDOUT_FILENO);
 	return (err);
@@ -95,6 +70,7 @@ static int check_builtins(t_list *lst, t_list **env_lst, char **env)
 {
 	t_token	*token;
 	char	*aux;
+	int		err;
 
 	token = lst->content;
 	aux = token->string;
@@ -103,18 +79,9 @@ static int check_builtins(t_list *lst, t_list **env_lst, char **env)
 	if (!token->string)
 		return (12);
 	exit_check(lst);
-	if (ft_strncmp(token->string, "cd\0", 3) == 0)
-		return (exec_cd(lst));
-	else if (ft_strncmp(token->string, "echo\0", 5) == 0)
-		return (exec_echo(lst));
-	else if (ft_strncmp(token->string, "pwd\0", 4) == 0)
-		return (exec_pwd());
-	else if (ft_strncmp(token->string, "env\0", 4) == 0)
-		return (exec_env(env));
-	else if (ft_strncmp(token->string, "unset\0", 6) == 0)
-		return (builtin_unset(lst, env_lst));
-	else if (ft_strncmp(token->string, "export\0", 7) == 0)
-		return (builtin_export(lst, env_lst));
+	err = builtin_check(lst, env_lst, env);
+	if (err >= 0)
+		return (err);
 	return (exec_commands(lst, env));
 }
 
@@ -170,7 +137,7 @@ int	execution(t_list *lst, t_list **env_lst, t_data *data, char **env)
 			pipe(data->write_pipe_fds);
 			data->next_read_fd = data->write_pipe_fds[0];
 		}
-		else if (builtin_execution(lst, env_lst, env, data) >= 0)
+		else if (parent_exec(lst, env_lst, env, data) >= 0)
 			break ;
 		err = execution_utils(lst, env_lst, data, env);
 		data->process_id++;

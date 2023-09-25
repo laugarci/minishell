@@ -6,7 +6,7 @@
 #    By: laugarci <laugarci@student.42barcel>       +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/06/26 15:00:09 by ffornes-          #+#    #+#              #
-#    Updated: 2023/09/24 18:59:51 by ffornes-         ###   ########.fr        #
+#    Updated: 2023/09/25 17:32:24 by ffornes-         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -19,13 +19,14 @@ SRC_FILES = minishell.c \
 			parse_input.c clean_input.c clean_input_utils.c split_input.c \
 			expansion.c expansion_utils.c expansion_update.c \
 			get_path.c exec_commands.c exec_here_doc.c \
+			start_execution.c \
 			exec_redirec.c utils.c find_command.c exec_pwd.c exec_echo.c \
 			quotes.c \
 			token_new.c token_free.c token_save.c token_type.c \
 			token_process.c token_process_rm.c \
 			subtoken_process.c subtoken_count.c subtoken_join.c token_organize.c \
 			builtin_unset.c builtin_export.c builtin_export_utils.c builtin_exit.c \
-			errors.c syntax_error.c process_list.c exec_cd.c exec_env.c check.c \
+			errors.c syntax_error.c process_list.c builtin_cd.c exec_env.c check.c \
 			signals.c signal_display.c \
 			exit_status.c execution.c dup_read_write.c
 
@@ -44,6 +45,7 @@ RM = 		rm -f
 INCLUDE =	-I include/ -I libft/include/ -I ~/.brew/Cellar/readline/8.2.1/include/
 
 all:		m_libft $(NAME)
+#			@say -v Kyoko "頑張ってください"
 
 m_libft:
 			@make -C libft/
@@ -63,9 +65,8 @@ clean:
 			@make -C libft/ clean
 
 fclean:	clean
-		rmdir $(OBJ_DIR)
+		$(RM) -r $(OBJ_DIR)
 		$(RM) $(NAME)
-		$(RM) -rf $(OBJ_DIR)
 		@make -C libft/ fclean
 
 re:	fclean all

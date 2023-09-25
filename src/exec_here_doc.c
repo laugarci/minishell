@@ -6,7 +6,7 @@
 /*   By: laugarci <laugarci@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/19 13:29:17 by laugarci          #+#    #+#             */
-/*   Updated: 2023/09/23 19:01:43 by laugarci         ###   ########.fr       */
+/*   Updated: 2023/09/25 17:06:51 by ffornes-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -101,7 +101,7 @@ int	here_doc(t_list *lst, int id)
 		set_or_return_state(MODE_SET, STATE_HDOC);
 		signal_handler();
 		if (input_heredoc(del, fds))
-			exit(12);
+			exit(12); // Get this exit code in parent and return 
 		exit(0);
 	}
 	close(fds[1]);

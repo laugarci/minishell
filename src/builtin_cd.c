@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   exec_cd.c                                          :+:      :+:    :+:   */
+/*   builtin_cd.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: laugarci <laugarci@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/14 21:05:30 by laugarci          #+#    #+#             */
-/*   Updated: 2023/09/24 14:25:20 by ffornes-         ###   ########.fr       */
+/*   Updated: 2023/09/25 17:35:56 by ffornes-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,31 +21,50 @@
 #include "libft_bonus.h"
 #include "parser.h"
 
-int	exec_cd(t_list *lst)
+static int	error_cd(char *filename, char *message, int value)
+{
+	ft_putstr_fd("minishell: cd: ", 2);
+	ft_putstr_fd(filename, 2);
+	ft_putstr_fd(message, 2);
+	return (value);
+}
+
+static char	*get_env_var(char *key, t_list **env_lst)
+{
+	t_env	*var;
+	t_list	*lst;
+
+	lst = *env_lst;
+	while (lst->next)
+	{
+		var = lst->content;
+		if (!ft_strncmp(var->key, key, ft_strlen(key) + 1))
+			return (var->value);
+		lst = lst->next;
+	}
+	return (NULL);
+}
+
+int	builtin_cd(t_list *lst, t_list **env_lst)
 {
 	t_token	*token;
 	t_list	*tmp;
-	int		i;
 
-	i = count_list(lst);
 	tmp = lst->next;
 	token = tmp->content;
-	if (i == 2)
-	{
-		if (chdir(getenv("HOME")) == 1)
+	if (count_list(lst) == 2 && chdir(get_env_var("HOME", env_lst)))
 			return (1);
-	}
 	else if (access((token->string), F_OK) != -1)
 	{
 		if (access((token->string), R_OK) != -1)
 		{
 			if (chdir(token->string) == -1)
-				return (1); // Error "No such file or directory"
+				return (1);
 		}
 		else
-			return (1); // Error: "Permission denied"
+			return (error_cd(token->string, ": Permission denied\n", 1));
 	}
 	else
-		return (1); // Error no such file or directory
+		return (error_cd(token->string, ": No such file or directory\n", 1));
 	return (0);
 }
