@@ -6,12 +6,21 @@
 /*   By: ffornes- <ffornes-@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/24 17:43:15 by ffornes-          #+#    #+#             */
-/*   Updated: 2023/09/24 17:44:00 by ffornes-         ###   ########.fr       */
+/*   Updated: 2023/09/25 11:59:21 by ffornes-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 #include "minishell_defs.h"
+#include <stdlib.h>
+
+int	free_key_and_return(t_env *var)
+{
+	if (var->key)
+		free(var->key);
+	free(var);
+	return (0);
+}
 
 t_env	*check_flag(t_env *env_var, t_env *var, char *str)
 {

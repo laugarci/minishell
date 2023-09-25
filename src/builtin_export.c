@@ -6,7 +6,7 @@
 /*   By: ffornes- <ffornes-@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/10 18:22:49 by ffornes-          #+#    #+#             */
-/*   Updated: 2023/09/24 19:07:27 by ffornes-         ###   ########.fr       */
+/*   Updated: 2023/09/25 12:24:22 by ffornes-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,14 +45,6 @@ static int	print_export(t_list *env_lst)
 	return (0);
 }
 
-static int	free_key_and_return(t_env *var)
-{
-	if (var->key)
-		free(var->key);
-	free(var);
-	return (0);
-}
-
 static int	add_var_to_env(t_env *var, t_list **env_lst, char *str)
 {
 	t_list	*lst;
@@ -64,7 +56,7 @@ static int	add_var_to_env(t_env *var, t_list **env_lst, char *str)
 	while (lst)
 	{
 		env_var = lst->content;
-		if (!ft_strncmp(env_var->key, var->key, ft_strlen(var->key)))
+		if (!ft_strncmp(env_var->key, var->key, ft_strlen(var->key) + 1))
 		{
 			if (!var->value)
 				return (free_key_and_return(var));
@@ -80,12 +72,10 @@ static int	add_var_to_env(t_env *var, t_list **env_lst, char *str)
 	return (1);
 }
 
-static int	is_valid_input(char *str)
+static int	is_valid_input(char *str, int i)
 {
-	int	i;
 	int	flag;
 
-	i = 0;
 	flag = 0;
 	while (str[i] && str[i] != '=')
 	{
@@ -110,20 +100,11 @@ static int	is_valid_input(char *str)
 	return (1);
 }
 
-int	builtin_export(t_list *tkn_lst, t_list **env_lst)
+static int	export_loop(t_token *token, t_list **env_lst)
 {
-	t_list	*lst;
-	t_list	*aux;
-	t_token	*token;
 	t_env	*var;
+	t_list	*aux;
 
-	lst = *env_lst;
-	tkn_lst = tkn_lst->next;
-	token = tkn_lst->content;
-	if (!token || (token->type >= 0 || !token->string))
-		return (print_export(lst));
-	if (!is_valid_input(token->string))
-		return (1);
 	var = new_env_var(token->string);
 	if (!var)
 		return (12);
@@ -135,4 +116,30 @@ int	builtin_export(t_list *tkn_lst, t_list **env_lst)
 		ft_lstadd_back(env_lst, aux);
 	}
 	return (0);
+}
+
+int	builtin_export(t_list *tkn_lst, t_list **env_lst)
+{
+	t_list	*lst;
+	t_token	*token;
+	int		err;
+
+	lst = *env_lst;
+	tkn_lst = tkn_lst->next;
+	token = tkn_lst->content;
+	err = 0;
+	if (!token || (token->type >= 0 || !token->string))
+		return (print_export(lst));
+	while (lst->next)
+	{
+		if (!is_valid_input(token->string, 0))
+			err = 1;
+		else if (export_loop(token, env_lst))
+			return (12);
+		tkn_lst = tkn_lst->next;
+		token = tkn_lst->content;
+		if (token && (token->type >= 0 || !token->string))
+			break ;
+	}
+	return (err);
 }
