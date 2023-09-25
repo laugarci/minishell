@@ -6,7 +6,7 @@
 /*   By: ffornes- <ffornes-@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/24 16:52:35 by ffornes-          #+#    #+#             */
-/*   Updated: 2023/09/24 19:39:49 by ffornes-         ###   ########.fr       */
+/*   Updated: 2023/09/25 12:29:32 by ffornes-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -103,7 +103,7 @@ int	dup_write(t_list *lst)
 		if (fd < 0)
 			return (1);
 		if (dup2(fd, STDOUT_FILENO) == -1)
-			return (1); // Error: dup2
+			return (1);
 		close(fd);
 	}
 	return (0);
