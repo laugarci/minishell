@@ -6,7 +6,7 @@
 /*   By: ffornes- <ffornes-@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/20 18:21:07 by ffornes-          #+#    #+#             */
-/*   Updated: 2023/09/24 17:25:54 by ffornes-         ###   ########.fr       */
+/*   Updated: 2023/09/25 12:29:04 by ffornes-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,7 +70,7 @@ t_list	*set_env(char *envp[])
 		aux = ft_lstnew((void *)var);
 		if (!aux)
 			return (free_var_and_list_and_return(var, out));
-		ft_lstadd_back(&out, (void *)aux); // Error??
+		ft_lstadd_back(&out, (void *)aux);
 		envp++;
 	}
 	if (check_for_oldpwd(out))
