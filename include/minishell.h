@@ -6,7 +6,7 @@
 /*   By: ffornes- <ffornes-@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/27 11:32:21 by ffornes-          #+#    #+#             */
-/*   Updated: 2023/09/24 13:20:53 by laugarci         ###   ########.fr       */
+/*   Updated: 2023/09/25 12:26:15 by laugarci         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,8 @@
 # include "minishell_defs.h"
 
 t_list		*set_env(char *envp[]);
+
+void		init_data(t_data *var);
 
 void		free_var(t_env *var);
 
@@ -34,14 +36,13 @@ char		*get_path(char *cmd, char **envp);
 int			exec_commands(t_list *lst, char **env);
 
 int			exec_commands_wf(t_list *lst, char **env, int flags);
-
 int			cmp_commands(t_list *lst, t_list **env_lst, char **env);
 
 int			exec_cd(t_list *lst);
 
 int			is_type(t_list *lst, int type);
-
-int			count_types(t_list *lst, int type);
+int			type_count(t_list *lst, int type);
+int			p_type_count(t_list *lst, int type);
 
 int			count_args(t_list *lst);
 
@@ -91,10 +92,12 @@ void		exit_check(t_list *lst);
 int			process_is_type(t_list *lst, int type);
 
 int			builtin_export(t_list *tkn_lst, t_list **env_lst);
+t_env		*check_flag(t_env *env_var, t_env *var, char *str);
 
 int			find_input(t_list *lst, char **dst, int type1, int type2);
 
-int			execution(t_list *lst, t_list **env_lst, t_exec_fds *exec_fds, \
-			char **env);
+int			execution(t_list *lst, t_list **env_lst, t_data *data, char **env);
+int			dup_read(t_list *lst, t_data *data);
+int			dup_write(t_list *lst);
 
 #endif

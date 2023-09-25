@@ -1,31 +1,24 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_strncmp.c                                       :+:      :+:    :+:   */
+/*   signal_display.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ffornes- <ffornes-@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/01/12 12:06:19 by ffornes-          #+#    #+#             */
-/*   Updated: 2023/09/24 18:52:47 by ffornes-         ###   ########.fr       */
+/*   Created: 2023/09/24 17:30:23 by ffornes-          #+#    #+#             */
+/*   Updated: 2023/09/24 17:32:36 by ffornes-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <stddef.h>
+#include "termios.h"
 
-int	ft_strncmp(const char *s1, const char *s2, size_t n)
+void	signal_display(int mode)
 {
-	size_t	i;
+	struct termios	tc;
 
-	i = 0;
-	while ((s1[i] || s2[i]) && i < n)
-	{
-		if (s1[i] == s2[i])
-			i++;
-		else
-			break ;
-	}
-	if (i == n)
-		return (0);
-	else
-		return (*(unsigned char *)(s1 + i) - *(unsigned char *)(s2 + i));
+	tcgetattr(0, &tc);
+	tc.c_lflag &= ~ECHOCTL;
+	if (mode)
+		tc.c_lflag |= ECHOCTL;
+	tcsetattr(0, TCSANOW, &tc);
 }

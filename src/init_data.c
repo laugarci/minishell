@@ -1,31 +1,27 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_strncmp.c                                       :+:      :+:    :+:   */
+/*   init_data.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ffornes- <ffornes-@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/01/12 12:06:19 by ffornes-          #+#    #+#             */
-/*   Updated: 2023/09/24 18:52:47 by ffornes-         ###   ########.fr       */
+/*   Created: 2023/09/24 16:25:53 by ffornes-          #+#    #+#             */
+/*   Updated: 2023/09/24 18:38:15 by ffornes-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <stddef.h>
+#include "minishell_defs.h"
+#include <stdlib.h>
 
-int	ft_strncmp(const char *s1, const char *s2, size_t n)
+void	init_data(t_data *var)
 {
-	size_t	i;
-
-	i = 0;
-	while ((s1[i] || s2[i]) && i < n)
-	{
-		if (s1[i] == s2[i])
-			i++;
-		else
-			break ;
-	}
-	if (i == n)
-		return (0);
-	else
-		return (*(unsigned char *)(s1 + i) - *(unsigned char *)(s2 + i));
+	var->hdoc_fds = NULL;
+	var->read_pipe_fds = -1;
+	var->next_read_fd = -1;
+	var->write_pipe_fds[0] = -1;
+	var->write_pipe_fds[1] = -1;
+	var->hd_count = 0;
+	var->hd_total = 0;
+	var->process_id = 0;
+	var->pipe_count = 0;
 }

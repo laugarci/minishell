@@ -6,7 +6,7 @@
 /*   By: ffornes- <ffornes-@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/17 16:24:45 by ffornes-          #+#    #+#             */
-/*   Updated: 2023/09/23 14:24:35 by ffornes-         ###   ########.fr       */
+/*   Updated: 2023/09/24 17:32:39 by ffornes-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,17 +18,6 @@
 #include <readline/history.h>
 #include <stdlib.h>
 #include "termios.h"
-
-void	signal_display(int mode)
-{
-	struct termios	tc;
-
-	tcgetattr(0, &tc);
-	tc.c_lflag &= ~ECHOCTL;
-	if (mode)
-		tc.c_lflag |= ECHOCTL;
-	tcsetattr(0, TCSANOW, &tc);
-}
 
 int	set_or_return_state(int mode, int value)
 {
@@ -71,6 +60,21 @@ static void	state_hdoc(int sig, siginfo_t *data, void *n_data)
 	return ;
 }
 
+static void	state_exec(int sig, siginfo_t *data, void *n_data)
+{
+	(void) data;
+	(void) n_data;
+	if (sig == SIGINT)
+	{
+		ft_putchar_fd('\n', 1);
+		rl_replace_line("", 1);
+		return ;
+	}
+	else if (sig == SIGQUIT)
+		rl_redisplay();
+	return ;
+}
+
 int	*signal_handler(void)
 {
 	struct sigaction	signal;
@@ -83,6 +87,8 @@ int	*signal_handler(void)
 		signal.sa_sigaction = state_read;
 	else if (state == STATE_HDOC)
 		signal.sa_sigaction = state_hdoc;
+	else if (state == STATE_EXEC)
+		signal.sa_sigaction = state_exec;
 	sigaction(SIGINT, &signal, NULL);
 	sigaction(SIGQUIT, &signal, NULL);
 	return (0);

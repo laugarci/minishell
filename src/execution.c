@@ -6,7 +6,7 @@
 /*   By: laugarci <laugarci@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/22 15:29:58 by laugarci          #+#    #+#             */
-/*   Updated: 2023/09/24 15:31:40 by laugarci         ###   ########.fr       */
+/*   Updated: 2023/09/25 12:25:04 by laugarci         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,94 +18,62 @@
 #include <unistd.h>
 #include <stdlib.h>
 
-static int	dup_hdoc(t_list *lst, t_exec_fds *exec_fds)
+int	cmp_commands(t_list *lst, t_list **env_lst, char **env)
 {
-	t_token	*token;
-	int		count;
+	int			process_count;
+	int			i;
+	t_data		data;
 
-	count = 0;
-	while (lst)
+	init_data(&data);
+	if (!data.read_pipe_fds || !data.next_read_fd)
+		return (12);
+	process_count = type_count(lst, PIPE);
+	data.pipe_count = process_count;
+	if (!process_count)
+		process_count = 1;
+	data.hd_total = type_count(lst, HERE_DOC);
+	i = 0;
+	if (data.hd_total)
 	{
-		token = lst->content;
-		if (!token->string)
-			break ;
-		if (token->type == PIPE)
-			break ;
-		else if (token->type == HERE_DOC)
-			count++;
-		lst = lst->next;
+		data.hdoc_fds = malloc(sizeof(int) * data.hd_total);
+		if (!data.hdoc_fds)
+			return (12);
+		while (i < data.hd_total)
+		{
+			data.hdoc_fds[i] = here_doc(lst, i);
+			if (data.hdoc_fds[i] < 0)
+				printf("ERROR\n"); // Error
+			i++;
+		}
 	}
-	count += exec_fds->hd_count - 1;
-	if (dup2(exec_fds->hdoc_fds[count], STDIN_FILENO) == -1)
-		return (1);
-	ft_putstr_fd("Successfully duped Here_doc\n", 2);
+	set_or_return_state(MODE_SET, STATE_EXEC);
+	signal_handler();
+	execution(lst, env_lst, &data, env);
 	return (0);
 }
 
-static int	dup_read(t_list *lst, t_exec_fds *exec_fds)
-{
-	int		fd;
-	char	*input;
-
-	input = NULL;
-	fd = 0;
-	if (count_types(lst, INFILE) || is_type(lst, HERE_DOC))
-	{
-		if (find_input(lst, &input, INFILE, HERE_DOC))
-			return (126);
-	}
-	else
-		return (0);
-	if (input && process_is_type(lst, INFILE))
-	{
-		fd = open(input, O_RDONLY, 0666);
-		if (dup2(fd, STDIN_FILENO) == -1)
-			return (1);
-		close(fd);
-		ft_putstr_fd("Successfully duped infile\n", 2);
-	}
-	else
-		return (dup_hdoc(lst, exec_fds));
-	return (0);
-}
-
-static int	dup_write(t_list *lst)
-{
-	int		fd;
-	char	*output;
-
-	output = NULL;
-	fd = 0;
-	if (count_types(lst, TRUNC) || is_type(lst, APPEND))
-		find_input(lst, &output, TRUNC, APPEND);
-	else
-		return (0);
-	if (output)
-	{
-		if (count_types(lst, APPEND) > 1 || count_types(lst, TRUNC) > 1)
-			create_files(lst);
-		if (is_type(lst, APPEND) == 1)
-			fd = open(output, O_CREAT | O_APPEND | O_WRONLY, 0666);
-		else if (is_type(lst, TRUNC) == 1)
-			fd = open(output, O_CREAT | O_TRUNC | O_WRONLY, 0666);
-		if (fd < 0)
-			return (1);
-		if (dup2(fd, STDOUT_FILENO) == -1)
-			return (1); // Error: dup2
-		close(fd);
-		ft_putstr_fd("Successfully duped outfile\n", 2);
-	}
-	return (0);
-}
-
-static int check_builtins(t_list *lst, t_list **env_lst, char **env)
+static int	builtin_execution(t_list *lst, t_list **env_lst, char **env, t_data *data)
 {
 	t_token *token;
 	int		err;
+	char	*aux;
+	int		stdio_fds[2];
 
-	err = 0;
 	token = lst->content;
 	exit_check(lst);
+	aux = token->string;
+	token->string = ft_strtrim(token->string, " ");
+	free(aux);
+	if (!token->string)
+		return (12);
+	stdio_fds[0] = dup(STDIN_FILENO);
+	stdio_fds[1] = dup(STDOUT_FILENO);
+	err = dup_read(lst, data);
+	if (err)
+		return (err);
+	err = -1;
+	if (dup_write(lst))
+		return (1);
 	if (ft_strncmp(token->string, "cd\0", 3) == 0)
 		err = exec_cd(lst);
 	else if (ft_strncmp(token->string, "echo\0", 5) == 0)
@@ -118,12 +86,39 @@ static int check_builtins(t_list *lst, t_list **env_lst, char **env)
 		err = builtin_unset(lst, env_lst);
 	else if (ft_strncmp(token->string, "export\0", 7) == 0)
 		err = builtin_export(lst, env_lst);
-	else
-		err = exec_commands(lst, env);
+	dup2(stdio_fds[0], STDIN_FILENO);
+	dup2(stdio_fds[1], STDOUT_FILENO);
 	return (err);
 }
 
-static int	execution_utils(t_list *lst, t_list **env_lst, t_exec_fds *exec_fds, char **env)
+static int check_builtins(t_list *lst, t_list **env_lst, char **env)
+{
+	t_token	*token;
+	char	*aux;
+
+	token = lst->content;
+	aux = token->string;
+	token->string = ft_strtrim(token->string, " ");
+	free(aux);
+	if (!token->string)
+		return (12);
+	exit_check(lst);
+	if (ft_strncmp(token->string, "cd\0", 3) == 0)
+		return (exec_cd(lst));
+	else if (ft_strncmp(token->string, "echo\0", 5) == 0)
+		return (exec_echo(lst));
+	else if (ft_strncmp(token->string, "pwd\0", 4) == 0)
+		return (exec_pwd());
+	else if (ft_strncmp(token->string, "env\0", 4) == 0)
+		return (exec_env(env));
+	else if (ft_strncmp(token->string, "unset\0", 6) == 0)
+		return (builtin_unset(lst, env_lst));
+	else if (ft_strncmp(token->string, "export\0", 7) == 0)
+		return (builtin_export(lst, env_lst));
+	return (exec_commands(lst, env));
+}
+
+static int	execution_utils(t_list *lst, t_list **env_lst, t_data *data, char **env)
 {
 	int	pid;
 	int err;
@@ -136,24 +131,24 @@ static int	execution_utils(t_list *lst, t_list **env_lst, t_exec_fds *exec_fds, 
 		return (1);
 	if (pid == 0)
 	{
-		err = dup_read(lst, exec_fds);
+		err = dup_read(lst, data);
 		if (err)
 			exit(err); // Must print error message before 
-		else if (exec_fds->read_pipe_fds[0] >= 0)
+		else if (data->read_pipe_fds >= 0)
 		{
-			if (!count_types(lst, INFILE) && !count_types(lst, HERE_DOC))
-				if (dup2(exec_fds->read_pipe_fds[0], STDIN_FILENO) < 0)
+			if (!p_type_count(lst, INFILE) && !p_type_count(lst, HERE_DOC))
+				if (dup2(data->read_pipe_fds, STDIN_FILENO) < 0)
 					return(1);
-			close(exec_fds->read_pipe_fds[0]);
+			close(data->read_pipe_fds);
 		}
 		if (dup_write(lst))
 			exit(1);
-		else if (is_type(lst, PIPE) && check_redirect(lst, TRUNC, APPEND) == 0)
+		else if (type_count(lst, PIPE) && !check_redirect(lst, TRUNC, APPEND))
 		{
-     		if (dup2(exec_fds->write_pipe_fds[1], STDOUT_FILENO) < 0)
+     		if (dup2(data->write_pipe_fds[1], STDOUT_FILENO) < 0)
 				return (1);
-			close(exec_fds->write_pipe_fds[0]);
-			close(exec_fds->write_pipe_fds[1]);
+			close(data->write_pipe_fds[0]);
+			close(data->write_pipe_fds[1]);
 		}
 		token = lst->content;
 		exit_check(lst);
@@ -163,52 +158,37 @@ static int	execution_utils(t_list *lst, t_list **env_lst, t_exec_fds *exec_fds, 
 	return (err);
 }
 
-static int	single_process_check(t_list *lst)
-{
-	t_token	*token;
-
-	exit_check(lst);
-	token = lst->content;
-	if (!ft_strncmp(token->string, "cd\0", 3))
-		return (exec_cd(lst));
-	return (-1);
-}
-
-int	execution(t_list *lst, t_list **env_lst, t_exec_fds *exec_fds, char **env)
+int	execution(t_list *lst, t_list **env_lst, t_data *data, char **env)
 {
 	int	err;
 
 	exit_check(lst);
-	exec_fds->pipe_count = count_types(lst, PIPE);
-	while (exec_fds->process_id <= exec_fds->pipe_count)
+	while (data->process_id <= data->pipe_count)
 	{
-		if (is_type(lst, PIPE))
+		if (data->pipe_count)
 		{
-			exec_fds->write_pipe_fds = malloc(sizeof(int) * 2);
-			if (!exec_fds->write_pipe_fds)
-				return (12); // Check clean exit
-			pipe(exec_fds->write_pipe_fds);
-			*exec_fds->next_read_fd = exec_fds->write_pipe_fds[0];
+			pipe(data->write_pipe_fds);
+			data->next_read_fd = data->write_pipe_fds[0];
 		}
-		else if (single_process_check(lst) >= 0)
+		else if (builtin_execution(lst, env_lst, env, data) >= 0)
 			break ;
-		err = execution_utils(lst, env_lst, exec_fds, env);
-		exec_fds->process_id++;
-		exec_fds->hd_count += process_is_type(lst, HERE_DOC);
+		err = execution_utils(lst, env_lst, data, env);
+		data->process_id++;
+		data->hd_count += p_type_count(lst, HERE_DOC);
 		lst = move_to_pipe(lst);
-		if (exec_fds->write_pipe_fds)
-			close(exec_fds->write_pipe_fds[1]);
-		if (*exec_fds->read_pipe_fds >= 0)
-			close(*exec_fds->read_pipe_fds);
-		if (*exec_fds->next_read_fd >= 0)
+		if (data->write_pipe_fds[1] > -1)
+			close(data->write_pipe_fds[1]);
+		if (data->read_pipe_fds >= 0)
+			close(data->read_pipe_fds);
+		if (data->next_read_fd >= 0)
 		{
-			*exec_fds->read_pipe_fds = *exec_fds->next_read_fd;
-			*exec_fds->next_read_fd = -1;
+			data->read_pipe_fds = data->next_read_fd;
+			data->next_read_fd = -1;
 		}
 		else
-			*exec_fds->read_pipe_fds = -1;
+			data->read_pipe_fds = -1;
 	}
-	while (exec_fds->process_id--)
+	while (data->process_id--)
 		wait(NULL);
 	return (err);
 }

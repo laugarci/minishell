@@ -6,7 +6,7 @@
 /*   By: laugarci <laugarci@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/16 15:26:31 by laugarci          #+#    #+#             */
-/*   Updated: 2023/09/21 16:32:45 by laugarci         ###   ########.fr       */
+/*   Updated: 2023/09/24 17:17:04 by ffornes-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,23 +17,25 @@
 
 #include <stdio.h>
 
-int	is_type(t_list *lst, int type)
+int	type_count(t_list *lst, int type)
 {
 	t_token	*aux;
 	t_list	*tmp;
+	int		i;
 
 	tmp = lst;
-	while (tmp)
+	i = 0;
+	while (tmp->next)
 	{
 		aux = tmp->content;
 		if (aux->type == type)
-			return (1);
+			i++;
 		tmp = tmp->next;
 	}
-	return (0);
+	return (i);
 }
 
-int	count_types(t_list *lst, int type)
+int	p_type_count(t_list *lst, int type)
 {
 	int		c;
 	t_list	*tmp;

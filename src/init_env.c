@@ -6,7 +6,7 @@
 /*   By: ffornes- <ffornes-@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/20 18:21:07 by ffornes-          #+#    #+#             */
-/*   Updated: 2023/09/23 18:01:51 by ffornes-         ###   ########.fr       */
+/*   Updated: 2023/09/24 17:25:54 by ffornes-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,6 +61,7 @@ t_list	*set_env(char *envp[])
 	int		i;
 
 	i = 0;
+	out = NULL;
 	while (*envp)
 	{
 		var = new_env_var(*envp);

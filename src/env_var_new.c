@@ -6,7 +6,7 @@
 /*   By: ffornes- <ffornes-@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/20 18:45:08 by ffornes-          #+#    #+#             */
-/*   Updated: 2023/09/23 17:59:52 by ffornes-         ###   ########.fr       */
+/*   Updated: 2023/09/24 19:03:23 by ffornes-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@ static char	*new_var_utils(char *input, int *n, int *add)
 	i = 0;
 	while (input[i] && input[i] != '=')
 		i++;
-	if (input[i - 1] == '+')
+	if (i && input[i - 1] == '+')
 	{
 		*add = 1;
 		i--;

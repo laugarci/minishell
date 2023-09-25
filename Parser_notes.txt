@@ -3,14 +3,12 @@ ToDo:
 	Errors:
 	Implement error handling, exit status and error messages in execution
 
-	Signals:
-	CtrlC && Ctrl\ in exec... stop all children?
-	CtrlC in HERE_DOC MUST SET EXIT_STATUS TO 1
-	
+	Builtins: 
+	Quitar trim de espacios del exec builtins y meterlo en el parser ANTES
+	de expandir uwu
+
 	Builtin Export:
-	When finding += must append instead of trunc
-	Must export multiple variables at the same time:
-		export HOLA=TU ADIOS=YO COCO=CACA
+	Export multiple arguments
 	Display in ascii order
 
 	Build different expansor for here_doc case
