@@ -6,7 +6,7 @@
 /*   By: laugarci <laugarci@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/20 17:48:17 by ffornes-          #+#    #+#             */
-/*   Updated: 2023/09/25 19:33:16 by ffornes-         ###   ########.fr       */
+/*   Updated: 2023/09/25 19:40:12 by ffornes-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,21 +15,13 @@
 #include "minishell.h"
 #include "parser.h"
 
-static int	invalid_identifier(char *str)
-{
-	ft_putstr_fd("minishell: unset: `", 2);
-	ft_putstr_fd(str, 2);
-	ft_putstr_fd("\': not a valid identifier\n", 2);
-	return (1);
-}
-
 static int	is_valid_input(char *str, int i)
 {
 	int	flag;
 
 	flag = 0;
 	if (!str[i])
-		return (invalid_identifier(""));
+		return (invalid_identifier("unset", ""));
 	while (str[i])
 	{
 		if (!i && !ft_isalpha(str[i]) && str[i] != '_')
@@ -41,7 +33,7 @@ static int	is_valid_input(char *str, int i)
 			flag++;
 		}
 		if (flag)
-			return (invalid_identifier(str));
+			return (invalid_identifier("unset", str));
 		i++;
 	}
 	return (1);
