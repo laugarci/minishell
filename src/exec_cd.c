@@ -6,7 +6,7 @@
 /*   By: laugarci <laugarci@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/14 21:05:30 by laugarci          #+#    #+#             */
-/*   Updated: 2023/09/24 15:22:07 by laugarci         ###   ########.fr       */
+/*   Updated: 2023/09/24 15:45:15 by laugarci         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ int	exec_cd(t_list *lst)
 	t_token	*token;
 	t_list	*tmp;
 	int		i;
-
+	
 	i = count_list(lst);
 	tmp = lst->next;
 	token = tmp->content;
@@ -40,12 +40,21 @@ int	exec_cd(t_list *lst)
 		if (access((token->string), R_OK) != -1)
 		{
 			if (chdir(token->string) == -1)
-				return (1); // Error "No such file or directory"
+			{
+				printf("cd %s: No such file or directory", token->string);
+				return (1);
+			}
 		}
 		else
-			return (1); // Error: "Permission denied"
+		{
+			printf("minishell: cd: %s: Permission denied\n", token->string);
+			return (1);
+		}
 	}
 	else
-		return (1); // Error no such file or directory
+	{
+		printf("cd %s: No such file or directory\n", token->string);
+		return (1);
+	}
 	return (0);
 }
