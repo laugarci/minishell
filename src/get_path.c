@@ -6,7 +6,7 @@
 /*   By: ffornes- <ffornes-@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/26 16:31:29 by ffornes-          #+#    #+#             */
-/*   Updated: 2023/09/26 13:02:27 by ffornes-         ###   ########.fr       */
+/*   Updated: 2023/09/26 14:07:41 by ffornes-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,7 +67,7 @@ static int	get_right_path(char **path, char **dst)
 		}
 		i++;
 	}
-	return (127); // command not found
+	return (error_exec(cmd, "command not found\n", 127));
 }
 
 static int	get_path_util(char *str, char *cmd, char **dst)
@@ -102,10 +102,10 @@ static int	is_absolute_path(char *cmd)
 		if (!access(cmd, F_OK))
 		{
 			if (access(cmd, X_OK))
-				return (128); // Permission denied
+				return (error_exec(cmd, "Permission denied\n", 128));
 		}
 		else
-			return (127); // No such file or directory
+			return (error_exec(cmd, "No such file or directory\n", 127));
 		return (1);
 	}
 	return (0);
@@ -130,6 +130,6 @@ int	get_path(char *cmd, char **envp, char **dst)
 	while (envp[i] && !aux)
 		aux = ft_strnstr(envp[i++], "PATH", 4);
 	if (!aux)
-		return (127); // command not found
+		return (error_exec(cmd, "command not found\n", 127));
 	return (get_path_util(aux, cmd, dst));
 }

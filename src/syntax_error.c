@@ -6,7 +6,7 @@
 /*   By: ffornes- <ffornes-@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/13 16:56:30 by ffornes-          #+#    #+#             */
-/*   Updated: 2023/09/14 18:55:08 by ffornes-         ###   ########.fr       */
+/*   Updated: 2023/09/26 14:03:59 by ffornes-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,8 @@
 
 static int	syntax_error(char *error_message)
 {
-	print_error("syntax error near unexpected token `");
+	ft_putstr_fd("minishell: ", 2);
+	ft_putstr_fd("syntax error near unexpected token `");
 	ft_putstr_fd(error_message, 2);
 	ft_putstr_fd("\'\n", 2);
 	return (258);
