@@ -6,7 +6,7 @@
 /*   By: ffornes- <ffornes-@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/26 17:15:53 by ffornes-          #+#    #+#             */
-/*   Updated: 2023/09/19 18:12:54 by ffornes-         ###   ########.fr       */
+/*   Updated: 2023/09/26 15:19:39 by ffornes-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,7 +61,6 @@ t_list	*save_tokens(char *input)
 	while (inputs[i++])
 		if (save_tokens_util(inputs, i, &token_list))
 			return (NULL);
-	ft_lstadd_back(&token_list, NULL);
 	free(inputs);
 	return (token_list);
 }
