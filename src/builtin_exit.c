@@ -6,7 +6,7 @@
 /*   By: ffornes- <ffornes-@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/19 12:52:54 by ffornes-          #+#    #+#             */
-/*   Updated: 2023/09/26 11:29:28 by ffornes-         ###   ########.fr       */
+/*   Updated: 2023/09/26 15:22:25 by ffornes-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -110,8 +110,7 @@ void	exit_check(t_list *lst)
 	t_token	*aux;
 
 	token = lst->content;
-	if (!ft_strncmp(token->string, "exit\0", 5)
-		|| !ft_strncmp(token->string, "exit ", 5))
+	if (!ft_strncmp(token->string, "exit\0", 5))
 	{
 		lst = lst->next;
 		token = lst->content;
