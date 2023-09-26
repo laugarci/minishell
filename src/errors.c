@@ -6,7 +6,7 @@
 /*   By: ffornes- <ffornes-@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/13 17:39:50 by ffornes-          #+#    #+#             */
-/*   Updated: 2023/09/26 13:02:30 by ffornes-         ###   ########.fr       */
+/*   Updated: 2023/09/26 14:03:02 by ffornes-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,13 +26,7 @@ int	invalid_identifier(char *builtin, char *str)
 	return (0);
 }
 
-void	print_error(char *error_message)
-{
-	ft_putstr_fd("minishell: ", 2);
-	ft_putstr_fd(error_message, 2);
-}
-
-int		print_error_builtin(char *builtin, char *error_message, int value)
+int	print_error_builtin(char *builtin, char *error_message, int value)
 {
 	ft_putstr_fd("minishell: ", 2);
 	ft_putstr_fd(builtin, 2);
@@ -40,9 +34,18 @@ int		print_error_builtin(char *builtin, char *error_message, int value)
 	return (value);
 }
 
-int		print_error_and_return(char *error_message, int value)
+int	error_exec(char *command, char *error_message, int value)
 {
-	print_error(error_message);
+	ft_putstr_fd("minishell: ", 2);
+	ft_putstr_fd(command, 2);
+	ft_putstr_fd(": ", 2);
+	ft_putstr_fd(error_message, 2);
+}
+
+int	print_error_and_return(char *error_message, int value)
+{
+	ft_putstr_fd("minishell: ", 2);
+	ft_putstr_fd(error_message, 2);
 	return (value);
 }
 

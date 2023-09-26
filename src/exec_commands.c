@@ -6,7 +6,7 @@
 /*   By: laugarci <laugarci@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/04 14:04:45 by laugarci          #+#    #+#             */
-/*   Updated: 2023/09/26 13:02:29 by ffornes-         ###   ########.fr       */
+/*   Updated: 2023/09/26 14:03:16 by ffornes-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,18 +84,19 @@ int	exec_commands(t_list *lst, char **env)
 	char	**cmd;
 	int		err;
 
+	err = 0;
 	lst = token_setup(lst);
 	if (!lst)
-		exit (12);
+		exit(print_error_and_return("Cannot allocate memory\n", 12));
 	i = count_list(lst);
 	cmd = malloc(sizeof(char *) * i);
 	if (!cmd)
-		exit(12);
+		exit(print_error_and_return("Cannot allocate memory\n", 12));
 	err = setup_cmd(lst, cmd, i, env);
 	if (err)
 		exit(err);
-	if ((execve(cmd[0], cmd, env)) == -1)
-		return (check_error(127));
 	ft_lstclear(&lst, (void *)free_token);
-	exit(0);
+	if ((execve(cmd[0], cmd, env)) == -1)
+		exit(print_error_and_return("Execve failed\n", 1));
+	exit(err);
 }
