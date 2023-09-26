@@ -6,7 +6,7 @@
 /*   By: ffornes- <ffornes-@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/26 16:31:29 by ffornes-          #+#    #+#             */
-/*   Updated: 2023/09/26 19:24:47 by ffornes-         ###   ########.fr       */
+/*   Updated: 2023/09/26 23:56:17 by laugarci         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -115,7 +115,7 @@ int	get_path(char *cmd, char **envp, char **dst)
 	int		i;
 	int		err;
 	char	*aux;
-	
+
 	err = is_absolute_path(cmd);
 	if (err == 1)
 	{

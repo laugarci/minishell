@@ -6,7 +6,7 @@
 /*   By: ffornes- <ffornes-@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/19 12:52:54 by ffornes-          #+#    #+#             */
-/*   Updated: 2023/09/26 18:21:55 by ffornes-         ###   ########.fr       */
+/*   Updated: 2023/09/26 23:47:19 by laugarci         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,6 +68,14 @@ long long	ft_atoll(const char *str)
 	return (check_limits(j, i));
 }
 
+void	put_numeric_error(char *input)
+{
+	ft_putstr_fd("minishell: exit: ", 2);
+	ft_putstr_fd(input, 2);
+	ft_putstr_fd(": numeric argument required\n", 2);
+	exit(255);
+}
+
 static int	check_digits(char *input)
 {
 	int	i;
@@ -75,12 +83,7 @@ static int	check_digits(char *input)
 	while (*input == ' ')
 		input++;
 	if (!ft_strncmp(input, "-18446744073709551617\0", 22))
-	{
-		ft_putstr_fd("minishell: exit: ", 2);
-		ft_putstr_fd(input, 2);
-		ft_putstr_fd(": numeric argument required\n", 2);
-		exit(255);
-	}
+		put_numeric_error(input);
 	if (*input == '-' || *input == '+')
 		input++;
 	if (!input || !*input)
@@ -98,12 +101,7 @@ static int	check_digits(char *input)
 		i++;
 		input++;
 		if (i > 20)
-		{
-			ft_putstr_fd("minishell: exit: ", 2);
-			ft_putstr_fd(input - i, 2);
-			ft_putstr_fd(": numeric argument required\n", 2);
-			exit(255);
-		}
+			put_numeric_error(input - i);
 	}
 	while (*input == ' ')
 		input++;

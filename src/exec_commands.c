@@ -6,7 +6,7 @@
 /*   By: laugarci <laugarci@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/04 14:04:45 by laugarci          #+#    #+#             */
-/*   Updated: 2023/09/26 19:39:34 by ffornes-         ###   ########.fr       */
+/*   Updated: 2023/09/26 23:55:35 by laugarci         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,6 +40,19 @@ static int	count_command(t_list *lst)
 	return (i);
 }
 
+static char	**allocate_cmd(int size)
+{
+	char	**dst;
+
+	dst = malloc(sizeof(char *) * (size + 1));
+	if (!dst)
+	{
+		print_error_and_return("Cannot allocate memory\n", 12);
+		return (NULL);
+	}
+	return (dst);
+}
+
 static char	**full_cmd(t_list *lst, char **env)
 {
 	int		i;
@@ -48,12 +61,7 @@ static char	**full_cmd(t_list *lst, char **env)
 	t_token	*token;
 
 	i = count_command(lst);
-	dst = malloc(sizeof(char *) * (i + 1));
-	if (!dst)
-	{
-		print_error_and_return("Cannot allocate memory\n", 12);
-		return (NULL);
-	}
+	dst = allocate_cmd(i);
 	token = lst->content;
 	get_path(token->string, env, dst);
 	if (!dst || !dst[0])
@@ -76,7 +84,11 @@ static char	**full_cmd(t_list *lst, char **env)
 int	exec_commands(t_list *lst, char **env)
 {
 	char	**cmd;
+	t_token	*token;
 
+	token = lst->content;
+	if (token->type != -1)
+		return (0);
 	cmd = full_cmd(lst, env);
 	if (!cmd)
 		return (set_or_return_exit_status(MODE_RETURN, -1));
