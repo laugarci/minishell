@@ -6,7 +6,7 @@
 /*   By: ffornes- <ffornes-@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/31 12:35:07 by ffornes-          #+#    #+#             */
-/*   Updated: 2023/09/19 12:43:45 by ffornes-         ###   ########.fr       */
+/*   Updated: 2023/09/26 12:09:16 by ffornes-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -94,7 +94,7 @@ static char	**charp_to_charpp(char *input)
 		return (NULL);
 	if (!ft_strncmp(input, "~\0", 2))
 		input = "$HOME";
-	out[0] = ft_strdup(input);
+	out[0] = ft_strtrim(input, " ");
 	if (!out[0])
 	{
 		free(out);

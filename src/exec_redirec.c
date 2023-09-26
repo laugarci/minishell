@@ -6,7 +6,7 @@
 /*   By: laugarci <laugarci@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/14 12:07:29 by laugarci          #+#    #+#             */
-/*   Updated: 2023/09/24 16:41:59 by ffornes-         ###   ########.fr       */
+/*   Updated: 2023/09/26 12:24:37 by ffornes-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,6 +63,7 @@ int	check_redirect(t_list *lst, int type1, int type2)
 		return (1);
 	return (0);
 }
+
 void	create_files(t_list *lst)
 {
 	int		fd;

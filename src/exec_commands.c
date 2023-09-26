@@ -6,7 +6,7 @@
 /*   By: laugarci <laugarci@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/04 14:04:45 by laugarci          #+#    #+#             */
-/*   Updated: 2023/09/24 16:44:09 by ffornes-         ###   ########.fr       */
+/*   Updated: 2023/09/26 12:20:17 by ffornes-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,92 +22,73 @@
 #include "libft_bonus.h"
 #include "parser.h"
 
-int	exec_commands_wf(t_list *lst, char **env, int flags)
+static t_list	*token_setup(t_list *lst)
 {
-	char	**args;
-	t_token	*token;
-	int		i;
-	t_list	*tmp;
+	char	*cmd;
+	char	**split_cmd;
 
-	tmp = lst->next;
-	token = lst->content;
-	args = (char **)malloc(sizeof(char *) * (flags + 2));
-	if (!args)
-		return (-1);
-	args[0] = get_path(ft_strtrim(token->string, " "), env);
-	i = 0;
-	while (i < flags)
+	cmd = find_command(lst);
+	if (!cmd)
+		return (NULL);
+	split_cmd = ft_split(cmd, '|');
+	if (!split_cmd)
 	{
-		token = tmp->content;
-		args[i + 1] = token->string;
-		tmp = tmp->next;
-		i++;
+		free(cmd);
+		return (NULL);
 	}
-	args[flags + 1] = NULL;
-	token = lst->content;
-	if ((execve(args[0], args, env)) == -1)
-		return (check_error(127));
-//	free_double((void **)args);
-	return (0);
+	lst = save_tokens(split_cmd[0]);
+	if (!lst)
+	{
+		free(cmd);
+		free_double((void **)split_cmd);
+		return (NULL);
+	}
+	free(split_cmd);
+	return (lst);
 }
 
-int	exec_commands_nf(t_list *lst, char **env)
+static int	setup_cmd(t_list *lst, char **cmd, int size)
 {
-	char	**args;
 	t_token	*token;
+	int		i;
 
+	i = 0;
 	token = lst->content;
-	args = (char **)malloc(sizeof(char *) * 2);
-	if (!args)
-		return (-1);
-	args[0] = get_path(ft_strtrim(token->string, " "), env);
-	args[1] = NULL;
-	if ((execve(args[0], args, env)) == -1)
-		return (check_error(127));
-	free_double((void **)args);
+	cmd[i] = get_path(token->string, env);
+	if (!cmd[i++])
+	{
+		free_double((void **)cmd);
+		return (12);
+	}
+	while (i < size - 1)
+	{
+		lst = lst->next;
+		token = lst->content;
+		cmd[i] = ft_strdup(token->string);
+		if (!cmd[i++])
+		{
+			free_double((void **)cmd);
+			return (12);
+		}
+	}
+	cmd[i] = NULL;
 	return (0);
 }
 
 int	exec_commands(t_list *lst, char **env)
 {
-	pid_t	pid;
 	int		i;
-	int		status;
-	char	*cmd;
-	char	**split_cmd;
+	char	**cmd;
 
-	cmd = find_command(lst);
-	split_cmd = ft_split(cmd, '|');
-	lst = save_tokens(split_cmd[0]);
+	lst = token_setup(lst);
 	i = count_list(lst);
-	pid = fork();
-	if (pid == -1)
-		return (-1);
-	if (pid == 0)
-	{
-		set_or_return_state(MODE_SET, STATE_EXEC);
-		signal_handler();
-		signal_display(MODE_SET);
-		if (i == 2)
-			exec_commands_nf(lst, env);
-		else
-			exec_commands_wf(lst, env, (i - 1));
-		exit(0);
-	}
-	else
-		waitpid(pid, &status, 0);
-	if (WTERMSIG(status) == SIGINT)
-	{
-		ft_putchar_fd('\n', 1);
-		set_or_return_exit_status(MODE_SET, 130);
-	}
-	else if (WTERMSIG(status) == SIGQUIT)
-	{
-		ft_putstr_fd("Quit: 3\n", 0);
-		set_or_return_exit_status(MODE_SET, 131);
-	}
-	free(cmd);
-	free_double((void **)split_cmd);
+	cmd = malloc(sizeof(char *) * i);
+	if (!cmd)
+		exit(12);
+	if (setup_cmd(lst, cmd, i))
+		exit(12);
+	if ((execve(cmd[0], cmd, env)) == -1)
+		return (check_error(127));
 	ft_lstclear(&lst, (void *)free_token);
-	return (0);
+	exit(0);
 }

@@ -6,7 +6,7 @@
 /*   By: ffornes- <ffornes-@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/27 11:32:21 by ffornes-          #+#    #+#             */
-/*   Updated: 2023/09/25 19:38:30 by ffornes-         ###   ########.fr       */
+/*   Updated: 2023/09/26 10:45:36 by ffornes-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,7 +84,7 @@ int			dup_read(t_list *lst, t_data *data);
 int			dup_write(t_list *lst);
 
 int			builtin_export(t_list *tkn_lst, t_list **env_lst);
-t_env		*check_flag(t_env *env_var, t_env *var, char *str);
+t_env		*export_set_value(t_env *env_var, t_env *var, char *str);
 int			free_key_and_return(t_env *var);
 
 int			builtin_cd(t_list *lst, t_list **env_lst);

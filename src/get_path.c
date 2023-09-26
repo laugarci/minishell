@@ -6,7 +6,7 @@
 /*   By: ffornes- <ffornes-@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/26 16:31:29 by ffornes-          #+#    #+#             */
-/*   Updated: 2023/09/16 20:33:14 by ffornes-         ###   ########.fr       */
+/*   Updated: 2023/09/26 12:21:25 by ffornes-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -102,18 +102,8 @@ static char	*get_path_util(char *str, char *cmd)
 	return (out);
 }
 
-/* cmd is a command and it's arguments splitted by spaces since it's needed
- * by execve that the command and it's flags/arguments are in a char **
- *
- * This function recieves a command and returns an allocated string containing
- * it's path + command.
- * In order to do this, must check first if the command recieved already has
- * it's path or needs to find it.
- * If it has it's path, it must return it.
- * If it doesn't, it appends all possible Paths with the command, in order
- * to check with access if the directory exists and it's executable, and
- * returns the correct path. */
-char	*get_path(char *cmd, char **envp)
+
+int	get_path(char *cmd, char **envp, char *dst)
 {
 	int		i;
 	char	*aux;

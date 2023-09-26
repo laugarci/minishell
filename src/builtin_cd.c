@@ -6,7 +6,7 @@
 /*   By: laugarci <laugarci@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/14 21:05:30 by laugarci          #+#    #+#             */
-/*   Updated: 2023/09/25 17:35:56 by ffornes-         ###   ########.fr       */
+/*   Updated: 2023/09/26 10:38:15 by ffornes-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,7 +53,7 @@ int	builtin_cd(t_list *lst, t_list **env_lst)
 	tmp = lst->next;
 	token = tmp->content;
 	if (count_list(lst) == 2 && chdir(get_env_var("HOME", env_lst)))
-			return (1);
+		return (1);
 	else if (access((token->string), F_OK) != -1)
 	{
 		if (access((token->string), R_OK) != -1)

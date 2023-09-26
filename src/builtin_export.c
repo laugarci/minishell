@@ -6,7 +6,7 @@
 /*   By: ffornes- <ffornes-@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/10 18:22:49 by ffornes-          #+#    #+#             */
-/*   Updated: 2023/09/25 19:40:30 by ffornes-         ###   ########.fr       */
+/*   Updated: 2023/09/26 10:45:15 by ffornes-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,7 +62,7 @@ static int	add_var_to_env(t_env *var, t_list **env_lst, char *str)
 				return (free_key_and_return(var));
 			if (env_var->value)
 				aux = env_var->value;
-			env_var = check_flag(env_var, var, str);
+			env_var = export_set_value(env_var, var, str);
 			if (aux)
 				free(aux);
 			return (free_key_and_return(var));
