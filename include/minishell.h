@@ -6,7 +6,7 @@
 /*   By: ffornes- <ffornes-@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/27 11:32:21 by ffornes-          #+#    #+#             */
-/*   Updated: 2023/09/26 10:45:36 by ffornes-         ###   ########.fr       */
+/*   Updated: 2023/09/26 12:55:41 by ffornes-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,7 @@ char		**envlst_to_charpp(t_list *lst);
 
 int			**pipe_fds(int num_pipes);
 
-char		*get_path(char *cmd, char **envp);
+int			get_path(char *cmd, char **envp, char **dst);
 
 int			exec_commands(t_list *lst, char **env);
 int			exec_commands_wf(t_list *lst, char **env, int flags);
