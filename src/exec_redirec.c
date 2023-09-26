@@ -6,7 +6,7 @@
 /*   By: laugarci <laugarci@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/14 12:07:29 by laugarci          #+#    #+#             */
-/*   Updated: 2023/09/26 12:24:37 by ffornes-         ###   ########.fr       */
+/*   Updated: 2023/09/26 23:55:47 by laugarci         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,13 +69,14 @@ void	create_files(t_list *lst)
 	int		fd;
 	t_token	*token;
 
+	token = lst->content;
 	while (lst->next)
 	{
 		token = lst->content;
 		if (token->type == PIPE)
 			break ;
 		if (token->type == APPEND)
-		{	
+		{
 			fd = open(token->string, O_WRONLY | O_CREAT | O_APPEND, 0666);
 			close(fd);
 		}

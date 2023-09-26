@@ -6,7 +6,7 @@
 /*   By: laugarci <laugarci@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/22 15:29:58 by laugarci          #+#    #+#             */
-/*   Updated: 2023/09/26 19:35:16 by ffornes-         ###   ########.fr       */
+/*   Updated: 2023/09/27 00:03:02 by laugarci         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,7 @@ static int	builtin_check(t_list *lst, t_list **env_lst, char **env)
 
 static int	parent_exec(t_list *lst, t_list **env_lst, char **env, t_data *data)
 {
-	t_token *token;
+	t_token	*token;
 	int		err;
 	int		stdio_fds[2];
 
@@ -67,7 +67,7 @@ static int	parent_exec(t_list *lst, t_list **env_lst, char **env, t_data *data)
 	return (err);
 }
 
-static int child_exec(t_list *lst, t_list **env_lst, char **env)
+static int	child_exec(t_list *lst, t_list **env_lst, char **env)
 {
 	t_token	*token;
 	char	*aux;
@@ -86,13 +86,13 @@ static int child_exec(t_list *lst, t_list **env_lst, char **env)
 
 static void	execution_utils(t_list *lst, t_list **env_lst, t_data *data, char **env)
 {
-	int err;
-	t_token *token;
+	int		err;
+	t_token	*token;
 
 	token = lst->content;
 	err = dup_read(lst, data);
 	if (err)
-		exit(err); 
+		exit(err);
 	else if (data->read_pipe_fds >= 0)
 	{
 		if (!p_type_count(lst, INFILE) && !p_type_count(lst, HERE_DOC))
@@ -104,12 +104,11 @@ static void	execution_utils(t_list *lst, t_list **env_lst, t_data *data, char **
 		exit(1);
 	else if (type_count(lst, PIPE) && !check_redirect(lst, TRUNC, APPEND))
 	{
-   		if (dup2(data->write_pipe_fds[1], STDOUT_FILENO) < 0)
+		if (dup2(data->write_pipe_fds[1], STDOUT_FILENO) < 0)
 			exit(1);
 		close(data->write_pipe_fds[0]);
 		close(data->write_pipe_fds[1]);
 	}
-	token = lst->content;
 	err = child_exec(lst, env_lst, env);
 	exit(err);
 }

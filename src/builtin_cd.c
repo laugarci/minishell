@@ -6,7 +6,7 @@
 /*   By: laugarci <laugarci@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/14 21:05:30 by laugarci          #+#    #+#             */
-/*   Updated: 2023/09/26 18:32:30 by ffornes-         ###   ########.fr       */
+/*   Updated: 2023/09/26 23:21:43 by laugarci         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,6 +45,13 @@ static char	*get_env_var(char *key, t_list **env_lst)
 	return (NULL);
 }
 
+static int	go_home(t_list **env_lst)
+{
+	if (chdir(get_env_var("HOME", env_lst)))
+		return (1);
+	return (0);
+}
+
 int	builtin_cd(t_list *lst, t_list **env_lst)
 {
 	t_token	*token;
@@ -53,11 +60,7 @@ int	builtin_cd(t_list *lst, t_list **env_lst)
 	tmp = lst->next;
 	token = tmp->content;
 	if (count_list(lst) == 2)
-	{
-		if (chdir(get_env_var("HOME", env_lst)))
-			return (0);
-		return (1);
-	}
+		return (go_home(env_lst));
 	else if (!ft_strchr(token->string, '/') && ft_strlen(token->string) >= 256)
 		return (error_cd(token->string, ": File name too long\n", 1));
 	else if (access((token->string), F_OK) != -1)
