@@ -6,7 +6,7 @@
 /*   By: laugarci <laugarci@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/14 21:05:30 by laugarci          #+#    #+#             */
-/*   Updated: 2023/09/26 10:38:15 by ffornes-         ###   ########.fr       */
+/*   Updated: 2023/09/26 15:57:56 by laugarci         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,7 @@ static char	*get_env_var(char *key, t_list **env_lst)
 	{
 		var = lst->content;
 		if (!ft_strncmp(var->key, key, ft_strlen(key) + 1))
-			return (var->value);
+			return (++var->value);
 		lst = lst->next;
 	}
 	return (NULL);
@@ -52,8 +52,12 @@ int	builtin_cd(t_list *lst, t_list **env_lst)
 
 	tmp = lst->next;
 	token = tmp->content;
-	if (count_list(lst) == 2 && chdir(get_env_var("HOME", env_lst)))
+	if (count_list(lst) == 2)
+	{
+		if (chdir(get_env_var("HOME", env_lst)))
+			return (0);
 		return (1);
+	}
 	else if (access((token->string), F_OK) != -1)
 	{
 		if (access((token->string), R_OK) != -1)
@@ -64,7 +68,7 @@ int	builtin_cd(t_list *lst, t_list **env_lst)
 		else
 			return (error_cd(token->string, ": Permission denied\n", 1));
 	}
-	else
+	else if (*token->string)
 		return (error_cd(token->string, ": No such file or directory\n", 1));
 	return (0);
 }
