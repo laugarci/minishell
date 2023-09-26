@@ -6,7 +6,7 @@
 #    By: laugarci <laugarci@student.42barcel>       +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/06/26 15:00:09 by ffornes-          #+#    #+#              #
-#    Updated: 2023/09/25 17:32:24 by ffornes-         ###   ########.fr        #
+#    Updated: 2023/09/26 13:55:29 by ffornes-         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -26,7 +26,7 @@ SRC_FILES = minishell.c \
 			token_process.c token_process_rm.c \
 			subtoken_process.c subtoken_count.c subtoken_join.c token_organize.c \
 			builtin_unset.c builtin_export.c builtin_export_utils.c builtin_exit.c \
-			errors.c syntax_error.c process_list.c builtin_cd.c exec_env.c check.c \
+			errors.c syntax_error.c process_list.c builtin_cd.c exec_env.c \
 			signals.c signal_display.c \
 			exit_status.c execution.c dup_read_write.c
 
