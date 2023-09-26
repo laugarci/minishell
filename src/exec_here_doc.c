@@ -6,7 +6,7 @@
 /*   By: laugarci <laugarci@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/19 13:29:17 by laugarci          #+#    #+#             */
-/*   Updated: 2023/09/26 11:34:04 by ffornes-         ###   ########.fr       */
+/*   Updated: 2023/09/26 15:20:48 by ffornes-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,7 +67,7 @@ static int	input_heredoc(char *del, int *fds)
 		if (!text)
 			return (12);
 		aux = text;
-		text = ft_strjoin(text, "HOLA\n");
+		text = ft_strjoin(text, "\n");
 		free(aux);
 		if (!text)
 			return (12);
