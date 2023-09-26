@@ -6,7 +6,7 @@
 /*   By: laugarci <laugarci@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/04 11:30:35 by laugarci          #+#    #+#             */
-/*   Updated: 2023/09/26 15:32:07 by laugarci         ###   ########.fr       */
+/*   Updated: 2023/09/26 16:42:36 by laugarci         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,6 +35,8 @@ int	count_flags(t_list *lst)
 				i++;
 			if (i == ft_strlen(token->string))
 				flag++;
+			else
+				break ;
 		}
 		lst = lst->next;
 		token = lst->content;
@@ -90,13 +92,13 @@ int	exec_echo(t_list *lst)
 	if (i == 2)
 	{
 		printf("\n");
-		return (0);
+		return (1);
 	}
 	aux = aux->next;
 	token = aux->content;
-	if (ft_strncmp(token->string, "-n\0", 3) == 0)
+	if (ft_strncmp(token->string, "-n", 2) == 0)
 		flag = count_flags(lst);
 	aux = move_list(aux, flag);
 	print_echo(aux, flag);
-	return (0);
+	return (1);
 }
