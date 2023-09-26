@@ -6,7 +6,7 @@
 /*   By: laugarci <laugarci@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/22 15:29:58 by laugarci          #+#    #+#             */
-/*   Updated: 2023/09/26 16:00:36 by laugarci         ###   ########.fr       */
+/*   Updated: 2023/09/26 16:14:17 by ffornes-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,7 @@ static int	builtin_check(t_list *lst, t_list **env_lst, char **env)
 
 	err = 0;
 	token = lst->content;
+	exit_check(lst);
 	if (ft_strncmp(token->string, "cd\0", 3) == 0)
 		err = builtin_cd(lst, env_lst);
 	else if (ft_strncmp(token->string, "echo\0", 5) == 0)
@@ -123,7 +124,6 @@ int	execution(t_list *lst, t_list **env_lst, t_data *data, char **env)
 	int	status;
 	int	pid;
 
-	exit_check(lst);
 	err = 0;
 	while (data->process_id <= data->pipe_count)
 	{
