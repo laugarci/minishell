@@ -6,7 +6,7 @@
 /*   By: ffornes- <ffornes-@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/13 17:39:50 by ffornes-          #+#    #+#             */
-/*   Updated: 2023/09/26 14:03:02 by ffornes-         ###   ########.fr       */
+/*   Updated: 2023/09/26 14:34:55 by ffornes-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,6 +40,7 @@ int	error_exec(char *command, char *error_message, int value)
 	ft_putstr_fd(command, 2);
 	ft_putstr_fd(": ", 2);
 	ft_putstr_fd(error_message, 2);
+	return (value);
 }
 
 int	print_error_and_return(char *error_message, int value)
@@ -47,15 +48,4 @@ int	print_error_and_return(char *error_message, int value)
 	ft_putstr_fd("minishell: ", 2);
 	ft_putstr_fd(error_message, 2);
 	return (value);
-}
-
-int	print_and_return(int error_id)
-{
-	if (error_id == 12)
-		print_error("Cannot allocate memory\n");
-	else if (error_id == 126)
-		print_error("Unable to execute command\n");
-	else if (error_id == 127)
-		print_error("No such file or directory\n");
-	return (error_id);
 }

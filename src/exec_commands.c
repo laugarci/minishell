@@ -6,7 +6,7 @@
 /*   By: laugarci <laugarci@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/04 14:04:45 by laugarci          #+#    #+#             */
-/*   Updated: 2023/09/26 14:03:16 by ffornes-         ###   ########.fr       */
+/*   Updated: 2023/09/26 14:40:22 by ffornes-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,25 +31,14 @@ static int	free_double_and_return(void **var, int value)
 static t_list	*token_setup(t_list *lst)
 {
 	char	*cmd;
-	char	**split_cmd;
 
 	cmd = find_command(lst);
 	if (!cmd)
 		return (NULL);
-	split_cmd = ft_split(cmd, '|');
-	if (!split_cmd)
-	{
-		free(cmd);
-		return (NULL);
-	}
-	lst = save_tokens(split_cmd[0]);
+	lst = save_tokens(cmd);
+	free(cmd);
 	if (!lst)
-	{
-		free(cmd);
-		free_double((void **)split_cmd);
 		return (NULL);
-	}
-	free(split_cmd);
 	return (lst);
 }
 

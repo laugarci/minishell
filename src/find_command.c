@@ -6,7 +6,7 @@
 /*   By: laugarci <laugarci@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/17 10:09:20 by laugarci          #+#    #+#             */
-/*   Updated: 2023/09/23 16:04:47 by laugarci         ###   ########.fr       */
+/*   Updated: 2023/09/26 14:47:25 by ffornes-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,14 +29,13 @@ char	*find_command(t_list *lst)
 	total_length = total_input_len(lst);
 	result = malloc(sizeof(char) * (total_length + 1));
 	if (!result)
-		return (NULL); // Error: malloc
+		return (NULL);
 	current = lst;
 	i = 0;
 	while (current->next)
 	{
 		token = current->content;
-		if ((token->type == 3 || token->type == 4
-				|| token->type == 1 || token->type == 2))
+		if (token->type >= 0)
 			break ;
 		if (i > 0)
 			result[i++] = ' ';
@@ -48,6 +47,31 @@ char	*find_command(t_list *lst)
 	return (result);
 }
 
+/*
+static char	*allocate_output(t_token *token, )
+{
+		flag = 0;
+		if (token->type == INFILE || token->type == TRUNC
+			|| token->type == APPEND)
+		{
+			output = malloc(sizeof(char) * ft_strlen(token->string) + 1);
+			if (!output)
+				return (NULL);
+			ft_strlcpy(output, token->string, ft_strlen(token->string) + 1);
+			tmp = tmp->next;
+			token = tmp->content;
+			flag = 1;
+			if (token->type != 3 && token->type != 4 && token->type != 1)
+				break ;
+		}
+		if (flag == 0)
+		{
+			tmp = tmp->next;
+			token = tmp->content;
+		}
+}
+*/
+
 char	*find_output(t_list *lst)
 {
 	t_list	*tmp;
@@ -58,15 +82,15 @@ char	*find_output(t_list *lst)
 	tmp = lst;
 	token = tmp->content;
 	output = NULL;
-
 	while (tmp)
 	{
 		flag = 0;
-		if (token->type == 3 || token->type == 4 || token->type == 1)
+		if (token->type == INFILE || token->type == TRUNC
+			|| token->type == APPEND)
 		{
 			output = malloc(sizeof(char) * ft_strlen(token->string) + 1);
 			if (!output)
-				return (NULL); // Error: malloc
+				return (NULL);
 			ft_strlcpy(output, token->string, ft_strlen(token->string) + 1);
 			tmp = tmp->next;
 			token = tmp->content;
@@ -96,8 +120,14 @@ int	find_input(t_list *lst, char **dst, int type1, int type2)
 		{
 			*dst = token->string;
 			if (token->type == INFILE)
+			{
 				if (access(*dst, F_OK))
-					return (print_and_return(126)); 
+					return (error_exec(token->string, \
+							"No such file or directory\n", 1));
+				else if (access(*dst, R_OK))
+					return (error_exec(token->string, \
+							"Permission denied\n", 1));
+			}
 		}
 		lst = lst->next;
 		token = lst->content;

@@ -6,7 +6,7 @@
 /*   By: ffornes- <ffornes-@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/26 16:31:29 by ffornes-          #+#    #+#             */
-/*   Updated: 2023/09/26 14:07:41 by ffornes-         ###   ########.fr       */
+/*   Updated: 2023/09/26 14:23:34 by ffornes-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,7 +44,7 @@ static char	**join_path_cmd(char **path, char *cmd, int i)
 	return (path);
 }
 
-static int	get_right_path(char **path, char **dst)
+static int	get_right_path(char *cmd, char **path, char **dst)
 {
 	int		i;
 	char	*out;
@@ -87,7 +87,7 @@ static int	get_path_util(char *str, char *cmd, char **dst)
 	path = join_path_cmd(path, cmd, -1);
 	if (!path)
 		return (12);
-	err = get_right_path(path, dst);
+	err = get_right_path(cmd, path, dst);
 	free_double((void **)path);
 	if (err)
 		return (err);
