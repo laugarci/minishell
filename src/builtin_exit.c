@@ -6,7 +6,7 @@
 /*   By: ffornes- <ffornes-@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/19 12:52:54 by ffornes-          #+#    #+#             */
-/*   Updated: 2023/09/26 16:44:50 by ffornes-         ###   ########.fr       */
+/*   Updated: 2023/09/26 17:25:30 by ffornes-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,18 +70,42 @@ long long	ft_atoll(const char *str)
 
 static int	check_digits(char *input)
 {
+	int	i;
+
+	while (*input == ' ')
+		input++;
+	if (!ft_strncmp(input, "-18446744073709551617\0", 22))
+	{
+		ft_putstr_fd("minishell: exit: ", 2);
+		ft_putstr_fd(input, 2);
+		ft_putstr_fd(": numeric argument required\n", 2);
+		exit(255);
+	}
 	if (*input == '-' || *input == '+')
 		input++;
 	if (!input || !*input)
 		return (1);
-	while (ft_isdigit(*input) && *input == '0')
+	while (*input == '0')
 		input++;
 	if (!input || !*input)
 	{
 		ft_putstr_fd("exit\n", 0);
 		exit(0);
 	}
+	i = 0;
 	while (ft_isdigit(*input))
+	{
+		i++;
+		input++;
+		if (i > 20)
+		{
+			ft_putstr_fd("minishell: exit: ", 2);
+			ft_putstr_fd(input - i, 2);
+			ft_putstr_fd(": numeric argument required\n", 2);
+			exit(255);
+		}
+	}
+	while (*input == ' ')
 		input++;
 	if (*input && !ft_isdigit(*input))
 		return (1);
@@ -102,8 +126,19 @@ void	builtin_exit(char *input)
 		ft_putstr_fd(": numeric argument required\n", 2);
 		exit(255);
 	}
-	while (out > 255)
-		out -= (out / 255) * 256;
+	if (out > 0)
+		while (out > 255)
+			out -= (out / 255) * 256;
+	else if (out < 0)
+	{
+		while (out < -255)
+			out += (out / 255) * 256 * -1;
+		if (out == -1)
+			out = 255;
+		else
+			out -= 2;
+	}
+	ft_putstr_fd("exit\n", 0);
 	exit(out);
 }
 
@@ -123,10 +158,15 @@ void	exit_check(t_list *lst)
 			aux = lst->content;
 			if (aux->string && aux->type < 0)
 			{
-				ft_putstr_fd("exit\n", 0);
-				ft_putstr_fd("minishell: exit: too many arguments\n", 2);
-				set_or_return_exit_status(MODE_SET, 1);
-				builtin_exit("1");
+				if (!ft_isdigit(*token->string))
+					builtin_exit(token->string);
+				else
+				{
+					ft_putstr_fd("exit\n", 0);
+					ft_putstr_fd("minishell: exit: too many arguments\n", 2);
+					set_or_return_exit_status(MODE_SET, 1);
+					builtin_exit("1");
+				}
 			}
 			else
 				builtin_exit(token->string);
