@@ -6,7 +6,7 @@
 /*   By: ffornes- <ffornes-@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/13 16:56:30 by ffornes-          #+#    #+#             */
-/*   Updated: 2023/09/26 14:42:08 by ffornes-         ###   ########.fr       */
+/*   Updated: 2023/09/26 18:40:05 by ffornes-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,7 @@ static int	check_tokens(t_token *token, int type)
 		else if (type == 0)
 			return (syntax_error("|"));
 	}
-	else if (type > 0 && type < 5 && token->type >= 0 && token->type < 5)
+	else if (type >= 0 && type < 5 && token->type >= 0 && token->type < 5)
 		return (syntax_error(token->string));
 	return (0);
 }

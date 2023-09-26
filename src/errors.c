@@ -6,7 +6,7 @@
 /*   By: ffornes- <ffornes-@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/13 17:39:50 by ffornes-          #+#    #+#             */
-/*   Updated: 2023/09/26 14:34:55 by ffornes-         ###   ########.fr       */
+/*   Updated: 2023/09/26 19:25:27 by ffornes-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,6 +31,7 @@ int	print_error_builtin(char *builtin, char *error_message, int value)
 	ft_putstr_fd("minishell: ", 2);
 	ft_putstr_fd(builtin, 2);
 	ft_putstr_fd(error_message, 2);
+	set_or_return_exit_status(MODE_SET, value);
 	return (value);
 }
 
@@ -40,6 +41,7 @@ int	error_exec(char *command, char *error_message, int value)
 	ft_putstr_fd(command, 2);
 	ft_putstr_fd(": ", 2);
 	ft_putstr_fd(error_message, 2);
+	set_or_return_exit_status(MODE_SET, value);
 	return (value);
 }
 
@@ -47,5 +49,6 @@ int	print_error_and_return(char *error_message, int value)
 {
 	ft_putstr_fd("minishell: ", 2);
 	ft_putstr_fd(error_message, 2);
+	set_or_return_exit_status(MODE_SET, value);
 	return (value);
 }

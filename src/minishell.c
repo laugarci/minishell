@@ -6,7 +6,7 @@
 /*   By: laugarci <laugarci@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/05 14:01:37 by laugarci          #+#    #+#             */
-/*   Updated: 2023/09/26 14:25:11 by ffornes-         ###   ########.fr       */
+/*   Updated: 2023/09/26 18:53:02 by ffornes-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,7 @@ static int	main_loop(char *prompt, t_list **env_lst)
 	signal_handler();
 	input = readline(prompt);
 	if (!input)
-		builtin_exit(NULL);
+		builtin_exit(ft_itoa(set_or_return_exit_status(MODE_RETURN, -1)));
 	if (input[0] != '\0')
 	{
 		signal(SIGINT, SIG_IGN);

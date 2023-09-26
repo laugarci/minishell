@@ -6,7 +6,7 @@
 /*   By: laugarci <laugarci@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/22 15:29:58 by laugarci          #+#    #+#             */
-/*   Updated: 2023/09/26 16:46:54 by ffornes-         ###   ########.fr       */
+/*   Updated: 2023/09/26 19:35:16 by ffornes-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,9 +23,9 @@ static int	builtin_check(t_list *lst, t_list **env_lst, char **env)
 	t_token	*token;
 	int		err;
 
-	err = 0;
+	err = -1;
 	token = lst->content;
-	exit_check(lst);
+	exit_check(lst, &err);
 	if (ft_strncmp(token->string, "cd\0", 3) == 0)
 		err = builtin_cd(lst, env_lst);
 	else if (ft_strncmp(token->string, "echo\0", 5) == 0)
@@ -38,12 +38,12 @@ static int	builtin_check(t_list *lst, t_list **env_lst, char **env)
 		err = builtin_unset(lst, env_lst);
 	else if (ft_strncmp(token->string, "export\0", 7) == 0)
 		err = builtin_export(lst, env_lst);
-	if (err)
+	if (err >= 0)
 	{
 		set_or_return_exit_status(MODE_SET, err);
 		return (err);
 	}
-	return (-1);
+	return (err);
 }
 
 static int	parent_exec(t_list *lst, t_list **env_lst, char **env, t_data *data)
@@ -53,7 +53,6 @@ static int	parent_exec(t_list *lst, t_list **env_lst, char **env, t_data *data)
 	int		stdio_fds[2];
 
 	token = lst->content;
-	exit_check(lst);
 	stdio_fds[0] = dup(STDIN_FILENO);
 	stdio_fds[1] = dup(STDOUT_FILENO);
 	err = dup_read(lst, data);
@@ -76,11 +75,9 @@ static int child_exec(t_list *lst, t_list **env_lst, char **env)
 
 	token = lst->content;
 	aux = token->string;
-	token->string = ft_strtrim(token->string, " ");
 	free(aux);
 	if (!token->string)
 		return (12);
-	exit_check(lst);
 	err = builtin_check(lst, env_lst, env);
 	if (err >= 0)
 		return (err);
@@ -113,8 +110,7 @@ static void	execution_utils(t_list *lst, t_list **env_lst, t_data *data, char **
 		close(data->write_pipe_fds[1]);
 	}
 	token = lst->content;
-	exit_check(lst);
-	child_exec(lst, env_lst, env);
+	err = child_exec(lst, env_lst, env);
 	exit(err);
 }
 
@@ -125,6 +121,7 @@ int	execution(t_list *lst, t_list **env_lst, t_data *data, char **env)
 	int	pid;
 
 	err = 0;
+	pid = 1;
 	while (data->process_id <= data->pipe_count)
 	{
 		if (data->pipe_count)
@@ -154,13 +151,20 @@ int	execution(t_list *lst, t_list **env_lst, t_data *data, char **env)
 		else
 			data->read_pipe_fds = -1;
 	}
-	waitpid(pid, &status, 0);
-	if (WTERMSIG(status) == SIGINT)
-		return (set_or_return_exit_status(MODE_SET, 130));
-	else if (WTERMSIG(status) == SIGQUIT)
+	if (pid != 1)
 	{
-		ft_putstr_fd("Quit: 3\n", 0);
-		return (set_or_return_exit_status(MODE_SET, 131));
+		waitpid(pid, &status, 0);
+		if (WIFEXITED(status))
+			set_or_return_exit_status(MODE_SET, WEXITSTATUS(status));
+		else
+			set_or_return_exit_status(MODE_SET, 0);
+		if (WTERMSIG(status) == SIGINT)
+			return (set_or_return_exit_status(MODE_SET, 130));
+		else if (WTERMSIG(status) == SIGQUIT)
+		{
+			ft_putstr_fd("Quit: 3\n", 0);
+			return (set_or_return_exit_status(MODE_SET, 131));
+		}
 	}
 	return (err);
 }

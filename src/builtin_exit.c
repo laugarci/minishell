@@ -6,7 +6,7 @@
 /*   By: ffornes- <ffornes-@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/19 12:52:54 by ffornes-          #+#    #+#             */
-/*   Updated: 2023/09/26 17:25:30 by ffornes-         ###   ########.fr       */
+/*   Updated: 2023/09/26 18:21:55 by ffornes-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -142,7 +142,7 @@ void	builtin_exit(char *input)
 	exit(out);
 }
 
-void	exit_check(t_list *lst)
+void	exit_check(t_list *lst, int *err)
 {
 	t_token	*token;
 	t_token	*aux;
@@ -165,7 +165,8 @@ void	exit_check(t_list *lst)
 					ft_putstr_fd("exit\n", 0);
 					ft_putstr_fd("minishell: exit: too many arguments\n", 2);
 					set_or_return_exit_status(MODE_SET, 1);
-					builtin_exit("1");
+					*err = 1;
+					return ;
 				}
 			}
 			else
@@ -177,7 +178,6 @@ void	exit_check(t_list *lst)
 			ft_putstr_fd("minishell: exit: : numeric argument required\n", 2);
 			builtin_exit("255");
 		}
-		ft_putstr_fd("exit\n", 0);
-		builtin_exit(NULL);
+		builtin_exit(ft_itoa(set_or_return_exit_status(MODE_RETURN, -1)));
 	}
 }

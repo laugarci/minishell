@@ -6,7 +6,7 @@
 /*   By: laugarci <laugarci@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/04 14:04:45 by laugarci          #+#    #+#             */
-/*   Updated: 2023/09/26 16:27:42 by laugarci         ###   ########.fr       */
+/*   Updated: 2023/09/26 19:39:34 by ffornes-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,70 +22,79 @@
 #include "libft_bonus.h"
 #include "parser.h"
 
-static int	free_double_and_return(void **var, int value)
-{
-	free_double(var);
-	return (value);
-}
-
-static t_list	*token_setup(t_list *lst)
-{
-	char	*cmd;
-
-	cmd = find_command(lst);
-	if (!cmd)
-		return (NULL);
-	lst = save_tokens(cmd);
-	free(cmd);
-	if (!lst)
-		return (NULL);
-	return (lst);
-}
-
-static int	setup_cmd(t_list *lst, char **cmd, int size, char **env)
+static int	count_command(t_list *lst)
 {
 	t_token	*token;
 	int		i;
-	int		err;
 
-	i = 0;
 	token = lst->content;
-	err = get_path(token->string, env, &(cmd[i]));
-	if (err)
-		return (err);
-	if (!cmd[i++])
-		free_double_and_return((void **)cmd, 12);
-	while (i < size - 1)
+	i = 0;
+	while (lst)
 	{
+		i++;
 		lst = lst->next;
 		token = lst->content;
-		cmd[i] = ft_strdup(token->string);
-		if (!cmd[i++])
-			free_double_and_return((void **)cmd, 12);
+		if (!token->string || token->type >= 0)
+			break ;
 	}
-	cmd[i] = NULL;
-	return (0);
+	return (i);
+}
+
+static char	**full_cmd(t_list *lst, char **env)
+{
+	int		i;
+	int		j;
+	char	**dst;
+	t_token	*token;
+
+	i = count_command(lst);
+	dst = malloc(sizeof(char *) * (i + 1));
+	if (!dst)
+	{
+		print_error_and_return("Cannot allocate memory\n", 12);
+		return (NULL);
+	}
+	token = lst->content;
+	get_path(token->string, env, dst);
+	if (!dst || !dst[0])
+	{
+		free(dst);
+		return (NULL);
+	}
+	j = 1;
+	lst = lst->next;
+	while (j < i)
+	{
+		token = lst->content;
+		dst[j++] = token->string;
+		lst = lst->next;
+	}
+	dst[j] = NULL;
+	return (dst);
 }
 
 int	exec_commands(t_list *lst, char **env)
 {
-	int		i;
 	char	**cmd;
-	int		err;
 
-	err = 0;
-	lst = token_setup(lst);
-	if (!lst)
-		exit(print_error_and_return("Cannot allocate memory\n", 12));
-	i = count_list(lst);
-	cmd = malloc(sizeof(char *) * i);
+	cmd = full_cmd(lst, env);
 	if (!cmd)
-		exit(print_error_and_return("Cannot allocate memory\n", 12));
-	err = setup_cmd(lst, cmd, i, env);
-	if (err)
-		exit(err);
-	ft_lstclear(&lst, (void *)free_token);
+		return (set_or_return_exit_status(MODE_RETURN, -1));
+	if (access(cmd[0], F_OK))
+	{
+		set_or_return_exit_status(MODE_SET, 127);
+		return (127);
+	}
 	if ((execve(cmd[0], cmd, env)) == -1)
-		exit(print_error_and_return("Execve failed\n", 1));
-	exit(err);
+	{
+		if (ft_strchr(cmd[0], '/'))
+		{
+			error_exec(cmd[0], "is a directory\n", 126);
+			free(cmd[0]);
+			free(cmd);
+			exit(126);
+		}
+		return (1);
+	}
+	return (0);
 }
