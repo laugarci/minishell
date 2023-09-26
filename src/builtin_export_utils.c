@@ -6,7 +6,7 @@
 /*   By: ffornes- <ffornes-@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/24 17:43:15 by ffornes-          #+#    #+#             */
-/*   Updated: 2023/09/25 11:59:21 by ffornes-         ###   ########.fr       */
+/*   Updated: 2023/09/26 10:40:28 by ffornes-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ int	free_key_and_return(t_env *var)
 	return (0);
 }
 
-t_env	*check_flag(t_env *env_var, t_env *var, char *str)
+t_env	*export_set_value(t_env *env_var, t_env *var, char *str)
 {
 	int		j;
 	int		flag;

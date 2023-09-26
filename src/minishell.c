@@ -6,7 +6,7 @@
 /*   By: laugarci <laugarci@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/05 14:01:37 by laugarci          #+#    #+#             */
-/*   Updated: 2023/09/25 17:04:02 by ffornes-         ###   ########.fr       */
+/*   Updated: 2023/09/26 11:09:12 by ffornes-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,7 @@ static int	main_loop(char *prompt, t_list **env_lst)
 	char	*input;
 	char	**environ;
 	t_list	*list;
+	int		err;
 
 	environ = envlst_to_charpp(*env_lst);
 	if (!environ)
@@ -42,13 +43,15 @@ static int	main_loop(char *prompt, t_list **env_lst)
 		signal(SIGINT, SIG_IGN);
 		signal(SIGQUIT, SIG_IGN);
 		add_history(input);
-		set_or_return_exit_status(MODE_SET, parse_input(input, environ, &list));
-		if (!set_or_return_exit_status(MODE_RETURN, -1))
+		err = parse_input(input, environ, &list);
+		if (!err)
 		{
 			list = organize_list(list);
 			start_execution(list, env_lst, environ);
 			ft_lstclear(&list, (void *)free_token);
 		}
+		else
+			set_or_return_exit_status(MODE_SET, err);
 	}
 	free_double((void **)environ);
 	free(input);

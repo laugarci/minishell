@@ -18,8 +18,12 @@ ToDo:
 
 	126 Command was found but could not be executed
 	127	No such file or directory
-	ERROR 131, WHERE< WHEN
+	130 CtrlC in state EXEC
+	131 Ctrl\ in state EXEC
+
 	Repasar la libft per mallocs no protegits LMAO!
+
+
 
 	SYNTAX ERRORS:
 		/ ./ ./////// ///////// ... is a directory

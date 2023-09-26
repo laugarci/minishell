@@ -6,10 +6,11 @@
 /*   By: ffornes- <ffornes-@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/18 15:05:03 by ffornes-          #+#    #+#             */
-/*   Updated: 2023/09/18 18:29:23 by ffornes-         ###   ########.fr       */
+/*   Updated: 2023/09/26 11:27:27 by ffornes-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+#include "libft.h"
 #include "minishell_defs.h"
 
 int	set_or_return_exit_status(int mode, int value)
