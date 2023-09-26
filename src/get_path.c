@@ -6,7 +6,7 @@
 /*   By: ffornes- <ffornes-@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/26 16:31:29 by ffornes-          #+#    #+#             */
-/*   Updated: 2023/09/26 12:21:25 by ffornes-         ###   ########.fr       */
+/*   Updated: 2023/09/26 14:07:41 by ffornes-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,54 +15,36 @@
 #include "libft.h"
 #include "minishell.h"
 
-// Debugging - Must delete later
-#include <stdio.h>
-
-static void	put_error(char *str, int error_id)
+static char	**join_path_cmd(char **path, char *cmd, int i)
 {
 	char	*aux;
+	char	*tmp;
 
-	aux = NULL;
-	if (error_id == 44)
-		aux = ft_strjoin(str, ": error near unexpected token `\'\'\n");
-	else if (error_id == 45)
-		aux = ft_strjoin(str, ": error near unexpected token `\"\'\n");
-	else if (error_id == 46)
-		aux = ft_strjoin(str, ": error near unexpected token `|'\n");
-	else if (error_id == 47)
-		aux = ft_strjoin(str, ": error near unexpected token `<'\n");
-	else if (error_id == 127)
-		aux = ft_strjoin(str, ": No such file or directory\n");
-	else if (error_id == 128)
-		aux = ft_strjoin(str, ": unable to execute command XD\n");
-	ft_putstr_fd(aux, 2);
-	free(aux);
-}
-
-static char	**join_path_cmd(char **path, char *cmd)
-{
-	int		i;
-	char	*aux;
-
-	i = 0;
-	while (path[i])
+	while (path[++i])
 	{
-		aux = path[i];
-		path[i] = ft_strjoin(path[i], "/");
-		free(aux);
-		if (!path[i])
+		aux = ft_strjoin(path[i], "/");
+		if (!aux)
+		{
+			free_double((void **)path);
 			return (NULL);
-		aux = path[i];
-		path[i] = ft_strjoin(path[i], cmd);
-		free(aux);
-		if (!path[i])
+		}
+		tmp = path[i];
+		path[i] = aux;
+		free(tmp);
+		aux = ft_strjoin(path[i], cmd);
+		if (!aux)
+		{
+			free_double((void **)path);
 			return (NULL);
-		i++;
+		}
+		tmp = path[i];
+		path[i] = aux;
+		free(tmp);
 	}
 	return (path);
 }
 
-static char	*get_right_path(char **path, char *cmd)
+static int	get_right_path(char **path, char **dst)
 {
 	int		i;
 	char	*out;
@@ -73,68 +55,81 @@ static char	*get_right_path(char **path, char *cmd)
 	{
 		if (!access(path[i], F_OK))
 		{
-			out = ft_strdup(path[i]);
 			if (access(path[i], X_OK))
+				return (128); // Permission denied
+			else
 			{
-				put_error(cmd, 128); // Error: Path has been found but it's not executable
-				free(out);
-				return (NULL);
+				*dst = ft_strdup(path[i]);
+				if (!dst)
+					return (12);
+				return (0);
 			}
 		}
 		i++;
 	}
-	return (out);
+	return (error_exec(cmd, "command not found\n", 127));
 }
 
-static char	*get_path_util(char *str, char *cmd)
+static int	get_path_util(char *str, char *cmd, char **dst)
 {
 	char	**path;
-	char	*out;
+	char	**aux;
+	int		err;
 
 	str = ft_strtrim(str, "PATH=");
+	if (!str)
+		return (12);
 	path = ft_split(str, ':');
 	free(str);
 	if (!path)
-		return (NULL);
-	path = join_path_cmd(path, cmd);
-	out = get_right_path(path, cmd);
+		return (12);
+	aux = path;
+	path = join_path_cmd(path, cmd, -1);
+	if (!path)
+		return (12);
+	err = get_right_path(path, dst);
 	free_double((void **)path);
-	return (out);
+	if (err)
+		return (err);
+	return (0);
 }
 
-
-int	get_path(char *cmd, char **envp, char *dst)
+static int	is_absolute_path(char *cmd)
 {
-	int		i;
-	char	*aux;
-	char	*out;
-
 	if (!ft_strncmp(cmd, "./", 2) || !ft_strncmp(cmd, "../", 3 )
 		|| cmd[0] == '/')
 	{
 		if (!access(cmd, F_OK))
 		{
 			if (access(cmd, X_OK))
-				put_error(cmd, 128);
+				return (error_exec(cmd, "Permission denied\n", 128));
 		}
 		else
-			put_error(cmd, 127);
-		return (cmd);
+			return (error_exec(cmd, "No such file or directory\n", 127));
+		return (1);
 	}
+	return (0);
+}
+
+int	get_path(char *cmd, char **envp, char **dst)
+{
+	int		i;
+	int		err;
+	char	*aux;
+	
+	err = is_absolute_path(cmd);
+	if (err == 1)
+	{
+		*dst = ft_strdup(cmd);
+		return (0);
+	}
+	else if (err)
+		return (err);
 	i = 0;
-	while (envp[i])
-	{
+	aux = NULL;
+	while (envp[i] && !aux)
 		aux = ft_strnstr(envp[i++], "PATH", 4);
-		if (aux != NULL)
-			break ;
-	}
 	if (!aux)
-	{
-		put_error(cmd, 127); // Error: command not found
-		return (NULL);
-	}
-	out = get_path_util(aux, cmd);
-	if (!out)
-		put_error(cmd, 127); // Error: command not found
-	return (out);
+		return (error_exec(cmd, "command not found\n", 127));
+	return (get_path_util(aux, cmd, dst));
 }

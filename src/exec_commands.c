@@ -6,7 +6,7 @@
 /*   By: laugarci <laugarci@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/04 14:04:45 by laugarci          #+#    #+#             */
-/*   Updated: 2023/09/26 14:13:38 by laugarci         ###   ########.fr       */
+/*   Updated: 2023/09/26 14:14:48 by laugarci         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,12 @@
 #include "minishell_defs.h"
 #include "libft_bonus.h"
 #include "parser.h"
+
+static int	free_double_and_return(void **var, int value)
+{
+	free_double(var);
+	return (value);
+}
 
 static t_list	*token_setup(t_list *lst)
 {
@@ -47,29 +53,26 @@ static t_list	*token_setup(t_list *lst)
 	return (lst);
 }
 
-static int	setup_cmd(t_list *lst, char **cmd, int size)
+static int	setup_cmd(t_list *lst, char **cmd, int size, char **env)
 {
 	t_token	*token;
 	int		i;
+	int		err;
 
 	i = 0;
 	token = lst->content;
-	cmd[i] = get_path(token->string, env);
+	err = get_path(token->string, env, &(cmd[i]));
+	if (err)
+		return (err);
 	if (!cmd[i++])
-	{
-		free_double((void **)cmd);
-		return (12);
-	}
+		free_double_and_return((void **)cmd, 12);
 	while (i < size - 1)
 	{
 		lst = lst->next;
 		token = lst->content;
 		cmd[i] = ft_strdup(token->string);
 		if (!cmd[i++])
-		{
-			free_double((void **)cmd);
-			return (12);
-		}
+			free_double_and_return((void **)cmd, 12);
 	}
 	cmd[i] = NULL;
 	return (0);
@@ -79,16 +82,21 @@ int	exec_commands(t_list *lst, char **env)
 {
 	int		i;
 	char	**cmd;
+	int		err;
 
+	err = 0;
 	lst = token_setup(lst);
+	if (!lst)
+		exit(print_error_and_return("Cannot allocate memory\n", 12));
 	i = count_list(lst);
 	cmd = malloc(sizeof(char *) * i);
 	if (!cmd)
-		exit(12);
-	if (setup_cmd(lst, cmd, i))
-		exit(12);
-	if ((execve(cmd[0], cmd, env)) == -1)
-		return (check_error(127));
+		exit(print_error_and_return("Cannot allocate memory\n", 12));
+	err = setup_cmd(lst, cmd, i, env);
+	if (err)
+		exit(err);
 	ft_lstclear(&lst, (void *)free_token);
-	exit(0);
+	if ((execve(cmd[0], cmd, env)) == -1)
+		exit(print_error_and_return("Execve failed\n", 1));
+	exit(err);
 }
