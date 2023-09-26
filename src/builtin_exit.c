@@ -6,7 +6,7 @@
 /*   By: ffornes- <ffornes-@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/19 12:52:54 by ffornes-          #+#    #+#             */
-/*   Updated: 2023/09/26 15:49:11 by ffornes-         ###   ########.fr       */
+/*   Updated: 2023/09/26 16:44:50 by ffornes-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,6 +72,15 @@ static int	check_digits(char *input)
 {
 	if (*input == '-' || *input == '+')
 		input++;
+	if (!input || !*input)
+		return (1);
+	while (ft_isdigit(*input) && *input == '0')
+		input++;
+	if (!input || !*input)
+	{
+		ft_putstr_fd("exit\n", 0);
+		exit(0);
+	}
 	while (ft_isdigit(*input))
 		input++;
 	if (*input && !ft_isdigit(*input))
@@ -86,17 +95,13 @@ void	builtin_exit(char *input)
 	if (!input)
 		exit(0);
 	out = ft_atoll(input);
-	while (*input == '0')
-		input++;
 	if (check_digits(input) || (!out && *input != '\0'))
 	{
-		ft_putstr_fd("exit\n", 1);
 		ft_putstr_fd("minishell: exit: ", 2);
 		ft_putstr_fd(input, 2);
 		ft_putstr_fd(": numeric argument required\n", 2);
 		exit(255);
 	}
-	ft_putstr_fd("exit\n", 1);
 	while (out > 255)
 		out -= (out / 255) * 256;
 	exit(out);
@@ -118,7 +123,7 @@ void	exit_check(t_list *lst)
 			aux = lst->content;
 			if (aux->string && aux->type < 0)
 			{
-				ft_putstr_fd("exit\n", 1);
+				ft_putstr_fd("exit\n", 0);
 				ft_putstr_fd("minishell: exit: too many arguments\n", 2);
 				set_or_return_exit_status(MODE_SET, 1);
 				builtin_exit("1");
@@ -127,7 +132,12 @@ void	exit_check(t_list *lst)
 				builtin_exit(token->string);
 		}
 		else if (token->string && !*token->string)
+		{
+			ft_putstr_fd("exit\n", 0);
+			ft_putstr_fd("minishell: exit: : numeric argument required\n", 2);
 			builtin_exit("255");
+		}
+		ft_putstr_fd("exit\n", 0);
 		builtin_exit(NULL);
 	}
 }
