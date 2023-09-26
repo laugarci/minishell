@@ -6,7 +6,7 @@
 /*   By: laugarci <laugarci@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/14 21:05:30 by laugarci          #+#    #+#             */
-/*   Updated: 2023/09/26 15:57:56 by laugarci         ###   ########.fr       */
+/*   Updated: 2023/09/26 18:32:30 by ffornes-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,12 +58,14 @@ int	builtin_cd(t_list *lst, t_list **env_lst)
 			return (0);
 		return (1);
 	}
+	else if (!ft_strchr(token->string, '/') && ft_strlen(token->string) >= 256)
+		return (error_cd(token->string, ": File name too long\n", 1));
 	else if (access((token->string), F_OK) != -1)
 	{
 		if (access((token->string), R_OK) != -1)
 		{
 			if (chdir(token->string) == -1)
-				return (1);
+				return (error_cd(token->string, ": Not a directory\n", 1));
 		}
 		else
 			return (error_cd(token->string, ": Permission denied\n", 1));

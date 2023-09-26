@@ -6,7 +6,7 @@
 /*   By: ffornes- <ffornes-@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/26 16:31:29 by ffornes-          #+#    #+#             */
-/*   Updated: 2023/09/26 14:23:34 by ffornes-         ###   ########.fr       */
+/*   Updated: 2023/09/26 19:24:47 by ffornes-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,7 +56,7 @@ static int	get_right_path(char *cmd, char **path, char **dst)
 		if (!access(path[i], F_OK))
 		{
 			if (access(path[i], X_OK))
-				return (128); // Permission denied
+				return (print_error_and_return("Permission denied\n", 128));
 			else
 			{
 				*dst = ft_strdup(path[i]);
@@ -96,8 +96,7 @@ static int	get_path_util(char *str, char *cmd, char **dst)
 
 static int	is_absolute_path(char *cmd)
 {
-	if (!ft_strncmp(cmd, "./", 2) || !ft_strncmp(cmd, "../", 3 )
-		|| cmd[0] == '/')
+	if (ft_strchr(cmd, '/'))
 	{
 		if (!access(cmd, F_OK))
 		{
@@ -131,5 +130,8 @@ int	get_path(char *cmd, char **envp, char **dst)
 		aux = ft_strnstr(envp[i++], "PATH", 4);
 	if (!aux)
 		return (error_exec(cmd, "command not found\n", 127));
-	return (get_path_util(aux, cmd, dst));
+	err = get_path_util(aux, cmd, dst);
+	if (err == 12)
+		return (print_error_and_return("Cannot allocate memory\n", 12));
+	return (err);
 }

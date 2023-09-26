@@ -6,7 +6,7 @@
 /*   By: ffornes- <ffornes-@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/25 17:09:21 by ffornes-          #+#    #+#             */
-/*   Updated: 2023/09/26 11:29:58 by ffornes-         ###   ########.fr       */
+/*   Updated: 2023/09/26 19:41:20 by ffornes-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,17 @@ int	start_execution(t_list *lst, t_list **env_lst, char **env)
 	int			process_count;
 	t_data		data;
 	int			err;
+	t_token		*token;
 
+	token = lst->content;
+	if (!*token->string && token->quotes <= 0)
+		return (0);
+	if (!*token->string || (*token->string == ' ' && !token->string[1]))
+	{
+		error_exec(token->string, "command not found\n", 127);
+		set_or_return_exit_status(MODE_SET, 127);
+		return (127);
+	}
 	init_data(&data);
 	if (!data.read_pipe_fds || !data.next_read_fd)
 		return (12);

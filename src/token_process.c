@@ -6,7 +6,7 @@
 /*   By: ffornes- <ffornes-@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/04 11:34:52 by ffornes-          #+#    #+#             */
-/*   Updated: 2023/09/26 14:26:22 by ffornes-         ###   ########.fr       */
+/*   Updated: 2023/09/26 19:59:25 by ffornes-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,7 +66,10 @@ static t_list	*exp_token(t_list *lst, t_token *tkn, char **envp)
 	t_list	*aux;
 	char	*string;
 
-	string = expand_evals(tkn->string, envp);
+	if (tkn->type == TOKEN_APPEND && !ft_strncmp(tkn->string, "$\0", 2))
+		string = ft_strdup("");
+	else
+		string = expand_evals(tkn->string, envp);
 	if (!string)
 		return (NULL);
 	if (exp_token_util(string, &tkn, &lst))

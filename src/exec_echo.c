@@ -6,7 +6,7 @@
 /*   By: laugarci <laugarci@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/04 11:30:35 by laugarci          #+#    #+#             */
-/*   Updated: 2023/09/26 16:42:36 by laugarci         ###   ########.fr       */
+/*   Updated: 2023/09/26 18:24:30 by ffornes-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,7 +92,7 @@ int	exec_echo(t_list *lst)
 	if (i == 2)
 	{
 		printf("\n");
-		return (1);
+		return (0);
 	}
 	aux = aux->next;
 	token = aux->content;
@@ -100,5 +100,5 @@ int	exec_echo(t_list *lst)
 		flag = count_flags(lst);
 	aux = move_list(aux, flag);
 	print_echo(aux, flag);
-	return (1);
+	return (0);
 }

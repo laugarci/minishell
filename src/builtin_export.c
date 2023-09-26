@@ -6,7 +6,7 @@
 /*   By: ffornes- <ffornes-@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/10 18:22:49 by ffornes-          #+#    #+#             */
-/*   Updated: 2023/09/26 10:45:15 by ffornes-         ###   ########.fr       */
+/*   Updated: 2023/09/26 18:09:44 by ffornes-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -138,5 +138,6 @@ int	builtin_export(t_list *tkn_lst, t_list **env_lst)
 		if (token && (token->type >= 0 || !token->string))
 			break ;
 	}
+	set_or_return_exit_status(MODE_SET, err);
 	return (err);
 }
