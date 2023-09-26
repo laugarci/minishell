@@ -6,7 +6,7 @@
 /*   By: laugarci <laugarci@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/17 10:09:20 by laugarci          #+#    #+#             */
-/*   Updated: 2023/09/26 14:47:25 by ffornes-         ###   ########.fr       */
+/*   Updated: 2023/09/26 14:53:30 by laugarci         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,6 @@ char	*find_command(t_list *lst)
 {
 	size_t	total_length;
 	t_token	*token;
-	t_list	*current;
 	int		i;
 	char	*result;
 
@@ -30,60 +29,39 @@ char	*find_command(t_list *lst)
 	result = malloc(sizeof(char) * (total_length + 1));
 	if (!result)
 		return (NULL);
-	current = lst;
 	i = 0;
-	while (current->next)
+	while (lst->next)
 	{
-		token = current->content;
+		token = lst->content;
 		if (token->type >= 0)
 			break ;
 		if (i > 0)
 			result[i++] = ' ';
 		ft_strlcpy(result + i, token->string, total_length);
 		i += ft_strlen(token->string);
-		current = current->next;
+		lst = lst->next;
 	}
 	result[total_length] = '\0';
 	return (result);
 }
 
-/*
-static char	*allocate_output(t_token *token, )
+t_list	*check_flag(t_list *lst, int flag)
 {
-		flag = 0;
-		if (token->type == INFILE || token->type == TRUNC
-			|| token->type == APPEND)
-		{
-			output = malloc(sizeof(char) * ft_strlen(token->string) + 1);
-			if (!output)
-				return (NULL);
-			ft_strlcpy(output, token->string, ft_strlen(token->string) + 1);
-			tmp = tmp->next;
-			token = tmp->content;
-			flag = 1;
-			if (token->type != 3 && token->type != 4 && token->type != 1)
-				break ;
-		}
-		if (flag == 0)
-		{
-			tmp = tmp->next;
-			token = tmp->content;
-		}
+	if (flag == 0)
+		lst = lst->next;
+	return (lst);
 }
-*/
 
 char	*find_output(t_list *lst)
 {
-	t_list	*tmp;
 	t_token	*token;
 	char	*output;
 	int		flag;
 
-	tmp = lst;
-	token = tmp->content;
 	output = NULL;
-	while (tmp)
+	while (lst)
 	{
+		token = lst->content;
 		flag = 0;
 		if (token->type == INFILE || token->type == TRUNC
 			|| token->type == APPEND)
@@ -92,17 +70,13 @@ char	*find_output(t_list *lst)
 			if (!output)
 				return (NULL);
 			ft_strlcpy(output, token->string, ft_strlen(token->string) + 1);
-			tmp = tmp->next;
-			token = tmp->content;
+			lst = lst->next;
+			token = lst->content;
 			flag = 1;
 			if (token->type != 3 && token->type != 4 && token->type != 1)
 				break ;
 		}
-		if (flag == 0)
-		{
-			tmp = tmp->next;
-			token = tmp->content;
-		}
+		lst = check_flag(lst, flag);
 	}
 	return (output);
 }
