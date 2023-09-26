@@ -6,7 +6,7 @@
 /*   By: laugarci <laugarci@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/17 10:09:20 by laugarci          #+#    #+#             */
-/*   Updated: 2023/09/23 16:04:47 by laugarci         ###   ########.fr       */
+/*   Updated: 2023/09/26 14:06:17 by laugarci         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,63 +22,61 @@ char	*find_command(t_list *lst)
 {
 	size_t	total_length;
 	t_token	*token;
-	t_list	*current;
 	int		i;
 	char	*result;
 
 	total_length = total_input_len(lst);
 	result = malloc(sizeof(char) * (total_length + 1));
 	if (!result)
-		return (NULL); // Error: malloc
-	current = lst;
+		return (NULL);
 	i = 0;
-	while (current->next)
+	while (lst->next)
 	{
-		token = current->content;
-		if ((token->type == 3 || token->type == 4
+		token = lst->content;
+		if ((token->type == 3 || ->type == 4
 				|| token->type == 1 || token->type == 2))
 			break ;
 		if (i > 0)
 			result[i++] = ' ';
 		ft_strlcpy(result + i, token->string, total_length);
 		i += ft_strlen(token->string);
-		current = current->next;
+		lst = lst->next;
 	}
 	result[total_length] = '\0';
 	return (result);
 }
 
+t_list	*check_flag(t_list *lst, int flag)
+{
+	if (flag == 0)
+		lst = lst->next;
+	return (lst);
+}
+
 char	*find_output(t_list *lst)
 {
-	t_list	*tmp;
 	t_token	*token;
 	char	*output;
 	int		flag;
 
-	tmp = lst;
-	token = tmp->content;
 	output = NULL;
-
-	while (tmp)
+	while (lst)
 	{
+		token = lst->content;
 		flag = 0;
 		if (token->type == 3 || token->type == 4 || token->type == 1)
 		{
 			output = malloc(sizeof(char) * ft_strlen(token->string) + 1);
 			if (!output)
-				return (NULL); // Error: malloc
+				return (NULL);
 			ft_strlcpy(output, token->string, ft_strlen(token->string) + 1);
-			tmp = tmp->next;
+			lst = lst->next;
 			token = tmp->content;
 			flag = 1;
 			if (token->type != 3 && token->type != 4 && token->type != 1)
 				break ;
 		}
-		if (flag == 0)
-		{
-			tmp = tmp->next;
-			token = tmp->content;
-		}
+		lst = check_flag(lst, flag);
 	}
 	return (output);
 }
@@ -97,7 +95,7 @@ int	find_input(t_list *lst, char **dst, int type1, int type2)
 			*dst = token->string;
 			if (token->type == INFILE)
 				if (access(*dst, F_OK))
-					return (print_and_return(126)); 
+					return (print_and_return(126));
 		}
 		lst = lst->next;
 		token = lst->content;
