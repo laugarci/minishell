@@ -6,7 +6,7 @@
 /*   By: ffornes- <ffornes-@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/19 12:52:54 by ffornes-          #+#    #+#             */
-/*   Updated: 2023/09/26 15:22:25 by ffornes-         ###   ########.fr       */
+/*   Updated: 2023/09/26 15:30:50 by ffornes-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -114,7 +114,7 @@ void	exit_check(t_list *lst)
 	{
 		lst = lst->next;
 		token = lst->content;
-		if (token->string)
+		if (token->string && *token->string)
 		{
 			lst = lst->next;
 			aux = lst->content;
@@ -126,6 +126,8 @@ void	exit_check(t_list *lst)
 			else
 				builtin_exit(token->string);
 		}
+		else if (token->string && !*token->string)
+			builtin_exit("255");
 		else
 			builtin_exit(NULL);
 	}
