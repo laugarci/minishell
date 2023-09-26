@@ -6,7 +6,7 @@
 /*   By: ffornes- <ffornes-@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/19 12:52:54 by ffornes-          #+#    #+#             */
-/*   Updated: 2023/09/26 15:22:25 by ffornes-         ###   ########.fr       */
+/*   Updated: 2023/09/26 15:49:11 by ffornes-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,15 +84,13 @@ void	builtin_exit(char *input)
 	long long	out;
 
 	if (!input)
-	{
-		ft_putstr_fd("exit\n", 1);
 		exit(0);
-	}
 	out = ft_atoll(input);
 	while (*input == '0')
 		input++;
 	if (check_digits(input) || (!out && *input != '\0'))
 	{
+		ft_putstr_fd("exit\n", 1);
 		ft_putstr_fd("minishell: exit: ", 2);
 		ft_putstr_fd(input, 2);
 		ft_putstr_fd(": numeric argument required\n", 2);
@@ -114,19 +112,22 @@ void	exit_check(t_list *lst)
 	{
 		lst = lst->next;
 		token = lst->content;
-		if (token->string)
+		if (token->string && *token->string)
 		{
 			lst = lst->next;
 			aux = lst->content;
-			if (aux->string)
+			if (aux->string && aux->type < 0)
 			{
+				ft_putstr_fd("exit\n", 1);
 				ft_putstr_fd("minishell: exit: too many arguments\n", 2);
 				set_or_return_exit_status(MODE_SET, 1);
+				builtin_exit("1");
 			}
 			else
 				builtin_exit(token->string);
 		}
-		else
-			builtin_exit(NULL);
+		else if (token->string && !*token->string)
+			builtin_exit("255");
+		builtin_exit(NULL);
 	}
 }
