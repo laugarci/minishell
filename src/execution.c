@@ -6,7 +6,7 @@
 /*   By: laugarci <laugarci@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/22 15:29:58 by laugarci          #+#    #+#             */
-/*   Updated: 2023/09/26 12:11:22 by ffornes-         ###   ########.fr       */
+/*   Updated: 2023/09/26 16:00:36 by laugarci         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,20 +21,27 @@
 static int	builtin_check(t_list *lst, t_list **env_lst, char **env)
 {
 	t_token	*token;
+	int		err;
 
+	err = 0;
 	token = lst->content;
 	if (ft_strncmp(token->string, "cd\0", 3) == 0)
-		return (builtin_cd(lst, env_lst));
+		err = builtin_cd(lst, env_lst);
 	else if (ft_strncmp(token->string, "echo\0", 5) == 0)
-		return (exec_echo(lst));
+		err = exec_echo(lst);
 	else if (ft_strncmp(token->string, "pwd\0", 4) == 0)
-		return (exec_pwd());
+		err = exec_pwd();
 	else if (ft_strncmp(token->string, "env\0", 4) == 0)
-		return (exec_env(env));
+		err = exec_env(env);
 	else if (ft_strncmp(token->string, "unset\0", 6) == 0)
-		return (builtin_unset(lst, env_lst));
+		err = builtin_unset(lst, env_lst);
 	else if (ft_strncmp(token->string, "export\0", 7) == 0)
-		return (builtin_export(lst, env_lst));
+		err = builtin_export(lst, env_lst);
+	if (err)
+	{
+		set_or_return_exit_status(MODE_SET, err);
+		return (err);
+	}
 	return (-1);
 }
 
