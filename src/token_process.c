@@ -6,7 +6,7 @@
 /*   By: ffornes- <ffornes-@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/04 11:34:52 by ffornes-          #+#    #+#             */
-/*   Updated: 2023/09/19 19:29:26 by ffornes-         ###   ########.fr       */
+/*   Updated: 2023/09/26 14:26:22 by ffornes-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -107,22 +107,22 @@ int	process_tokens(t_list **token_list, char *envp[])
 	if (syntax_error_check(tmp_lst))
 		return (258);
 	if (process_subtokens(&tmp_lst))
-		return (print_and_return(12));
+		return (print_error_and_return("Cannot allocate memory\n", 12));
 	aux = tmp_lst->content;
 	while (aux->string)
 	{
 		if (remove_quotes(&aux))
-			return (print_and_return(12));
+			return (print_error_and_return("Cannot allocate memory\n", 12));
 		if (ft_strchr(aux->string, '$') && (aux->quotes == 2 || !aux->quotes))
 		{
 			tmp_lst = exp_token(tmp_lst, aux, envp);
 			if (!tmp_lst)
-				return (print_and_return(12));
+				return (print_error_and_return("Cannot allocate memory\n", 12));
 		}
 		tmp_lst = tmp_lst->next;
 		aux = tmp_lst->content;
 	}
 	if (process_tokens_util(token_list))
-		return (print_and_return(12));
+		return (print_error_and_return("Cannot allocate memory\n", 12));
 	return (0);
 }
