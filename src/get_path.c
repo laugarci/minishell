@@ -6,7 +6,7 @@
 /*   By: ffornes- <ffornes-@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/26 16:31:29 by ffornes-          #+#    #+#             */
-/*   Updated: 2023/09/26 23:56:17 by laugarci         ###   ########.fr       */
+/*   Updated: 2023/09/27 12:11:10 by ffornes-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,9 +76,9 @@ static int	get_path_util(char *str, char *cmd, char **dst)
 	char	**aux;
 	int		err;
 
-	str = ft_strtrim(str, "PATH=");
-	if (!str)
-		return (12);
+	while (*str && *str != '=')
+		str++;
+	str++;
 	path = ft_split(str, ':');
 	free(str);
 	if (!path)
