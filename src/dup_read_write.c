@@ -6,14 +6,16 @@
 /*   By: ffornes- <ffornes-@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/24 16:52:35 by ffornes-          #+#    #+#             */
-/*   Updated: 2023/09/25 12:29:32 by ffornes-         ###   ########.fr       */
+/*   Updated: 2023/09/27 12:00:13 by ffornes-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+#include "libft.h"
 #include "minishell.h"
 #include "minishell_defs.h"
 #include <unistd.h>
 #include <fcntl.h>
+#include <stdlib.h>
 
 static int	get_last_redirect_type(t_list *lst, int type1, int type2)
 {
