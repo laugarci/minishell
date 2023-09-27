@@ -6,7 +6,7 @@
 /*   By: ffornes- <ffornes-@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/27 11:32:21 by ffornes-          #+#    #+#             */
-/*   Updated: 2023/09/27 19:20:36 by ffornes-         ###   ########.fr       */
+/*   Updated: 2023/09/27 19:58:52 by ffornes-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,7 +52,7 @@ int			exec_redirect(t_list *lst);
 
 int			count_list(t_list *lst);
 int			total_input_len(t_list *lst);
-int			here_doc(t_list *lst, int id);
+int			here_doc(t_list *lst, int id, char **env);
 void		create_files(t_list *lst);
 
 t_list		*process_list(t_list *lst, int i);
