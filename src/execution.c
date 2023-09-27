@@ -6,7 +6,7 @@
 /*   By: laugarci <laugarci@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/22 15:29:58 by laugarci          #+#    #+#             */
-/*   Updated: 2023/09/27 15:57:37 by laugarci         ###   ########.fr       */
+/*   Updated: 2023/09/27 18:17:50 by ffornes-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,6 +55,8 @@ static int	parent_exec(t_list *lst, t_list **env_lst, char **env, t_data *data)
 	token = lst->content;
 	stdio_fds[0] = dup(STDIN_FILENO);
 	stdio_fds[1] = dup(STDOUT_FILENO);
+	if (stdio_fds[0] == -1 || stdio_fds[1] == -1)
+		return (1);
 	err = dup_read(lst, data);
 	if (err)
 		return (err);
@@ -62,8 +64,12 @@ static int	parent_exec(t_list *lst, t_list **env_lst, char **env, t_data *data)
 	if (dup_write(lst))
 		return (1);
 	err = builtin_check(lst, env_lst, env);
-	dup2(stdio_fds[0], STDIN_FILENO);
-	dup2(stdio_fds[1], STDOUT_FILENO);
+	if (dup2(stdio_fds[0], STDIN_FILENO) == -1)
+		return (1);
+	if (dup2(stdio_fds[1], STDOUT_FILENO) == -1)
+		return (1);
+	close(stdio_fds[0]);
+	close(stdio_fds[1]);
 	return (err);
 }
 
