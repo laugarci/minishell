@@ -6,7 +6,7 @@
 /*   By: ffornes- <ffornes-@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/27 11:32:21 by ffornes-          #+#    #+#             */
-/*   Updated: 2023/09/26 18:18:34 by ffornes-         ###   ########.fr       */
+/*   Updated: 2023/09/27 14:55:22 by ffornes-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,4 +90,6 @@ int			set_or_return_state(int mode, int value);
 	//	SIGNALS
 int			*signal_handler(void);
 void		signal_display(int mode);
+
+int			free_double_and_return(void **src, int error);
 #endif
