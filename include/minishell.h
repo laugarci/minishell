@@ -6,7 +6,7 @@
 /*   By: ffornes- <ffornes-@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/27 11:32:21 by ffornes-          #+#    #+#             */
-/*   Updated: 2023/09/27 15:56:44 by laugarci         ###   ########.fr       */
+/*   Updated: 2023/09/27 16:10:01 by laugarci         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,6 +82,8 @@ int			builtin_unset(t_list *lst, t_list **env_lst);
 int			builtin_cd(t_list *lst, t_list **env_lst);
 
 void		builtin_exit(char *input);
+int			check_digits(char *input);
+void		put_numeric_error(char *input);
 void		exit_check(t_list *lst, int *err, t_token *token);
 	//	ERRORS
 int			error_exec(char *cmd, char *error_message, int value);

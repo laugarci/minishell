@@ -6,7 +6,7 @@
 /*   By: laugarci <laugarci@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/05 14:01:37 by laugarci          #+#    #+#             */
-/*   Updated: 2023/09/27 15:09:56 by laugarci         ###   ########.fr       */
+/*   Updated: 2023/09/27 16:28:18 by laugarci         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,12 +21,29 @@
 #include "minishell_defs.h"
 #include "parser.h"
 
+static void	proceed(char *input, t_list **list, t_list **env_lst, char **env)
+{
+	int	err;
+
+	signal(SIGINT, SIG_IGN);
+	signal(SIGQUIT, SIG_IGN);
+	add_history(input);
+	err = parse_input(input, env, list);
+	if (!err)
+	{
+		*list = organize_list(*list);
+		start_execution(*list, env_lst, env);
+		ft_lstclear(list, (void *)free_token);
+	}
+	else
+		set_or_return_exit_status(MODE_SET, err);
+}
+
 static int	main_loop(char *prompt, t_list **env_lst)
 {
 	char	*input;
 	char	**environ;
 	t_list	*list;
-	int		err;
 
 	environ = envlst_to_charpp(*env_lst);
 	if (!environ)
@@ -36,20 +53,7 @@ static int	main_loop(char *prompt, t_list **env_lst)
 	if (!input)
 		builtin_exit(ft_itoa(set_or_return_exit_status(MODE_RETURN, -1)));
 	if (input[0] != '\0')
-	{
-		signal(SIGINT, SIG_IGN);
-		signal(SIGQUIT, SIG_IGN);
-		add_history(input);
-		err = parse_input(input, environ, &list);
-		if (!err)
-		{
-			list = organize_list(list);
-			start_execution(list, env_lst, environ);
-			ft_lstclear(&list, (void *)free_token);
-		}
-		else
-			set_or_return_exit_status(MODE_SET, err);
-	}
+		proceed(input, &list, env_lst, environ);
 	free_double((void **)environ);
 	free(input);
 	return (0);

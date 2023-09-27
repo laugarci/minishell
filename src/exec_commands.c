@@ -6,7 +6,7 @@
 /*   By: laugarci <laugarci@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/04 14:04:45 by laugarci          #+#    #+#             */
-/*   Updated: 2023/09/27 15:15:41 by laugarci         ###   ########.fr       */
+/*   Updated: 2023/09/27 16:03:28 by laugarci         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,10 +93,7 @@ int	exec_commands(t_list *lst, char **env)
 	if (!cmd)
 		return (set_or_return_exit_status(MODE_RETURN, -1));
 	if (access(cmd[0], F_OK))
-	{
-		set_or_return_exit_status(MODE_SET, 127);
-		return (127);
-	}
+		return (set_or_return_exit_status(MODE_SET, 127));
 	if ((execve(cmd[0], cmd, env)) == -1)
 	{
 		if (ft_strchr(cmd[0], '/'))
