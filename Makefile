@@ -6,7 +6,7 @@
 #    By: laugarci <laugarci@student.42barcel>       +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/06/26 15:00:09 by ffornes-          #+#    #+#              #
-#    Updated: 2023/09/26 18:40:27 by ffornes-         ###   ########.fr        #
+#    Updated: 2023/09/27 15:13:29 by laugarci         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -25,9 +25,12 @@ SRC_FILES = minishell.c \
 			token_new.c token_free.c token_save.c token_type.c \
 			token_process.c token_process_rm.c \
 			subtoken_process.c subtoken_count.c subtoken_join.c token_organize.c \
-			builtin_unset.c builtin_export.c builtin_export_utils.c builtin_exit.c \
-			errors.c syntax_error.c process_list.c builtin_cd.c exec_env.c \
+			builtin_unset.c builtin_export.c builtin_export_utils.c \
+			builtin_exit.c \
+			errors.c syntax_error.c \
+			process_list.c builtin_cd.c exec_env.c \
 			signals.c signal_display.c \
+			utils_free.c \
 			exit_status.c execution.c dup_read_write.c
 
 OBJ_DIR = objs/

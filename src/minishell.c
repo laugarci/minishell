@@ -6,7 +6,7 @@
 /*   By: laugarci <laugarci@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/05 14:01:37 by laugarci          #+#    #+#             */
-/*   Updated: 2023/09/27 15:02:14 by laugarci         ###   ########.fr       */
+/*   Updated: 2023/09/27 15:09:56 by laugarci         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,44 +20,6 @@
 #include "minishell.h"
 #include "minishell_defs.h"
 #include "parser.h"
-#include "termios.h"
-
-// AJNKNAEKK DEBUGGGGGGGGGGGG // INCLUDED IN PARSER.H
-void	print_tokens(t_list *lst)
-{
-	t_token		*token;
-
-	token = lst->content;
-	while (1)
-	{
-		printf("Token = [String: %s]\t", token->string);
-		printf("[Type: ");
-		if (token->type == INFILE)
-			printf("INFILE]");
-		else if (token->type == HERE_DOC)
-			printf("H_DOC]");
-		else if (token->type == PIPE)
-			printf("PIPE]");
-		else if (token->type == APPEND)
-			printf("APPEND]");
-		else if (token->type == TRUNC)
-			printf("TRUNC]");
-		else if (token->type == TOKEN_APPEND)
-			printf("TOKEN_APPEND]");
-		else if (token->type == TOKEND)
-			printf("TOKEND]");
-		else
-			printf("-1]");
-		printf("\t[Quotes: %d]\n", token->quotes);
-		if (!lst->next)
-			break ;
-		lst = lst->next;
-		token = lst->content;
-		if (!token->string)
-			break ;
-	}
-}
-// DEBUG DEBUG DEBUG DEBUG DELETE LATER   RR ER E REA EGAG */
 
 static int	main_loop(char *prompt, t_list **env_lst)
 {

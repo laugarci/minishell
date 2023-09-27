@@ -6,7 +6,7 @@
 /*   By: laugarci <laugarci@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/22 15:29:58 by laugarci          #+#    #+#             */
-/*   Updated: 2023/09/27 00:03:02 by laugarci         ###   ########.fr       */
+/*   Updated: 2023/09/27 14:09:30 by ffornes-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,15 +69,8 @@ static int	parent_exec(t_list *lst, t_list **env_lst, char **env, t_data *data)
 
 static int	child_exec(t_list *lst, t_list **env_lst, char **env)
 {
-	t_token	*token;
-	char	*aux;
 	int		err;
 
-	token = lst->content;
-	aux = token->string;
-	free(aux);
-	if (!token->string)
-		return (12);
 	err = builtin_check(lst, env_lst, env);
 	if (err >= 0)
 		return (err);
@@ -128,8 +121,12 @@ int	execution(t_list *lst, t_list **env_lst, t_data *data, char **env)
 			pipe(data->write_pipe_fds);
 			data->next_read_fd = data->write_pipe_fds[0];
 		}
-		else if (parent_exec(lst, env_lst, env, data) >= 0)
-			break ;
+		else 
+		{
+			err = parent_exec(lst, env_lst, env, data);
+			if (err >= 0)
+				break ;
+		}
 		pid = fork();
 		if (pid < 0)
 			return (1);

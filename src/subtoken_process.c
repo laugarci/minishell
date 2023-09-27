@@ -6,21 +6,16 @@
 /*   By: ffornes- <ffornes-@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/04 11:45:48 by ffornes-          #+#    #+#             */
-/*   Updated: 2023/09/13 20:48:55 by ffornes-         ###   ########.fr       */
+/*   Updated: 2023/09/27 14:52:16 by ffornes-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "parser.h"
+#include "minishell.h"
 #include "libft.h"
 #include "libft_bonus.h"
 #include <stdlib.h>
 #include <stdio.h>
-
-static int	free_double_and_return(char **src, int error)
-{
-	free_double((void **)src);
-	return (error);
-}
 
 static int	set_strings(char *str, char **dst)
 {
@@ -40,7 +35,7 @@ static int	set_strings(char *str, char **dst)
 		{
 			dst[j] = ft_calloc(sizeof(char), (i + 2));
 			if (!dst[j])
-				return (free_double_and_return(dst, 12));
+				return (free_double_and_return((void **)dst, 12));
 			ft_strlcpy(dst[j++], str, (i + 2));
 			str = str + i + 1;
 			i = -1;
