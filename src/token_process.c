@@ -6,7 +6,7 @@
 /*   By: ffornes- <ffornes-@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/04 11:34:52 by ffornes-          #+#    #+#             */
-/*   Updated: 2023/09/27 18:57:02 by ffornes-         ###   ########.fr       */
+/*   Updated: 2023/09/27 19:01:38 by ffornes-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,7 +75,7 @@ static t_list	*exp_token(t_list *lst, t_token *tkn, char **envp)
 static int	process_tokens_util(t_list **token_list, char *envp[])
 {
 	t_list	*tmp_lst;
-	t_token *aux;
+	t_token	*aux;
 
 	tmp_lst = *token_list;
 	aux = tmp_lst->content;
@@ -112,5 +112,5 @@ int	process_tokens(t_list **token_list, char *envp[])
 	if (join_subtoken(token_list))
 		return (print_error_and_return("Cannot allocate memory\n", 12));
 	remove_duplicates(token_list);
-		return (0);
+	return (0);
 }
