@@ -6,7 +6,7 @@
 /*   By: ffornes- <ffornes-@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/17 16:24:45 by ffornes-          #+#    #+#             */
-/*   Updated: 2023/09/26 11:31:08 by ffornes-         ###   ########.fr       */
+/*   Updated: 2023/09/27 15:01:58 by laugarci         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,23 @@
 #include <readline/history.h>
 #include <stdlib.h>
 #include "termios.h"
+
+void	signal_setup(int state)
+{
+	if (state == STATE_READ)
+	{
+		set_or_return_state(MODE_SET, STATE_READ);
+		signal_display(MODE_UNSET);
+	}
+	else if (state == STATE_HDOC)
+		set_or_return_state(MODE_SET, STATE_HDOC);
+	else if (state == STATE_EXEC)
+	{
+		set_or_return_state(MODE_SET, STATE_EXEC);
+		signal_display(MODE_SET);
+	}
+	signal_handler();
+}
 
 int	set_or_return_state(int mode, int value)
 {
