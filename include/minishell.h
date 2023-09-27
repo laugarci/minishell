@@ -6,7 +6,7 @@
 /*   By: ffornes- <ffornes-@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/27 11:32:21 by ffornes-          #+#    #+#             */
-/*   Updated: 2023/09/27 15:10:26 by laugarci         ###   ########.fr       */
+/*   Updated: 2023/09/27 15:56:44 by laugarci         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,6 +32,9 @@ int			get_path(char *cmd, char **envp, char **dst);
 
 int			exec_commands(t_list *lst, char **env);
 int			start_execution(t_list *lst, t_list **env_lst, char **env);
+int			gen_child(t_list *lst, t_list **env_lst, t_data *data, char **env);
+int			get_child_status(int pid);
+int			builtin_check(t_list *lst, t_list **env_lst, char **env);
 
 int			type_count(t_list *lst, int type);
 int			p_type_count(t_list *lst, int type);
@@ -79,7 +82,7 @@ int			builtin_unset(t_list *lst, t_list **env_lst);
 int			builtin_cd(t_list *lst, t_list **env_lst);
 
 void		builtin_exit(char *input);
-void		exit_check(t_list *lst, int *err);
+void		exit_check(t_list *lst, int *err, t_token *token);
 	//	ERRORS
 int			error_exec(char *cmd, char *error_message, int value);
 int			print_error_and_return(char *error_message, int value);

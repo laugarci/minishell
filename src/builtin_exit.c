@@ -6,7 +6,7 @@
 /*   By: ffornes- <ffornes-@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/19 12:52:54 by ffornes-          #+#    #+#             */
-/*   Updated: 2023/09/27 10:16:14 by laugarci         ###   ########.fr       */
+/*   Updated: 2023/09/27 15:55:56 by laugarci         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,10 +76,27 @@ void	put_numeric_error(char *input)
 	exit(255);
 }
 
-static int	check_digits(char *input)
+static int	check_digits_utils(char *input)
 {
 	int	i;
 
+	i = 0;
+	while (ft_isdigit(*input))
+	{
+		i++;
+		input++;
+		if (i > 20)
+			put_numeric_error(input - i);
+	}
+	while (*input == ' ')
+		input++;
+	if (*input && !ft_isdigit(*input))
+		return (1);
+	return (0);
+}
+
+static int	check_digits(char *input)
+{
 	while (*input == ' ')
 		input++;
 	if (!ft_strncmp(input, "-18446744073709551617\0", 22))
@@ -95,19 +112,7 @@ static int	check_digits(char *input)
 		ft_putstr_fd("exit\n", 0);
 		exit(0);
 	}
-	i = 0;
-	while (ft_isdigit(*input))
-	{
-		i++;
-		input++;
-		if (i > 20)
-			put_numeric_error(input - i);
-	}
-	while (*input == ' ')
-		input++;
-	if (*input && !ft_isdigit(*input))
-		return (1);
-	return (0);
+	return (check_digits_utils(input));
 }
 
 void	builtin_exit(char *input)
@@ -135,12 +140,26 @@ void	builtin_exit(char *input)
 	exit(out);
 }
 
-void	exit_check(t_list *lst, int *err)
+static void	char_is_null(void)
 {
-	t_token	*token;
+	ft_putstr_fd("exit\n", 0);
+	ft_putstr_fd("minishell: exit: : numeric argument required\n", 2);
+	builtin_exit("255");
+}
+
+static int	too_many_args(int *err)
+{
+	ft_putstr_fd("exit\n", 0);
+	ft_putstr_fd("minishell: exit: too many arguments\n", 2);
+	set_or_return_exit_status(MODE_SET, 1);
+	*err = 1;
+	return (1);
+}
+
+void	exit_check(t_list *lst, int *err, t_token *token)
+{
 	t_token	*aux;
 
-	token = lst->content;
 	if (!ft_strncmp(token->string, "exit\0", 5))
 	{
 		lst = lst->next;
@@ -153,24 +172,14 @@ void	exit_check(t_list *lst, int *err)
 			{
 				if (!ft_isdigit(*token->string))
 					builtin_exit(token->string);
-				else
-				{
-					ft_putstr_fd("exit\n", 0);
-					ft_putstr_fd("minishell: exit: too many arguments\n", 2);
-					set_or_return_exit_status(MODE_SET, 1);
-					*err = 1;
+				else if (too_many_args(err))
 					return ;
-				}
 			}
 			else
 				builtin_exit(token->string);
 		}
 		else if (token->string && !*token->string)
-		{
-			ft_putstr_fd("exit\n", 0);
-			ft_putstr_fd("minishell: exit: : numeric argument required\n", 2);
-			builtin_exit("255");
-		}
+			char_is_null();
 		builtin_exit(ft_itoa(set_or_return_exit_status(MODE_RETURN, -1)));
 	}
 }
