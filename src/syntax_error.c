@@ -6,7 +6,7 @@
 /*   By: ffornes- <ffornes-@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/13 16:56:30 by ffornes-          #+#    #+#             */
-/*   Updated: 2023/09/26 18:40:05 by ffornes-         ###   ########.fr       */
+/*   Updated: 2023/09/27 11:22:07 by ffornes-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,17 +24,28 @@ static int	syntax_error(char *error_message)
 	return (258);
 }
 
-static int	check_tokens(t_token *token, int type)
+static int	check_tokens(t_token *token, int type, t_list *lst)
 {
+	t_token	*aux;
+
+	if (type >= 0 && type < 5 && token->type >= 0 && token->type < 5)
+	{
+		if (token->type > 0 && lst->next)
+		{
+			lst = lst->next;
+			aux = lst->content;
+			if (type == 0 && aux->type < 0)
+				return (0);
+		}
+		return (syntax_error(token->string));
+	}
 	if (!token->string || (type == 4 && !token->type))
 	{
-		if (type >= 0 && type < 5)
+		if (type > 0 && type < 5)
 			return (syntax_error("newline"));
 		else if (type == 0)
 			return (syntax_error("|"));
-	}
-	else if (type >= 0 && type < 5 && token->type >= 0 && token->type < 5)
-		return (syntax_error(token->string));
+	}		
 	return (0);
 }
 
@@ -74,7 +85,7 @@ int	syntax_error_check(t_list *lst)
 		lst = lst->next;
 		token = lst->content;
 		if (!error)
-			error = check_tokens(token, type);
+			error = check_tokens(token, type, lst);
 	}
 	return (error);
 }
