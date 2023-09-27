@@ -6,7 +6,7 @@
 /*   By: ffornes- <ffornes-@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/04 11:34:52 by ffornes-          #+#    #+#             */
-/*   Updated: 2023/09/27 12:31:26 by laugarci         ###   ########.fr       */
+/*   Updated: 2023/09/27 16:19:26 by laugarci         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,34 +15,6 @@
 #include "libft.h"
 #include <stdlib.h>
 #include <stdio.h>
-
-static void	clean_redirects(t_list **lst)
-{
-	t_list	*tmp_lst;
-	t_token	*token;
-	char	*str;
-	int		next;
-
-	tmp_lst = *lst;
-	token = tmp_lst->content;
-	next = 0;
-	while (token->string)
-	{
-		str = token->string;
-		if (token->type > 0)
-		{
-			if (!ft_strncmp(str, "<\0", 2) || !ft_strncmp(str, "<<\0", 3)
-				|| !ft_strncmp(str, ">\0", 2) || !ft_strncmp(str, ">>\0", 3))
-				next = token->type;
-			else
-				next = 0;
-		}
-		tmp_lst = tmp_lst->next;
-		token = tmp_lst->content;
-		if (next)
-			token->type = next;
-	}
-}
 
 static int	exp_token_util(char *string, t_token **tkn, t_list **lst)
 {

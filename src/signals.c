@@ -6,7 +6,7 @@
 /*   By: ffornes- <ffornes-@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/17 16:24:45 by ffornes-          #+#    #+#             */
-/*   Updated: 2023/09/27 15:01:58 by laugarci         ###   ########.fr       */
+/*   Updated: 2023/09/27 16:16:14 by laugarci         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,15 +34,6 @@ void	signal_setup(int state)
 		signal_display(MODE_SET);
 	}
 	signal_handler();
-}
-
-int	set_or_return_state(int mode, int value)
-{
-	static int	state;
-
-	if (mode == MODE_SET)
-		state = value;
-	return (state);
 }
 
 static void	state_read(int sig, siginfo_t *data, void *n_data)
