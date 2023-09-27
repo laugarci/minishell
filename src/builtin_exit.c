@@ -6,7 +6,7 @@
 /*   By: ffornes- <ffornes-@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/19 12:52:54 by ffornes-          #+#    #+#             */
-/*   Updated: 2023/09/26 23:47:19 by laugarci         ###   ########.fr       */
+/*   Updated: 2023/09/27 10:16:14 by laugarci         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -118,12 +118,7 @@ void	builtin_exit(char *input)
 		exit(0);
 	out = ft_atoll(input);
 	if (check_digits(input) || (!out && *input != '\0'))
-	{
-		ft_putstr_fd("minishell: exit: ", 2);
-		ft_putstr_fd(input, 2);
-		ft_putstr_fd(": numeric argument required\n", 2);
-		exit(255);
-	}
+		put_numeric_error(input);
 	if (out > 0)
 		while (out > 255)
 			out -= (out / 255) * 256;
