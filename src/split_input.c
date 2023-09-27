@@ -6,7 +6,7 @@
 /*   By: ffornes- <ffornes-@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/31 12:35:07 by ffornes-          #+#    #+#             */
-/*   Updated: 2023/09/26 12:09:16 by ffornes-         ###   ########.fr       */
+/*   Updated: 2023/09/27 15:00:02 by ffornes-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,10 +75,7 @@ static char	**save_new_input(char *input, int amount)
 	{
 		out[i] = get_string(input, (i + 1), -1, 0);
 		if (!out[i])
-		{
-			free_double((void **)out);
-			return (NULL);
-		}
+			return (free_double((void **)out));
 		i++;
 	}
 	out[i] = NULL;

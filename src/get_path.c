@@ -6,7 +6,7 @@
 /*   By: ffornes- <ffornes-@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/26 16:31:29 by ffornes-          #+#    #+#             */
-/*   Updated: 2023/09/27 12:36:53 by ffornes-         ###   ########.fr       */
+/*   Updated: 2023/09/27 14:55:51 by ffornes-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,31 +15,33 @@
 #include "libft.h"
 #include "minishell.h"
 
+#include <stdio.h>
+
 static char	**join_path_cmd(char **path, char *cmd, int i)
 {
 	char	*aux;
 	char	*tmp;
+	char	*command;
 
-	while (path[++i])
+	i = 0;
+	while (path[i])
 	{
+		command = ft_strdup(cmd);
+		if (!command)
+			return (NULL);
 		aux = ft_strjoin(path[i], "/");
 		if (!aux)
-		{
-			free_double((void **)path);
-			return (NULL);
-		}
+			return (free_double((void **)path));
 		tmp = path[i];
 		path[i] = aux;
 		free(tmp);
 		aux = ft_strjoin(path[i], cmd);
 		if (!aux)
-		{
-			free_double((void **)path);
-			return (NULL);
-		}
+			return (free_double((void **)path));
 		tmp = path[i];
 		path[i] = aux;
 		free(tmp);
+		i++;
 	}
 	return (path);
 }
