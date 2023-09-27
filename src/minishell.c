@@ -6,7 +6,7 @@
 /*   By: laugarci <laugarci@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/05 14:01:37 by laugarci          #+#    #+#             */
-/*   Updated: 2023/09/27 12:31:43 by laugarci         ###   ########.fr       */
+/*   Updated: 2023/09/27 15:02:14 by laugarci         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,9 +69,7 @@ static int	main_loop(char *prompt, t_list **env_lst)
 	environ = envlst_to_charpp(*env_lst);
 	if (!environ)
 		return (print_error_and_return("Cannot allocate memory\n", 12));
-	set_or_return_state(MODE_SET, STATE_READ);
-	signal_display(MODE_UNSET);
-	signal_handler();
+	signal_setup(STATE_READ);
 	input = readline(prompt);
 	if (!input)
 		builtin_exit(ft_itoa(set_or_return_exit_status(MODE_RETURN, -1)));

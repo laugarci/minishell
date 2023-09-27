@@ -6,7 +6,7 @@
 /*   By: ffornes- <ffornes-@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/25 17:09:21 by ffornes-          #+#    #+#             */
-/*   Updated: 2023/09/27 09:51:38 by laugarci         ###   ########.fr       */
+/*   Updated: 2023/09/27 15:01:35 by laugarci         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,9 +72,7 @@ int	start_execution(t_list *lst, t_list **env_lst, char **env)
 	err = setup_data(lst, &data);
 	if (err > 0)
 		return (err);
-	set_or_return_state(MODE_SET, STATE_EXEC);
-	signal_display(MODE_SET);
-	signal_handler();
+	signal_setup(STATE_EXEC);
 	execution(lst, env_lst, &data, env);
 	return (0);
 }

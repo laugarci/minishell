@@ -6,7 +6,7 @@
 /*   By: laugarci <laugarci@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/19 13:29:17 by laugarci          #+#    #+#             */
-/*   Updated: 2023/09/26 15:23:51 by laugarci         ###   ########.fr       */
+/*   Updated: 2023/09/27 15:01:47 by laugarci         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -97,8 +97,7 @@ int	here_doc(t_list *lst, int id)
 	pid = fork();
 	if (pid == 0)
 	{
-		set_or_return_state(MODE_SET, STATE_HDOC);
-		signal_handler();
+		signal_setup(STATE_HDOC);
 		if (input_heredoc(del, fds))
 			exit(12);
 		exit(0);
