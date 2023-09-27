@@ -6,7 +6,7 @@
 /*   By: laugarci <laugarci@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/04 14:04:45 by laugarci          #+#    #+#             */
-/*   Updated: 2023/09/27 12:54:30 by laugarci         ###   ########.fr       */
+/*   Updated: 2023/09/27 15:15:41 by laugarci         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,7 +59,7 @@ static char	**full_cmd(t_list *lst, char **env)
 	int		j;
 	char	**dst;
 	t_token	*token;
-	
+
 	i = count_command(lst);
 	dst = allocate_cmd(i);
 	token = lst->content;

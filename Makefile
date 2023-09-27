@@ -6,7 +6,7 @@
 #    By: laugarci <laugarci@student.42barcel>       +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/06/26 15:00:09 by ffornes-          #+#    #+#              #
-#    Updated: 2023/09/27 15:13:29 by laugarci         ###   ########.fr        #
+#    Updated: 2023/09/27 15:38:40 by laugarci         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -31,7 +31,7 @@ SRC_FILES = minishell.c \
 			process_list.c builtin_cd.c exec_env.c \
 			signals.c signal_display.c \
 			utils_free.c \
-			exit_status.c execution.c dup_read_write.c
+			exit_status.c execution.c execution_utils.c dup_read_write.c
 
 OBJ_DIR = objs/
 OBJ_FILES = $(SRC_FILES:.c=.o)
